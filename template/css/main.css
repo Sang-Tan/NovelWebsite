@@ -69,15 +69,54 @@
     margin-top: 1rem;
 }
 
+.title-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.title-section .title--underline {
+    border-bottom: 0.1rem solid var(--black);
+    margin-right: 0.5rem;
+}
+
+.title-section .title--bold {
+    font-weight: 700;
+}
+
+.title-section .title--background {
+    padding: 0 0.25rem;
+    color: var(--white);
+    background-color: var(--navy);
+}
+
+.title-tab.title-tab--active {
+    color: var(--black);
+    font-weight: 700;
+}
+
+.title-tab {
+    color: var(--gray);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.title-tab+.title-tab {
+    margin-left: 0.5rem;
+}
+
 .row>.thumb {
-    margin: 2px;
-    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.thumb__link {
+    text-decoration: none !important;
 }
 
 .thumb__wrapper {
     position: relative;
     cursor: pointer;
-    padding: 2px;
     /* background-color: var(--silver); */
 }
 
@@ -88,20 +127,17 @@
 }
 
 .thumb__img-panel--round {
-    border-radius: 10px;
+    border-radius: 0.5rem;
+}
+
+.thumb__img-panel--shadow {
+    box-shadow: 0 0 0.1rem 0.1rem rgba(0, 0, 0, 0.5);
 }
 
 .thumb__img-panel {
     position: relative;
     overflow: hidden;
 
-}
-
-.thumb__img-panel:hover,
-.thumb:hover .thumb__img-panel {
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)) cover;
-
-    transition: transform 0.5s;
 }
 
 .thumb__img {
@@ -113,17 +149,16 @@
     background-size: 100% 100%;
 }
 
-.thumb__title {
+.thumb__caption {
     text-align: center;
-}
-
-.thumb__link-text:hover,
-.thumb:hover .thumb__link-text {
-    color: var(--maroon);
-}
-
-.thumb__link-text {
-    text-decoration: none !important;
     color: var(--black);
     font: 700 1rem "Noto Sans KR", sans-serif;
+    height: 2.3rem;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.thumb__caption:hover,
+.thumb:hover .thumb__caption {
+    color: var(--olive);
 }
