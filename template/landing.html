@@ -73,40 +73,118 @@
             <div class="row">
                 <div class="col-12 col-lg-9">
                     <header class="title-section">
-                        <span class="title--underline title--bold">Mới update</span>
+                        <span class="title title--underline title--bold">Mới update</span>
                     </header>
                     <div class="row">
                         <div class="col-4 col-xl-3 thumb">
                             <a href="#" class="thumb__link">
                                 <div class="thumb__wrapper">
-                                    <div class="thumb__img-panel thumb__img-panel--shadow">
-                                        <div class="thumb__img"
+                                    <div class="thumb__img-panel img-wrapper--shadow a6-ratio">
+                                        <div class="img-wrapper"
                                             style="background-image: url('https://images.fpt.shop/unsafe/filters:quality(90)/fptshop.com.vn/uploads/images/tin-tuc/152650/Originals/Hu%20Tao.jpg');">
                                         </div>
                                     </div>
-
                                     <p class="thumb__caption">Hu Tao saves my life</p>
-
                                 </div>
                             </a>
                         </div>
-
                     </div>
                 </div>
-                <div class="col">
+                <div class="col col-lg-3">
                     <header class="title-section">
-                        <span class="title--underline title--bold">Nổi bật</span>
+                        <span class="title title--underline title--bold">Nổi bật</span>
                     </header>
-                    <span class="title-tab title-tab--active">Top tháng</span>
-                    <span class="title-tab">Top tuần</span>
+                    <div class="tab-section">
+                        <ul class="tab-list">
+                            <li class="tab active">Top all</li>
+                            <li class="tab ">Top tháng</li>
+                            <li class="tab">Top tuần</li>
+                        </ul>
+                        <div class="tab-panels">
+                            <ul class="list-panel active">
+                                <li class="list-panel__item">
+                                    <span class="list-panel__rank">1</span>
+                                    <a href="#" class="list-panel__link">Chuyển sinh đến dị giới, mọi người gọi tôi là
+                                        CMMB nhưng tôi nhặt được thánh kiếm mạnh nhất </a>
+                                </li>
+                                <li class="list-panel__item">
+                                    <span class="list-panel__rank">2</span>
+                                    <a href="#" class="list-panel__link">Hình như thê tử của ta muốn được nuông
+                                        chiều</a>
+                                </li>
+                                <li class="list-panel__item">
+                                    <span class="list-panel__rank">3</span>
+                                    <a href="#" class="list-panel__link">Ta phải chiến đấu chống lại quỷ tộc</a>
+                                </li>
+                                <li class="list-panel__item">
+                                    <span class="list-panel__rank">4</span>
+                                    <a href="#" class="list-panel__link">Thần Võ Đại Sư</a>
+                                </li>
+                            </ul>
+                            <ul class="list-panel">
+                                <li class="list-panel__item">
+                                    <span class="list-panel__rank">1</span>
+                                    <a href="#" class="list-panel__link">Người vợ đoản mệnh của anh</a>
+                                </li>
+                                <li class="list-panel__item">
+                                    <span class="list-panel__rank">2</span>
+                                    <a href="#" class="list-panel__link">Chuyển sinh thành chó</a>
+                                </li>
+                                <li class="list-panel__item">
+                                    <span class="list-panel__rank">3</span>
+                                    <a href="#" class="list-panel__link">Chuyển sinh thành bồn cầu</a>
+                                </li>
+                                <li class="list-panel__item">
+                                    <span class="list-panel__rank">4</span>
+                                    <a href="#" class="list-panel__link">Chuyển sinh thành CMMB</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     </header>
                 </div>
             </div>
-
         </div>
-
     </main>
 
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+
+        tabs.forEach((tab) => {
+            tab.addEventListener('click', (e) => {
+                const target = e.target;
+                const targetIndex = Array.from(target.parentElement.children).indexOf(target);
+
+                //select panel
+                const targetSection = target.closest('.tab-section');
+                if (!targetSection) {
+                    throw new Error(`${target} does not in class tab-section`);
+                }
+                const targetPanels = targetSection.querySelector('.tab-panels');
+                const targetPanel = targetPanels.children[targetIndex];
+
+                //deactive tabs
+                const parent = target.closest('.tab-list');
+                if (!parent) {
+                    throw new Error(`Parent of ${target} does not have class tab-list`);
+                }
+
+                const activeTabs = parent.querySelectorAll('.tab.active');
+                activeTabs.forEach((tab, index) => {
+                    tab.classList.remove('active');
+                });
+
+                //deactive panels
+                const activePanels = targetPanels.querySelectorAll('.list-panel.active');
+                activePanels.forEach((panel, index) => {
+                    panel.classList.remove('active');
+                });
+                target.classList.add('active');
+                targetPanels.children[targetIndex].classList.add('active');
+            });
+        });
+    </script>
 </body>
+
 
 </html>

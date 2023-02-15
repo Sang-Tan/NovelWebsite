@@ -8,6 +8,7 @@
     --green: #2ecc40;
     --lime: #01ff70;
     --yellow: #ffdc00;
+    --golden: #ffd700;
     --orange: #ff851b;
     --red: #ff4136;
     --maroon: #85144b;
@@ -18,8 +19,9 @@
     --light-gray: #dddddd;
     --silver: #f6f7f8;
     --white: #ffffff;
+    --open-sans: 'Open Sans', sans-serif;
 }
 
 html {
-    font-family: 'Open Sans', sans-serif;
+    font-family: var(--open-sans);
 }
