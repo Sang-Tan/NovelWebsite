@@ -19,6 +19,7 @@
     --light-gray: #dddddd;
     --silver: #f6f7f8;
     --white: #ffffff;
+    --theme-color: var(--purple);
     --open-sans: 'Open Sans', sans-serif;
 }
 
