@@ -1,0 +1,47 @@
+/*=======================Ranking========================*/
+
+.ranking__item {
+    margin-bottom: 1rem;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ranking__bullet {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: var(--black);
+    color: var(--white);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.5rem;
+    border-radius: 1rem;
+    margin-right: 0.5rem;
+    user-select: none;
+}
+
+.ranking__item:first-child>.ranking__bullet {
+    background-color: var(--golden);
+}
+
+.ranking__item:nth-child(2)>.ranking__bullet {
+    background-color: var(--fuchsia);
+}
+
+.ranking__item:nth-child(3)>.ranking__bullet {
+    background-color: var(--olive);
+}
+
+.ranking__link {
+    text-decoration: none !important;
+    color: var(--black);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.list-panel__link:hover {
+    color: var(--theme-color);
+}

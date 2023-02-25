@@ -68,16 +68,16 @@
     </nav>
 
     <!--main-->
-    <main class="main">
+    <main class="mt-2">
         <div class="container">
             <div class="row">
                 <div class="col-12 col-lg-9">
-                    <header class="title-section">
+                    <header class="mb-2">
                         <span class="title title--underline title--bold">Mới update</span>
                     </header>
                     <div class="row">
                         <div class="col-4 col-xl-3 thumb">
-                            <a href="#" class="thumb__link">
+                            <a href="#" class="no-decor">
                                 <div class="thumb__wrapper">
                                     <div class="thumb__img-panel img-wrapper--shadow a6-ratio">
                                         <div class="img-wrapper"
@@ -126,42 +126,42 @@
                             <li class="tab">Top tuần</li>
                         </ul>
                         <div class="tab-panels">
-                            <ul class="list-panel active">
-                                <li class="list-panel__item">
-                                    <span class="list-panel__rank">1</span>
-                                    <a href="#" class="list-panel__link">Chuyển sinh đến dị giới, mọi người gọi tôi là
+                            <ul class="p-0 tab-panel active">
+                                <li class="ranking__item">
+                                    <span class="ranking__bullet">1</span>
+                                    <a href="#" class="theme-link w-500">Chuyển sinh đến dị giới, mọi người gọi tôi là
                                         CMMB nhưng tôi nhặt được thánh kiếm mạnh nhất </a>
                                 </li>
-                                <li class="list-panel__item">
-                                    <span class="list-panel__rank">2</span>
-                                    <a href="#" class="list-panel__link">Hình như thê tử của ta muốn được nuông
+                                <li class="ranking__item">
+                                    <span class="ranking__bullet">2</span>
+                                    <a href="#" class="theme-link w-500">Hình như thê tử của ta muốn được nuông
                                         chiều</a>
                                 </li>
-                                <li class="list-panel__item">
-                                    <span class="list-panel__rank">3</span>
-                                    <a href="#" class="list-panel__link">Ta phải chiến đấu chống lại quỷ tộc</a>
+                                <li class="ranking__item">
+                                    <span class="ranking__bullet">3</span>
+                                    <a href="#" class="theme-link w-500">Ta phải chiến đấu chống lại quỷ tộc</a>
                                 </li>
-                                <li class="list-panel__item">
-                                    <span class="list-panel__rank">4</span>
-                                    <a href="#" class="list-panel__link">Thần Võ Đại Sư</a>
+                                <li class="ranking__item">
+                                    <span class="ranking__bullet">4</span>
+                                    <a href="#" class="theme-link w-500">Thần Võ Đại Sư</a>
                                 </li>
                             </ul>
-                            <ul class="list-panel">
-                                <li class="list-panel__item">
-                                    <span class="list-panel__rank">1</span>
-                                    <a href="#" class="list-panel__link">Người vợ đoản mệnh của anh</a>
+                            <ul class="p-0 tab-panel">
+                                <li class="ranking__item">
+                                    <span class="ranking__bullet">1</span>
+                                    <a href="#" class="theme-link w-500">Người vợ đoản mệnh của anh</a>
                                 </li>
-                                <li class="list-panel__item">
-                                    <span class="list-panel__rank">2</span>
-                                    <a href="#" class="list-panel__link">Chuyển sinh thành chó</a>
+                                <li class="ranking__item">
+                                    <span class="ranking__bullet">2</span>
+                                    <a href="#" class="theme-link w-500">Chuyển sinh thành chó</a>
                                 </li>
-                                <li class="list-panel__item">
-                                    <span class="list-panel__rank">3</span>
-                                    <a href="#" class="list-panel__link">Chuyển sinh thành bồn cầu</a>
+                                <li class="ranking__item">
+                                    <span class="ranking__bullet">3</span>
+                                    <a href="#" class="theme-link w-500">Chuyển sinh thành bồn cầu</a>
                                 </li>
-                                <li class="list-panel__item">
-                                    <span class="list-panel__rank">4</span>
-                                    <a href="#" class="list-panel__link">Chuyển sinh thành CMMB</a>
+                                <li class="ranking__item">
+                                    <span class="ranking__bullet">4</span>
+                                    <a href="#" class="theme-link w-500">Chuyển sinh thành CMMB</a>
                                 </li>
                             </ul>
                         </div>
@@ -200,7 +200,7 @@
                 });
 
                 //deactive panels
-                const activePanels = targetPanels.querySelectorAll('.list-panel.active');
+                const activePanels = targetPanels.querySelectorAll('.tab-panel.active');
                 activePanels.forEach((panel, index) => {
                     panel.classList.remove('active');
                 });

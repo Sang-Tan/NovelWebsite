@@ -1,9 +1,21 @@
 @import url(./core.css);
 @import url(./header.css);
-@import url(./comment.css);
 
-<<<<<<< Updated upstream
-/* Common classes */
+
+/** Table of Contents
+    * 1.Common
+    * 2.Button
+    * 3.Tab
+    * 4.Image wrapper
+    * 5.Basic section
+    * 6.Title
+    * 7.Thumbnail
+    * 8.Pagination
+    * 9.Comment
+    * 10.Keyframe
+    */
+
+/*===============Common================== */
 .no-decor {
     text-decoration: none !important;
 }
@@ -12,10 +24,38 @@
     color: var(--theme-color);
 }
 
+.theme-link{
+    color: var(--black);
+    text-decoration: none !important;
+}
+
+.theme-link:hover{
+    color: var(--theme-color);
+}
+
+.w-400 {
+    font-weight: 400;
+}
+
+.w-500 {
+    font-weight: 500;
+}
+
+.w-600 {
+    font-weight: 600;
+}
+
+.w-700 {
+    font-weight: 700;
+}
+
+
+/*===================Button=======================*/
 .basic-btn {
-    border-width: 1px;
-    border-radius: 0.25rem;
+    border:none;
+    border-radius: 0.2rem;
     padding: 0.25rem 0.5rem;
+    box-shadow: 0 0.15rem 0rem 0rem rgba(0, 0, 0, 0.3);
 }
 
 .basic-btn:focus {
@@ -24,44 +64,30 @@
 
 .basic-btn:active {
     transform: translateY(0.1rem);
+    box-shadow: 0 0.05rem 0rem 0rem rgba(0, 0, 0, 0.3);
+}
+
+.basic-btn:hover {
+    filter: brightness(0.9);
 }
 
 .basic-btn--green {
     background-color: #5cb85c;
-    border-color: var(--lime);
     color: var(--white);
-}
-
-.basic-btn--green:hover {
-    background-color: #449d44;
-    border-color: var(--green);
 }
 
 .basic-btn--red {
     background-color: #d9534f;
-    border-color: var(--red);
     color: var(--white);
 }
 
-.basic-btn--red:hover {
-    background-color: #c9302c;
-    border-color: var(--maroon);
+.basic-btn--olive {
+    background-color: var(--olive);
+    color: var(--white);
 }
 
-=======
-/** Table of Contents
- * 1.Tabs
- * 2.Image wrapper
- * 3.Sections
- * 4.Thumbnail
- */
->>>>>>> Stashed changes
 
-/* main */
-.main {
-    margin-top: 1rem;
-}
-
+/*=====================Tab====================*/
 .tab-section {}
 
 .tab-list {
@@ -89,11 +115,29 @@
     margin-left: 0.5rem;
 }
 
-<<<<<<< Updated upstream
-=======
-/* Image wrapper */
+.tab-panel {
+    list-style: none;
+    display: none;
+    transition: all 0.2s ease-in-out;
+}
 
->>>>>>> Stashed changes
+.tab-panel.active {
+    display: block;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+/*=====================Image wrapper==================*/
+.a6-ratio {
+    position: relative;
+    overflow: hidden;
+}
+
+.a6-ratio::before {
+    content: "";
+    display: block;
+    padding-top: 140%;
+}
+
 .img-wrapper {
     position: absolute;
     top: 0;
@@ -115,8 +159,8 @@
     box-shadow: 0 0 0.1rem 0.1rem rgba(0, 0, 0, 0.5);
 }
 
-/* Sections */
-/* Basic section */
+
+/*======================Basic section===================*/
 .basic-section {
     margin-bottom: 1rem;
     background-color: var(--white);
@@ -125,7 +169,6 @@
     border-radius: 0.25rem;
 }
 
-<<<<<<< Updated upstream
 .basic-section__header {
     display: flex;
     align-items: center;
@@ -142,14 +185,9 @@
 .basic-section__header>h5,
 .basic-section__header>h6 {
     margin: 0;
-=======
-/* Title */
-.title-section {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
 }
 
+/*====================Title=========================*/
 .title {
     font-size: 1.5rem;
 }
@@ -167,101 +205,28 @@
     padding: 0 0.25rem;
     color: var(--white);
     background-color: var(--navy);
->>>>>>> Stashed changes
 }
 
-/* list panel */
+/*========================Thumbnail=========================*/
 
-.list-panel {
-    list-style: none;
-    padding: 0;
-    display: none;
-    transition: all 0.2s ease-in-out;
-
-}
-
-.list-panel.active {
-    display: block;
-    animation: fadeIn 0.2s ease-in-out;
-}
-
-.list-panel__item {
+.thumb{
     margin-bottom: 1rem;
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.list-panel__rank {
-    display: inline-block;
-    width: 1.5rem;
-    height: 1.5rem;
-    background-color: var(--black);
-    color: var(--white);
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-align: center;
-    line-height: 1.5rem;
-    border-radius: 1rem;
-    margin-right: 0.5rem;
-    user-select: none;
-}
-
-.list-panel__item:first-child>.list-panel__rank {
-    background-color: var(--golden);
-}
-
-.list-panel__item:nth-child(2)>.list-panel__rank {
-    background-color: var(--fuchsia);
-}
-
-.list-panel__item:nth-child(3)>.list-panel__rank {
-    background-color: var(--olive);
-}
-
-.list-panel__link {
-    text-decoration: none !important;
-    color: var(--black);
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-.list-panel__link:hover {
-    color: var(--theme-color);
-}
-
-.row>.thumb {
-    margin-bottom: 1rem;
-}
-
-
-/* Thumbnail */
-.thumb__link {
-    text-decoration: none !important;
 }
 
 .thumb__wrapper {
     position: relative;
     cursor: pointer;
-    /* background-color: var(--silver); */
-}
-
-.a6-ratio {
-    position: relative;
-    overflow: hidden;
-}
-
-.a6-ratio::before {
-    content: "";
-    display: block;
-    padding-top: 140%;
 }
 
 .thumb__img-panel {
     position: relative;
     overflow: hidden;
 
+}
+
+.thumb__caption:hover,
+.thumb:hover .thumb__caption {
+    color: var(--theme-color);
 }
 
 .thumb__caption {
@@ -271,28 +236,28 @@
     height: 2.3rem;
     overflow: hidden;
     margin-top: 0.5rem;
-}
+} 
 
-.thumb__caption:hover,
-.thumb:hover .thumb__caption {
-    color: var(--theme-color);
-}
-
-/* pagination */
+/*=======================Pagination========================*/
 
 .page-list__item {
     display: inline-block;
     margin: 0 0.5rem;
     padding: 0.3rem 0.75rem;
     box-sizing: border-box;
-    cursor: pointer;
+    /* cursor: pointer; */
     user-select: none;
     font-weight: 700;
 }
 
 .page-list__link {
     text-decoration: none !important;
-    color: var(--purple);
+    color: var(--theme-color);
+}
+
+.page-list__link:hover {
+    opacity: 0.5;
+    color: var(--theme-color);
 }
 
 .page-list__item.active {
@@ -300,14 +265,99 @@
     border-radius: 50%;
 }
 
+.page-list__link.inactive {
+    color: var(--gray);
+    cursor:default;
+}
+
+.page-list__link.inactive:hover {
+    opacity: 1;
+}
+
 .page-list__item.active .page-list__link {
     color: var(--white);
 }
 
+/*=====================Comment======================*/
+.cmt-box {
+    display: block;
+    width: 100%;
+    margin-bottom: 1rem;
+}
 
+.cmt-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
 
+.cmt-group__item {
+    margin-bottom: 1rem;
+}
 
-/* keyframe */
+.cmt-group__item:nth-child(n+2) {
+    margin-left: 4rem;
+}
+
+.cmt-group__avatar {
+    /* display: inline-block; */
+    float: left;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    margin-right: 1rem;
+    background-size: cover;
+}
+
+.cmt-detail {
+    /* display: inline-block; */
+    overflow: hidden;
+    background-color: var(--silver);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.2rem;
+}
+
+.cmt-detail>p {
+    margin: 0;
+    color: var(--black);
+}
+
+.cmt-detail__name {
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--black);
+}
+
+a.cmt-detail__name {
+    text-decoration: none !important;
+    color: var(--black);
+}
+
+a.cmt-detail__name:hover {
+    color: var(--theme-color);
+}
+
+.cmt-toolkit {
+    margin-top: 1rem;
+}
+
+.cmt-toolkit__item {
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.cmt-toolkit__link {
+    text-decoration: none !important;
+    color: var(--black);
+    font-weight: 600;
+}
+
+.cmt-toolkit__link:hover {
+    color: var(--gray);
+}
+
+/*==================keyframe======================*/
 @keyframes fadeIn {
     0% {
         opacity: 0;
