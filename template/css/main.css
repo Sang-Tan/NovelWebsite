@@ -2,6 +2,7 @@
 @import url(./header.css);
 @import url(./comment.css);
 
+<<<<<<< Updated upstream
 /* Common classes */
 .no-decor {
     text-decoration: none !important;
@@ -47,35 +48,18 @@
     border-color: var(--maroon);
 }
 
+=======
+/** Table of Contents
+ * 1.Tabs
+ * 2.Image wrapper
+ * 3.Sections
+ * 4.Thumbnail
+ */
+>>>>>>> Stashed changes
 
 /* main */
 .main {
     margin-top: 1rem;
-}
-
-.title-section {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.title {
-    font-size: 1.5rem;
-}
-
-.title.title--underline {
-    border-bottom: 0.1rem solid var(--black);
-    margin-right: 0.5rem;
-}
-
-.title.title--bold {
-    font-weight: 700;
-}
-
-.title.title--background {
-    padding: 0 0.25rem;
-    color: var(--white);
-    background-color: var(--navy);
 }
 
 .tab-section {}
@@ -105,6 +89,11 @@
     margin-left: 0.5rem;
 }
 
+<<<<<<< Updated upstream
+=======
+/* Image wrapper */
+
+>>>>>>> Stashed changes
 .img-wrapper {
     position: absolute;
     top: 0;
@@ -126,7 +115,8 @@
     box-shadow: 0 0 0.1rem 0.1rem rgba(0, 0, 0, 0.5);
 }
 
-/* basic section */
+/* Sections */
+/* Basic section */
 .basic-section {
     margin-bottom: 1rem;
     background-color: var(--white);
@@ -135,6 +125,7 @@
     border-radius: 0.25rem;
 }
 
+<<<<<<< Updated upstream
 .basic-section__header {
     display: flex;
     align-items: center;
@@ -151,6 +142,32 @@
 .basic-section__header>h5,
 .basic-section__header>h6 {
     margin: 0;
+=======
+/* Title */
+.title-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.title {
+    font-size: 1.5rem;
+}
+
+.title.title--underline {
+    border-bottom: 0.1rem solid var(--black);
+    margin-right: 0.5rem;
+}
+
+.title.title--bold {
+    font-weight: 700;
+}
+
+.title.title--background {
+    padding: 0 0.25rem;
+    color: var(--white);
+    background-color: var(--navy);
+>>>>>>> Stashed changes
 }
 
 /* list panel */
