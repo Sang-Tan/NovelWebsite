@@ -15,6 +15,7 @@ public class Servlet1 extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // phần các method theo phương thức get
+        
     }
 
     @Override
