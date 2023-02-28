@@ -21,6 +21,7 @@
 }
 
 .navbar__list-item {
+    position: relative;
     margin: 0 0.6rem;
 }
 
@@ -28,7 +29,6 @@
     font-size: 1rem;
     font-weight: 700;
     color: var(--black);
-    margin: auto;
 }
 
 .navbar__link {
@@ -60,4 +60,23 @@
     background-color: rgba(0, 0, 0, 0);
     padding: 0.2rem 0.5rem;
     cursor: pointer;
+}
+
+.navbar__avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: var(--gray);
+    background-size: cover;
+    cursor: pointer;
+}
+
+.navbar__dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--white);
+    border-radius: 0.2rem;
+    box-shadow: 0 0.3rem 0.2rem 0rem rgba(0, 0, 0, 0.2);
+    z-index: 9999;
 }

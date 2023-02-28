@@ -1,6 +1,7 @@
 @import url(./core.css);
-@import url(./header.css);
-
+@import url(./header_footer.css);
+@import url(./landing.css);
+@import url(./form.css);
 
 /** Table of Contents
     * 1.Common
@@ -16,6 +17,17 @@
     */
 
 /*===============Common================== */
+.center-screen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.popup {
+    z-index: 9999;
+}
+
 .no-decor {
     text-decoration: none !important;
 }
@@ -24,12 +36,12 @@
     color: var(--theme-color);
 }
 
-.theme-link{
+.theme-link {
     color: var(--black);
     text-decoration: none !important;
 }
 
-.theme-link:hover{
+.theme-link:hover {
     color: var(--theme-color);
 }
 
@@ -49,10 +61,9 @@
     font-weight: 700;
 }
 
-
 /*===================Button=======================*/
 .basic-btn {
-    border:none;
+    border: none;
     border-radius: 0.2rem;
     padding: 0.25rem 0.5rem;
     box-shadow: 0 0.15rem 0rem 0rem rgba(0, 0, 0, 0.3);
@@ -69,6 +80,10 @@
 
 .basic-btn:hover {
     filter: brightness(0.9);
+}
+
+.basic-btn--round {
+    border-radius: 2rem;
 }
 
 .basic-btn--green {
@@ -209,7 +224,7 @@
 
 /*========================Thumbnail=========================*/
 
-.thumb{
+.thumb {
     margin-bottom: 1rem;
 }
 
@@ -236,7 +251,7 @@
     height: 2.3rem;
     overflow: hidden;
     margin-top: 0.5rem;
-} 
+}
 
 /*=======================Pagination========================*/
 
@@ -267,7 +282,7 @@
 
 .page-list__link.inactive {
     color: var(--gray);
-    cursor:default;
+    cursor: default;
 }
 
 .page-list__link.inactive:hover {

@@ -26,3 +26,8 @@
 html {
     font-family: var(--open-sans);
 }
+
+label {
+    margin: auto;
+    font-weight: 600;
+}
