@@ -3,44 +3,19 @@ package controller;
 import service.IObjectService;
 import service.ObjectService;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
 
-@WebServlet(name = "Servlet1", value = "/home") //phần value sẽ đổi tên vì nó là phần hiển thị trên thanh URL.
+@WebServlet(name = "Servlet1", value = "/servlet") //phần value sẽ đổi tên vì nó là phần hiển thị trên thanh URL.
 public class Servlet1 extends HttpServlet {
     private final IObjectService objectService = new ObjectService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // phần các method theo phương thức get
-        String action = request.getParameter("action");
-        if (action == null) {
-            action = "";
-        }
-
-        switch (action){
-            case "": //điền action tùy theo link URL
-                //gọi hàm
-                break;
-
-            default:
-                showHomePage(request, response);
-                break;
-        }
-    }
-
-    private void showHomePage(HttpServletRequest request, HttpServletResponse response) {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("view/landing.jsp");
-        try {
-            dispatcher.forward(request, response);
-        } catch (ServletException | IOException e) {
-            e.printStackTrace();
-        }
+        
     }
 
     @Override
