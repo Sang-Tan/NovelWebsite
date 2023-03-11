@@ -4,83 +4,13 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Landing page</title>
-    <!-- normalize css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-          integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-
-    <!-- bootstrap css -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-
-    <!-- Custom StyleSheet -->
-    <link rel="stylesheet" href="/template/css/core.css">
-    <link rel="stylesheet" href="/template/css/main.css">
-
+    <title>Landing page ss</title>
+    <%@ include file="layout/basic_stylesheet.jsp"%>
 </head>
 
 <body>
-<!--navigation bar-->
-<nav class="navbar">
-    <div class="container">
-        <ul class="navbar__list">
-            <li class="navbar__list-item">
-                <a href="#" class="navbar__link navbar__brand">
-                    NOVEL
-                </a>
-            </li>
-            <li class="navbar__list-item">
-                <a href="#" class="navbar__link navbar__list-text">Danh sách</a>
-            </li>
-            <li class="navbar__list-item">
-                <a href="#" class="navbar__link navbar__list-text">Siuuuu</a>
-            </li>
-            <li class="navbar__list-item">
-                <div style="display: inline-block">
-                    <a href="#" class="navbar__link navbar__list-text">Giới thiệu</a>
-                </div>
 
-            </li>
-        </ul>
-        <ul class="navbar__list">
-            <li class="navbar__list-item">
-                <form action="/index.html" class="navbar__search">
-                    <input type="text" placeholder="Tìm truyện" class="navbar__search-textbox">
-                    <button class="navbar__search-btn">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
-            </li>
-            <!-- <li class="navbar__list-item">
-                <a href="#" class="navbar__link navbar__list-text">Đăng nhập</a>
-            </li> -->
-            <li class="navbar__list-item dropdown">
-                <a href="#" class="navbar__link navbar__list-text ml-1 d-flex justify-content-center"
-                   data-toggle="dropdown">
-                    <img src="https://styles.redditmedia.com/t5_4dg0pd/styles/profileIcon_p8ofrlir7ik71.jpg?width=256&height=256&frame=1&auto=webp&crop=256:256,smart&s=d4d7dfe5bf6e1e9d88412ed2ca61df3270cba1c4"
-                         alt="" class="navbar__avatar">
-                    <p class="d-inline-block ml-2 mt-auto mb-auto">Username</p>
-                </a>
-                <div class="dropdown-menu">
-                    <a href="#" class="dropdown-item">Thông tin cá nhân</a>
-                    <a href="#" class="dropdown-item">Đăng xuất</a>
-
-                </div>
-            </li>
-        </ul>
-    </div>
-</nav>
+<%@ include file="layout/header_main.jsp"%>
 
 <!--main-->
 <main class="mt-2">
@@ -186,15 +116,8 @@
     </div>
 </main>
 <!-- Bootstrap -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+<%@ include file="layout/boostrap_js.jsp"%>
+
 <script>
     const tabs = document.querySelectorAll('.tab');
 
