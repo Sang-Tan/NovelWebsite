@@ -1,0 +1,13 @@
+#ignore .idea folder
+.idea/
+
+#ignore .gradle folder
+.gradle/
+
+#ignore build folder
+build/
+
+#compile class files
+*.class
+
+.env
