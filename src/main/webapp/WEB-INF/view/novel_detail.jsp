@@ -19,8 +19,8 @@
 
     <!-- Custom StyleSheet -->
     <!-- <link rel="stylesheet" href="./css/core.css"> -->
-    <link rel="stylesheet" href="./css/main.css">
-    <link rel="stylesheet" href="./css/novel_detail.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/novel_detail.css">
 </head>
 
 <body style="background-color: var(--silver);">
@@ -126,7 +126,7 @@
                 </header>
                 <div class="container-fluid">
                     <p>Bạn phải <a href="#">Đăng nhập</a> hoặc <a href="#">Đăng ký</a> để có thể bình luận</p>
-                    <form action="novel_detail.html" method="post" class="mb-3">
+                    <form action="novel_detail.jsp" method="post" class="mb-3">
                         <textarea name="cmtText" title="cmt" id="" rows="10" class="cmt-box"></textarea>
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="basic-btn basic-btn--green" style="width: 100px">Gửi</button>

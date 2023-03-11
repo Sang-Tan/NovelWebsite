@@ -14,6 +14,7 @@
     border-color: var(--gray);
     border-radius: 0.2rem;
     min-height: 2.5rem;
+    padding-left: 0.5rem;
 }
 
 .input-text:focus {
@@ -27,4 +28,20 @@
     right: 1rem;
     border-radius: 0.2rem 0 0 0;
     cursor: pointer;
+}
+
+.checkbox-holder {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+}
+
+.checkbox-holder+.checkbox-holder {
+    margin-left: 1rem;
+}
+
+input.checkbox1 {
+    width: 1rem;
+    height: 1rem;
+    margin: 0 0.5rem 0 0;
 }

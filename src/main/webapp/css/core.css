@@ -1,0 +1,33 @@
+:root {
+    --navy: #001f3f;
+    --blue: #0074d9;
+    --aqua: #7fdbff;
+    --light-aqua: #e1f3ff;
+    --teal: #39cccc;
+    --olive: #3d9970;
+    --green: #2ecc40;
+    --lime: #01ff70;
+    --yellow: #ffdc00;
+    --golden: #ffd700;
+    --orange: #ff851b;
+    --red: #ff4136;
+    --maroon: #85144b;
+    --fuchsia: #f012be;
+    --purple: #b10dc9;
+    --black: #111111;
+    --gray: #aaaaaa;
+    --light-gray: #dddddd;
+    --silver: #f6f7f8;
+    --white: #ffffff;
+    --theme-color: var(--purple);
+    --open-sans: 'Open Sans', sans-serif;
+}
+
+html {
+    font-family: var(--open-sans);
+}
+
+label {
+    margin: auto;
+    font-weight: 600;
+}

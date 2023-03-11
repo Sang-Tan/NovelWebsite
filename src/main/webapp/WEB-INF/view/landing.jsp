@@ -1,5 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Landing page</title>
@@ -23,8 +25,9 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
     <!-- Custom StyleSheet -->
-    <!-- <link rel="stylesheet" href="./css/core.css"> -->
-    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="/template/css/core.css">
+    <link rel="stylesheet" href="/template/css/main.css">
+
 </head>
 
 <body>
@@ -44,7 +47,7 @@
                 <a href="#" class="navbar__link navbar__list-text">Siuuuu</a>
             </li>
             <li class="navbar__list-item">
-                <div style="display: inline-block;">
+                <div style="display: inline-block">
                     <a href="#" class="navbar__link navbar__list-text">Giới thiệu</a>
                 </div>
 
@@ -75,8 +78,6 @@
 
                 </div>
             </li>
-
-
         </ul>
     </div>
 </nav>

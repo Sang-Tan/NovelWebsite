@@ -1,0 +1,69 @@
+.genre-item {
+    background-color: var(--silver);
+    border-radius: 1rem;
+    padding: 0.1rem 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.genre-link {
+    text-decoration: none !important;
+    color: var(--black);
+}
+
+.genre-link:hover {
+    color: var(--theme-color);
+}
+
+.series-cover {
+    width: 100%;
+    max-width: 160px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.volume-cover {
+    width: 100%;
+    max-width: 140px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0.5rem;
+}
+
+
+/* chapters list */
+.chapters {
+    list-style: none;
+    padding-left: 0;
+}
+
+.chapters__item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--silver);
+}
+
+.chapters__title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chapters__time {
+    color: var(--gray);
+}
+
+.chapters__link {
+    text-decoration: none !important;
+    color: var(--black);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+a:visited.chapters__link {
+    color: var(--gray);
+}
+
+a.chapters__link:hover {
+    color: var(--black);
+}

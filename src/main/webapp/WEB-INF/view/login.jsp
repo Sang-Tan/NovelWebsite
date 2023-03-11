@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,14 +24,14 @@
 
     <!-- Custom StyleSheet -->
     <!-- <link rel="stylesheet" href="./css/core.css"> -->
-    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="css/main.css">
 
 </head>
 
 <body>
 <form action="" class="pt-3 pb-4 pl-4 pr-4 popup-form">
     <h3 class="text-center w-700">Đăng nhập</h3>
-    <i class="fas fa-compress-arrows-alt top-right-btn" style="font-size:x-large;"></i>
+    <i class="fas fa-compress-arrows-alt top-right-btn" style="font-size: x-large"></i>
     <p class="text-center mb-4">Bạn chưa có tài khoản? <a href="#">Đăng ký</a></p>
     <div class="container mb-4">
         <div class="row mb-3">

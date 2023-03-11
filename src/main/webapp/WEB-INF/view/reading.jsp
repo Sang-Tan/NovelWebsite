@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,8 +24,8 @@
 
     <!-- Custom StyleSheet -->
     <!-- <link rel="stylesheet" href="./css/core.css"> -->
-    <link rel="stylesheet" href="./css/main.css">
-    <link rel="stylesheet" href="./css/form.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/form.css">
 </head>
 
 <body style="background-color: var(--silver);">
