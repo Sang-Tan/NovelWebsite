@@ -10,7 +10,7 @@
 
 <body>
 
-<%@ include file="layout/header_main.jsp"%>
+<jsp:include page="layout/header_main.jsp"></jsp:include>
 
 <!--main-->
 <main class="mt-2">

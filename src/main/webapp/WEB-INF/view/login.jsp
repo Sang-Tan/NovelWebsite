@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <%@ include file="layout/basic_stylesheet.jsp"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-</head>
-
-<body>
-<form action="" class="pt-3 pb-4 pl-4 pr-4 popup-form">
+<form action="" class="pt-3 pb-4 pl-4 pr-4 popup-form center-screen">
     <h3 class="text-center w-700">Đăng nhập</h3>
     <i class="fas fa-compress-arrows-alt top-right-btn" style="font-size: x-large"></i>
     <p class="text-center mb-4">Bạn chưa có tài khoản? <a href="#">Đăng ký</a></p>
@@ -34,6 +26,3 @@
         <a href="#" class="text-center w-600">Quên mật khẩu?</a>
     </div>
 </form>
-</body>
-
-</html>

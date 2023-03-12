@@ -8,6 +8,12 @@
     z-index: 9999;
 }
 
+.rounded-form {
+    border-radius: 0.75rem;
+    background-color: var(--white);
+    box-shadow: 0 0.3rem 0.2rem 0rem rgba(0, 0, 0, 0.2);
+}
+
 .input-text {
     border-width: 1px;
     border-style: solid;
@@ -36,7 +42,7 @@
     margin: 0.5rem 0;
 }
 
-.checkbox-holder+.checkbox-holder {
+.checkbox-holder + .checkbox-holder {
     margin-left: 1rem;
 }
 
