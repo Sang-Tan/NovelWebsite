@@ -1,11 +1,12 @@
-CREATE TABLE Novel(
-    ID INT PRIMARY KEY IDENTITY(1,1),
-    [Owner] [int] NOT NULL,
-    [Summary] [nvarchar](max) NOT NULL,
-    [SummaryTemp] [nvarchar](max) NULL,
-    [Name] [nvarchar](200) NOT NULL,
-    [NameTemp] [nvarchar](200) NULL,
-    [Image] [nvarchar](200) NOT NULL,
-    [ImageTemp] [nvarchar](200) NULL,
-    [IsPending] [bit] NOT NULL,
-    [Status] [nvarchar](50) NOT NULL);
+CREATE TABLE novels (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    owner INT NOT NULL,
+    summary TEXT NOT NULL,
+    summary_temp TEXT,
+    name VARCHAR(200) NOT NULL,
+    name_temp VARCHAR(200),
+    image VARCHAR(200) NOT NULL,
+    image_temp VARCHAR(200),
+    is_pending BOOLEAN NOT NULL,
+    status VARCHAR(50) NOT NULL
+);

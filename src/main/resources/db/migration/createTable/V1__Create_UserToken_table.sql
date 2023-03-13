@@ -1,4 +1,7 @@
-CREATE TABLE UserToken(
-    ID INT PRIMARY KEY IDENTITY(1,1),
-    [UserID] [int] NOT NULL,
-    [ValidatorHash] [char](32) NOT NULL);
+CREATE TABLE user_token
+(
+    id             INT PRIMARY KEY AUTO_INCREMENT,
+    user_id        INT      NOT NULL,
+    validator_hash CHAR(32) NOT NULL
+);
+

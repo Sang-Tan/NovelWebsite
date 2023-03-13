@@ -1,7 +1,7 @@
-CREATE TABLE CommentReport(
-    ID INT PRIMARY KEY IDENTITY(1,1),
-    [CommentID] [int] NOT NULL,
-    [ReporterID] [int] NOT NULL,
-    [Reason] [nvarchar](max) NOT NULL,
-    [CheckTime] [datetime] NULL
+CREATE TABLE comment_report (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    comment_id INT NOT NULL,
+    reporter_id INT NOT NULL,
+    reason TEXT NOT NULL,
+    check_time TIMESTAMP
 );
