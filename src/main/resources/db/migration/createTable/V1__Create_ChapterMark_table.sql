@@ -1,7 +1,6 @@
-CREATE TABLE ChapterMark(
-    ID INT PRIMARY KEY IDENTITY(1,1),
-    [ChapterID] [int] NOT NULL,
-    [UserID] [int] NOT NULL,
-
-
+CREATE TABLE chapter_mark
+(
+    chapter_id INT,
+    user_id    INT,
+    PRIMARY KEY (chapter_id, user_id)
 );

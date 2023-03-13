@@ -1,4 +1,4 @@
-CREATE TABLE Genre(
-    ID INT PRIMARY KEY IDENTITY(1,1),
-    [Name] [nvarchar](200) NOT NULL)
+CREATE TABLE genres (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(200) NOT NULL
 );
