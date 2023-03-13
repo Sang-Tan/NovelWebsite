@@ -1,4 +1,3 @@
-    [ChapterOrder] [smallint] NOT NULL,
 CREATE TABLE chapters
 (
     id          INT PRIMARY KEY AUTO_INCREMENT,
