@@ -1,4 +1,4 @@
-CREATE TABLE user_token
+CREATE TABLE tokens
 (
     id             INT PRIMARY KEY AUTO_INCREMENT,
     user_id        INT      NOT NULL,
