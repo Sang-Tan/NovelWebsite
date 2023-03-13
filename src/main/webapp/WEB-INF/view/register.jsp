@@ -5,8 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
-    <%@ include file="layout/basic_stylesheet.jsp"%>
-
+    <%@ include file="layout/basic_stylesheet.jsp" %>
 </head>
 
 <body>

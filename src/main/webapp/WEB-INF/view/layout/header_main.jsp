@@ -5,7 +5,7 @@
     <div class="container">
         <ul class="navbar__list">
             <li class="navbar__list-item">
-                <a href="#" class="navbar__link navbar__brand">
+                <a href="/home" class="navbar__link navbar__brand">
                     NOVEL
                 </a>
             </li>
@@ -31,12 +31,12 @@
                     </button>
                 </form>
             </li>
-            <li class="navbar__list-item">
-                <a href="#login-modal" class="navbar__link navbar__list-text" data-toggle="modal"
-                   data-target="#login-modal">Đăng
-                    nhập</a>
-            </li>
-            <!--
+<%--            <li class="navbar__list-item">--%>
+<%--                <a href="#login-modal" class="navbar__link navbar__list-text" data-toggle="modal"--%>
+<%--                   data-target="#login-modal">Đăng--%>
+<%--                    nhập</a>--%>
+<%--            </li>--%>
+
             <li class="navbar__list-item dropdown">
                 <a href="#" class="navbar__link navbar__list-text ml-1 d-flex justify-content-center"
                    data-toggle="dropdown">
@@ -50,7 +50,7 @@
 
                 </div>
             </li>
-            -->
+
         </ul>
     </div>
 </nav>

@@ -4,10 +4,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Landing page ss</title>
-    <%@ include file="layout/basic_stylesheet.jsp"%>
+    <title>Landing page</title>
+    <%@ include file="layout/basic_stylesheet.jsp" %>
 </head>
-
 <body>
 
 <jsp:include page="layout/header_main.jsp"></jsp:include>
@@ -116,7 +115,7 @@
     </div>
 </main>
 <!-- Bootstrap -->
-<%@ include file="layout/boostrap_js.jsp"%>
+<%@ include file="layout/boostrap_js.jsp" %>
 
 <script>
     const tabs = document.querySelectorAll('.tab');
@@ -156,6 +155,4 @@
     });
 </script>
 </body>
-
-
 </html>

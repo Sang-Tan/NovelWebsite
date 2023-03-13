@@ -6,10 +6,10 @@
     <meta charset="UTF-8">
     <title>Novel</title>
 
-    <%@ include file="layout/basic_stylesheet.jsp"%>
+    <%@ include file="layout/basic_stylesheet.jsp" %>
     <link rel="stylesheet" href="/css/novel_detail.css">
 </head>
-
+<jsp:include page="layout/header_main.jsp"></jsp:include>
 <body style="background-color: var(--silver);">
 <div style="height: 30px;"></div>
 <div class="container">
