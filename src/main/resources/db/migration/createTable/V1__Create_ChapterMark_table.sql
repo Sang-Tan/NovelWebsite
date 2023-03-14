@@ -1,4 +1,4 @@
-CREATE TABLE chapter_marks
+CREATE TABLE chapter_mark
 (
     chapter_id INT NOT NULL,
     user_id    INT NOT NULL,

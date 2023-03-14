@@ -1,4 +1,4 @@
-CREATE TABLE novel_genres
+CREATE TABLE novel_genre
 (
     genre_id INT NOT NULL,
     novel_id INT NOT NULL,
