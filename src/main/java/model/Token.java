@@ -2,13 +2,13 @@ package model;
 
 public class Token {
     private int id;
-    private int userId;
+    private User userId;
     private String validatorHash;
 
     public Token() {
     }
 
-    public Token(int id, int userId, String validatorHash) {
+    public Token(int id, User userId, String validatorHash) {
         this.id = id;
         this.userId = userId;
         this.validatorHash = validatorHash;
@@ -22,11 +22,11 @@ public class Token {
         this.id = id;
     }
 
-    public int getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 

@@ -1,30 +1,30 @@
 package model;
 
 public class ChapterMark {
-    private int chapterId;
-    private int userId;
+    private Chapter chapterId;
+    private User userId;
 
     public ChapterMark() {
     }
 
-    public ChapterMark(int chapterId, int userId) {
+    public ChapterMark(Chapter chapterId, User userId) {
         this.chapterId = chapterId;
         this.userId = userId;
     }
 
-    public int getChapterId() {
+    public Chapter getChapterId() {
         return chapterId;
     }
 
-    public void setChapterId(int chapterId) {
+    public void setChapterId(Chapter chapterId) {
         this.chapterId = chapterId;
     }
 
-    public int getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 }
