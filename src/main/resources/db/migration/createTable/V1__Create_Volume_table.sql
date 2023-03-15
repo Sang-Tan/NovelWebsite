@@ -5,5 +5,5 @@ CREATE TABLE volumes
     name        VARCHAR(255) NOT NULL,
     image       VARCHAR(255),
     order_index INT          NOT NULL
-        UNIQUE (novel_id, volume_order)
+        UNIQUE (novel_id, order_index)
 );
