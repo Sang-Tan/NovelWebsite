@@ -50,7 +50,7 @@
             <div class="col-12 col-lg-4">
                 <div class="d-flex align-items-center mt-2">
                     <label for="author" class="label">Tác giả: </label>
-                    <input class="input-text" style="flex-grow: 1;" type="text" name="author" id="author"
+                    <input class="input-text" style="flex-grow: 1" type="text" name="author" id="author"
                            placeholder="Tên tác giả">
                 </div>
             </div>
@@ -75,7 +75,7 @@
         </div>
         <div class="mt-2 d-flex">
             <label for="genre" class="label">Thể loại: </label>
-            <div style="flex-grow:1;" class="genre-holder" id="genre">
+            <div style="flex-grow: 1" class="genre-holder" id="genre">
                 <div class="checkbox-holder">
                     <input class="checkbox1" type="checkbox" data-genre="1" id="genre1">
                     <label for="genre1"> Genre1</label>
