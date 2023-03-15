@@ -25,7 +25,7 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
     <!-- Custom StyleSheet -->
-    <!-- <link rel="stylesheet" href="./css/core.css"> -->
+    <link rel="stylesheet" href="/css/core.css">
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/search_novel.css">
 
@@ -94,7 +94,7 @@
 </div>
 
 
-<script src="./js/search_novel.js"></script>
+<script src="/js/search_novel.js"></script>
 </body>
 
 </html>
