@@ -1,29 +1,29 @@
 package model;
 
 public class NovelGenre {
-    private int genreId;
-    private int novelId;
+    private Genre genreId;
+    private Novel novelId;
 
     public NovelGenre() {
     }
 
-    public int getGenreId() {
+    public Genre getGenreId() {
         return genreId;
     }
 
-    public void setGenreId(int genreId) {
+    public void setGenreId(Genre genreId) {
         this.genreId = genreId;
     }
 
-    public int getNovelId() {
+    public Novel getNovelId() {
         return novelId;
     }
 
-    public void setNovelId(int novelId) {
+    public void setNovelId(Novel novelId) {
         this.novelId = novelId;
     }
 
-    public NovelGenre(int genreId, int novelId) {
+    public NovelGenre(Genre genreId, Novel novelId) {
         this.genreId = genreId;
         this.novelId = novelId;
     }
