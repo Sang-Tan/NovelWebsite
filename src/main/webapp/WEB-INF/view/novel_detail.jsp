@@ -201,5 +201,5 @@
     </div>
 </div>
 </body>
-
+<%@ include file="layout/boostrap_js.jsp" %>
 </html>

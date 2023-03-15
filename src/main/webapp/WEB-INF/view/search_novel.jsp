@@ -96,5 +96,5 @@
 
 <script src="/js/search_novel.js"></script>
 </body>
-
+<%@ include file="layout/boostrap_js.jsp" %>
 </html>
