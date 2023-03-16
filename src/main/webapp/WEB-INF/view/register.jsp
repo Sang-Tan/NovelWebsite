@@ -1,10 +1,11 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
-    <%@ include file="layout/basic_stylesheet.jsp"%>
-
+    <%@ include file="layout/basic_stylesheet.jsp" %>
 </head>
 
 <body>

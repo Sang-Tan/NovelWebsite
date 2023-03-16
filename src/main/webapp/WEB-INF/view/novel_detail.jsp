@@ -1,13 +1,17 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Novel</title>
-    <%@ include file="layout/basic_stylesheet.jsp"%>
-</head>
 
+    <%@ include file="layout/basic_stylesheet.jsp" %>
+    <link rel="stylesheet" href="/css/novel_detail.css">
+</head>
+<jsp:include page="layout/header_main.jsp"></jsp:include>
 <body style="background-color: var(--silver);">
-<div style="height: 30px;"></div>
+<div style="height: 30px"></div>
 <div class="container">
     <div class="row">
         <div class="col-12 col-lg-9">
@@ -110,7 +114,8 @@
                 <div class="container-fluid">
                     <p>Bạn phải <a href="#">Đăng nhập</a> hoặc <a href="#">Đăng ký</a> để có thể bình luận</p>
                     <form action="novel_detail.jsp" method="post" class="mb-3">
-                        <textarea name="cmtText" title="cmt" id="" rows="10" class="cmt-box"></textarea>
+                        <textarea name="cmtText" title="cmt" id="" rows="10" class="cmt-box"
+                                  style="min-height: 100px;resize: none;scroll-behavior: auto"></textarea>
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="basic-btn basic-btn--green" style="width: 100px">Gửi</button>
                         </div>
@@ -196,5 +201,5 @@
     </div>
 </div>
 </body>
-
+<%@ include file="layout/boostrap_js.jsp" %>
 </html>

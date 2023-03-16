@@ -26,5 +26,5 @@
       crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
 <!-- Custom StyleSheet -->
-<link rel="stylesheet" href="/template/css/core.css">
-<link rel="stylesheet" href="/template/css/main.css">
+<link rel="stylesheet" href="/css/core.css">
+<link rel="stylesheet" href="/css/main.css">

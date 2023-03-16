@@ -4,13 +4,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Landing page ss</title>
-    <%@ include file="layout/basic_stylesheet.jsp"%>
+    <title>Landing page</title>
+    <%@ include file="layout/basic_stylesheet.jsp" %>
 </head>
-
 <body>
 
-<%@ include file="layout/header_main.jsp"%>
+<jsp:include page="layout/header_main.jsp"></jsp:include>
 
 <!--main-->
 <main class="mt-2">
@@ -22,7 +21,7 @@
                 </header>
                 <div class="row">
                     <div class="col-4 col-xl-3 thumb">
-                        <a href="#" class="no-decor">
+                        <a href="/testui/novel_detail" class="no-decor">
                             <div class="thumb__wrapper">
                                 <div class="thumb__img-panel img-wrapper--shadow a6-ratio">
                                     <div class="img-wrapper"
@@ -116,7 +115,7 @@
     </div>
 </main>
 <!-- Bootstrap -->
-<%@ include file="layout/boostrap_js.jsp"%>
+<%@ include file="layout/boostrap_js.jsp" %>
 
 <script>
     const tabs = document.querySelectorAll('.tab');
@@ -156,6 +155,4 @@
     });
 </script>
 </body>
-
-
 </html>

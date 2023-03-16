@@ -1,9 +1,11 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:include page="layout/header_main.jsp"></jsp:include>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Chapter name</title>
-    <%@ include file="layout/basic_stylesheet.jsp"%>
+    <%@ include file="layout/basic_stylesheet.jsp" %>
 </head>
 
 <body style="background-color: var(--silver);">
@@ -56,4 +58,5 @@
     </main>
 </div>
 </body>
+<%@ include file="layout/boostrap_js.jsp" %>
 </html>

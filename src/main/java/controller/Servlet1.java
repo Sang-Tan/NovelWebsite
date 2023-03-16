@@ -28,7 +28,7 @@ public class Servlet1 extends HttpServlet {
             case "create": //điền action tùy theo link URL
                 //gọi hàm
                 break;
-
+                
             default:
                 showHomePage(request, response);
                 break;

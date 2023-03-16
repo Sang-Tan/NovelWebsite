@@ -1,3 +1,4 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,61 +25,14 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
     <!-- Custom StyleSheet -->
-    <link rel="stylesheet" href="./css/core.css">
-    <link rel="stylesheet" href="./css/main.css">
-    <link rel="stylesheet" href="./css/search_novel.css">
+    <link rel="stylesheet" href="/css/core.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/search_novel.css">
 
 </head>
 
 <body style="background-color: var(--silver);">
-<nav class="navbar">
-    <div class="container">
-        <ul class="navbar__list">
-            <li class="navbar__list-item">
-                <a href="#" class="navbar__link navbar__brand">
-                    NOVEL
-                </a>
-            </li>
-            <li class="navbar__list-item">
-                <a href="#" class="navbar__link navbar__list-text">Danh sách</a>
-            </li>
-            <li class="navbar__list-item">
-                <a href="#" class="navbar__link navbar__list-text">Siuuuu</a>
-            </li>
-            <li class="navbar__list-item">
-                <div style="display: inline-block;">
-                    <a href="#" class="navbar__link navbar__list-text">Giới thiệu</a>
-                </div>
-
-            </li>
-        </ul>
-        <ul class="navbar__list">
-            <li class="navbar__list-item">
-                <form action="/index.html" class="navbar__search">
-                    <input type="text" placeholder="Tìm truyện" class="navbar__search-textbox">
-                    <button class="navbar__search-btn">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
-            </li>
-            <!-- <li class="navbar__list-item">
-                <a href="#" class="navbar__link navbar__list-text">Đăng nhập</a>
-            </li> -->
-            <li class="navbar__list-item dropdown">
-                <a href="#" class="navbar__link navbar__list-text ml-1 d-flex justify-content-center"
-                   data-toggle="dropdown">
-                    <img src="https://styles.redditmedia.com/t5_4dg0pd/styles/profileIcon_p8ofrlir7ik71.jpg?width=256&height=256&frame=1&auto=webp&crop=256:256,smart&s=d4d7dfe5bf6e1e9d88412ed2ca61df3270cba1c4"
-                         alt="" class="navbar__avatar">
-                    <p class="d-inline-block ml-2 mt-auto mb-auto">Username</p>
-                </a>
-                <div class="dropdown-menu">
-                    <a href="#" class="dropdown-item">Thông tin cá nhân</a>
-                    <a href="#" class="dropdown-item">Đăng xuất</a>
-                </div>
-            </li>
-        </ul>
-    </div>
-</nav>
+<jsp:include page="layout/header_main.jsp"></jsp:include>
 <div class="container mt-4">
     <form class="container-fluid basic-section p-3" id="search-form"
           onsubmit="event.preventDefault(); submitForm()">
@@ -96,7 +50,7 @@
             <div class="col-12 col-lg-4">
                 <div class="d-flex align-items-center mt-2">
                     <label for="author" class="label">Tác giả: </label>
-                    <input class="input-text" style="flex-grow: 1;" type="text" name="author" id="author"
+                    <input class="input-text" style="flex-grow: 1" type="text" name="author" id="author"
                            placeholder="Tên tác giả">
                 </div>
             </div>
@@ -121,7 +75,7 @@
         </div>
         <div class="mt-2 d-flex">
             <label for="genre" class="label">Thể loại: </label>
-            <div style="flex-grow:1;" class="genre-holder" id="genre">
+            <div style="flex-grow: 1" class="genre-holder" id="genre">
                 <div class="checkbox-holder">
                     <input class="checkbox1" type="checkbox" data-genre="1" id="genre1">
                     <label for="genre1"> Genre1</label>
@@ -140,7 +94,7 @@
 </div>
 
 
-<script src="./js/search_novel.js"></script>
+<script src="/js/search_novel.js"></script>
 </body>
-
+<%@ include file="layout/boostrap_js.jsp" %>
 </html>
