@@ -11,7 +11,12 @@
 </head>
 
 <body style="background-color: var(--silver);">
+<<<<<<< Updated upstream
 <div style="height: 30px;"></div>
+=======
+<jsp:include page="layout/header_main.jsp"></jsp:include>
+<div style="height: 30px"></div>
+>>>>>>> Stashed changes
 <div class="container">
     <div class="row">
         <div class="col-12 col-lg-9">
@@ -199,6 +204,9 @@
         </div>
     </div>
 </div>
+
+<!-- Bootstrap -->
+<%@ include file="layout/boostrap_js.jsp" %>
 </body>
 
 </html>
