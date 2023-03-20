@@ -36,6 +36,15 @@
     cursor: pointer;
 }
 
+.checkbox-list {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    align-items: center;
+}
+
 .checkbox-holder {
     display: flex;
     align-items: center;
@@ -50,4 +59,27 @@ input.checkbox1 {
     width: 1rem;
     height: 1rem;
     margin: 0 0.5rem 0 0;
+}
+
+label.basic-label {
+    min-width: 7rem;
+    box-sizing: border-box;
+    text-align: right;
+    margin-right: 0.25rem;
+    user-select: none;
+}
+
+label.basic-label.required::after {
+    content: " *";
+    color: var(--red);
+}
+
+textarea.basic-textarea {
+    display: block;
+    width: 100%;
+}
+
+textarea.basic-textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0.3rem 0rem var(--theme-color);
 }
