@@ -6,17 +6,13 @@
     <meta charset="UTF-8">
     <title>Novel</title>
 
-    <%@ include file="layout/basic_stylesheet.jsp"%>
+    <%@ include file="layout/basic_stylesheet.jsp" %>
     <link rel="stylesheet" href="/css/novel_detail.css">
 </head>
 
 <body style="background-color: var(--silver);">
-<<<<<<< Updated upstream
-<div style="height: 30px;"></div>
-=======
 <jsp:include page="layout/header_main.jsp"></jsp:include>
 <div style="height: 30px"></div>
->>>>>>> Stashed changes
 <div class="container">
     <div class="row">
         <div class="col-12 col-lg-9">
@@ -26,7 +22,7 @@
                         <div class="col-12 col-md-3 d-flex">
                             <div class="series-cover">
                                 <div class="a6-ratio">
-                                    <div class=" img-wrapper img-wrapper--border"
+                                    <div class="img-wrapper border"
                                          style="background-image: url('https://i.etsystatic.com/20023820/r/il/e12dd6/2885404230/il_fullxfull.2885404230_tb41.jpg');">
                                     </div>
                                 </div>
@@ -86,7 +82,7 @@
                     <div class="row">
                         <div class="col-12 col-md-3 d-flex justify-content-center">
                             <div class="a6-ratio volume-cover">
-                                <div class=" img-wrapper img-wrapper--border"
+                                <div class=" img-wrapper border"
                                      style="background-image: url('https://ecdn.game4v.com/g4v-content/uploads/2021/01/Hu-Tao-1-game4v.png');">
                                 </div>
                             </div>

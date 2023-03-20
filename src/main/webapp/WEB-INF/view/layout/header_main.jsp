@@ -5,7 +5,7 @@
     <div class="container">
         <ul class="navbar__list">
             <li class="navbar__list-item">
-                <a href="#" class="navbar__link navbar__brand">
+                <a href="/" class="navbar__link navbar__brand">
                     NOVEL
                 </a>
             </li>

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Landing page ss</title>
-    <%@ include file="layout/basic_stylesheet.jsp"%>
+    <%@ include file="layout/basic_stylesheet.jsp" %>
 </head>
 
 <body>
@@ -24,8 +24,8 @@
                     <div class="col-4 col-xl-3 thumb">
                         <a href="#" class="no-decor">
                             <div class="thumb__wrapper">
-                                <div class="thumb__img-panel img-wrapper--shadow a6-ratio">
-                                    <div class="img-wrapper"
+                                <div class="thumb__img-panel shadow a6-ratio">
+                                    <div class="img-wrapper img-wrapper--shadow"
                                          style="background-image: url('https://images.fpt.shop/unsafe/filters:quality(90)/fptshop.com.vn/uploads/images/tin-tuc/152650/Originals/Hu%20Tao.jpg');">
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@
     </div>
 </main>
 <!-- Bootstrap -->
-<%@ include file="layout/boostrap_js.jsp"%>
+<%@ include file="layout/boostrap_js.jsp" %>
 
 <script>
     const tabs = document.querySelectorAll('.tab');
