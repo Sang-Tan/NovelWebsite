@@ -2,37 +2,47 @@ package database;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
-public class BaseRepository {
+public class MySQLdb {
     private static String URL; // sửa lại tên của csdl
     private static String USER;// mặc định của mysql
     private static String PASS;// do cài đặt khi cài đặt mysql
 
-    public static BaseRepository instance;
+    public static MySQLdb instance;
 
-    public static BaseRepository getInstance() {
+    public static MySQLdb getInstance() {
         if (instance == null) {
-            instance = new BaseRepository();
+            instance = new MySQLdb();
         }
         return instance;
     }
 
-    public BaseRepository() {
+    public MySQLdb() {
         Dotenv dotenv = Dotenv.load();
         URL = dotenv.get("DB_URL");
         USER = dotenv.get("DB_USER");
         PASS = dotenv.get("DB_PASSWORD");
+
     }
 
-    public static Connection getConnectDB() {
+    public Connection getConnectDB() {
         Connection connection = null;
+        // Load the JDBC driver
         try {
+            // Load the JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // Establish a connection to the database
+//            String url = "jdbc:mysql://localhost:3306/novelweb";
+//            String username = "root";
+//            String password = "";
             connection = DriverManager.getConnection(URL, USER, PASS);
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (ClassNotFoundException e) {
+            System.out.println("Could not load JDBC driver");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println("Could not connect to database");
             e.printStackTrace();
         }
         return connection;
