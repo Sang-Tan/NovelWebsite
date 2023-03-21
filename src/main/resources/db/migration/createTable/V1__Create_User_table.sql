@@ -7,7 +7,7 @@ CREATE TABLE users
     is_active    BOOLEAN     NOT NULL DEFAULT TRUE,
     avatar       VARCHAR(200)         DEFAULT NULL,
     role         VARCHAR(20) NOT NULL
-        CHECK (role IN ('admin', 'moderator', 'member'))
+        CHECK (role IN ('admin', 'moderator', 'member')),
     UNIQUE (username)
 
 );
