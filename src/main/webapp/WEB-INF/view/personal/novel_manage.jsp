@@ -22,15 +22,14 @@
                     <h4 class="basic-section__title">Mục lục</h4>
                 </div>
                 <jsp:include page="layout/novel_menu.jsp"/>
-
             </div>
         </div>
         <div class="col">
             <div class="basic-section">
                 <div class="basic-section__header">
-                    <h4 class="basic-section__title">Chỉnh sửa novel</h4>
+                    <h4 class="basic-section__title">Title</h4>
                 </div>
-                <jsp:include page="layout/form_novel.jsp"/>
+                <jsp:include page="layout/form_chapter.jsp"/>
             </div>
         </div>
     </div>
