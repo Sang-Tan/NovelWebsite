@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<form action="" class="pt-3 pb-4 pl-4 pr-4 popup-form center-screen">
+<form action="/register" method="post" class="pt-3 pb-4 pl-4 pr-4 popup-form center-screen">
     <h3 class="text-center w-700">Đăng ký</h3>
     <i class="fas fa-compress-arrows-alt top-right-btn" style="font-size:x-large;"></i>
     <p class="text-center mb-4">Đã có tài khoản? <a href="#">Đăng nhập</a></p>
