@@ -1,6 +1,12 @@
 package model;
 
-public class User {
+import core.DatabaseObject;
+
+public class User implements DatabaseObject {
+    public static final String ROLE_ADMIN = "admin";
+    public static final String ROLE_USER = "user";
+    public static final String DEFAULT_AVATAR = "/images/default-avatar.jfif";
+
     private int id;
     private String password;
     private String username;
@@ -23,7 +29,7 @@ public class User {
         this.role = role;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -78,4 +84,6 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+
+
 }

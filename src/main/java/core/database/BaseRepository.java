@@ -1,39 +1,114 @@
 package core.database;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import core.DatabaseObject;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class BaseRepository {
-    private String URL; // sửa lại tên của csdl
-    private String USER ;// mặc định của mysql
-    private String PASS ;// do cài đặt khi cài đặt mysql
+public abstract class BaseRepository<T extends DatabaseObject> {
+    private final String TABLE_NAME;
 
-    public static BaseRepository instance;
+    private final String[] PRIMARY_KEY;
 
-    public static BaseRepository getInstance() {
-        if (instance == null) {
-            instance = new BaseRepository();
+    protected BaseRepository(String tableName, String[] primaryKey) {
+        this.TABLE_NAME = tableName;
+        this.PRIMARY_KEY = primaryKey;
+    }
+
+    protected String getTableName() {
+        return this.TABLE_NAME;
+    }
+
+    protected String[] getPrimaryKey() {
+        return this.PRIMARY_KEY;
+    }
+
+    /**
+     * Get the primary key string separated by comma, e.g. "id, name"
+     *
+     * @return
+     */
+    protected String getPrimaryKeyString() {
+        return String.join(", ", this.PRIMARY_KEY);
+    }
+
+    /**
+     * Map a row in the result set to a bean
+     *
+     * @param resultSet the result set
+     * @return the bean
+     * @throws SQLException if a database access error occurs
+     */
+    protected abstract T mapRow(ResultSet resultSet) throws SQLException;
+
+    protected abstract SqlRecord mapObject(T object);
+
+    protected List<T> mapRows(ResultSet resultSet) throws SQLException {
+        List<T> list = new ArrayList<>();
+        while (resultSet.next()) {
+            list.add(mapRow(resultSet));
         }
-        return instance;
+        return list;
     }
 
-    public BaseRepository() {
-        Dotenv dotenv = Dotenv.load();
-        URL = dotenv.get("DB_URL");
-        USER = dotenv.get("DB_USER");
-        PASS = dotenv.get("DB_PASSWORD");
+    public List<T> getAll() throws SQLException {
+        String sql = String.format("SELECT * FROM %s", getTableName());
+        ResultSet resultSet = MySQLdb.getInstance().query(sql);
+        return mapRows(resultSet);
     }
-    public Connection getConnectDB() {
-        Connection connection = null;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(URL, USER, PASS);
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+
+    public List<T> getRange(int start, int end) throws SQLException {
+        String sql = String.format("SELECT * FROM %s LIMIT %d, %d", getTableName(), start, end);
+        ResultSet resultSet = MySQLdb.getInstance().query(sql);
+        return mapRows(resultSet);
+    }
+
+    
+    public void insert(T object) throws SQLException {
+        SqlRecord record = mapObject(object);
+        insert(record);
+    }
+
+    /**
+     * Insert a record into the database
+     *
+     * @param record the record to insert
+     * @throws SQLException if a database access error occurs
+     */
+    protected void insert(SqlRecord record) throws SQLException {
+        int size = record.size();
+
+        //example columnsString = "col1, col2, col3,..."
+        String[] columns = new String[size];
+        record.getColumns().toArray(columns);
+        String columnsString = String.join(", ", columns);
+
+        //example valuesString = "?, ?, ?,..."
+        String[] values = new String[size];
+        Arrays.fill(values, "?");
+        String valuesString = String.join(", ", values);
+
+
+        String sql = String.format("INSERT INTO %s (%s) VALUES (%s)", getTableName(), columnsString, valuesString);
+
+        Object[] valuesArray = record.getValues(columns);
+        MySQLdb.getInstance().execute(sql, valuesArray);
+    }
+
+
+    public Integer count() throws SQLException {
+        String sql = String.format("SELECT COUNT(%s) FROM %s", getPrimaryKeyString(), getTableName());
+        ResultSet resultSet = MySQLdb.getInstance().query(sql);
+        if (resultSet.next()) {
+            return resultSet.getInt(1);
         }
-        return connection;
+        return 0;
     }
+
+
 }
