@@ -5,9 +5,15 @@ import io.github.cdimascio.dotenv.Dotenv;
 import java.sql.*;
 
 public class MySQLdb {
+<<<<<<< Updated upstream
     private static String URL; // sửa lại tên của csdl
     private static String USER;// mặc định của mysql
     private static String PASS;// do cài đặt khi cài đặt mysql
+=======
+    private String URL; // sửa lại tên của csdl
+    private String USER;// mặc định của mysql
+    private String PASS;// do cài đặt khi cài đặt mysql
+>>>>>>> Stashed changes
 
     public static MySQLdb instance;
 
