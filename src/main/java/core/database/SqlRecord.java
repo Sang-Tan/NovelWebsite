@@ -22,4 +22,16 @@ public class SqlRecord {
     public Set<String> getColumns() {
         return record.keySet();
     }
+
+    public Object[] getValues(String[] columns) {
+        Object[] values = new Object[columns.length];
+        for (int i = 0; i < columns.length; i++) {
+            values[i] = record.get(columns[i]);
+        }
+        return values;
+    }
+
+    public int size() {
+        return record.size();
+    }
 }
