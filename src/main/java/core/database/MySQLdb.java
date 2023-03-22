@@ -1,4 +1,4 @@
-package database;
+package core.database;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -33,11 +33,11 @@ public class MySQLdb {
             // Load the JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            // Establish a connection to the database
-//            String url = "jdbc:mysql://localhost:3306/novelweb";
-//            String username = "root";
-//            String password = "";
-            connection = DriverManager.getConnection(URL, USER, PASS);
+//             Establish a connection to the database
+            String url = "jdbc:mysql://localhost:3306/novelweb";
+            String username = "root";
+            String password = "";
+            connection = DriverManager.getConnection(url, username, password);
         } catch (ClassNotFoundException e) {
             System.out.println("Could not load JDBC driver");
             e.printStackTrace();

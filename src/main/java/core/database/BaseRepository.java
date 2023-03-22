@@ -1,39 +1,48 @@
 package core.database;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import core.database.SqlRecord;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Set;
 
-public class BaseRepository {
-    private String URL; // sửa lại tên của csdl
-    private String USER ;// mặc định của mysql
-    private String PASS ;// do cài đặt khi cài đặt mysql
+public abstract class BaseRepository {
+    private String TABLE_NAME;
 
-    public static BaseRepository instance;
+    protected abstract void setTableName();
 
-    public static BaseRepository getInstance() {
-        if (instance == null) {
-            instance = new BaseRepository();
-        }
-        return instance;
+    private BaseRepository() {
+        setTableName();
     }
 
-    public BaseRepository() {
-        Dotenv dotenv = Dotenv.load();
-        URL = dotenv.get("DB_URL");
-        USER = dotenv.get("DB_USER");
-        PASS = dotenv.get("DB_PASSWORD");
-    }
-    public Connection getConnectDB() {
-        Connection connection = null;
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(URL, USER, PASS);
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+
+    public void insert(SqlRecord record) throws SQLException {
+        Object[] columns = record.getColumns().toArray();
+        String columnsString = "";
+        String valuesString = "";
+
+        //columnsString col1, col2, col3,...
+        //valuesString ?, ?, ?,...
+        for (int i = 0; i < columns.length; i++) {
+            columnsString += columns[i];
+            valuesString += "?";
+            if (i < columns.length - 1) {
+                columnsString += ", ";
+                valuesString += ", ";
+            }
         }
-        return connection;
+        String sql = String.format("INSERT INTO %s (%s) VALUES (%s)", getTableName(), columnsString, valuesString);
+
+        Connection conn = MySQLdb.getInstance().getConnectDB();
+
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        for (int i = 0; i < columns.length; i++) {
+            preparedStatement.setObject(i + 1, record.getValue(columns[i].toString()));
+        }
+        preparedStatement.executeUpdate();
+
     }
 }

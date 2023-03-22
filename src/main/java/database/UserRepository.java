@@ -1,5 +1,8 @@
 package database;
 
+import core.database.BaseRepository;
+import core.database.MySQLdb;
+import core.database.SqlRecord;
 import model.User;
 
 import java.sql.Connection;
@@ -11,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UserRepository implements IRepository<User> {
+public class UserRepository extends BaseRepository {
     private static final String defaultAvatar = "/images/default-avatar.jfif";
     private static UserRepository instance;
     public static UserRepository getInstance() {
@@ -21,8 +24,7 @@ public class UserRepository implements IRepository<User> {
         return instance;
     }
 
-    @Override
-    public List<User> getByProperties(HashMap<String, Object> userProps) {
+    public static List<User> getByProperties(HashMap<String, Object> userProps) {
         String query = "SELECT * FROM user WHERE ";
         List<User> users = new ArrayList<>();
         List<String> conditions = new ArrayList<>();
@@ -51,8 +53,7 @@ public class UserRepository implements IRepository<User> {
             throw new RuntimeException(e);
         }
     }
-    @Override
-    public List<User> getAll() {
+    public static List<User> getAll() {
         List<User> users = new ArrayList<>();
         String query = "SELECT * FROM user";
         try (Connection conn = (Connection) MySQLdb.getInstance();
@@ -70,26 +71,24 @@ public class UserRepository implements IRepository<User> {
     }
 
 
-    @Override
-    public List<User> getByProperties(Map<String, Object> properties) {
+    public static List<User> getByProperties(Map<String, Object> properties) {
         return null;
     }
 
-    @Override
-    public User getById(Integer ID) {
+    public static User getById(Integer ID) {
         HashMap<String,Object> idMap = new HashMap<>();
         idMap.put("id",ID);
         return (User) getByProperties(idMap);
     }
 
-    public User getByUsername(String username)
+    public static User getByUsername(String username)
     {
         HashMap<String,Object> userMap = new HashMap<>();
         userMap.put("username",username);
         return (User) getByProperties(userMap);
     }
 
-    public void add(HashMap<String, Object> userProps) {
+    public static void add(HashMap<String, Object> userProps) {
         try (Connection conn = (Connection) MySQLdb.getInstance();
              PreparedStatement pstmt = conn.prepareStatement("INSERT INTO user (username, password, displayName, active, avatar, role) VALUES (?, ?, ?, ?, ?, ?)")) {
             pstmt.setString(1, (String) userProps.get("username"));
@@ -103,28 +102,22 @@ public class UserRepository implements IRepository<User> {
             throw new RuntimeException(e);
         }
     }
-    @Override
-    public void add(User user)
+    public static void add(User user) throws SQLException
     {
         if(user.getAvatar().equals(defaultAvatar)) {
             user.setAvatar(null);
         }
         //user.setPassword(SHA256Hashing.computeSHA256Hash(user.getPassword()));
 
-        HashMap<String, Object> userProps = new HashMap<>();
-        userProps.put("username", user.getUsername());
-        userProps.put("password", user.getPassword());
-        userProps.put("displayName", user.getDisplayName());
-        userProps.put("active", user.isActive());
-        userProps.put("avatar", user.getAvatar());
-        userProps.put("role", user.getRole());
-        add(userProps);
+        SqlRecord userRecord = new SqlRecord();
+        userRecord.setValue("username", user.getUsername());
+        userRecord.setValue("password", user.getPassword());
+        userRecord.setValue("displayName", user.getDisplayName());
+        userRecord.setValue("active", user.isActive());
+        userRecord.setValue("avatar", user.getAvatar());
+        userRecord.setValue("role", user.getRole());
+        insert(userRecord);
     }
-
-
-
-
-
 
     private static User mapUser(ResultSet rs) throws SQLException {
         User user = new User();
@@ -142,7 +135,7 @@ public class UserRepository implements IRepository<User> {
         user.setRole(rs.getString("role"));
         return user;
     }
-    public User get(String username, String password)
+    public static User get(String username, String password)
     {
         HashMap<String,Object> userMap = new HashMap<>();
         userMap.put("username",username);
@@ -224,5 +217,10 @@ public class UserRepository implements IRepository<User> {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    protected String getTableName() {
+        return "users";
     }
 }

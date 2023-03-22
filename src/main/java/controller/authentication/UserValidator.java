@@ -10,7 +10,6 @@ public class UserValidator {
     public static boolean isValidUsername(String username) {
         // Check if username is not empty and only contains alphanumeric characters
         return !(username.length() >= 8) && username.isEmpty() && username.matches(usernameRegex);
-
     }
     public static boolean isUsernameExists(String username) {
         // Check if username is already exists in database
