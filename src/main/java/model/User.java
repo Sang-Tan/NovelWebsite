@@ -1,6 +1,12 @@
 package model;
 
-public class User {
+import core.DatabaseObject;
+
+public class User implements DatabaseObject {
+    public static final String ROLE_ADMIN = "admin";
+    public static final String ROLE_USER = "user";
+    public static final String DEFAULT_AVATAR = "/images/default-avatar.jfif";
+
     private int id;
     private String password;
     private String username;
