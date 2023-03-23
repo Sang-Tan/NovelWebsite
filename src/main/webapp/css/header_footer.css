@@ -1,6 +1,6 @@
 /* Navigation panel */
 .navbar {
-    background-color: var(--silver);
+    background-color: var(--dark-silver);
 }
 
 .navbar__brand {

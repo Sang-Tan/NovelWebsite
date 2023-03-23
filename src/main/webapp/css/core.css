@@ -11,12 +11,13 @@
     --golden: #ffd700;
     --orange: #ff851b;
     --red: #ff4136;
-    --maroon: #85144b;
+    --maroon: #800000;
     --fuchsia: #f012be;
     --purple: #b10dc9;
     --black: #111111;
     --gray: #aaaaaa;
     --light-gray: #dddddd;
+    --dark-silver: #ebebeb;
     --silver: #f6f7f8;
     --white: #ffffff;
     --theme-color: var(--purple);
@@ -30,4 +31,8 @@ html {
 label {
     margin: auto;
     font-weight: 600;
+}
+
+button:focus {
+    outline: none;
 }
