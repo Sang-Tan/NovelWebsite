@@ -36,6 +36,11 @@
                    data-target="#login-modal">Đăng
                     nhập</a>
             </li>
+            <li class="navbar__list-item">
+                <a href="#register-modal" class="navbar__link navbar__list-text" data-toggle="modal"
+                   data-target="#register-modal">Đăng
+                    ký</a>
+            </li>
             <!--
             <li class="navbar__list-item dropdown">
                 <a href="#" class="navbar__link navbar__list-text ml-1 d-flex justify-content-center"
@@ -56,9 +61,10 @@
 </nav>
 
 <!--login modal-->
-<div class="modal " tabindex="-1" role="dialog" id="login-modal" aria-labelledby="...">
+<div class="modal" tabindex="-1" role="dialog" id="login-modal" aria-labelledby="...">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <form action="" class="pt-3 pb-4 pl-4 pr-4 modal-content rounded-form">
+        <form action="/login" onsubmit="event.preventDefault(); loginSubmit();"
+              class="pt-3 pb-4 pl-4 pr-4 modal-content rounded-form">
             <h3 class="text-center w-700">Đăng nhập</h3>
             <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
                style="font-size: x-large"></i>
@@ -97,7 +103,8 @@
 <div class="modal" tabindex="-1" role="dialog" id="register-modal" aria-labelledby="...">
     <div class="modal-dialog modal-dialog-centered" role="document">
 
-        <form action="" class="pt-3 pb-4 pl-4 pr-4 modal-content rounded-form">
+        <form action="/register" onsubmit="event.preventDefault(); registerSubmit();"
+              class="pt-3 pb-4 pl-4 pr-4 modal-content rounded-form">
             <h3 class="text-center w-700">Đăng ký</h3>
             <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" style="font-size:x-large;"></i>
             <p class="text-center mb-4">Đã có tài khoản?
@@ -128,3 +135,53 @@
         </form>
     </div>
 </div>
+
+<script>
+    function registerSubmit() {
+        const form = event.target;
+        const request = new XMLHttpRequest();
+        request.open("POST", "/register");
+
+        request.onload = () => {
+            if (request.status === 400) {
+                alert("Đăng ký thất bại");
+                return;
+            }
+
+            const data = JSON.parse(request.responseText);
+            if (data.status === "success") {
+                alert("Đăng ký thành công");
+                window.location.href = "/";
+            } else {
+                alert("Đăng ký thất bại");
+            }
+        }
+
+        const formData = new FormData(form);
+        request.send(formData);
+    }
+
+    function loginSubmit() {
+        const form = event.target;
+        const request = new XMLHttpRequest();
+        request.open("POST", "/login");
+
+        request.onload = () => {
+            if (request.status === 400) {
+                alert("Đăng nhập thất bại");
+                return;
+            }
+
+            const data = JSON.parse(request.responseText);
+            if (data.status === "success") {
+                alert("Đăng nhập thành công");
+                window.location.href = "/";
+            } else {
+                alert("Đăng nhập thất bại");
+            }
+        }
+
+        const formData = new FormData(form);
+        request.send(formData);
+    }
+</script>
