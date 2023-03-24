@@ -83,3 +83,19 @@ textarea.basic-textarea:focus {
     outline: none;
     box-shadow: 0 0 0.3rem 0rem var(--theme-color);
 }
+
+.error-text {
+    color: var(--red);
+    font-size: 0.8rem;
+}
+
+.error-text.hidden {
+    display: none !important;
+}
+
+input[type="text"].error,
+input[type="password"].error,
+input[type="email"].error,
+input[type="number"].error {
+    box-shadow: 0 0 0.3rem 0rem var(--red) !important;
+}

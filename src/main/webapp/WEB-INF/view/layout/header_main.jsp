@@ -5,7 +5,11 @@
     <div class="container">
         <ul class="navbar__list">
             <li class="navbar__list-item">
+<<<<<<< Updated upstream
                 <a href="/" class="navbar__link navbar__brand">
+=======
+                <a href="/home" class="navbar__link navbar__brand">
+>>>>>>> Stashed changes
                     NOVEL
                 </a>
             </li>
@@ -24,7 +28,11 @@
         </ul>
         <ul class="navbar__list">
             <li class="navbar__list-item">
+<<<<<<< Updated upstream
                 <form action="/index.html" class="navbar__search">
+=======
+                <form action="/testui/search_novel" class="navbar__search">
+>>>>>>> Stashed changes
                     <input type="text" placeholder="Tìm truyện" class="navbar__search-textbox">
                     <button class="navbar__search-btn">
                         <i class="fas fa-search"></i>
@@ -41,6 +49,7 @@
                    data-target="#register-modal">Đăng
                     ký</a>
             </li>
+<<<<<<< Updated upstream
             <!--
             <li class="navbar__list-item dropdown">
                 <a href="#" class="navbar__link navbar__list-text ml-1 d-flex justify-content-center"
@@ -56,6 +65,26 @@
                 </div>
             </li>
             -->
+=======
+
+
+            <%-- <li class="navbar__list-item dropdown">--%>
+            <%-- <a href="#" class="navbar__link navbar__list-text ml-1 d-flex justify-content-center" --%>
+            <%-- data-toggle="dropdown">--%>
+            <%-- <img
+                src="https://styles.redditmedia.com/t5_4dg0pd/styles/profileIcon_p8ofrlir7ik71.jpg?width=256&height=256&frame=1&auto=webp&crop=256:256,smart&s=d4d7dfe5bf6e1e9d88412ed2ca61df3270cba1c4"
+                --%>
+            <%-- alt="" class="navbar__avatar">--%>
+            <%-- <p class="d-inline-block ml-2 mt-auto mb-auto">Username</p>--%>
+            <%-- </a>--%>
+            <%-- <div class="dropdown-menu">--%>
+            <%-- <a href="#" class="dropdown-item">Thông tin cá nhân</a>--%>
+            <%-- <a href="#" class="dropdown-item">Đăng xuất</a>--%>
+
+            <%-- </div>--%>
+            <%-- </li>--%>
+
+>>>>>>> Stashed changes
         </ul>
     </div>
 </nav>
@@ -78,6 +107,7 @@
                     <label class="col-12 pl-0 mb-1" for="login-username">Tên đăng nhập</label>
                     <input class="col input-text" type="text" name="username" id="login-username"
                            placeholder="Nhập tên đăng nhập">
+<<<<<<< Updated upstream
                 </div>
                 <div class="row mb-2">
                     <label class="col-12 pl-0 mb-1" for="login-password">Mật khẩu</label>
@@ -88,6 +118,21 @@
                     <input type="checkbox" id="remember" name="remember">
                     <label class="w-500 mb-0 ml-3" for="remember">Ghi nhớ đăng nhập</label>
                 </div>
+=======
+                    <span class="error-text col-12 pl-0 hidden"></span>
+                </div>
+
+                <div class="row mb-2">
+                    <label class="col-12 pl-0 mb-1" for="login-password">Mật khẩu</label>
+                    <input class="col input-text" type="password" name="password" id="login-password"
+                           placeholder="Nhập mật khẩu">
+                    <span class="error-text col-12 pl-0 hidden"></span>
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label class="w-500 mb-0 ml-3" for="remember">Ghi nhớ đăng nhập</label>
+                </div>
+>>>>>>> Stashed changes
             </div>
             <div class="d-flex justify-content-center mb-2">
                 <button type="submit" class="pl-3 pr-3 basic-btn basic-btn--olive">Đăng nhập</button>
@@ -117,16 +162,28 @@
                     <label class="col-12 pl-0 mb-1" for="regis-username">Tên đăng nhập</label>
                     <input class="col input-text" type="text" name="username" id="regis-username"
                            placeholder="Nhập tên đăng nhập">
+<<<<<<< Updated upstream
+=======
+                    <span class="error-text col-12 pl-0 hidden"></span>
+>>>>>>> Stashed changes
                 </div>
                 <div class="row mb-2">
                     <label class="col-12 pl-0 mb-1" for="regis-password">Mật khẩu</label>
                     <input class="col input-text" type="password" name="password" id="regis-password"
                            placeholder="Nhập mật khẩu">
+<<<<<<< Updated upstream
+=======
+                    <span class="error-text col-12 pl-0 hidden"></span>
+>>>>>>> Stashed changes
                 </div>
                 <div class="row mb-2">
                     <label class="col-12 pl-0 mb-1" for="confirm_password">Nhập lại mật khẩu</label>
                     <input class="col input-text" type="password" name="confirm_password" id="confirm_password"
                            placeholder="Nhập lại mật khẩu">
+<<<<<<< Updated upstream
+=======
+                    <span class="error-text col-12 pl-0 hidden"></span>
+>>>>>>> Stashed changes
                 </div>
             </div>
             <div class="d-flex justify-content-center mb-2">
@@ -137,26 +194,61 @@
 </div>
 
 <script>
+<<<<<<< Updated upstream
     function registerSubmit() {
         const form = event.target;
+=======
+    //TODO : remove mock data
+    const mockData = {
+        status: "error",
+        errors: {
+            username: "Ten dang nhap da ton tai",
+            password: "Mat khau khong hop le"
+        }
+    }
+
+
+    function registerSubmit() {
+        const form = event.target;
+
+>>>>>>> Stashed changes
         const request = new XMLHttpRequest();
         request.open("POST", "/register");
 
         request.onload = () => {
+<<<<<<< Updated upstream
             if (request.status === 400) {
+=======
+            // const data = JSON.parse(request.responseText);
+            const data = mockData;
+
+            if (request.status === 404) {
+>>>>>>> Stashed changes
                 alert("Đăng ký thất bại");
                 return;
             }
 
+<<<<<<< Updated upstream
             const data = JSON.parse(request.responseText);
             if (data.status === "success") {
                 alert("Đăng ký thành công");
                 window.location.href = "/";
             } else {
                 alert("Đăng ký thất bại");
+=======
+            if (data.status === "success") {
+                alert("Đăng ký thành công");
+                window.location.reload();
+            } else {
+                showFormError(form, data);
+>>>>>>> Stashed changes
             }
         }
+        const formData = new FormData(form);
+        request.send(formData);
+    }
 
+<<<<<<< Updated upstream
         const formData = new FormData(form);
         request.send(formData);
     }
@@ -168,6 +260,15 @@
 
         request.onload = () => {
             if (request.status === 400) {
+=======
+    function loginSubmit() {
+        const form = event.target;
+        const request = new XMLHttpRequest();
+        request.open("POST", "/login");
+
+        request.onload = () => {
+            if (request.status === 404) {
+>>>>>>> Stashed changes
                 alert("Đăng nhập thất bại");
                 return;
             }
@@ -175,13 +276,60 @@
             const data = JSON.parse(request.responseText);
             if (data.status === "success") {
                 alert("Đăng nhập thành công");
+<<<<<<< Updated upstream
                 window.location.href = "/";
             } else {
                 alert("Đăng nhập thất bại");
+=======
+                window.location.reload();
+            } else {
+                showFormError(form, data);
+>>>>>>> Stashed changes
             }
         }
 
         const formData = new FormData(form);
         request.send(formData);
     }
+<<<<<<< Updated upstream
 </script>
+=======
+
+    function showFormError(form, errorData) {
+
+
+        const errors = errorData.errors;
+        Object.entries(errors).forEach(([key, value]) => {
+            const invalidInput = form.elements[key];
+            const errorText = getErrorTextElement(invalidInput);
+
+            invalidInput.classList.add("error");
+            showErrorText(errorText, value);
+
+            //add event listener to remove error class
+            invalidInput.addEventListener("focus", () => {
+                invalidInput.classList.remove("error");
+                hideErrorText(errorText);
+            });
+        });
+
+    }
+
+    function getErrorTextElement(inputElement) {
+        return inputElement.parentNode.querySelector(".error-text");
+    }
+
+    function showErrorText(errorTextElement, text) {
+        if (errorTextElement) {
+            errorTextElement.classList.remove("hidden");
+            errorTextElement.innerText = text;
+        }
+    }
+
+    function hideErrorText(errorTextElement) {
+        if (errorTextElement) {
+            errorTextElement.classList.add("hidden");
+        }
+    }
+</script>
+>>>>>>> Stashed changes
