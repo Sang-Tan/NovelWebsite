@@ -2,7 +2,7 @@ package controller.authentication;
 
 import core.SHA256Hashing;
 import core.validator.UserValidator;
-import database.UserRepository;
+import repository.UserRepository;
 import model.User;
 import org.json.JSONException;
 import org.json.JSONObject;

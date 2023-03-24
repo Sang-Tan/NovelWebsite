@@ -1,8 +1,7 @@
 package core.validator;
 
-import database.UserRepository;
+import repository.UserRepository;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 
@@ -14,7 +13,6 @@ public class UserValidator {
     private static final int PASS_MIN_LEN = 3;
 
     /**
-     *
      * @param username must conatin only alphabet and number character, upercase is allowed
      * @return
      */
@@ -23,9 +21,10 @@ public class UserValidator {
         // Check if username is not empty and only contains alphanumeric characters
         return username.length() >= USERNAME_MIN_LEN && username.matches(usernameRegex);
     }
+
     public static boolean isUsernameExists(String username) throws SQLException {
         // Check if username is already exists in database
-        if(UserRepository.getInstance().getByUsername(username) == null) {
+        if (UserRepository.getInstance().getByUsername(username) == null) {
             return false;
         }
         return true;
@@ -33,7 +32,6 @@ public class UserValidator {
     }
 
     /**
-     *
      * @param password password must in contain atleast one capital letter, one lowercase letter and one number
      * @return
      */

@@ -1,4 +1,4 @@
-package database;
+package repository;
 
 import core.database.BaseRepository;
 import core.database.MySQLdb;
@@ -105,7 +105,6 @@ public class UserRepository extends BaseRepository<User> {
         }
         return null;
     }
-
 
 
 //    public void add(User) {

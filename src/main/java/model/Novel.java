@@ -1,6 +1,8 @@
 package model;
 
-import database.UserRepository;
+import repository.UserRepository;
+
+import java.sql.SQLException;
 
 public class Novel {
     private Integer id;
@@ -34,7 +36,7 @@ public class Novel {
         this.id = id;
     }
 
-    public User getOwner() {
+    public User getOwner() throws SQLException {
         owner = UserRepository.getInstance().getById(ownerID);
         return owner;
     }
