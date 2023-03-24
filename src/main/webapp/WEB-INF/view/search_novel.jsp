@@ -4,29 +4,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Landing page</title>
-    <!-- normalize css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-          integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-
-    <!-- bootstrap css -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-
-    <!-- Custom StyleSheet -->
-    <link rel="stylesheet" href="/css/core.css">
-    <link rel="stylesheet" href="/css/main.css">
+    <title>Tìm kiếm</title>
+    <%@ include file="layout/basic_stylesheet.jsp" %>
     <link rel="stylesheet" href="/css/search_novel.css">
 
 </head>
@@ -84,17 +63,32 @@
                     <input class="checkbox1" type="checkbox" data-genre="2" id="genre2">
                     <label for="genre2"> Genre2</label>
                 </div>
-                <div class="checkbox-holder">
-                    <input class="checkbox1" type="checkbox" data-genre="" id="genre3">
-                    <label for="genre3"> Genre3</label>
-                </div>
             </div>
         </div>
     </form>
+    <header class="mb-3">
+        <span class="title title--bold title--underline">Kết quả tìm kiếm</span>
+    </header>
+    <div class="row">
+        <div class="col-4 col-md-2 thumb">
+            <a href="#" class="no-decor">
+                <div class="thumb__wrapper">
+                    <div class="thumb__img-panel shadow a6-ratio">
+                        <div class="img-wrapper"
+                             style="background-image: url('https://images.fpt.shop/unsafe/filters:quality(90)/fptshop.com.vn/uploads/images/tin-tuc/152650/Originals/Hu%20Tao.jpg');">
+                        </div>
+                    </div>
+                    <p class="thumb__caption">Hu Tao saves my life</p>
+                </div>
+            </a>
+        </div>
+    </div>
 </div>
 
+<%--Boostrap script--%>
+<%@ include file="layout/boostrap_js.jsp" %>
 
 <script src="/js/search_novel.js"></script>
 </body>
-<%@ include file="layout/boostrap_js.jsp" %>
+
 </html>
