@@ -13,9 +13,15 @@ public class UserValidator {
     private static final int USERNAME_MIN_LEN = 3;
     private static final int PASS_MIN_LEN = 3;
 
+    /**
+     *
+     * @param username must conatin only alphabet and number character, upercase is allowed
+     * @return
+     */
+
     public static boolean isValidUsername(String username) {
         // Check if username is not empty and only contains alphanumeric characters
-        return username.length() >= USERNAME_MIN_LEN && username.length() <=20 && username.matches(usernameRegex);
+        return username.length() >= USERNAME_MIN_LEN && username.matches(usernameRegex);
     }
     public static boolean isUsernameExists(String username) throws SQLException {
         // Check if username is already exists in database
@@ -26,6 +32,11 @@ public class UserValidator {
 
     }
 
+    /**
+     *
+     * @param password password must in contain atleast one capital letter, one lowercase letter and one number
+     * @return
+     */
     public static boolean isValidPassword(String password) {
         // Check if password is at least 8 characters long and contains at least one uppercase letter, one lowercase letter, and one digit
         return password.length() >= PASS_MIN_LEN && password.matches(passwordRegex);

@@ -20,8 +20,7 @@ import java.util.HashMap;
 public class Register extends HttpServlet {
 
 
-    private HashMap<String, String> getInputError(String username, String password, String confirmPassword)
-    {
+    private HashMap<String, String> getInputError(String username, String password, String confirmPassword) {
         try {
             // create a map to store invalid input values and error messages
             HashMap<String, String> errors = new HashMap<>();
@@ -39,21 +38,24 @@ public class Register extends HttpServlet {
             // validate password
             if (password == null || password.isEmpty()) {
                 errors.put("password", "Mật khẩu không được để trống");
-            } else if (!UserValidator.isValidPassword(password)) {
-                errors.put("password", "Mật khẩu không hợp lệ");
-            } else if (!UserValidator.validateConfirmPassword(password, confirmPassword)) {
-                errors.put("confirm_password", "Mật khẩu không khớp");
+            } else {
+                if (!UserValidator.isValidPassword(password)) {
+                    errors.put("password", "Mật khẩu không hợp lệ");
+                }
+                if (!UserValidator.validateConfirmPassword(password, confirmPassword)) {
+                    errors.put("confirm_password", "Mật khẩu không khớp");
+                }
             }
             return errors;
-        }
-        catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new HashMap<String,String>();
+        return new HashMap<String, String>();
     }
 
     /**
      * Get response json
+     *
      * @param status status want to response
      * @param errors errors want to response
      * @return
@@ -65,8 +67,7 @@ public class Register extends HttpServlet {
             responseJson.put("status", status);
             responseJson.put("errors", errors);
             return responseJson;
-        }
-        else {
+        } else {
             responseJson.put("status", status);
             return responseJson;
         }
@@ -74,11 +75,12 @@ public class Register extends HttpServlet {
 
 
     private JSONObject getResponseJson(String status) throws IOException, JSONException {
-            JSONObject responseJson = new JSONObject();
-            responseJson.put("status", status);
-            return responseJson;
+        JSONObject responseJson = new JSONObject();
+        responseJson.put("status", status);
+        return responseJson;
 
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -93,7 +95,7 @@ public class Register extends HttpServlet {
 
             HashMap<String, String> errors = getInputError(username, password, confirmPassword);
             if (!errors.isEmpty()) {
-                response.getWriter().println(getResponseJson("error",errors));
+                response.getWriter().println(getResponseJson("error", errors));
                 return;
             }
 
@@ -117,7 +119,6 @@ public class Register extends HttpServlet {
 
             // set user information in session
             Integer userID = UserRepository.getInstance().getByUsername(username).getId();
-
             session.setAttribute("userID", userID);
             response.getWriter().println(getResponseJson("success"));
         } catch (JSONException | SQLException e) {
