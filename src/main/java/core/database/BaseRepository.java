@@ -69,7 +69,7 @@ public abstract class BaseRepository<T extends DatabaseObject> {
     }
 
     
-    public void insert(T object) throws SQLException {
+    public void  insert(T object) throws SQLException {
         SqlRecord record = mapObject(object);
         insert(record);
     }

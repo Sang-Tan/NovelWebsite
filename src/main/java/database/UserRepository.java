@@ -106,6 +106,8 @@ public class UserRepository extends BaseRepository<User> {
         return null;
     }
 
+
+
 //    public void add(User) {
 //        try (Connection conn = (Connection) MySQLdb.getInstance();
 //             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO user (username, password, displayName, active, avatar, role) VALUES (?, ?, ?, ?, ?, ?)")) {

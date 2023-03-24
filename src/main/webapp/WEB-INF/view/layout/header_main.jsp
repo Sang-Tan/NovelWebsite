@@ -97,7 +97,7 @@
 <div class="modal" tabindex="-1" role="dialog" id="register-modal" aria-labelledby="...">
     <div class="modal-dialog modal-dialog-centered" role="document">
 
-        <form action="" class="pt-3 pb-4 pl-4 pr-4 modal-content rounded-form">
+        <form method="post" action="/register" class="pt-3 pb-4 pl-4 pr-4 modal-content rounded-form">
             <h3 class="text-center w-700">Đăng ký</h3>
             <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" style="font-size:x-large;"></i>
             <p class="text-center mb-4">Đã có tài khoản?

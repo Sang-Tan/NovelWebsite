@@ -1,28 +1,34 @@
-package controller.authentication;
+package core.validator;
 
 import database.UserRepository;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+
 
 public class UserValidator {
+    //username must include
     private static String usernameRegex = "^[a-zA-Z0-9]+$";
     private static String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$";
+    private static final int USERNAME_MIN_LEN = 3;
+    private static final int PASS_MIN_LEN = 3;
+
     public static boolean isValidUsername(String username) {
         // Check if username is not empty and only contains alphanumeric characters
-        return !(username.length() >= 8) && username.isEmpty() && username.matches(usernameRegex);
+        return username.length() >= USERNAME_MIN_LEN && username.length() <=20 && username.matches(usernameRegex);
     }
-    public static boolean isUsernameExists(String username) {
+    public static boolean isUsernameExists(String username) throws SQLException {
         // Check if username is already exists in database
-        if(UserRepository.getInstance().getByUsername(username) != null) {
-            return true;
+        if(UserRepository.getInstance().getByUsername(username) == null) {
+            return false;
         }
-        return false;
+        return true;
 
     }
 
     public static boolean isValidPassword(String password) {
         // Check if password is at least 8 characters long and contains at least one uppercase letter, one lowercase letter, and one digit
-        return password.length() >= 8 && password.matches(passwordRegex);
+        return password.length() >= PASS_MIN_LEN && password.matches(passwordRegex);
     }
 
     public static boolean isValidDisplayName(String displayName) {
