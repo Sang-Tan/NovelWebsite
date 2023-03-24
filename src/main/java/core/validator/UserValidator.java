@@ -9,14 +9,13 @@ public class UserValidator {
     //username must include
     private static String usernameRegex = "^[a-zA-Z0-9]+$";
     private static String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$";
-    private static final int USERNAME_MIN_LEN = 3;
-    private static final int PASS_MIN_LEN = 3;
+    private static final int USERNAME_MIN_LEN = 6;
+    private static final int PASS_MIN_LEN = 6;
 
     /**
      * @param username must conatin only alphabet and number character, upercase is allowed
      * @return
      */
-
     public static boolean isValidUsername(String username) {
         // Check if username is not empty and only contains alphanumeric characters
         return username.length() >= USERNAME_MIN_LEN && username.matches(usernameRegex);
@@ -45,7 +44,7 @@ public class UserValidator {
         return !displayName.isEmpty();
     }
 
-    public static boolean validateConfirmPassword(String password, String confirmPassword) {
+    public static boolean isValidConfirmPassword(String password, String confirmPassword) {
         return !password.isEmpty() && password.equals(confirmPassword);
     }
 }

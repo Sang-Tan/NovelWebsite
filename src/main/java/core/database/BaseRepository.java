@@ -12,7 +12,6 @@ import java.util.List;
 
 public abstract class BaseRepository<T extends DatabaseObject> {
     private final String TABLE_NAME;
-
     private final String[] PRIMARY_KEY;
 
     protected BaseRepository(String tableName, String[] primaryKey) {
@@ -36,6 +35,8 @@ public abstract class BaseRepository<T extends DatabaseObject> {
     protected String getPrimaryKeyString() {
         return String.join(", ", this.PRIMARY_KEY);
     }
+    
+    protected abstract T createDefault();
 
     /**
      * Map a row in the result set to a bean
@@ -68,8 +69,8 @@ public abstract class BaseRepository<T extends DatabaseObject> {
         return mapRows(resultSet);
     }
 
-    
-    public void  insert(T object) throws SQLException {
+
+    public void insert(T object) throws SQLException {
         SqlRecord record = mapObject(object);
         insert(record);
     }
