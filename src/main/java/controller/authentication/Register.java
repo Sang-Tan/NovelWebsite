@@ -1,5 +1,6 @@
 package controller.authentication;
 
+import core.SHA256Hashing;
 import core.validator.UserValidator;
 import database.UserRepository;
 import model.User;
@@ -103,7 +104,7 @@ public class Register extends HttpServlet {
             // create new user with information
             User user = new User();
             user.setUsername(username);
-            user.setPassword(password);
+            user.setPassword(SHA256Hashing.computeHash(password));
             user.setDisplayName(username);
             user.setActive(true);
             user.setRole("member");
