@@ -1,7 +1,7 @@
 CREATE TABLE users
 (
     id           INT PRIMARY KEY AUTO_INCREMENT,
-    password     CHAR(32)    NOT NULL,
+    password     CHAR(64)    NOT NULL,
     username     VARCHAR(50) NOT NULL,
     display_name VARCHAR(50) NOT NULL,
     is_active    BOOLEAN     NOT NULL DEFAULT TRUE,
