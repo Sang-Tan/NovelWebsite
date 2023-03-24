@@ -1,7 +1,10 @@
 package model;
 
+import database.UserRepository;
+
 public class Novel {
-    private int id;
+    private Integer id;
+    private Integer ownerID;
     private User owner;
     private String summary;
     private String name;
@@ -32,10 +35,12 @@ public class Novel {
     }
 
     public User getOwner() {
+        owner = UserRepository.getInstance().getById(ownerID);
         return owner;
     }
 
     public void setOwner(User owner) {
+        this.ownerID = owner.getId();
         this.owner = owner;
     }
 
