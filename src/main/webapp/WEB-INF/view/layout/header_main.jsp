@@ -5,11 +5,7 @@
     <div class="container">
         <ul class="navbar__list">
             <li class="navbar__list-item">
-<<<<<<< Updated upstream
-                <a href="/" class="navbar__link navbar__brand">
-=======
                 <a href="/home" class="navbar__link navbar__brand">
->>>>>>> Stashed changes
                     NOVEL
                 </a>
             </li>
@@ -28,11 +24,8 @@
         </ul>
         <ul class="navbar__list">
             <li class="navbar__list-item">
-<<<<<<< Updated upstream
-                <form action="/index.html" class="navbar__search">
-=======
+
                 <form action="/testui/search_novel" class="navbar__search">
->>>>>>> Stashed changes
                     <input type="text" placeholder="Tìm truyện" class="navbar__search-textbox">
                     <button class="navbar__search-btn">
                         <i class="fas fa-search"></i>
@@ -49,25 +42,6 @@
                    data-target="#register-modal">Đăng
                     ký</a>
             </li>
-<<<<<<< Updated upstream
-            <!--
-            <li class="navbar__list-item dropdown">
-                <a href="#" class="navbar__link navbar__list-text ml-1 d-flex justify-content-center"
-                   data-toggle="dropdown">
-                    <img src="https://styles.redditmedia.com/t5_4dg0pd/styles/profileIcon_p8ofrlir7ik71.jpg?width=256&height=256&frame=1&auto=webp&crop=256:256,smart&s=d4d7dfe5bf6e1e9d88412ed2ca61df3270cba1c4"
-                         alt="" class="navbar__avatar">
-                    <p class="d-inline-block ml-2 mt-auto mb-auto">Username</p>
-                </a>
-                <div class="dropdown-menu">
-                    <a href="#" class="dropdown-item">Thông tin cá nhân</a>
-                    <a href="#" class="dropdown-item">Đăng xuất</a>
-
-                </div>
-            </li>
-            -->
-=======
-
-
             <%-- <li class="navbar__list-item dropdown">--%>
             <%-- <a href="#" class="navbar__link navbar__list-text ml-1 d-flex justify-content-center" --%>
             <%-- data-toggle="dropdown">--%>
@@ -83,8 +57,6 @@
 
             <%-- </div>--%>
             <%-- </li>--%>
-
->>>>>>> Stashed changes
         </ul>
     </div>
 </nav>
@@ -92,8 +64,8 @@
 <!--login modal-->
 <div class="modal" tabindex="-1" role="dialog" id="login-modal" aria-labelledby="...">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <form action="/login" onsubmit="event.preventDefault(); loginSubmit();"
-              class="pt-3 pb-4 pl-4 pr-4 modal-content rounded-form">
+        <form method="post" action="/login" onsubmit="event.preventDefault(); loginSubmit();"
+              enctype="application/x-www-form-urlencoded" class="pt-3 pb-4 pl-4 pr-4 modal-content rounded-form">
             <h3 class="text-center w-700">Đăng nhập</h3>
             <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
                style="font-size: x-large"></i>
@@ -107,18 +79,6 @@
                     <label class="col-12 pl-0 mb-1" for="login-username">Tên đăng nhập</label>
                     <input class="col input-text" type="text" name="username" id="login-username"
                            placeholder="Nhập tên đăng nhập">
-<<<<<<< Updated upstream
-                </div>
-                <div class="row mb-2">
-                    <label class="col-12 pl-0 mb-1" for="login-password">Mật khẩu</label>
-                    <input class="col input-text" type="password" name="password" id="login-password"
-                           placeholder="Nhập mật khẩu">
-                </div>
-                <div class="d-flex justify-content-center align-items-center">
-                    <input type="checkbox" id="remember" name="remember">
-                    <label class="w-500 mb-0 ml-3" for="remember">Ghi nhớ đăng nhập</label>
-                </div>
-=======
                     <span class="error-text col-12 pl-0 hidden"></span>
                 </div>
 
@@ -132,7 +92,6 @@
                     <input type="checkbox" id="remember" name="remember">
                     <label class="w-500 mb-0 ml-3" for="remember">Ghi nhớ đăng nhập</label>
                 </div>
->>>>>>> Stashed changes
             </div>
             <div class="d-flex justify-content-center mb-2">
                 <button type="submit" class="pl-3 pr-3 basic-btn basic-btn--olive">Đăng nhập</button>
@@ -148,8 +107,8 @@
 <div class="modal" tabindex="-1" role="dialog" id="register-modal" aria-labelledby="...">
     <div class="modal-dialog modal-dialog-centered" role="document">
 
-        <form action="/register" onsubmit="event.preventDefault(); registerSubmit();"
-              class="pt-3 pb-4 pl-4 pr-4 modal-content rounded-form">
+        <form action="/register" method="post" onsubmit="event.preventDefault(); registerSubmit();"
+              class="pt-3 pb-4 pl-4 pr-4 modal-content rounded-form" enctype="application/x-www-form-urlencoded">
             <h3 class="text-center w-700">Đăng ký</h3>
             <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" style="font-size:x-large;"></i>
             <p class="text-center mb-4">Đã có tài khoản?
@@ -158,32 +117,25 @@
                 </a>
             </p>
             <div class="container mb-4">
-                <div class="row mb-2">
+                <div class="row mb-2 basic-tooltip">
                     <label class="col-12 pl-0 mb-1" for="regis-username">Tên đăng nhập</label>
                     <input class="col input-text" type="text" name="username" id="regis-username"
                            placeholder="Nhập tên đăng nhập">
-<<<<<<< Updated upstream
-=======
                     <span class="error-text col-12 pl-0 hidden"></span>
->>>>>>> Stashed changes
+                    <span class="tooltip-text">Tên đăng nhập gồm ít nhất nhất 6 kí tự là số, chữ hoa hoặc chữ thường</span>
                 </div>
-                <div class="row mb-2">
+                <div class="row mb-2 basic-tooltip">
                     <label class="col-12 pl-0 mb-1" for="regis-password">Mật khẩu</label>
                     <input class="col input-text" type="password" name="password" id="regis-password"
                            placeholder="Nhập mật khẩu">
-<<<<<<< Updated upstream
-=======
                     <span class="error-text col-12 pl-0 hidden"></span>
->>>>>>> Stashed changes
+                    <span class="tooltip-text">Mật khẩu có ít nhất 6 kí tự bao gồm số, chữ hoa, chữ thường</span>
                 </div>
                 <div class="row mb-2">
                     <label class="col-12 pl-0 mb-1" for="confirm_password">Nhập lại mật khẩu</label>
                     <input class="col input-text" type="password" name="confirm_password" id="confirm_password"
                            placeholder="Nhập lại mật khẩu">
-<<<<<<< Updated upstream
-=======
                     <span class="error-text col-12 pl-0 hidden"></span>
->>>>>>> Stashed changes
                 </div>
             </div>
             <div class="d-flex justify-content-center mb-2">
@@ -194,73 +146,30 @@
 </div>
 
 <script>
-<<<<<<< Updated upstream
     function registerSubmit() {
         const form = event.target;
-=======
-    //TODO : remove mock data
-    const mockData = {
-        status: "error",
-        errors: {
-            username: "Ten dang nhap da ton tai",
-            password: "Mat khau khong hop le"
-        }
-    }
-
-
-    function registerSubmit() {
-        const form = event.target;
-
->>>>>>> Stashed changes
         const request = new XMLHttpRequest();
         request.open("POST", "/register");
 
         request.onload = () => {
-<<<<<<< Updated upstream
-            if (request.status === 400) {
-=======
-            // const data = JSON.parse(request.responseText);
-            const data = mockData;
-
             if (request.status === 404) {
->>>>>>> Stashed changes
                 alert("Đăng ký thất bại");
                 return;
             }
 
-<<<<<<< Updated upstream
             const data = JSON.parse(request.responseText);
-            if (data.status === "success") {
-                alert("Đăng ký thành công");
-                window.location.href = "/";
-            } else {
-                alert("Đăng ký thất bại");
-=======
+
             if (data.status === "success") {
                 alert("Đăng ký thành công");
                 window.location.reload();
             } else {
                 showFormError(form, data);
->>>>>>> Stashed changes
             }
         }
         const formData = new FormData(form);
         request.send(formData);
     }
 
-<<<<<<< Updated upstream
-        const formData = new FormData(form);
-        request.send(formData);
-    }
-
-    function loginSubmit() {
-        const form = event.target;
-        const request = new XMLHttpRequest();
-        request.open("POST", "/login");
-
-        request.onload = () => {
-            if (request.status === 400) {
-=======
     function loginSubmit() {
         const form = event.target;
         const request = new XMLHttpRequest();
@@ -268,7 +177,6 @@
 
         request.onload = () => {
             if (request.status === 404) {
->>>>>>> Stashed changes
                 alert("Đăng nhập thất bại");
                 return;
             }
@@ -276,28 +184,16 @@
             const data = JSON.parse(request.responseText);
             if (data.status === "success") {
                 alert("Đăng nhập thành công");
-<<<<<<< Updated upstream
-                window.location.href = "/";
-            } else {
-                alert("Đăng nhập thất bại");
-=======
                 window.location.reload();
             } else {
                 showFormError(form, data);
->>>>>>> Stashed changes
             }
         }
-
         const formData = new FormData(form);
         request.send(formData);
     }
-<<<<<<< Updated upstream
-</script>
-=======
 
     function showFormError(form, errorData) {
-
-
         const errors = errorData.errors;
         Object.entries(errors).forEach(([key, value]) => {
             const invalidInput = form.elements[key];
@@ -312,7 +208,6 @@
                 hideErrorText(errorText);
             });
         });
-
     }
 
     function getErrorTextElement(inputElement) {
@@ -332,4 +227,3 @@
         }
     }
 </script>
->>>>>>> Stashed changes

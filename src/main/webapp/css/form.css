@@ -99,3 +99,28 @@ input[type="email"].error,
 input[type="number"].error {
     box-shadow: 0 0 0.3rem 0rem var(--red) !important;
 }
+
+.basic-tooltip {
+    position: relative;
+}
+
+.basic-tooltip .tooltip-text {
+    visibility: hidden;
+    min-width: 100px;
+    background-color: var(--black);
+    color: var(--white);
+    text-align: center;
+    border-radius: 0.2rem;
+    padding: 0.25rem 0.5rem;
+    position: absolute;
+    z-index: 1;
+    bottom: 50%;
+    right: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.basic-tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 0.5;
+}
