@@ -7,6 +7,7 @@ import core.SHA256Hashing;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
 import model.User;
+import service.validator.TokenService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,7 @@ public class TokenRepository extends BaseRepository<Token> {
     @Override
     protected Token createDefault() {
         Token token = new Token();
+        token.setExpiredTime(TokenService.getExpiredTime());
         return token;
     }
 
@@ -42,6 +44,7 @@ public class TokenRepository extends BaseRepository<Token> {
         token.setId(resultSet.getInt("id"));
         token.setUserId(resultSet.getInt("user_id"));
         token.setHashToken(resultSet.getString("token_hash"));
+        token.setExpiredTime(resultSet.getTimestamp("expired_time"));
         return token;
     }
 
@@ -51,6 +54,7 @@ public class TokenRepository extends BaseRepository<Token> {
         record.setValue("id", token.getId());
         record.setValue("user_id", token.getUserId());
         record.setValue("token_hash", token.getTokenHash());
+        record.setValue("expired_time", token.getExpiredTime());
         return record;
     }
 
@@ -62,7 +66,7 @@ public class TokenRepository extends BaseRepository<Token> {
     }
 
     public Token getByHashedToken(String hashedToken) throws SQLException {
-        String sql = String.format("SELECT * FROM %s WHERE username = ?", getTableName());
+        String sql = String.format("SELECT * FROM %s WHERE token_hash = ?", getTableName());
         ResultSet result = MySQLdb.getInstance().query(sql, new Object[]{hashedToken});
         if (result.next()) {
             return mapRow(result);

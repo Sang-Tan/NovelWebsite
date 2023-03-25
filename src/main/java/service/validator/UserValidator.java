@@ -1,9 +1,13 @@
 package service.validator;
 
 import core.SHA256Hashing;
+import model.Token;
 import model.User;
+import repository.TokenRepository;
 import repository.UserRepository;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 
@@ -69,13 +73,28 @@ public class UserValidator {
         return SHA256Hashing.computeHash(plainTextPassword);
     }
 
-    public static User getUserInSession(HttpSession session) {
+    public static User getUserInRequest(HttpServletRequest request) throws SQLException {
+        //Get by token cookie
+        Cookie cookie = TokenService.getTokenCookie(request.getCookies());
+        if (cookie != null) {
+            String hashedToken = TokenService.hashToken(cookie.getValue());
+            Token token = TokenRepository.getInstance().getByHashedToken(hashedToken);
+            if (token != null) {
+                return UserRepository.getInstance().getById(token.getUserId());
+            }
+        }
+
+        //Get by session
+        HttpSession session = request.getSession();
+        return getUserInSession(session);
+    }
+
+    private static User getUserInSession(HttpSession session) {
         String username = (String) session.getAttribute("username");
         String password = (String) session.getAttribute("password");
         if (username == null || password == null) {
             return null;
         }
-
         try {
             if (UserValidator.credentialVerify(username, password)) {
                 return UserRepository.getInstance().getByUsername(username);
@@ -85,6 +104,5 @@ public class UserValidator {
         }
         return null;
     }
-
 
 }

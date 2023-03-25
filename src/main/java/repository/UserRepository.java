@@ -33,6 +33,7 @@ public class UserRepository extends BaseRepository<User> {
         user.setDisplayName("Anonymous");
         user.setAvatar(User.DEFAULT_AVATAR);
         user.setRole(User.ROLE_MEMBER);
+        user.setActive(true);
         return user;
     }
 
@@ -72,7 +73,7 @@ public class UserRepository extends BaseRepository<User> {
     public User createNewUser(String username, String hashedPassword) {
         User user = createDefault();
         user.setUsername(username);
-        user.setPassword(SHA256Hashing.computeHash(hashedPassword));
+        user.setPassword(hashedPassword);
         return user;
     }
 

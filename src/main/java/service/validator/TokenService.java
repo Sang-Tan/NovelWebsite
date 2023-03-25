@@ -6,6 +6,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.security.SecureRandom;
+import java.sql.Timestamp;
 import java.util.Base64;
 
 public class TokenService {
@@ -24,6 +25,7 @@ public class TokenService {
     }
 
     public static Cookie getTokenCookie(Cookie[] cookies) {
+        if (cookies == null) return null;
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("token")) {
                 return cookie;
@@ -40,6 +42,10 @@ public class TokenService {
         String token = Base64.getEncoder().encodeToString(bytes);
 
         return token;
+    }
+
+    public static Timestamp getExpiredTime() {
+        return new Timestamp(System.currentTimeMillis() + TOKEN_EXPIRE_TIME * 1000L);
     }
 
 }
