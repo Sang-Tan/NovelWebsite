@@ -4,8 +4,9 @@ import core.DatabaseObject;
 
 public class User implements DatabaseObject {
     public static final String ROLE_ADMIN = "admin";
-    public static final String ROLE_USER = "user";
-    public static final String DEFAULT_AVATAR = "/images/default-avatar.jfif";
+    public static final String ROLE_MODERATOR = "moderator";
+    public static final String ROLE_MEMBER = "member";
+    public static final String DEFAULT_AVATAR = "/images/default-avatar.jpg";
 
     private int id;
     private String password;

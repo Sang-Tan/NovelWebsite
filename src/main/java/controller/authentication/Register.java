@@ -1,90 +1,40 @@
 package controller.authentication;
 
-import core.SHA256Hashing;
-import core.validator.UserValidator;
+import core.JSON;
+import service.validator.UserValidator;
 import repository.UserRepository;
 import model.User;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+@MultipartConfig
 @WebServlet(name = "RegisterServlet", value = "/register")
 public class Register extends HttpServlet {
+    private static final Logger LOGGER = Logger.getLogger(Register.class.getName());
 
-
-    private HashMap<String, String> getInputError(String username, String password, String confirmPassword) {
-        try {
-            // create a map to store invalid input values and error messages
-            HashMap<String, String> errors = new HashMap<>();
-
-            // add invalid input values and error messages to the map
-            // validate username
-            if (username == null || username.isEmpty()) {
-                errors.put("username", "Username không được để trống");
-            } else if (!UserValidator.isValidUsername(username)) {
-                errors.put("username", "Username không hợp lệ");
-            } else if (UserValidator.isUsernameExists(username)) {
-                errors.put("username", "Username đã tồn tại");
-            }
-
-            // validate password
-            if (password == null || password.isEmpty()) {
-                errors.put("password", "Mật khẩu không được để trống");
-            } else {
-                if (!UserValidator.isValidPassword(password)) {
-                    errors.put("password", "Mật khẩu không hợp lệ");
-                }
-                if (!UserValidator.validateConfirmPassword(password, confirmPassword)) {
-                    errors.put("confirm_password", "Mật khẩu không khớp");
-                }
-            }
-            return errors;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return new HashMap<String, String>();
-    }
-
-    /**
-     * Get response json
-     *
-     * @param status status want to response
-     * @param errors errors want to response
-     * @return
-     * @throws JSONException if the value cannot be converted to JSON
-     */
-    private JSONObject getResponseJson(String status, HashMap<String, String> errors) throws JSONException {
-        JSONObject responseJson = new JSONObject();
-        if (!errors.isEmpty()) {
-            responseJson.put("status", status);
-            responseJson.put("errors", errors);
-            return responseJson;
-        } else {
-            responseJson.put("status", status);
-            return responseJson;
-        }
-    }
-
-
-    private JSONObject getResponseJson(String status) throws IOException, JSONException {
-        JSONObject responseJson = new JSONObject();
-        responseJson.put("status", status);
-        return responseJson;
-
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        LOGGER.setLevel(Level.ALL);
+        Handler handler = new ConsoleHandler();
+        handler.setLevel(Level.ALL);
+        LOGGER.addHandler(handler);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         try {
             response.setContentType("application/json");
             HttpSession session = request.getSession();
@@ -96,18 +46,13 @@ public class Register extends HttpServlet {
 
             HashMap<String, String> errors = getInputError(username, password, confirmPassword);
             if (!errors.isEmpty()) {
-                response.getWriter().println(getResponseJson("error", errors));
+                response.getWriter().println(JSON.getResponseJson("error", errors));
                 return;
             }
 
-
             // create new user with information
-            User user = new User();
-            user.setUsername(username);
-            user.setPassword(SHA256Hashing.computeHash(password));
-            user.setDisplayName(username);
-            user.setActive(true);
-            user.setRole("member");
+            String hashedPassword = UserValidator.hashPassword(password);
+            User user = UserRepository.getInstance().createNewUser(username, hashedPassword);
 
             // add user to database
             try {
@@ -117,15 +62,55 @@ public class Register extends HttpServlet {
                 return;
             }
 
-
             // set user information in session
-            Integer userID = UserRepository.getInstance().getByUsername(username).getId();
+            User createdUser = UserRepository.getInstance().getByUsername(username);
+            if (createdUser == null) {
+                response.setStatus(500);
+                Register.LOGGER.warning(String.format("User %s not found", username));
+            }
+            int userID = createdUser.getId();
             session.setAttribute("userID", userID);
-            response.getWriter().println(getResponseJson("success"));
+            response.getWriter().println(JSON.getResponseJson("success"));
         } catch (JSONException | SQLException e) {
             response.setStatus(500);
+            Register.LOGGER.warning(e.getMessage());
         }
     }
+
+    private HashMap<String, String> getInputError(String username, String password, String confirmPassword) throws SQLException {
+
+        // create a map to store invalid input values and error messages
+        HashMap<String, String> errors = new HashMap<>();
+
+        // add invalid input values and error messages to the map
+        // validate username
+        if (username == null || username.isEmpty()) {
+            errors.put("username", "Username không được để trống");
+        } else if (!UserValidator.isValidUsername(username)) {
+            errors.put("username", "Username không hợp lệ");
+        } else if (UserValidator.isUsernameExists(username)) {
+            errors.put("username", "Username đã tồn tại");
+        }
+
+        // validate password
+        if (password == null || password.isEmpty()) {
+            errors.put("password", "Mật khẩu không được để trống");
+        } else if (!UserValidator.isValidConfirmPassword(password, confirmPassword)) {
+            errors.put("confirm_password", "Mật khẩu không khớp");
+        } else if (!UserValidator.isValidPassword(password)) {
+            errors.put("password", "Mật khẩu không hợp lệ");
+        }
+        return errors;
+    }
+
+    /**
+     * Get response json
+     *
+     * @param status status want to response
+     * @param errors errors want to response
+     * @return
+     * @throws JSONException if the value cannot be converted to JSON
+     */
 }
 /*
 {
