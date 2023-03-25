@@ -1,5 +1,6 @@
-package core.validator;
+package service.validator;
 
+import core.SHA256Hashing;
 import repository.UserRepository;
 
 import java.sql.SQLException;
@@ -7,14 +8,14 @@ import java.sql.SQLException;
 
 public class UserValidator {
     //username must include
-    private static String usernameRegex = "^[a-zA-Z0-9]+$";
-    private static String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$";
+    private static final String usernameRegex = "^[a-zA-Z0-9]+$";
+    private static final String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$";
     private static final int USERNAME_MIN_LEN = 6;
     private static final int PASS_MIN_LEN = 6;
 
     /**
      * @param username must conatin only alphabet and number character, upercase is allowed
-     * @return
+     * @return return true if username valid
      */
     public static boolean isValidUsername(String username) {
         // Check if username is not empty and only contains alphanumeric characters
@@ -46,5 +47,17 @@ public class UserValidator {
 
     public static boolean isValidConfirmPassword(String password, String confirmPassword) {
         return !password.isEmpty() && password.equals(confirmPassword);
+    }
+
+    /**
+     * Verify user credential return true if credential is correct
+     *
+     * @param userName
+     * @param password original password (not hashed)
+     * @return
+     * @throws SQLException
+     */
+    public static boolean credentialVerify(String userName, String password) throws SQLException {
+        return SHA256Hashing.computeHash(password).equals(UserRepository.getInstance().getByUsername(userName).getPassword());
     }
 }
