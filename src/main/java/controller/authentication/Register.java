@@ -1,12 +1,10 @@
 package controller.authentication;
 
-import com.mysql.cj.log.Log;
-import core.SHA256Hashing;
-import core.validator.UserValidator;
+import core.JSON;
+import service.validator.UserValidator;
 import repository.UserRepository;
 import model.User;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -51,7 +49,7 @@ public class Register extends HttpServlet {
 
             HashMap<String, String> errors = getInputError(username, password, confirmPassword);
             if (!errors.isEmpty()) {
-                response.getWriter().println(getResponseJson("error", errors));
+                response.getWriter().println(JSON.getResponseJson("error", errors));
                 return;
             }
 
@@ -74,7 +72,7 @@ public class Register extends HttpServlet {
             }
             int userID = createdUser.getId();
             session.setAttribute("userID", userID);
-            response.getWriter().println(getResponseJson("success"));
+            response.getWriter().println(JSON.getResponseJson("success"));
         } catch (JSONException | SQLException e) {
             response.setStatus(500);
             Register.LOGGER.warning(e.getMessage());
@@ -121,25 +119,6 @@ public class Register extends HttpServlet {
      * @return
      * @throws JSONException if the value cannot be converted to JSON
      */
-    private JSONObject getResponseJson(String status, HashMap<String, String> errors) throws JSONException {
-        JSONObject responseJson = new JSONObject();
-        if (!errors.isEmpty()) {
-            responseJson.put("status", status);
-            responseJson.put("errors", errors);
-            return responseJson;
-        } else {
-            responseJson.put("status", status);
-            return responseJson;
-        }
-    }
-
-
-    private JSONObject getResponseJson(String status) throws IOException, JSONException {
-        JSONObject responseJson = new JSONObject();
-        responseJson.put("status", status);
-        return responseJson;
-
-    }
 
 
 }
