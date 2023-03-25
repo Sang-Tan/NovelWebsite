@@ -1,7 +1,11 @@
 package controller.authentication;
 
+<<<<<<< Updated upstream
 import core.JSON;
 import service.validator.UserValidator;
+=======
+import core.validator.UserValidator;
+>>>>>>> Stashed changes
 import repository.UserRepository;
 import model.User;
 import org.json.JSONException;
@@ -9,10 +13,7 @@ import org.json.JSONException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -79,36 +80,30 @@ public class Register extends HttpServlet {
         }
     }
 
-    private HashMap<String, String> getInputError(String username, String password, String confirmPassword) {
-        try {
-            // create a map to store invalid input values and error messages
-            HashMap<String, String> errors = new HashMap<>();
+    private HashMap<String, String> getInputError(String username, String password, String confirmPassword) throws SQLException {
 
-            // add invalid input values and error messages to the map
-            // validate username
-            if (username == null || username.isEmpty()) {
-                errors.put("username", "Username không được để trống");
-            } else if (!UserValidator.isValidUsername(username)) {
-                errors.put("username", "Username không hợp lệ");
-            } else if (UserValidator.isUsernameExists(username)) {
-                errors.put("username", "Username đã tồn tại");
-            }
+        // create a map to store invalid input values and error messages
+        HashMap<String, String> errors = new HashMap<>();
 
-            // validate password
-            if (password == null || password.isEmpty()) {
-                errors.put("password", "Mật khẩu không được để trống");
-            } else if (!UserValidator.isValidConfirmPassword(password, confirmPassword)) {
-                errors.put("confirm_password", "Mật khẩu không khớp");
-            } else if (!UserValidator.isValidPassword(password)) {
-                errors.put("password", "Mật khẩu không hợp lệ");
-            }
-            
-
-            return errors;
-        } catch (SQLException e) {
-            e.printStackTrace();
+        // add invalid input values and error messages to the map
+        // validate username
+        if (username == null || username.isEmpty()) {
+            errors.put("username", "Username không được để trống");
+        } else if (!UserValidator.isValidUsername(username)) {
+            errors.put("username", "Username không hợp lệ");
+        } else if (UserValidator.isUsernameExists(username)) {
+            errors.put("username", "Username đã tồn tại");
         }
-        return new HashMap<String, String>();
+
+        // validate password
+        if (password == null || password.isEmpty()) {
+            errors.put("password", "Mật khẩu không được để trống");
+        } else if (!UserValidator.isValidConfirmPassword(password, confirmPassword)) {
+            errors.put("confirm_password", "Mật khẩu không khớp");
+        } else if (!UserValidator.isValidPassword(password)) {
+            errors.put("password", "Mật khẩu không hợp lệ");
+        }
+        return errors;
     }
 
     /**
