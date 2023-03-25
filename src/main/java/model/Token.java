@@ -1,17 +1,19 @@
 package model;
 
-public class Token {
+import core.DatabaseObject;
+
+public class Token implements DatabaseObject {
     private int id;
-    private User userId;
-    private String validatorHash;
+    private int userId;
+    private String tokenHash;
 
     public Token() {
     }
 
-    public Token(int id, User userId, String validatorHash) {
+    public Token(int id, int userId, String tokenHash) {
         this.id = id;
         this.userId = userId;
-        this.validatorHash = validatorHash;
+        this.tokenHash = tokenHash;
     }
 
     public int getId() {
@@ -22,19 +24,19 @@ public class Token {
         this.id = id;
     }
 
-    public User getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(User userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    public String getValidatorHash() {
-        return validatorHash;
+    public String getTokenHash() {
+        return tokenHash;
     }
 
-    public void setValidatorHash(String validatorHash) {
-        this.validatorHash = validatorHash;
+    public void setHashToken(String tokenHash) {
+        this.tokenHash = tokenHash;
     }
 }
