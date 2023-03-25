@@ -69,10 +69,10 @@ public class UserRepository extends BaseRepository<User> {
         return record;
     }
 
-    public User createNewUser(String username, String plainPassword) {
+    public User createNewUser(String username, String hashedPassword) {
         User user = createDefault();
         user.setUsername(username);
-        user.setPassword(SHA256Hashing.computeHash(plainPassword));
+        user.setPassword(SHA256Hashing.computeHash(hashedPassword));
         return user;
     }
 
@@ -94,20 +94,14 @@ public class UserRepository extends BaseRepository<User> {
         return null;
     }
 
-    public User getBySession(HttpSession session)  {
-        String username = (String) session.getAttribute("username");
-        String password = (String) session.getAttribute("password");
-        if (username == null || password == null) {
-            return null;
-        }
-
-        try {
-            if(UserValidator.credentialVerify(username, password)) {
-                return getByUsername(username);
-            }
-        } catch (SQLException e) {
-            return null;
+    public User getByToken(String hashedToken) throws SQLException {
+        String query = String.format("SELECT user_id FROM %s WHERE token = ?", getTableName());
+        ResultSet result = MySQLdb.getInstance().query(query, new Object[]{hashedToken});
+        if (result.next()) {
+            return getById(result.getInt("user_id"));
         }
         return null;
     }
+
+
 }

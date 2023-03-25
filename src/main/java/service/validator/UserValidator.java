@@ -1,8 +1,10 @@
 package service.validator;
 
 import core.SHA256Hashing;
+import model.User;
 import repository.UserRepository;
 
+import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
 
 
@@ -50,14 +52,39 @@ public class UserValidator {
     }
 
     /**
-     * Verify user credential return true if credential is correct
+     * Verify user credential return true if password is correct
      *
      * @param userName
-     * @param password original password (not hashed)
-     * @return
+     * @param plainTextPassword plain text password
+     * @return true if password is correct
      * @throws SQLException
      */
-    public static boolean credentialVerify(String userName, String password) throws SQLException {
-        return SHA256Hashing.computeHash(password).equals(UserRepository.getInstance().getByUsername(userName).getPassword());
+    public static boolean credentialVerify(String userName, String plainTextPassword) throws SQLException {
+        String storedHashPass = UserRepository.getInstance().getByUsername(userName).getPassword();
+        String hashPass = hashPassword(plainTextPassword);
+        return hashPass.equals(storedHashPass);
     }
+
+    public static String hashPassword(String plainTextPassword) {
+        return SHA256Hashing.computeHash(plainTextPassword);
+    }
+
+    public static User getUserInSession(HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        String password = (String) session.getAttribute("password");
+        if (username == null || password == null) {
+            return null;
+        }
+
+        try {
+            if (UserValidator.credentialVerify(username, password)) {
+                return UserRepository.getInstance().getByUsername(username);
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+        return null;
+    }
+
+
 }

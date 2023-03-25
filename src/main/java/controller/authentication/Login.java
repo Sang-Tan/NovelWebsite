@@ -1,7 +1,10 @@
 package controller.authentication;
 
 import core.JSON;
+import model.Token;
+import model.User;
 import repository.TokenRepository;
+import service.validator.TokenService;
 import service.validator.UserValidator;
 import org.json.JSONException;
 import repository.UserRepository;
@@ -31,6 +34,7 @@ public class Login extends HttpServlet {
         handler.setLevel(Level.ALL);
         LOGGER.addHandler(handler);
     }
+
     private HashMap<String, String> getInputError(String username, String password) {
         try {
             // create a map to store invalid input values and error messages
@@ -64,33 +68,35 @@ public class Login extends HttpServlet {
 
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            Boolean remember = request.getParameter("remember") == null ? false : true;
+            Boolean remember = request.getParameter("remember") != null;
 
             // create a map to store invalid input values and error messages
-            HashMap<String, String> errors = new HashMap<>();
+            HashMap<String, String> errors;
             errors = getInputError(username, password);
             if (!errors.isEmpty()) {
                 response.getWriter().println(JSON.getResponseJson("error", errors));
                 return;
             }
-
             try {
-
                 if (remember) {
                     TokenRepository tokenRepository = TokenRepository.getInstance();
 
                     // generate random secure token
-                    String plainToken  = tokenRepository.generateTokenString();
+                    String plainToken = TokenService.generateTokenString();
 
                     //set token cookie
-                    tokenRepository.setTokenCookie(response, plainToken);
+                    TokenService.setTokenCookie(response, plainToken);
+
 
                     // insert token to database
-                    tokenRepository.insert(tokenRepository.createNewToken(UserRepository.getInstance().getByUsername(username).getId(),plainToken ));
+                    String hashedToken = TokenService.hashToken(plainToken);
+                    User user = UserRepository.getInstance().getByUsername(username);
+                    Token token = tokenRepository.createNewToken(user.getId(), hashedToken);
+                    tokenRepository.insert(token);
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 response.setStatus(500);
+                Login.LOGGER.warning(e.getMessage());
                 return;
             }
 

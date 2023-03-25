@@ -1,11 +1,7 @@
 package controller.authentication;
 
-<<<<<<< Updated upstream
 import core.JSON;
 import service.validator.UserValidator;
-=======
-import core.validator.UserValidator;
->>>>>>> Stashed changes
 import repository.UserRepository;
 import model.User;
 import org.json.JSONException;
@@ -55,7 +51,8 @@ public class Register extends HttpServlet {
             }
 
             // create new user with information
-            User user = UserRepository.getInstance().createNewUser(username, password);
+            String hashedPassword = UserValidator.hashPassword(password);
+            User user = UserRepository.getInstance().createNewUser(username, hashedPassword);
 
             // add user to database
             try {
@@ -114,8 +111,6 @@ public class Register extends HttpServlet {
      * @return
      * @throws JSONException if the value cannot be converted to JSON
      */
-
-
 }
 /*
 {

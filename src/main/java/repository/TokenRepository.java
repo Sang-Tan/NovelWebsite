@@ -1,6 +1,7 @@
 package repository;
 
 import core.database.BaseRepository;
+import io.github.cdimascio.dotenv.Dotenv;
 import model.Token;
 import core.SHA256Hashing;
 import core.database.MySQLdb;
@@ -15,12 +16,11 @@ import java.sql.SQLException;
 import java.util.Base64;
 
 public class TokenRepository extends BaseRepository<Token> {
-    private int DEFAULT_TOKEN_EXPIRE_TIME = 60 * 60 * 24 * 7; // 7 days
-    private int TOKEN_LENGTH = 64;
     private static TokenRepository instance;
 
     protected TokenRepository() {
         super("tokens", new String[]{"id"});
+        Dotenv dotenv = Dotenv.load();
     }
 
     public static TokenRepository getInstance() {
@@ -54,42 +54,26 @@ public class TokenRepository extends BaseRepository<Token> {
         return record;
     }
 
-    public Token createNewToken(int userID, String plainToken) {
+    public Token createNewToken(int userID, String hashedToken) {
         Token token = createDefault();
         token.setUserId(userID);
-        token.setHashToken(SHA256Hashing.computeHash(plainToken));
+        token.setHashToken(hashedToken);
         return token;
     }
 
-    public Token getByPlainToken(String plainToken) throws SQLException {
+    public Token getByHashedToken(String hashedToken) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE username = ?", getTableName());
-        ResultSet result = MySQLdb.getInstance().query(sql, new Object[]{SHA256Hashing.computeHash(plainToken)});
+        ResultSet result = MySQLdb.getInstance().query(sql, new Object[]{hashedToken});
         if (result.next()) {
             return mapRow(result);
         }
         return null;
     }
 
-    public void setTokenCookie(HttpServletResponse response, String plainToken) {
 
-        Cookie cookie = new Cookie("token",plainToken);
-        cookie.setMaxAge(DEFAULT_TOKEN_EXPIRE_TIME);
-        response.addCookie(cookie);
-    }
-
-    public String generateTokenString() {
-        // Generate secure random access token
-        SecureRandom random = new SecureRandom();
-        byte[] bytes = new byte[TOKEN_LENGTH*3/4];
-        random.nextBytes(bytes);
-        String token = Base64.getEncoder().encodeToString(bytes);
-
-        return token;
-    }
-
-    public void deleteToken(String plainToken) throws SQLException {
+    public void deleteToken(String hashedToken) throws SQLException {
         String sql = String.format("DELETE FROM %s WHERE token_hash = ?", getTableName());
-        MySQLdb.getInstance().execute(sql, new Object[]{SHA256Hashing.computeHash(plainToken)});
+        MySQLdb.getInstance().execute(sql, new Object[]{hashedToken});
     }
 
 }
