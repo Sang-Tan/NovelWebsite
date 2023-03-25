@@ -5,8 +5,10 @@ import core.database.BaseRepository;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
 import model.User;
+import service.validator.UserValidator;
 
 
+import javax.servlet.http.HttpSession;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -88,6 +90,23 @@ public class UserRepository extends BaseRepository<User> {
         ResultSet result = MySQLdb.getInstance().query(sql, new Object[]{username});
         if (result.next()) {
             return mapRow(result);
+        }
+        return null;
+    }
+
+    public User getBySession(HttpSession session)  {
+        String username = (String) session.getAttribute("username");
+        String password = (String) session.getAttribute("password");
+        if (username == null || password == null) {
+            return null;
+        }
+
+        try {
+            if(UserValidator.credentialVerify(username, password)) {
+                return getByUsername(username);
+            }
+        } catch (SQLException e) {
+            return null;
         }
         return null;
     }
