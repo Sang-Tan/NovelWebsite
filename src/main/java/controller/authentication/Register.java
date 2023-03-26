@@ -69,7 +69,8 @@ public class Register extends HttpServlet {
                 Register.LOGGER.warning(String.format("User %s not found", username));
             }
             int userID = createdUser.getId();
-            session.setAttribute("userID", userID);
+            session.setAttribute("username", username);
+            session.setAttribute("password", hashedPassword);
             response.getWriter().println(JSON.getResponseJson("success"));
         } catch (JSONException | SQLException e) {
             response.setStatus(500);
