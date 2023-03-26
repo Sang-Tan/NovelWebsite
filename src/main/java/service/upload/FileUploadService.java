@@ -73,7 +73,7 @@ public class FileUploadService {
      * @param extension      the file extension (without the dot). Example: "jpg"
      * @return the file path (relative to the upload folder)
      */
-    public static String randomFilePath(String relativeFolder, String extension) {
+    public static String randomFileName(String relativeFolder, String extension) {
         String relFilePath;
         do {
             relFilePath = String.format("%s.%s", Path.of(UUID.randomUUID().toString()), extension);
