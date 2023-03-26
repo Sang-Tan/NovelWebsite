@@ -5,6 +5,10 @@ import repository.UserRepository;
 import java.sql.SQLException;
 
 public class Novel {
+    public static final String STATUS_ON_GOING = "on going";
+    public static final String STATUS_FINISHED = "finished";
+    public static final String STATUS_PAUSED = "paused";
+
     private Integer id;
     private Integer ownerID;
     private User owner;
