@@ -7,14 +7,7 @@ import java.util.HashMap;
 import java.util.regex.Pattern;
 
 public class URIHandler {
-    private static URIHandler instance;
     private HashMap<String, String> uriParams;
-    public static URIHandler getInstance(String uri, String template) {
-        if (instance == null) {
-            instance = new URIHandler(uri, template);
-        }
-        return instance;
-    }
 
     public URIHandler(String uri, String template) {
         uriParams = parseURI(uri, template);
@@ -29,8 +22,14 @@ public class URIHandler {
             throw  new IllegalArgumentException();
         }
 
+
         for (int i =0; i < uriParts.length; i++){
             if(templateParts[i].startsWith("{") && templateParts[i].endsWith("}")) {
+
+                if(templateParts[i].length() < 3){
+                    throw  new IllegalArgumentException();
+                }
+
                 String key = templateParts[i].substring(1, templateParts[i].length() - 2);
                 String value = uriParts[i];
                 params.put(key, value);
