@@ -10,6 +10,7 @@ CREATE TABLE chapter_mark (
 
 CREATE TABLE chapters (
     id          INT PRIMARY KEY AUTO_INCREMENT,
+    name        VARCHAR(255) NOT NULL,
     order_index INT       NOT NULL,
     volume_id   INT       NOT NULL,
     content     TEXT               DEFAULT NULL,
@@ -87,7 +88,7 @@ CREATE TABLE restrictions (
 
 CREATE TABLE users (
     id           INT PRIMARY KEY AUTO_INCREMENT,
-    password     CHAR(32)    NOT NULL,
+    password     CHAR(64)    NOT NULL,
     username     VARCHAR(50) NOT NULL,
     display_name VARCHAR(50) NOT NULL,
     is_active    BOOLEAN     NOT NULL DEFAULT TRUE,
@@ -109,8 +110,9 @@ CREATE TABLE volumes (
 CREATE TABLE tokens (
     id             INT PRIMARY KEY AUTO_INCREMENT,
     user_id        INT      NOT NULL,
-    validator_hash CHAR(32) NOT NULL,
-    UNIQUE (validator_hash)
+    token_hash CHAR(64) NOT NULL,
+    expired_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (token_hash)
 );
 
 ALTER TABLE chapters
@@ -176,3 +178,7 @@ ALTER TABLE tokens
 ALTER TABLE volumes
     ADD CONSTRAINT FK_Volume_Novel FOREIGN KEY (novel_id)
         REFERENCES novels (ID) ON DELETE CASCADE ON UPDATE CASCADE;
+        
+ALTER TABLE novels
+	ADD CONSTRAINT FK_Novel_User foreign key (owner)
+		REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE;
