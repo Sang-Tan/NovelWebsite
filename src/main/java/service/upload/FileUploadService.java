@@ -73,11 +73,25 @@ public class FileUploadService {
      * @param extension      the file extension (without the dot). Example: "jpg"
      * @return the file path (relative to the upload folder)
      */
-    public static String randomFilePath(String relativeFolder, String extension) {
+    public static String randomFileName(String relativeFolder, String extension) {
         String relFilePath;
         do {
             relFilePath = String.format("%s.%s", Path.of(UUID.randomUUID().toString()), extension);
         } while (getFile(Path.of(UPLOAD_ROOT, relFilePath).toString()).exists());
         return relFilePath;
     }
+
+    /**
+     * Deletes a file from the upload folder
+     *
+     * @param relativeFilePath relative path to the file in the upload folder
+     */
+    public static void deleteFile(String relativeFilePath) {
+        Path filePath = Path.of(UPLOAD_ROOT, relativeFilePath);
+        File file = getFile(filePath.toString());
+        if (file != null) {
+            file.delete();
+        }
+    }
+
 }
