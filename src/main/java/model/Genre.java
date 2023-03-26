@@ -1,6 +1,8 @@
 package model;
 
-public class Genre {
+import core.DatabaseObject;
+
+public class Genre implements DatabaseObject {
     private int id;
     private String name;
 
