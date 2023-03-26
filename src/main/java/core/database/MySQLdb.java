@@ -1,9 +1,12 @@
 package core.database;
 
+import com.mysql.cj.conf.ConnectionUrlParser;
+import core.Pair;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.sql.*;
 import java.util.List;
+
 
 public class MySQLdb {
     private String URL; // sửa lại tên của csdl
@@ -55,6 +58,14 @@ public class MySQLdb {
         ResultSet resultSet = preparedStatement.executeQuery();
         return resultSet;
     }
+    
+    public void executeOnce(Connection connection, String sql, Object[] params) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        for (int i = 0; i < params.length; i++) {
+            preparedStatement.setObject(i + 1, params[i]);
+        }
+        preparedStatement.execute();
+    }
 
     public void execute(String sql) throws SQLException {
         Connection connection = getConnectDB();
@@ -65,11 +76,30 @@ public class MySQLdb {
 
     public void execute(String sql, Object[] params) throws SQLException {
         Connection connection = getConnectDB();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        for (int i = 0; i < params.length; i++) {
-            preparedStatement.setObject(i + 1, params[i]);
+        executeOnce(connection, sql, params);
+        connection.close();
+    }
+
+    public void executeBatch(List<String> listSql) throws SQLException {
+        Connection connection = getConnectDB();
+        Statement statement = connection.createStatement();
+        for (String sql : listSql) {
+            statement.addBatch(sql);
         }
-        preparedStatement.execute();
+        statement.executeBatch();
+        connection.close();
+    }
+
+    /**
+     * @param listExecute list of pair (sql, params)
+     */
+    public void executeBatchWithParam(List<Pair<String, Object[]>> listExecute) throws SQLException {
+        Connection connection = getConnectDB();
+        connection.setAutoCommit(false);
+        for (Pair<String, Object[]> pair : listExecute) {
+            executeOnce(connection, pair.getKey(), pair.getValue());
+        }
+        connection.commit();
         connection.close();
     }
 }
