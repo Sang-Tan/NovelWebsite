@@ -42,8 +42,8 @@ public class MySQLdb {
     public ResultSet query(String sql) throws SQLException {
         Connection connection = getConnectDB();
         Statement statement = connection.createStatement();
-        connection.close();
-        return statement.executeQuery(sql);
+        ResultSet resultSet = statement.executeQuery(sql);
+        return resultSet;
     }
 
     public ResultSet query(String sql, Object[] params) throws SQLException {
@@ -52,14 +52,15 @@ public class MySQLdb {
         for (int i = 0; i < params.length; i++) {
             preparedStatement.setObject(i + 1, params[i]);
         }
-        return preparedStatement.executeQuery();
+        ResultSet resultSet = preparedStatement.executeQuery();
+        return resultSet;
     }
 
     public void execute(String sql) throws SQLException {
         Connection connection = getConnectDB();
-        connection.close();
         Statement statement = connection.createStatement();
         statement.execute(sql);
+        connection.close();
     }
 
     public void execute(String sql, Object[] params) throws SQLException {
@@ -69,5 +70,6 @@ public class MySQLdb {
             preparedStatement.setObject(i + 1, params[i]);
         }
         preparedStatement.execute();
+        connection.close();
     }
 }
