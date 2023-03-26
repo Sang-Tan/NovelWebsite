@@ -60,13 +60,13 @@ public class NovelCreation extends HttpServlet {
             }
             String imageName = FileUploadService.randomFileName(IMG_DIR, image.getSubmittedFileName());
             FileUploadService.uploadFile(imageName, image);
-            try {
+            /*try {
                 //TODO: implement method to create novel into database
 
             } catch (SQLException e) {
                 //delete image if cannot create novel
                 FileUploadService.deleteFile(imageName);
-            }
+            }*/
 
 
         } catch (Exception e) {
