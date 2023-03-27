@@ -20,6 +20,9 @@
             <li class="navbar__list-item">
                 <a href="#" class="navbar__link navbar__list-text">Truyện đã đăng</a>
             </li>
+            <li class="navbar__list-item">
+                <a href="/ca-nhan/thong-tin" class="navbar__link navbar__list-text">Thông tin cá nhân</a>
+            </li>
         </ul>
     </div>
 </nav>

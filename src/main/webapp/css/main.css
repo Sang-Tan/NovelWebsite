@@ -232,6 +232,17 @@ a.basic-btn--maroon:hover {
 }
 
 /*=====================Image wrapper==================*/
+.square-ratio {
+    position: relative;
+    overflow: hidden;
+}
+
+.square-ratio::before {
+    content: "";
+    display: block;
+    padding-top: 100%;
+}
+
 .a6-ratio {
     position: relative;
     overflow: hidden;

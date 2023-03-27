@@ -45,14 +45,14 @@
             <div class="d-flex align-items-center mb-2">
                 <label for="genre" class="basic-label required" title="Chọn ít nhất 1 thể loại">Thể loại: </label>
                 <div style="flex-grow: 1" class="checkbox-list" id="genre">
-                    <div class="checkbox-holder">
-                        <input class="checkbox1" type="checkbox" data-genre="1" id="genre1">
-                        <label for="genre1"> Genre1</label>
-                    </div>
-                    <div class="checkbox-holder">
-                        <input class="checkbox1" type="checkbox" data-genre="2" id="genre2">
-                        <label for="genre2"> Genre2</label>
-                    </div>
+                    <%--@elvariable id="genres" type="java.util.List<model.Genre>"--%>
+                    <c:forEach items="${genres}" var="genre">
+                        <div class="checkbox-holder">
+                            <input class="checkbox1" type="checkbox" data-genre="${genre.id}"
+                                   id="genre${genre.id}">
+                            <label for="genre${genre.id}"> ${genre.name}</label>
+                        </div>
+                    </c:forEach>
                 </div>
             </div>
             <div class="d-flex align-items-start mb-2">
@@ -66,9 +66,9 @@
                 <label for="status" class="basic-label">Tình trạng: </label>
                 <!-- <input style="flex-grow: 1;" type="" name="author" id="status" placeholder="Tên tác giả"> -->
                 <select class="input-text" name="status" id="status" style="flex-grow: 1;">
-                    <option value="ongoing">Đang tiến hành</option>
-                    <option value="finish">Hoàn thành</option>
-                    <option value="delay">Tạm hoãn</option>
+                    <option value="on going">Đang tiến hành</option>
+                    <option value="finished">Hoàn thành</option>
+                    <option value="paused">Tạm hoãn</option>
                 </select>
             </div>
             <div class="d-flex justify-content-center">
@@ -82,7 +82,7 @@
 <%-- boostrap script --%>
 <%@include file="/WEB-INF/view/layout/boostrap_js.jsp" %>
 
-<script src="/js/form.js"></script>
-<script src="/js/novel_manage.js"></script>
+<script charset="UTF-8" src="/js/form.js"></script>
+<script type="text/javascript" charset="UTF-8" src="/js/novel_manage.js"></script>
 </body>
 </html>

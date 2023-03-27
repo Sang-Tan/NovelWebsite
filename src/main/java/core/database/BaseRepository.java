@@ -6,9 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public abstract class BaseRepository<T extends DatabaseObject> {
     private final String TABLE_NAME;
@@ -35,7 +33,7 @@ public abstract class BaseRepository<T extends DatabaseObject> {
     protected String getPrimaryKeyString() {
         return String.join(", ", this.PRIMARY_KEY);
     }
-    
+
     protected abstract T createDefault();
 
     /**
@@ -48,6 +46,8 @@ public abstract class BaseRepository<T extends DatabaseObject> {
     protected abstract T mapRow(ResultSet resultSet) throws SQLException;
 
     protected abstract SqlRecord mapObject(T object);
+
+    protected abstract SqlRecord getPrimaryKeyMap(T object);
 
     protected List<T> mapRows(ResultSet resultSet) throws SQLException {
         List<T> list = new ArrayList<>();
@@ -86,7 +86,7 @@ public abstract class BaseRepository<T extends DatabaseObject> {
 
         //example columnsString = "col1, col2, col3,..."
         String[] columns = new String[size];
-        record.getColumns().toArray(columns);
+        record.getColumns(columns);
         String columnsString = String.join(", ", columns);
 
         //example valuesString = "?, ?, ?,..."
@@ -99,6 +99,53 @@ public abstract class BaseRepository<T extends DatabaseObject> {
 
         Object[] valuesArray = record.getValues(columns);
         MySQLdb.getInstance().execute(sql, valuesArray);
+    }
+
+    public void update(T object) throws SQLException {
+        SqlRecord record = mapObject(object);
+        excludePrimaryKey(record);
+        SqlRecord primaryKeyRecord = getPrimaryKeyMap(object);
+        update(record, primaryKeyRecord);
+    }
+
+    protected void excludePrimaryKey(SqlRecord record) {
+        for (String key : getPrimaryKey()) {
+            record.remove(key);
+        }
+    }
+
+    protected void update(SqlRecord record, SqlRecord primaryKeyRecord) throws SQLException {
+        int size = record.size();
+
+        //=====================UPDATE COLUMNS=====================
+        //parameters for the sql statement
+        ArrayList<Object> parameters = new ArrayList<>(size);
+
+        String[] upColumns = new String[size];
+        record.getColumns(upColumns);
+
+        //IMPORTANT : DON'T MOVE THE FOLLOWING LINE
+        Collections.addAll(parameters, record.getValues(upColumns));
+
+        record.getColumns(upColumns);
+        for (int i = 0; i < size; i++) {
+            upColumns[i] += " = ?";
+        }
+        String setsString = String.join(", ", upColumns); //example : "col1 = ?, col2 = ?, col3 = ?,..."
+
+        //=====================PRIMARY KEY SELECT=====================
+        String[] pkColumns = new String[primaryKeyRecord.size()];
+        primaryKeyRecord.getColumns(pkColumns);
+        //IMPORTANT : DON'T MOVE THE FOLLOWING LINE
+        Collections.addAll(parameters, primaryKeyRecord.getValues(pkColumns));
+        for (int i = 0; i < pkColumns.length; i++) {
+            pkColumns[i] += " = ?";
+        }
+        String pkSelect = String.join(" AND ", pkColumns);
+
+        String sql = String.format("UPDATE %s SET %s WHERE %s", getTableName(), setsString, pkSelect);
+
+        MySQLdb.getInstance().execute(sql, parameters.toArray());
     }
 
 
