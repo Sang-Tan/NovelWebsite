@@ -59,14 +59,21 @@ public class UserRepository extends BaseRepository<User> {
     @Override
     protected SqlRecord mapObject(User user) {
         SqlRecord record = new SqlRecord();
-        record.setValue("id", user.getId());
-        record.setValue("username", user.getUsername());
-        record.setValue("password", user.getPassword());
-        record.setValue("display_name", user.getDisplayName());
-        record.setValue("is_active", user.isActive());
-        record.setValue("avatar", user.getAvatar());
-        record.setValue("role", user.getRole());
+        record.put("id", user.getId());
+        record.put("username", user.getUsername());
+        record.put("password", user.getPassword());
+        record.put("display_name", user.getDisplayName());
+        record.put("is_active", user.isActive());
+        record.put("avatar", user.getAvatar());
+        record.put("role", user.getRole());
 
+        return record;
+    }
+
+    @Override
+    protected SqlRecord getPrimaryKeyMap(User object) {
+        SqlRecord record = new SqlRecord();
+        record.put("id", object.getId());
         return record;
     }
 

@@ -51,10 +51,17 @@ public class TokenRepository extends BaseRepository<Token> {
     @Override
     protected SqlRecord mapObject(Token token) {
         SqlRecord record = new SqlRecord();
-        record.setValue("id", token.getId());
-        record.setValue("user_id", token.getUserId());
-        record.setValue("token_hash", token.getTokenHash());
-        record.setValue("expired_time", token.getExpiredTime());
+        record.put("id", token.getId());
+        record.put("user_id", token.getUserId());
+        record.put("token_hash", token.getTokenHash());
+        record.put("expired_time", token.getExpiredTime());
+        return record;
+    }
+
+    @Override
+    protected SqlRecord getPrimaryKeyMap(Token object) {
+        SqlRecord record = new SqlRecord();
+        record.put("id", object.getId());
         return record;
     }
 

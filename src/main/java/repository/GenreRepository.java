@@ -40,8 +40,15 @@ public class GenreRepository extends BaseRepository<Genre> {
     @Override
     protected SqlRecord mapObject(Genre object) {
         SqlRecord record = new SqlRecord();
-        record.setValue("id", object.getId());
-        record.setValue("name", object.getName());
+        record.put("id", object.getId());
+        record.put("name", object.getName());
+        return record;
+    }
+
+    @Override
+    protected SqlRecord getPrimaryKeyMap(Genre object) {
+        SqlRecord record = new SqlRecord();
+        record.put("id", object.getId());
         return record;
     }
 
