@@ -1,18 +1,20 @@
 package model;
 
+import core.DatabaseObject;
+
 import java.sql.Timestamp;
 
-public class CommentReport {
+public class CommentReport implements DatabaseObject {
     private int id;
-    private Comment commentId;
-    private User reporterId;
+    private int commentId;
+    private int reporterId;
     private String reason;
     private Timestamp checkTime;
 
     public CommentReport() {
     }
 
-    public CommentReport(int id, Comment commentId, User reporterId, String reason, Timestamp checkTime) {
+    public CommentReport(int id, int commentId, int reporterId, String reason, Timestamp checkTime) {
         this.id = id;
         this.commentId = commentId;
         this.reporterId = reporterId;
@@ -28,19 +30,19 @@ public class CommentReport {
         this.id = id;
     }
 
-    public Comment getCommentId() {
+    public int getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(Comment commentId) {
+    public void setCommentId(int commentId) {
         this.commentId = commentId;
     }
 
-    public User getReporterId() {
+    public int getReporterId() {
         return reporterId;
     }
 
-    public void setReporterId(User reporterId) {
+    public void setReporterId(int reporterId) {
         this.reporterId = reporterId;
     }
 

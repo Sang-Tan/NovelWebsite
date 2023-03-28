@@ -1,19 +1,21 @@
 package model;
 
+import core.DatabaseObject;
+
 import java.sql.Timestamp;
 
-public class Comment {
+public class Comment implements DatabaseObject {
     private int id;
-    private User userId;
+    private int userId;
     private String content;
-    private User deactiveBy;
+    private int deactiveBy;
     private Timestamp commentTime;
-    private Comment parentId;
+    private int parentId;
 
     public Comment() {
     }
 
-    public Comment(int id, User userId, String content, User deactiveBy, Timestamp commentTime, Comment parentId) {
+    public Comment(int id, int userId, String content, int deactiveBy, Timestamp commentTime, int parentId) {
         this.id = id;
         this.userId = userId;
         this.content = content;
@@ -30,11 +32,11 @@ public class Comment {
         this.id = id;
     }
 
-    public User getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(User userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -46,11 +48,11 @@ public class Comment {
         this.content = content;
     }
 
-    public User getDeactiveBy() {
+    public int getDeactiveBy() {
         return deactiveBy;
     }
 
-    public void setDeactiveBy(User deactiveBy) {
+    public void setDeactiveBy(int deactiveBy) {
         this.deactiveBy = deactiveBy;
     }
 
@@ -62,11 +64,11 @@ public class Comment {
         this.commentTime = commentTime;
     }
 
-    public Comment getParentId() {
+    public int getParentId() {
         return parentId;
     }
 
-    public void setParentId(Comment parentId) {
+    public void setParentId(int parentId) {
         this.parentId = parentId;
     }
 }

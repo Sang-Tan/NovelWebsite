@@ -1,14 +1,16 @@
 package model;
 
+import core.DatabaseObject;
 import repository.UserRepository;
 
 import java.sql.SQLException;
 
-public class Novel {
+public class Novel implements DatabaseObject {
     public static final String STATUS_ON_GOING = "on going";
     public static final String STATUS_FINISHED = "finished";
     public static final String STATUS_PAUSED = "paused";
-
+    public static final String DEFAULT_AVATAR = "/images/default-novel-avatar.jpg";
+    public static final String DEFAULT_SUMMARY = "Không có tóm tắt";
     private Integer id;
     private Integer ownerID;
     private User owner;
@@ -41,13 +43,21 @@ public class Novel {
     }
 
     public User getOwner() throws SQLException {
-        owner = UserRepository.getInstance().getById(ownerID);
+        if(owner == null){
+            owner = UserRepository.getInstance().getById(ownerID);
+        }
         return owner;
+    }
+    public int getOwnerID(){
+        return ownerID;
     }
 
     public void setOwner(User owner) {
         this.ownerID = owner.getId();
         this.owner = owner;
+    }
+    public void setOwner(int ownerID){
+        this.ownerID = ownerID;
     }
 
     public String getSummary() {
