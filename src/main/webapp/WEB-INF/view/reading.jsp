@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<<<<<<< Updated upstream
+<%--<<<<<<< Updated upstream--%>
 
-=======
->>>>>>> Stashed changes
+<%--=======--%>
+<%-->>>>>>> Stashed changes--%>
 <!DOCTYPE html>
 <html lang="en">
 <head>

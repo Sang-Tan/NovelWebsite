@@ -83,6 +83,7 @@
             </a>
         </div>
     </div>
+
 </div>
 
 <%--Boostrap script--%>
