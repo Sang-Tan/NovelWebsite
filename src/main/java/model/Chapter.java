@@ -1,7 +1,9 @@
 package model;
 
 import core.DatabaseObject;
+import repository.VolumeRepository;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class Chapter implements DatabaseObject {
@@ -9,6 +11,7 @@ public class Chapter implements DatabaseObject {
     private int id;
     private String name;
     private int orderIndex;
+    private Volume volume;
     private int volumeId;
     private String content;
     private Timestamp modifyTime;
@@ -17,10 +20,10 @@ public class Chapter implements DatabaseObject {
     public Chapter() {
     }
 
-    public Chapter(int id, int orderIndex, int volumeId, String content, Timestamp modifyTime, boolean pending) {
+    public Chapter(int id, int orderIndex, Volume volume, String content, Timestamp modifyTime, boolean pending) {
         this.id = id;
         this.orderIndex = orderIndex;
-        this.volumeId = volumeId;
+        this.volume = volume;
         this.content = content;
         this.modifyTime = modifyTime;
         this.pending = pending;
@@ -48,6 +51,16 @@ public class Chapter implements DatabaseObject {
 
     public void setOrderIndex(int orderIndex) {
         this.orderIndex = orderIndex;
+    }
+
+    public Volume getVolume() throws SQLException {
+        volume = VolumeRepository.getInstance().getById(volumeId);
+        return volume;
+    }
+
+    public void setVolume(Volume volume) {
+        this.volumeId = volume.getId();
+        this.volume = volume;
     }
 
     public int getVolumeId() {

@@ -1,8 +1,10 @@
 package repository;
 
 import core.database.BaseRepository;
+import core.database.MySQLdb;
 import core.database.SqlRecord;
 import model.Chapter;
+import model.Volume;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -58,5 +60,14 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         SqlRecord record = new SqlRecord();
         record.put("id", chapter.getId());
         return record;
+    }
+
+    public Chapter getById(Integer ID) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
+        ResultSet result = MySQLdb.getInstance().query(sql, new Object[]{ID});
+        if (result.next()) {
+            return mapRow(result);
+        }
+        return null;
     }
 }

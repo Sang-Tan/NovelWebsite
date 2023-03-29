@@ -1,7 +1,9 @@
 package repository;
 
 import core.database.BaseRepository;
+import core.database.MySQLdb;
 import core.database.SqlRecord;
+import model.Novel;
 import model.Volume;
 
 import java.sql.ResultSet;
@@ -48,7 +50,6 @@ public class VolumeRepository extends BaseRepository<Volume> {
         record.put("image", volume.getImage());
         record.put("order_index", volume.getOrderIndex());
         return record;
-
     }
 
     @Override
@@ -56,5 +57,14 @@ public class VolumeRepository extends BaseRepository<Volume> {
         SqlRecord record = new SqlRecord();
         record.put("id", volume.getId());
         return record;
+    }
+
+    public Volume getById(Integer ID) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
+        ResultSet result = MySQLdb.getInstance().query(sql, new Object[]{ID});
+        if (result.next()) {
+            return mapRow(result);
+        }
+        return null;
     }
 }
