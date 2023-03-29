@@ -1,8 +1,16 @@
 package model;
 
-public class Volume {
+import core.DatabaseObject;
+import repository.NovelRepository;
+import repository.UserRepository;
+
+import java.sql.SQLException;
+
+public class Volume implements DatabaseObject {
+    public static final String DEFAULT_IMAGE = "/images/default-novel-avatar.jpg";
     private int id;
-    private Novel novelId;
+    private Novel novel;
+    private Integer novelId;
     private String name;
     private String image;
     private int orderIndex;
@@ -10,9 +18,9 @@ public class Volume {
     public Volume() {
     }
 
-    public Volume(int id, Novel novelId, String name, String image, int orderIndex) {
+    public Volume(int id, Novel novel, String name, String image, int orderIndex) {
         this.id = id;
-        this.novelId = novelId;
+        this.novel = novel;
         this.name = name;
         this.image = image;
         this.orderIndex = orderIndex;
@@ -26,11 +34,21 @@ public class Volume {
         this.id = id;
     }
 
-    public Novel getNovelId() {
+    public Novel getNovel() throws SQLException {
+        novel = NovelRepository.getInstance().getById(novelId);
+        return novel;
+    }
+
+    public void setNovel(Novel novel) {
+        this.novelId = novel.getId();
+        this.novel = novel;
+    }
+
+    public Integer getNovelId() {
         return novelId;
     }
 
-    public void setNovelId(Novel novelId) {
+    public void setNovelId(Integer novelId) {
         this.novelId = novelId;
     }
 

@@ -1,9 +1,11 @@
 package repository;
 
 import core.database.BaseRepository;
+import core.database.MySQLdb;
 import core.database.SqlRecord;
 import io.github.cdimascio.dotenv.Dotenv;
 import model.Novel;
+import model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,7 +53,8 @@ public class NovelRepository extends BaseRepository<Novel> {
         SqlRecord record = new SqlRecord();
         record.put("id", novel.getId());
         record.put("owner", novel.getOwnerID());
-        record.put("summary", novel.getName());
+        record.put("summary", novel.getSummary());
+        record.put("name", novel.getName());
         record.put("image", novel.getImage());
         record.put("status", novel.getStatus());
         record.put("is_pending", novel.isPending());
@@ -63,5 +66,14 @@ public class NovelRepository extends BaseRepository<Novel> {
         SqlRecord record = new SqlRecord();
         record.put("id", object.getId());
         return record;
+    }
+
+    public Novel getById(Integer ID) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
+        ResultSet result = MySQLdb.getInstance().query(sql, new Object[]{ID});
+        if (result.next()) {
+            return mapRow(result);
+        }
+        return null;
     }
 }
