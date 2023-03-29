@@ -6,10 +6,10 @@ import repository.UserRepository;
 import java.sql.SQLException;
 
 public class Novel implements DatabaseObject {
-    public static final String STATUS_ON_GOING = "on going";
-    public static final String STATUS_FINISHED = "finished";
-    public static final String STATUS_PAUSED = "paused";
-    public static final String DEFAULT_AVATAR = "/images/default-novel-avatar.jpg";
+    public static final String STATUS_ON_GOING = "Đang tiến hành";
+    public static final String STATUS_FINISHED = "Đã hoàn thành";
+    public static final String STATUS_PAUSED = "Tạm ngưng";
+    public static final String DEFAULT_IMAGE = "/images/default-novel-avatar.jpg";
     public static final String DEFAULT_SUMMARY = "Không có tóm tắt";
     private Integer id;
     private Integer ownerID;
@@ -43,20 +43,24 @@ public class Novel implements DatabaseObject {
     }
 
     public User getOwner() throws SQLException {
-        if(owner == null){
-            owner = UserRepository.getInstance().getById(ownerID);
-        }
+        owner = UserRepository.getInstance().getById(ownerID);
         return owner;
-    }
-    public int getOwnerID(){
-        return ownerID;
     }
 
     public void setOwner(User owner) {
         this.ownerID = owner.getId();
         this.owner = owner;
     }
-    public void setOwner(int ownerID){
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(Integer ownerID) {
         this.ownerID = ownerID;
     }
 

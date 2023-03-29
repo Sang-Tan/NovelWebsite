@@ -4,30 +4,31 @@ import core.database.BaseRepository;
 import core.database.SqlRecord;
 import io.github.cdimascio.dotenv.Dotenv;
 import model.Novel;
-import model.Token;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class NovelRepository extends BaseRepository<Novel> {
-    private static TokenRepository instance;
-    public static TokenRepository getInstance() {
+    private static NovelRepository instance;
+
+    public static NovelRepository getInstance() {
         if (instance == null) {
-            instance = new TokenRepository();
+            instance = new NovelRepository();
         }
         return instance;
     }
+
     protected NovelRepository() {
-        super("tokens", new String[]{"id"});
+        super("novels", new String[]{"id"});
         Dotenv dotenv = Dotenv.load();
     }
 
     @Override
     protected Novel createDefault() {
         Novel novel = new Novel();
-        novel.setStatus("on going");
+        novel.setStatus(Novel.STATUS_ON_GOING);
         novel.setSummary(Novel.DEFAULT_SUMMARY);
-        novel.setImage(Novel.DEFAULT_AVATAR);
+        novel.setImage(Novel.DEFAULT_IMAGE);
         novel.setPending(true);
         return novel;
     }
@@ -36,7 +37,7 @@ public class NovelRepository extends BaseRepository<Novel> {
     protected Novel mapRow(ResultSet resultSet) throws SQLException {
         Novel novel = new Novel();
         novel.setId(resultSet.getInt("id"));
-        novel.setOwner(resultSet.getInt("owner"));
+        novel.setOwnerID(resultSet.getInt("owner"));
         novel.setSummary(resultSet.getString("summary"));
         novel.setName(resultSet.getString("name"));
         novel.setImage(resultSet.getString("image"));

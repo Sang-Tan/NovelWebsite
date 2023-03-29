@@ -8,6 +8,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ChapterRepository extends BaseRepository<Chapter> {
+    private static ChapterRepository instance;
+
+    public static ChapterRepository getInstance() {
+        if (instance == null) {
+            instance = new ChapterRepository();
+        }
+        return instance;
+    }
+
     protected ChapterRepository() {
         super("chapters", new String[]{"id"});
     }
@@ -15,7 +24,7 @@ public class ChapterRepository extends BaseRepository<Chapter> {
     @Override
     protected Chapter createDefault() {
         Chapter chapter = new Chapter();
-        chapter.setContent("Không có nội dung");
+        chapter.setContent(Chapter.DEFAULT_CONTENT);
         chapter.setPending(true);
         return chapter;
     }
@@ -28,7 +37,7 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         chapter.setOrderIndex(resultSet.getInt("order_index"));
         chapter.setVolumeId(resultSet.getInt("volume_id"));
         chapter.setModifyTime(resultSet.getTimestamp("modify_time"));
-        chapter.setPending(resultSet.getBoolean("pending"));
+        chapter.setPending(resultSet.getBoolean("is_pending"));
         return chapter;
     }
 
@@ -40,7 +49,7 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         record.put("order_index", chapter.getOrderIndex());
         record.put("volume_id", chapter.getVolumeId());
         record.put("modify_time", chapter.getModifyTime());
-        record.put("pending", chapter.isPending());
+        record.put("is_pending", chapter.isPending());
         return record;
     }
 

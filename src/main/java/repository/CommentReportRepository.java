@@ -8,6 +8,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CommentReportRepository extends BaseRepository<CommentReport> {
+    private static CommentReportRepository instance;
+
+    public static CommentReportRepository getInstance() {
+        if (instance == null) {
+            instance = new CommentReportRepository();
+        }
+        return instance;
+    }
 
     protected CommentReportRepository() {
         super("comment_report", new String[]{"id"});

@@ -5,6 +5,7 @@ import core.DatabaseObject;
 import java.sql.Timestamp;
 
 public class Chapter implements DatabaseObject {
+    public static final String DEFAULT_CONTENT = "Không có nội dung";
     private int id;
     private String name;
     private int orderIndex;
@@ -32,9 +33,11 @@ public class Chapter implements DatabaseObject {
     public void setId(int id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }

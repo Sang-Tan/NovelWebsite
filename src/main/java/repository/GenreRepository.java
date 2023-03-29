@@ -25,8 +25,7 @@ public class GenreRepository extends BaseRepository<Genre> {
 
     @Override
     protected Genre createDefault() {
-        Genre genre = new Genre();
-        return genre;
+        return new Genre();
     }
 
     @Override

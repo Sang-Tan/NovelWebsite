@@ -8,11 +8,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CommentRepository extends BaseRepository<Comment> {
+    private static CommentRepository instance;
+
+    public static CommentRepository getInstance() {
+        if (instance == null) {
+            instance = new CommentRepository();
+        }
+        return instance;
+    }
+
+    protected CommentRepository() {
+        super("comments", new String[]{"id"});
+    }
+
     @Override
     protected Comment createDefault() {
         return null;
     }
-
 
     @Override
     protected Comment mapRow(ResultSet resultSet) throws SQLException {
@@ -31,7 +43,7 @@ public class CommentRepository extends BaseRepository<Comment> {
         SqlRecord record = new SqlRecord();
         record.put("id", comment.getId());
         record.put("user_id", comment.getUserId());
-        record.put("time_comment", comment.getContent());
+        record.put("content", comment.getContent());
         record.put("deactive_by", comment.getDeactiveBy());
         record.put("time_comment", comment.getCommentTime());
         record.put("parent_id", comment.getParentId());
@@ -44,8 +56,6 @@ public class CommentRepository extends BaseRepository<Comment> {
         record.put("id", object.getId());
         return record;
     }
-    protected CommentRepository() {
-        super("comments", new String[]{"id"});
-    }
+
 }
 
