@@ -1,31 +1,41 @@
 package model;
 
+import core.DatabaseObject;
+import repository.UserRepository;
+
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class Restriction {
-    private User restricterUserId;
+public class Restriction implements DatabaseObject {
+    public static final String TYPE_NOVEL = "novel";
+    public static final String TYPE_COMMENT = "comment";
+    private User restrictedUser;
+    private Integer restrictedUserId;
     private String restrictedType;
-    private User executorId;
+    private User executor;
+    private Integer executorId;
     private String reason;
     private Timestamp dueTime;
 
     public Restriction() {
     }
 
-    public Restriction(User restricterUserId, String restrictedType, User executorId, String reason, Timestamp dueTime) {
-        this.restricterUserId = restricterUserId;
+    public Restriction(User restrictedUser, String restrictedType, User executor, String reason, Timestamp dueTime) {
+        this.restrictedUser = restrictedUser;
         this.restrictedType = restrictedType;
-        this.executorId = executorId;
+        this.executor = executor;
         this.reason = reason;
         this.dueTime = dueTime;
     }
 
-    public User getRestricterUserId() {
-        return restricterUserId;
+    public User getRestrictedUser() throws SQLException {
+        restrictedUser = UserRepository.getInstance().getById(restrictedUserId);
+        return restrictedUser;
     }
 
-    public void setRestricterUserId(User restricterUserId) {
-        this.restricterUserId = restricterUserId;
+    public void setRestrictedUser(User restrictedUser) {
+        this.restrictedUserId = restrictedUser.getId();
+        this.restrictedUser = restrictedUser;
     }
 
     public String getRestrictedType() {
@@ -36,11 +46,29 @@ public class Restriction {
         this.restrictedType = restrictedType;
     }
 
-    public User getExecutorId() {
+    public User getExecutor() throws SQLException {
+        executor = UserRepository.getInstance().getById(executorId);
+        return executor;
+    }
+
+    public void setExecutor(User executor) {
+        this.executorId = executor.getId();
+        this.executor = executor;
+    }
+
+    public Integer getRestrictedUserId() {
+        return restrictedUserId;
+    }
+
+    public void setRestrictedUserId(Integer restrictedUserId) {
+        this.restrictedUserId = restrictedUserId;
+    }
+
+    public Integer getExecutorId() {
         return executorId;
     }
 
-    public void setExecutorId(User executorId) {
+    public void setExecutorId(Integer executorId) {
         this.executorId = executorId;
     }
 

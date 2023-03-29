@@ -6,9 +6,9 @@ import repository.UserRepository;
 import java.sql.SQLException;
 
 public class Novel implements DatabaseObject {
-    public static final String STATUS_ON_GOING = "Đang tiến hành";
-    public static final String STATUS_FINISHED = "Đã hoàn thành";
-    public static final String STATUS_PAUSED = "Tạm ngưng";
+    public static final String STATUS_ON_GOING = "on going";
+    public static final String STATUS_FINISHED = "finished";
+    public static final String STATUS_PAUSED = "paused";
     public static final String DEFAULT_IMAGE = "/images/default-novel-avatar.jpg";
     public static final String DEFAULT_SUMMARY = "Không có tóm tắt";
     private Integer id;
