@@ -1,15 +1,16 @@
 package model;
 
 import core.DatabaseObject;
+import repository.UserRepository;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.DateTimeException;
 
 public class Token implements DatabaseObject {
     private int id;
-    private int userId;
+    private int userId ;
     private String tokenHash;
-
     private Timestamp expiredTime;
 
     public Token() {
@@ -29,6 +30,7 @@ public class Token implements DatabaseObject {
         this.id = id;
     }
 
+
     public int getUserId() {
         return userId;
     }
@@ -36,6 +38,7 @@ public class Token implements DatabaseObject {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
 
     public String getTokenHash() {
         return tokenHash;

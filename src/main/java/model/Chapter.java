@@ -1,11 +1,14 @@
 package model;
 
+import core.DatabaseObject;
+
 import java.sql.Timestamp;
 
-public class Chapter {
+public class Chapter implements DatabaseObject {
     private int id;
+    private String name;
     private int orderIndex;
-    private Volume volumeId;
+    private int volumeId;
     private String content;
     private Timestamp modifyTime;
     private boolean pending;
@@ -13,7 +16,7 @@ public class Chapter {
     public Chapter() {
     }
 
-    public Chapter(int id, int orderIndex, Volume volumeId, String content, Timestamp modifyTime, boolean pending) {
+    public Chapter(int id, int orderIndex, int volumeId, String content, Timestamp modifyTime, boolean pending) {
         this.id = id;
         this.orderIndex = orderIndex;
         this.volumeId = volumeId;
@@ -29,6 +32,12 @@ public class Chapter {
     public void setId(int id) {
         this.id = id;
     }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getOrderIndex() {
         return orderIndex;
@@ -38,11 +47,11 @@ public class Chapter {
         this.orderIndex = orderIndex;
     }
 
-    public Volume getVolumeId() {
+    public int getVolumeId() {
         return volumeId;
     }
 
-    public void setVolumeId(Volume volumeId) {
+    public void setVolumeId(int volumeId) {
         this.volumeId = volumeId;
     }
 
