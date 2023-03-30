@@ -1,3 +1,5 @@
+<%--@elvariable id="user" type="model.User"--%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: DELL
@@ -25,7 +27,7 @@
                     <div class="d-flex flex-column align-items-center mb-3">
                         <div class="square-ratio img-cover mb-2">
                             <div class="img-wrapper border" id="image-preview"
-                                 style="background-image: url('https://images.fpt.shop/unsafe/filters:quality(90)/fptshop.com.vn/uploads/images/tin-tuc/152650/Originals/Hu%20Tao.jpg');">
+                                 style="background-image: url('${user.avatar}');">
                             </div>
                         </div>
                         <div class="upload-btn-wrapper">
@@ -39,7 +41,7 @@
                     <div class=" d-flex align-items-center mb-2">
                         <label for="display-name" class="basic-label required">Tên </label>
                         <input class="input-text" style="flex-grow: 1" type="text" name="display_name" id="display-name"
-                               placeholder="Tên của bạn UwU" required>
+                               placeholder="Tên của bạn UwU" value="${user.displayName}" required>
                     </div>
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="basic-btn basic-btn--olive">Xác nhận</button>
@@ -57,5 +59,15 @@
 
     bindImagePreview(image_input, image_preview);
 </script>
+<%--@elvariable id="errors" type="java.util.HashMap<java.lang.String,java.lang.String>"--%>
+<c:if test="${errors != null}">
+    <script>
+        let errors = "";
+        <c:forEach items="${errors}" var="error">
+        errors += "${error.value} \n";
+        </c:forEach>
+        alert(errors);
+    </script>
+</c:if>
 </body>
 </html>

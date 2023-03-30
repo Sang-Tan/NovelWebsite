@@ -1,8 +1,9 @@
 package controller.personal;
 
+import core.FileUtil;
 import io.github.cdimascio.dotenv.Dotenv;
 import repository.GenreRepository;
-import service.upload.FileUploadService;
+import service.upload.FileMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -58,8 +59,9 @@ public class NovelCreation extends HttpServlet {
                 doGet(request, response);
                 return;
             }
-            String imageName = FileUploadService.randomFileName(IMG_DIR, image.getSubmittedFileName());
-            FileUploadService.uploadFile(imageName, image);
+            String extension = FileUtil.getExtension(image.getSubmittedFileName());
+            FileMapper fileMapper = FileMapper.mapRandomFile(IMG_DIR, extension);
+            String imageURI = fileMapper.getURI();
             /*try {
                 //TODO: implement method to create novel into database
 
@@ -91,7 +93,7 @@ public class NovelCreation extends HttpServlet {
             return "Ảnh bìa không được để trống";
         }
 
-        if (!FileUploadService.isImage(image)) {
+        if (!FileUtil.isImage(image.getInputStream())) {
             return "Ảnh bìa không hợp lệ";
         }
         return null;
