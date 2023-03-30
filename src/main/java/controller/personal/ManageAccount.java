@@ -1,6 +1,9 @@
 package controller.personal;
 
-import service.upload.FileUploadService;
+import core.FileUtil;
+import model.User;
+import repository.UserRepository;
+import service.upload.AvatarUploadService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -10,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 @MultipartConfig(maxFileSize = 1 * 1024 * 1024) //1MB
@@ -37,12 +41,21 @@ public class ManageAccount extends HttpServlet {
             doGet(req, resp);
             return;
         }
+        User user = (User) req.getAttribute("user");
 
+        user.setDisplayName(displayName);
         if (avatar != null) {
-            //TODO: change avatar if user has one, else create new one
+            AvatarUploadService.uploadAvatar(user, avatar);
         }
 
-        
+        try {
+            UserRepository.getInstance().update(user);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        resp.sendRedirect("/ca-nhan/thong-tin");
+
     }
 
     private HashMap<String, String> getErrors(String displayName, Part avatar) throws IOException {
@@ -51,7 +64,7 @@ public class ManageAccount extends HttpServlet {
             errors.put("display_name", "Tên hiển thị không được để trống");
         }
         if (avatar != null) {
-            if (!FileUploadService.isImage(avatar)) {
+            if (!FileUtil.isImage(avatar.getInputStream())) {
                 errors.put("avatar", "Ảnh đại diện không đúng định dạng");
             }
         }

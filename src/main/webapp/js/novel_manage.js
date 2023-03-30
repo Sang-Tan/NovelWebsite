@@ -1,4 +1,4 @@
-function submitForm(event) {
+﻿function submitForm(event) {
     const form = event.target
     const genreInput = addCheckboxesData(form, 'genre', 'genres');
     if (!genreInput) {
