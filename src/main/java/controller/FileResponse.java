@@ -1,10 +1,8 @@
 package controller;
 
-import service.upload.FileUploadService;
+import service.upload.FileMapper;
 
-import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,9 +16,10 @@ import java.io.OutputStream;
 public class FileResponse extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String filePath = req.getPathInfo();
+        String fileURI = req.getRequestURI();
 
-        File downloadFile = FileUploadService.getFile(filePath);
+        FileMapper fileMapper = FileMapper.mapURI(fileURI);
+        File downloadFile = fileMapper.getFile();
         if (!downloadFile.exists()) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
@@ -43,7 +42,7 @@ public class FileResponse extends HttpServlet {
         String headerValue = String.format("attachment; filename=\"%s\"", downloadFile.getName());
         resp.setHeader(headerKey, headerValue);*/
 
-        String contentType = getServletContext().getMimeType(filePath);
+        String contentType = getServletContext().getMimeType(fileURI);
         resp.setContentType(contentType);
 
         OutputStream outStream = resp.getOutputStream();
