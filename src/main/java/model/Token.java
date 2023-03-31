@@ -53,7 +53,7 @@ public class Token implements DatabaseObject {
         return tokenHash;
     }
 
-    public void setHashToken(String tokenHash) {
+    public void setTokenHash(String tokenHash) {
         this.tokenHash = tokenHash;
     }
 

@@ -43,7 +43,7 @@ public class TokenRepository extends BaseRepository<Token> {
     public Token createNewToken(int userID, String hashedToken) {
         Token token = createDefault();
         token.setUserId(userID);
-        token.setHashToken(hashedToken);
+        token.setTokenHash(hashedToken);
         return token;
     }
 
