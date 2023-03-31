@@ -2,7 +2,7 @@ package repository;
 
 import core.database.BaseRepository;
 import core.database.SqlRecord;
-import model.Restriction;
+import model.intermediate.Restriction;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
