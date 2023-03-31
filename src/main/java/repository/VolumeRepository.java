@@ -19,8 +19,10 @@ public class VolumeRepository extends BaseRepository<Volume> {
         return instance;
     }
 
-    protected VolumeRepository() {
-        super("volumes", new String[]{"id"});
+
+    @Override
+    protected Volume createEmpty() {
+        return new Volume();
     }
 
     @Override
@@ -30,40 +32,12 @@ public class VolumeRepository extends BaseRepository<Volume> {
         return volume;
     }
 
-    @Override
-    protected Volume mapRow(ResultSet resultSet) throws SQLException {
-        Volume volume = new Volume();
-        volume.setId(resultSet.getInt("id"));
-        volume.setNovelId(resultSet.getInt("novel_id"));
-        volume.setName(resultSet.getString("name"));
-        volume.setOrderIndex(resultSet.getInt("order_index"));
-        volume.setImage(resultSet.getString("image"));
-        return volume;
-    }
-
-    @Override
-    protected SqlRecord mapObject(Volume volume) {
-        SqlRecord record = new SqlRecord();
-        record.put("id", volume.getId());
-        record.put("volume_id", volume.getNovelId());
-        record.put("name", volume.getName());
-        record.put("image", volume.getImage());
-        record.put("order_index", volume.getOrderIndex());
-        return record;
-    }
-
-    @Override
-    protected SqlRecord getPrimaryKeyMap(Volume volume) {
-        SqlRecord record = new SqlRecord();
-        record.put("id", volume.getId());
-        return record;
-    }
 
     public Volume getById(Integer ID) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
-        ResultSet result = MySQLdb.getInstance().query(sql, new Object[]{ID});
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{ID});
         if (result.next()) {
-            return mapRow(result);
+            return mapObject(result);
         }
         return null;
     }

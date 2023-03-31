@@ -19,8 +19,9 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         return instance;
     }
 
-    protected ChapterRepository() {
-        super("chapters", new String[]{"id"});
+    @Override
+    protected Chapter createEmpty() {
+        return new Chapter();
     }
 
     @Override
@@ -31,42 +32,11 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         return chapter;
     }
 
-    @Override
-    protected Chapter mapRow(ResultSet resultSet) throws SQLException {
-        Chapter chapter = new Chapter();
-        chapter.setId(resultSet.getInt("id"));
-        chapter.setName(resultSet.getString("name"));
-        chapter.setOrderIndex(resultSet.getInt("order_index"));
-        chapter.setVolumeId(resultSet.getInt("volume_id"));
-        chapter.setModifyTime(resultSet.getTimestamp("modify_time"));
-        chapter.setPending(resultSet.getBoolean("is_pending"));
-        return chapter;
-    }
-
-    @Override
-    protected SqlRecord mapObject(Chapter chapter) {
-        SqlRecord record = new SqlRecord();
-        record.put("id", chapter.getId());
-        record.put("name", chapter.getName());
-        record.put("order_index", chapter.getOrderIndex());
-        record.put("volume_id", chapter.getVolumeId());
-        record.put("modify_time", chapter.getModifyTime());
-        record.put("is_pending", chapter.isPending());
-        return record;
-    }
-
-    @Override
-    protected SqlRecord getPrimaryKeyMap(Chapter chapter) {
-        SqlRecord record = new SqlRecord();
-        record.put("id", chapter.getId());
-        return record;
-    }
-
     public Chapter getById(Integer ID) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
-        ResultSet result = MySQLdb.getInstance().query(sql, new Object[]{ID});
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{ID});
         if (result.next()) {
-            return mapRow(result);
+            return mapObject(result);
         }
         return null;
     }

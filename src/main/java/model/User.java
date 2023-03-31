@@ -43,7 +43,7 @@ public class User implements DatabaseObject {
         this.role = role;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

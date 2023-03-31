@@ -17,41 +17,15 @@ public class CommentReportRepository extends BaseRepository<CommentReport> {
         return instance;
     }
 
-    protected CommentReportRepository() {
-        super("comment_report", new String[]{"id"});
+    @Override
+    protected CommentReport createEmpty() {
+        return new CommentReport();
     }
 
     @Override
     protected CommentReport createDefault() {
         return null;
     }
+    
 
-    @Override
-    protected CommentReport mapRow(ResultSet resultSet) throws SQLException {
-        CommentReport commentReport = new CommentReport();
-        commentReport.setId(resultSet.getInt("id"));
-        commentReport.setCommentId(resultSet.getInt("comment_id"));
-        commentReport.setReporterId(resultSet.getInt("reporter_id"));
-        commentReport.setReason(resultSet.getString("reason"));
-        commentReport.setCheckTime(resultSet.getTimestamp("check_time"));
-        return commentReport;
-    }
-
-    @Override
-    protected SqlRecord mapObject(CommentReport commentReport) {
-        SqlRecord record = new SqlRecord();
-        record.put("id", commentReport.getId());
-        record.put("comment_id", commentReport.getCommentId());
-        record.put("reporter_id", commentReport.getReporterId());
-        record.put("reason", commentReport.getReason());
-        record.put("check_time", commentReport.getCheckTime());
-        return record;
-    }
-
-    @Override
-    protected SqlRecord getPrimaryKeyMap(CommentReport commentReport) {
-        SqlRecord record = new SqlRecord();
-        record.put("id", commentReport.getId());
-        return record;
-    }
 }

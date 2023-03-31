@@ -2,76 +2,170 @@ package core.database;
 
 import core.DatabaseObject;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.*;
 
 public abstract class BaseRepository<T extends DatabaseObject> {
+    private final Class<?> ENTITY_CLASS;
+    private final DBFieldMapping PRIMARY_KEY_FIELDS;
+    private final DBFieldMapping COLUMNS;
     private final String TABLE_NAME;
-    private final String[] PRIMARY_KEY;
 
-    protected BaseRepository(String tableName, String[] primaryKey) {
-        this.TABLE_NAME = tableName;
-        this.PRIMARY_KEY = primaryKey;
+    protected BaseRepository() {
+        Class<?> clazz = createEmpty().getClass();
+        this.ENTITY_CLASS = clazz;
+        this.TABLE_NAME = getTableName(clazz);
+        this.PRIMARY_KEY_FIELDS = getPrimaryKey(clazz);
+        this.COLUMNS = getColumns(clazz);
     }
+
+    private String getTableName(Class<?> clazz) {
+        Table tableAnnotation = clazz.getAnnotation(Table.class);
+        return tableAnnotation.name();
+    }
+
+    private DBFieldMapping getPrimaryKey(Class<?> clazz) {
+        DBFieldMapping primaryKeys = new DBFieldMapping();
+        Field[] fields = clazz.getDeclaredFields();
+
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(Id.class)) {
+                Column columnAnnotation = field.getAnnotation(Column.class);
+                primaryKeys.put(columnAnnotation.name(), field);
+                return primaryKeys;
+            } else if (field.isAnnotationPresent(EmbeddedId.class)) {
+                Field[] idFields = field.getType().getDeclaredFields();
+                for (Field idField : idFields) {
+                    Column columnAnnotation = idField.getType().getAnnotation(Column.class);
+                    if (columnAnnotation != null) {
+                        primaryKeys.put(columnAnnotation.name(), idField);
+                    }
+                }
+                return primaryKeys;
+            }
+        }
+        return primaryKeys;
+    }
+
+    protected DBFieldMapping getColumns(Class<?> clazz) {
+        Field[] fields = clazz.getDeclaredFields();
+        DBFieldMapping columns = new DBFieldMapping();
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(Column.class)) {
+                Column columnAnnotation = field.getAnnotation(Column.class);
+                columns.put(columnAnnotation.name(), field);
+            } else if (field.isAnnotationPresent(EmbeddedId.class)) {
+                Field[] idFields = field.getType().getDeclaredFields();
+                for (Field idField : idFields) {
+                    Column columnAnnotation = idField.getType().getAnnotation(Column.class);
+                    if (columnAnnotation != null) {
+                        columns.put(columnAnnotation.name(), idField);
+                    }
+                }
+            }
+        }
+        return columns;
+    }
+
+    protected abstract T createEmpty();
 
     protected String getTableName() {
-        return this.TABLE_NAME;
-    }
-
-    protected String[] getPrimaryKey() {
-        return this.PRIMARY_KEY;
+        return TABLE_NAME;
     }
 
     /**
-     * Get the primary key string separated by comma, e.g. "id, name"
+     * Get the primary key(in database)  string separated by comma, e.g. "id, name"
      *
-     * @return
+     * @return the primary key string
      */
     protected String getPrimaryKeyString() {
-        return String.join(", ", this.PRIMARY_KEY);
+        ArrayList<String> primaryKeysColumnsName = new ArrayList<>();
+        for (Field field : PRIMARY_KEY_FIELDS.values()) {
+            Column columnAnnotation = field.getAnnotation(Column.class);
+            primaryKeysColumnsName.add(columnAnnotation.name());
+        }
+        return String.join(", ", primaryKeysColumnsName);
     }
 
     protected abstract T createDefault();
 
-    /**
-     * Map a row in the result set to a bean
-     *
-     * @param resultSet the result set
-     * @return the bean
-     * @throws SQLException if a database access error occurs
-     */
-    protected abstract T mapRow(ResultSet resultSet) throws SQLException;
+    private SqlRecord mapRecordByField(DBFieldMapping fields, T object) {
+        SqlRecord record = new SqlRecord();
+        for (String columnName : fields.keySet()) {
+            Field field = fields.get(columnName);
+            try {
+                PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), object.getClass());
+                record.put(columnName, propertyDescriptor.getReadMethod().invoke(object));
+            } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return record;
+    }
 
-    protected abstract SqlRecord mapObject(T object);
 
-    protected abstract SqlRecord getPrimaryKeyMap(T object);
+    protected final SqlRecord mapRecord(T object) {
+        return mapRecordByField(COLUMNS, object);
+    }
 
-    protected List<T> mapRows(ResultSet resultSet) throws SQLException {
+    protected final SqlRecord getPrimaryKeyMap(T object) {
+        return mapRecordByField(PRIMARY_KEY_FIELDS, object);
+    }
+
+    protected T mapObject(ResultSet resultSet) throws SQLException {
+        T object = createEmpty();
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        try {
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                String columnName = metaData.getColumnName(i);
+                if (COLUMNS.containsKey(columnName)) {
+                    Field field = COLUMNS.get(columnName);
+                    PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), object.getClass());
+                    propertyDescriptor.getWriteMethod().invoke(object, resultSet.getObject(i, field.getType()));
+                } else {
+                    throw new SQLException(String.format("Column %s not found in %s", columnName, object.getClass().getName()));
+                }
+            }
+        } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+        return object;
+    }
+
+    protected List<T> mapObjects(ResultSet resultSet) throws SQLException {
         List<T> list = new ArrayList<>();
         while (resultSet.next()) {
-            list.add(mapRow(resultSet));
+            list.add(mapObject(resultSet));
         }
         return list;
     }
 
     public List<T> getAll() throws SQLException {
         String sql = String.format("SELECT * FROM %s", getTableName());
-        ResultSet resultSet = MySQLdb.getInstance().query(sql);
-        return mapRows(resultSet);
+        ResultSet resultSet = MySQLdb.getInstance().select(sql);
+        return mapObjects(resultSet);
     }
 
     public List<T> getRange(int start, int end) throws SQLException {
         String sql = String.format("SELECT * FROM %s LIMIT %d, %d", getTableName(), start, end);
-        ResultSet resultSet = MySQLdb.getInstance().query(sql);
-        return mapRows(resultSet);
+        ResultSet resultSet = MySQLdb.getInstance().select(sql);
+        return mapObjects(resultSet);
     }
 
 
     public void insert(T object) throws SQLException {
-        SqlRecord record = mapObject(object);
+        SqlRecord record = mapRecord(object);
         insert(record);
     }
 
@@ -102,14 +196,14 @@ public abstract class BaseRepository<T extends DatabaseObject> {
     }
 
     public void update(T object) throws SQLException {
-        SqlRecord record = mapObject(object);
+        SqlRecord record = mapRecord(object);
         excludePrimaryKey(record);
         SqlRecord primaryKeyRecord = getPrimaryKeyMap(object);
         update(record, primaryKeyRecord);
     }
 
     protected void excludePrimaryKey(SqlRecord record) {
-        for (String key : getPrimaryKey()) {
+        for (String key : PRIMARY_KEY_FIELDS.keySet()) {
             record.remove(key);
         }
     }
@@ -151,7 +245,7 @@ public abstract class BaseRepository<T extends DatabaseObject> {
 
     public Integer count() throws SQLException {
         String sql = String.format("SELECT COUNT(%s) FROM %s", getPrimaryKeyString(), getTableName());
-        ResultSet resultSet = MySQLdb.getInstance().query(sql);
+        ResultSet resultSet = MySQLdb.getInstance().select(sql);
         if (resultSet.next()) {
             return resultSet.getInt(1);
         }
