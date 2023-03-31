@@ -3,21 +3,36 @@ package model;
 import core.DatabaseObject;
 import repository.UserRepository;
 
+import javax.persistence.*;
 import java.sql.SQLException;
 
+@Entity
+@Table(name = "novels", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 public class Novel implements DatabaseObject {
     public static final String STATUS_ON_GOING = "on going";
     public static final String STATUS_FINISHED = "finished";
     public static final String STATUS_PAUSED = "paused";
     public static final String DEFAULT_IMAGE = "/images/default-novel-avatar.jpg";
     public static final String DEFAULT_SUMMARY = "Không có tóm tắt";
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
+    @Column(name = "owner")
     private Integer ownerID;
+    @ManyToOne
+    @JoinColumn(name = "owner")
     private User owner;
+    @Column(name = "summary")
     private String summary;
+    @Column(name = "name")
     private String name;
+    @Column(name = "image")
     private String image;
+    @Column(name = "is_pending")
     private boolean pending;
+    @Column(name = "status")
     private String status;
 
     public Novel() {

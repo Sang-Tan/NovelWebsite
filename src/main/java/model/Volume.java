@@ -4,15 +4,28 @@ import core.DatabaseObject;
 import repository.NovelRepository;
 import repository.UserRepository;
 
+import javax.persistence.*;
 import java.sql.SQLException;
-
+@Entity
+@Table(name = "volumes", uniqueConstraints = {@UniqueConstraint(columnNames = {"novel_id", "order_index"})})
 public class Volume implements DatabaseObject {
     public static final String DEFAULT_IMAGE = "/images/default-novel-avatar.jpg";
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+
+
+    @ManyToOne
+    @JoinColumn(name = "novel_id")
     private Novel novel;
+    @Column(name = "novel_id")
     private Integer novelId;
+    @Column(name = "name")
     private String name;
+    @Column(name = "image")
     private String image;
+    @Column(name = "order_index")
     private int orderIndex;
 
     public Volume() {

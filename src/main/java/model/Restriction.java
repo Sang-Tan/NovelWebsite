@@ -3,9 +3,13 @@ package model;
 import core.DatabaseObject;
 import repository.UserRepository;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-
+@Entity
+@Table(name = "restrictions", uniqueConstraints = {@UniqueConstraint(columnNames = {""})})
 public class Restriction implements DatabaseObject {
     public static final String TYPE_NOVEL = "novel";
     public static final String TYPE_COMMENT = "comment";

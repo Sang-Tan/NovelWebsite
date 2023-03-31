@@ -20,7 +20,7 @@ dependencies {
     implementation group: 'javax.servlet', name: 'jstl', version: '1.2'
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.23'
     implementation group: 'org.json', name: 'json', version: '20090211'
-
+    implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
 }
 
 test {
