@@ -1,6 +1,5 @@
 package core.database;
 
-import com.mysql.cj.conf.ConnectionUrlParser;
 import core.Pair;
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -42,14 +41,16 @@ public class MySQLdb {
         return connection;
     }
 
-    public ResultSet query(String sql) throws SQLException {
+
+    //region SELECT OPERATIONS
+    public ResultSet select(String sql) throws SQLException {
         Connection connection = getConnectDB();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
         return resultSet;
     }
 
-    public ResultSet query(String sql, Object[] params) throws SQLException {
+    public ResultSet select(String sql, Object[] params) throws SQLException {
         Connection connection = getConnectDB();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         for (int i = 0; i < params.length; i++) {
@@ -58,7 +59,10 @@ public class MySQLdb {
         ResultSet resultSet = preparedStatement.executeQuery();
         return resultSet;
     }
-    
+    //endregion
+
+
+    //region UPDATE AND DELETE OPERATIONS
     public void executeOnce(Connection connection, String sql, Object[] params) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         for (int i = 0; i < params.length; i++) {
@@ -102,4 +106,43 @@ public class MySQLdb {
         connection.commit();
         connection.close();
     }
+    //endregion
+
+
+    //region INSERT OPERATIONS
+    public ResultSet insert(String sql) throws SQLException {
+        Connection connection = getConnectDB();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        preparedStatement.execute();
+        ResultSet resultSet = preparedStatement.getGeneratedKeys();
+        return resultSet;
+    }
+
+    public ResultSet insert(String sql, Object[] params) throws SQLException {
+        Connection connection = getConnectDB();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        for (int i = 0; i < params.length; i++) {
+            preparedStatement.setObject(i + 1, params[i]);
+        }
+        preparedStatement.execute();
+        ResultSet resultSet = preparedStatement.getGeneratedKeys();
+        return resultSet;
+    }
+
+    public ResultSet insertBatch(String sql, List<Object[]> listParams) throws SQLException {
+        Connection connection = getConnectDB();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        for (Object[] params : listParams) {
+            for (int i = 0; i < params.length; i++) {
+                preparedStatement.setObject(i + 1, params[i]);
+            }
+            preparedStatement.addBatch();
+        }
+        preparedStatement.executeBatch();
+        ResultSet resultSet = preparedStatement.getGeneratedKeys();
+        return resultSet;
+    }
+    //endregion
+
+
 }
