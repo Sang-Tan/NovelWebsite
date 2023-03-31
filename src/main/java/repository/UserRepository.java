@@ -86,7 +86,7 @@ public class UserRepository extends BaseRepository<User> {
 
     public User getById(Integer ID) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
-        ResultSet result = MySQLdb.getInstance().query(sql, new Object[]{ID});
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{ID});
         if (result.next()) {
             return mapRow(result);
         }
@@ -95,7 +95,7 @@ public class UserRepository extends BaseRepository<User> {
 
     public User getByUsername(String username) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE username = ?", getTableName());
-        ResultSet result = MySQLdb.getInstance().query(sql, new Object[]{username});
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{username});
         if (result.next()) {
             return mapRow(result);
         }
@@ -104,7 +104,7 @@ public class UserRepository extends BaseRepository<User> {
 
     public User getByToken(String hashedToken) throws SQLException {
         String query = String.format("SELECT user_id FROM %s WHERE token = ?", getTableName());
-        ResultSet result = MySQLdb.getInstance().query(query, new Object[]{hashedToken});
+        ResultSet result = MySQLdb.getInstance().select(query, new Object[]{hashedToken});
         if (result.next()) {
             return getById(result.getInt("user_id"));
         }

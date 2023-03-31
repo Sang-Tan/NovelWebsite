@@ -1,4 +1,7 @@
-package model;
+package model.intermediate;
+
+import model.Genre;
+import model.Novel;
 
 public class NovelGenre {
     private Genre genreId;

@@ -64,7 +64,7 @@ public class ChapterRepository extends BaseRepository<Chapter> {
 
     public Chapter getById(Integer ID) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
-        ResultSet result = MySQLdb.getInstance().query(sql, new Object[]{ID});
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{ID});
         if (result.next()) {
             return mapRow(result);
         }

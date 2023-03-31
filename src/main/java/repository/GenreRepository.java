@@ -53,7 +53,7 @@ public class GenreRepository extends BaseRepository<Genre> {
 
     public Genre findByName(String name) throws SQLException {
         String sql = "SELECT * FROM " + getTableName() + " WHERE name = ?";
-        ResultSet result = MySQLdb.getInstance().query(sql, new Object[]{name});
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{name});
         if (result.next()) {
             return mapRow(result);
         }
@@ -62,7 +62,7 @@ public class GenreRepository extends BaseRepository<Genre> {
 
     public Genre findById(int id) throws SQLException {
         String sql = "SELECT * FROM " + getTableName() + " WHERE id = ?";
-        ResultSet result = MySQLdb.getInstance().query(sql, new Object[]{id});
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{id});
         if (result.next()) {
             return mapRow(result);
         }

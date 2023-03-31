@@ -1,4 +1,7 @@
-package model;
+package model.intermediate;
+
+import model.Chapter;
+import model.User;
 
 public class ChapterMark {
     private Chapter chapterId;

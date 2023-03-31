@@ -74,7 +74,7 @@ public class TokenRepository extends BaseRepository<Token> {
 
     public Token getByHashedToken(String hashedToken) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE token_hash = ?", getTableName());
-        ResultSet result = MySQLdb.getInstance().query(sql, new Object[]{hashedToken});
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{hashedToken});
         if (result.next()) {
             return mapRow(result);
         }

@@ -59,13 +59,13 @@ public abstract class BaseRepository<T extends DatabaseObject> {
 
     public List<T> getAll() throws SQLException {
         String sql = String.format("SELECT * FROM %s", getTableName());
-        ResultSet resultSet = MySQLdb.getInstance().query(sql);
+        ResultSet resultSet = MySQLdb.getInstance().select(sql);
         return mapRows(resultSet);
     }
 
     public List<T> getRange(int start, int end) throws SQLException {
         String sql = String.format("SELECT * FROM %s LIMIT %d, %d", getTableName(), start, end);
-        ResultSet resultSet = MySQLdb.getInstance().query(sql);
+        ResultSet resultSet = MySQLdb.getInstance().select(sql);
         return mapRows(resultSet);
     }
 
@@ -151,7 +151,7 @@ public abstract class BaseRepository<T extends DatabaseObject> {
 
     public Integer count() throws SQLException {
         String sql = String.format("SELECT COUNT(%s) FROM %s", getPrimaryKeyString(), getTableName());
-        ResultSet resultSet = MySQLdb.getInstance().query(sql);
+        ResultSet resultSet = MySQLdb.getInstance().select(sql);
         if (resultSet.next()) {
             return resultSet.getInt(1);
         }
