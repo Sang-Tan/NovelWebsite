@@ -62,13 +62,6 @@ public class Register extends HttpServlet {
                 return;
             }
 
-            // set user information in session
-            User createdUser = UserRepository.getInstance().getByUsername(username);
-            if (createdUser == null) {
-                response.setStatus(500);
-                Register.LOGGER.warning(String.format("User %s not found", username));
-            }
-            int userID = createdUser.getId();
             session.setAttribute("username", username);
             session.setAttribute("password", hashedPassword);
             response.getWriter().println(JSON.getResponseJson("success"));
