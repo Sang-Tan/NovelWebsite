@@ -7,38 +7,37 @@ import repository.UserRepository;
 import javax.persistence.*;
 import java.sql.SQLException;
 
+
+import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+
 @Entity
 @Table(name = "volumes", uniqueConstraints = {@UniqueConstraint(columnNames = {"novel_id", "order_index"})})
-public class Volume implements DatabaseObject {
+public class Volume {
     public static final String DEFAULT_IMAGE = "/images/default-novel-avatar.jpg";
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Id
+    @Column(name = "id", nullable = false)
     private int id;
-
-
-    @ManyToOne
-    @JoinColumn(name = "novel_id")
-    private Novel novel;
-    @Column(name = "novel_id")
-    private Integer novelId;
-    @Column(name = "name")
+    @Basic
+    @Column(name = "novel_id", nullable = false)
+    private int novelId;
+    @Basic
+    @Column(name = "name", nullable = false, length = 255)
     private String name;
-    @Column(name = "image")
+    @Basic
+    @Column(name = "image", nullable = true, length = 255)
     private String image;
-    @Column(name = "order_index")
+    @Basic
+    @Column(name = "order_index", nullable = false)
     private int orderIndex;
-
-    public Volume() {
-    }
-
-    public Volume(int id, Novel novel, String name, String image, int orderIndex) {
-        this.id = id;
-        this.novel = novel;
-        this.name = name;
-        this.image = image;
-        this.orderIndex = orderIndex;
-    }
+    @OneToMany(mappedBy = "belongVolume")
+    private List<Chapter> ownershipChapters;
+    @ManyToOne
+    @JoinColumn(name = "novel_id", referencedColumnName = "id", nullable = false)
+    private Novel belongNovel;
 
     public int getId() {
         return id;
@@ -48,21 +47,11 @@ public class Volume implements DatabaseObject {
         this.id = id;
     }
 
-    public Novel getNovel() throws SQLException {
-        novel = NovelRepository.getInstance().getById(novelId);
-        return novel;
-    }
-
-    public void setNovel(Novel novel) {
-        this.novelId = novel.getId();
-        this.novel = novel;
-    }
-
-    public Integer getNovelId() {
+    public int getNovelId() {
         return novelId;
     }
 
-    public void setNovelId(Integer novelId) {
+    public void setNovelId(int novelId) {
         this.novelId = novelId;
     }
 
@@ -88,5 +77,49 @@ public class Volume implements DatabaseObject {
 
     public void setOrderIndex(int orderIndex) {
         this.orderIndex = orderIndex;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Volume volumes = (Volume) o;
+        return id == volumes.id && novelId == volumes.novelId && orderIndex == volumes.orderIndex && Objects.equals(name, volumes.name) && Objects.equals(image, volumes.image);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, novelId, name, image, orderIndex);
+    }
+
+    public List<Chapter> getChaptersById() {
+        return ownershipChapters;
+    }
+    public void addOwnershipChapter(Chapter chapter) {
+        ownershipChapters.add(chapter);
+    }
+
+    public void updateOwnershipChapter(Chapter chapter) {
+        for (int i = 0; i < ownershipChapters.size(); i++) {
+            if (ownershipChapters.get(i).getId() == chapter.getId()) {
+                ownershipChapters.set(i, chapter);
+                break;
+            }
+        }
+    }
+    public void deleteChapter(Chapter chapter) {
+        deleteChapter(chapter.getId());
+    }
+    public void deleteChapter(int chapterId) {
+        for (int i = 0; i < ownershipChapters.size(); i++) {
+            if (ownershipChapters.get(i).getId() == chapterId) {
+                ownershipChapters.remove(i);
+                break;
+            }
+        }
+    }
+
+    public Novel getBelongNovel() {
+        return belongNovel;
     }
 }
