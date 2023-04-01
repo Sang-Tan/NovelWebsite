@@ -40,8 +40,8 @@ public class Chapter {
     @Column(name = "is_pending", nullable = false)
     private byte isPending;
 
-    @OneToMany(mappedBy = "chapter")
-    private List<ChapterMark> ownershipChapterMarks;
+//    @OneToMany(mappedBy = "chapter")
+//    private List<ChapterMark> ownershipChapterMarks;
 
     @ManyToOne
     @JoinColumn(name = "volume_id", referencedColumnName = "id", nullable = false)
@@ -102,51 +102,51 @@ public class Chapter {
     public void setIsPending(byte isPending) {
         this.isPending = isPending;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Chapter chapter = (Chapter) o;
-        return id == chapter.id && orderIndex == chapter.orderIndex && belongVolume == chapter.belongVolume
-                && isPending == chapter.isPending && Objects.equals(name, chapter.name)
-                && Objects.equals(content, chapter.content) && Objects.equals(modifyTime, chapter.modifyTime);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, orderIndex, belongVolume, content, modifyTime, isPending);
-    }
-
-    public List<ChapterMark> getOwnershipChapterMarks() {
-        return ownershipChapterMarks;
-    }
-
-    public void addOwnershipChapterMark(ChapterMark chapterMark) {
-        ownershipChapterMarks.add(chapterMark);
-    }
-
-    public void updateOwnershipChapterMark(ChapterMark chapterMark) {
-        for (int i = 0; i < ownershipChapterMarks.size(); i++) {
-            if (ownershipChapterMarks.get(i).getChapter() == chapterMark.getChapter()
-                    && ownershipChapterMarks.get(i).getUser() == chapterMark.getUser()) {
-                ownershipChapterMarks.set(i, chapterMark);
-                break;
-            }
-        }
-    }
-
-    public void deleteOwnershipChapterMark(ChapterMark chapterMark) {
-        deleteOwnershipChapterMark(chapterMark.getChapter().getId(), chapterMark.getUser().getId());
-    }
-
-    public void deleteOwnershipChapterMark(int chapterId, int userId) {
-        for (int i = 0; i < ownershipChapterMarks.size(); i++) {
-            if (ownershipChapterMarks.get(i).getChapter().getId() == chapterId
-                    && ownershipChapterMarks.get(i).getUser().getId() == userId) {
-                ownershipChapterMarks.remove(i);
-                break;
-            }
-        }
-    }
+//
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Chapter chapter = (Chapter) o;
+//        return id == chapter.id && orderIndex == chapter.orderIndex && belongVolume == chapter.belongVolume
+//                && isPending == chapter.isPending && Objects.equals(name, chapter.name)
+//                && Objects.equals(content, chapter.content) && Objects.equals(modifyTime, chapter.modifyTime);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(id, name, orderIndex, belongVolume, content, modifyTime, isPending);
+//    }
+//
+//    public List<ChapterMark> getOwnershipChapterMarks() {
+//        return ownershipChapterMarks;
+//    }
+//
+//    public void addOwnershipChapterMark(ChapterMark chapterMark) {
+//        ownershipChapterMarks.add(chapterMark);
+//    }
+//
+//    public void updateOwnershipChapterMark(ChapterMark chapterMark) {
+//        for (int i = 0; i < ownershipChapterMarks.size(); i++) {
+//            if (ownershipChapterMarks.get(i).getChapter() == chapterMark.getChapter()
+//                    && ownershipChapterMarks.get(i).getUser() == chapterMark.getUser()) {
+//                ownershipChapterMarks.set(i, chapterMark);
+//                break;
+//            }
+//        }
+//    }
+//
+//    public void deleteOwnershipChapterMark(ChapterMark chapterMark) {
+//        deleteOwnershipChapterMark(chapterMark.getChapter().getId(), chapterMark.getUser().getId());
+//    }
+//
+//    public void deleteOwnershipChapterMark(int chapterId, int userId) {
+//        for (int i = 0; i < ownershipChapterMarks.size(); i++) {
+//            if (ownershipChapterMarks.get(i).getChapter().getId() == chapterId
+//                    && ownershipChapterMarks.get(i).getUser().getId() == userId) {
+//                ownershipChapterMarks.remove(i);
+//                break;
+//            }
+//        }
+//    }
 }
