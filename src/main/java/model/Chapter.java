@@ -7,35 +7,42 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "chapters", schema = "novelweb", catalog = "")
-public class Chapters {
+public class Chapter {
     public static final String DEFAULT_CONTENT = "Không có nội dung";
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
+
     @Basic
     @Column(name = "name", nullable = false, length = 255)
     private String name;
+
     @Basic
     @Column(name = "order_index", nullable = false)
     private int orderIndex;
-    @Basic
-    @Column(name = "volume_id", nullable = false)
-    private int volumeId;
+
+
     @Basic
     @Column(name = "content", nullable = true, length = -1)
     private String content;
+
     @Basic
     @Column(name = "modify_time", nullable = false)
     private Timestamp modifyTime;
+
     @Basic
     @Column(name = "is_pending", nullable = false)
     private byte isPending;
-    @OneToMany(mappedBy = "belongChapter")
+
+    @OneToMany(mappedBy = "chapter")
     private List<ChapterMark> ownershipChapterMarks;
+
     @ManyToOne
     @JoinColumn(name = "volume_id", referencedColumnName = "id", nullable = false)
     private Volume belongVolume;
@@ -64,12 +71,12 @@ public class Chapters {
         this.orderIndex = orderIndex;
     }
 
-    public int getVolumeId() {
-        return volumeId;
+    public Volume getBelongVolume() {
+        return belongVolume;
     }
 
-    public void setVolumeId(int volumeId) {
-        this.volumeId = volumeId;
+    public void setBelongVolume(Volume volume) {
+        this.belongVolume = volume;
     }
 
     public String getContent() {
@@ -100,13 +107,15 @@ public class Chapters {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Chapters chapters = (Chapters) o;
-        return id == chapters.id && orderIndex == chapters.orderIndex && volumeId == chapters.volumeId && isPending == chapters.isPending && Objects.equals(name, chapters.name) && Objects.equals(content, chapters.content) && Objects.equals(modifyTime, chapters.modifyTime);
+        Chapter chapter = (Chapter) o;
+        return id == chapter.id && orderIndex == chapter.orderIndex && belongVolume == chapter.belongVolume
+                && isPending == chapter.isPending && Objects.equals(name, chapter.name)
+                && Objects.equals(content, chapter.content) && Objects.equals(modifyTime, chapter.modifyTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, orderIndex, volumeId, content, modifyTime, isPending);
+        return Objects.hash(id, name, orderIndex, belongVolume, content, modifyTime, isPending);
     }
 
     public List<ChapterMark> getOwnershipChapterMarks() {
@@ -119,31 +128,25 @@ public class Chapters {
 
     public void updateOwnershipChapterMark(ChapterMark chapterMark) {
         for (int i = 0; i < ownershipChapterMarks.size(); i++) {
-            if (ownershipChapterMarks.get(i).getChapterId() == chapterMark.getChapterId()
-                    && ownershipChapterMarks.get(i).getUserId() == chapterMark.getUserId()) {
+            if (ownershipChapterMarks.get(i).getChapter() == chapterMark.getChapter()
+                    && ownershipChapterMarks.get(i).getUser() == chapterMark.getUser()) {
                 ownershipChapterMarks.set(i, chapterMark);
                 break;
             }
         }
     }
+
     public void deleteOwnershipChapterMark(ChapterMark chapterMark) {
-        deleteOwnershipChapterMark(chapterMark.getChapterId(), chapterMark.getUserId());
+        deleteOwnershipChapterMark(chapterMark.getChapter().getId(), chapterMark.getUser().getId());
     }
+
     public void deleteOwnershipChapterMark(int chapterId, int userId) {
         for (int i = 0; i < ownershipChapterMarks.size(); i++) {
-            if (ownershipChapterMarks.get(i).getChapterId() == chapterId
-                    && ownershipChapterMarks.get(i).getUserId() == userId) {
+            if (ownershipChapterMarks.get(i).getChapter().getId() == chapterId
+                    && ownershipChapterMarks.get(i).getUser().getId() == userId) {
                 ownershipChapterMarks.remove(i);
                 break;
             }
         }
-    }
-
-    public Volume getBelongVolume() {
-        return belongVolume;
-    }
-
-    public void setBelongVolume(Volume volume) {
-        this.belongVolume = volume;
     }
 }

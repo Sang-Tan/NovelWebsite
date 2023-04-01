@@ -3,31 +3,34 @@ package model.intermediate;
 import model.Chapter;
 import model.User;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 public class ChapterMark {
-    private Chapter chapterId;
-    private User userId;
+    private Chapter chapter;
+    private User user;
 
     public ChapterMark() {
     }
 
-    public ChapterMark(Chapter chapterId, User userId) {
-        this.chapterId = chapterId;
-        this.userId = userId;
+    public ChapterMark(Chapter chapter, User user) {
+        this.chapter = chapter;
+        this.user = user;
     }
 
-    public Chapter getChapterId() {
-        return chapterId;
+    public Chapter getChapter() {
+        return chapter;
     }
 
-    public void setChapterId(Chapter chapterId) {
-        this.chapterId = chapterId;
+    public void setChapter(Chapter chapter) {
+        this.chapter = chapter;
     }
 
-    public User getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
