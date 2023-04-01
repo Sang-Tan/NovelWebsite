@@ -16,7 +16,7 @@ public class Token implements DatabaseObject {
     @Column(name = "id")
     private int id;
     @Column(name = "user_id")
-    private int userId ;
+    private int userId;
     @Column(name = "token_hash")
     private String tokenHash;
     @Column(name = "expired_time")

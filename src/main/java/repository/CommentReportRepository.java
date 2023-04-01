@@ -26,6 +26,6 @@ public class CommentReportRepository extends BaseRepository<CommentReport> {
     protected CommentReport createDefault() {
         return null;
     }
-    
+
 
 }

@@ -7,6 +7,7 @@ import repository.UserRepository;
 import javax.persistence.*;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+
 @Entity
 @Table(name = "restrictions", uniqueConstraints = {@UniqueConstraint(columnNames = {"restricted_user_id", "restricted_type"})})
 public class Restriction implements DatabaseObject {

@@ -560,3 +560,25 @@ ul.tree-list,
         height: fit-content;
     }
 }
+
+/*Report*/
+.section {
+    font-weight: bold;
+}
+
+.section:hover {
+    color: #3D9970;
+    cursor: pointer;
+}
+
+.rpt-group__item{
+    margin-bottom: 1rem;
+}
+
+.rpt-detail{
+    overflow: hidden;
+    background-color: var(--light-gray);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.2rem;
+    text-decoration: none !important;
+}

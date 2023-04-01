@@ -6,6 +6,7 @@ import repository.UserRepository;
 
 import javax.persistence.*;
 import java.sql.SQLException;
+
 @Entity
 @Table(name = "volumes", uniqueConstraints = {@UniqueConstraint(columnNames = {"novel_id", "order_index"})})
 public class Volume implements DatabaseObject {

@@ -28,6 +28,6 @@ public class RestrictionRepository extends BaseRepository<Restriction> {
         restriction.setRestrictedType(Restriction.TYPE_NOVEL);
         return restriction;
     }
-    
+
 
 }
