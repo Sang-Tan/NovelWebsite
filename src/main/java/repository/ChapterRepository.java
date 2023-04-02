@@ -28,7 +28,7 @@ public class ChapterRepository extends BaseRepository<Chapter> {
     protected Chapter createDefault() {
         Chapter chapter = new Chapter();
         chapter.setContent(Chapter.DEFAULT_CONTENT);
-        chapter.setIsPending(true);
+        //.setIsPending(true);
         return chapter;
     }
 

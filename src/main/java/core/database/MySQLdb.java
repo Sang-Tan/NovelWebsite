@@ -4,6 +4,7 @@ import core.Pair;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.sql.*;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -129,7 +130,7 @@ public class MySQLdb {
         return resultSet;
     }
 
-    public ResultSet insertBatch(String sql, List<Object[]> listParams) throws SQLException {
+    public ResultSet insertBatch(String sql, Collection<Object[]> listParams) throws SQLException {
         Connection connection = getConnectDB();
         PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         for (Object[] params : listParams) {

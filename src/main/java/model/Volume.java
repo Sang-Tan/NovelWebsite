@@ -79,6 +79,7 @@ public class Volume implements DatabaseObject {
     public List<Chapter> getChaptersById() {
         return ownershipChapters;
     }
+
     public void addOwnershipChapter(Chapter chapter) {
         ownershipChapters.add(chapter);
     }
@@ -91,9 +92,11 @@ public class Volume implements DatabaseObject {
             }
         }
     }
+
     public void deleteChapter(Chapter chapter) {
         deleteChapter(chapter.getId());
     }
+
     public void deleteChapter(int chapterId) {
         for (int i = 0; i < ownershipChapters.size(); i++) {
             if (ownershipChapters.get(i).getId() == chapterId) {
