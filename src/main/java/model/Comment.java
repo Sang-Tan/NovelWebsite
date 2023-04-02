@@ -17,25 +17,16 @@ public class Comment implements DatabaseObject {
     private int id;
     @Column(name = "user_id", nullable = false)
     private int userId;
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private User user;
 
 
     @Column(name = "content", nullable = false)
     private String content;
-    @ManyToOne
-    @JoinColumn(name = "deactive_by", referencedColumnName = "id")
-    private User deactiveByUser;
     @Column(name = "deactive_by")
     private int deactiveBy;
     @Column(name = "time_comment", nullable = false)
     private Timestamp commentTime;
     @Column(name = "parent_id")
     private int parentId;
-    @ManyToOne
-    @JoinColumn(name = "parent_id", referencedColumnName = "id")
-    private Comment parentComment;
 
     public Comment() {
     }
@@ -49,6 +40,12 @@ public class Comment implements DatabaseObject {
         this.parentId = parentId;
     }
 
+    public int getParentId() {
+        return parentId;
+    }
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
+    }
     public int getId() {
         return id;
     }
@@ -57,17 +54,13 @@ public class Comment implements DatabaseObject {
         this.id = id;
     }
 
-    public User getUser() throws SQLException {
-        if(user == null)  {
-            UserRepository.getInstance().getById(userId);
-        }
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
+    public void setUserId(User user) {
 
-        this.user = user;
-        userId = user.getId();
+        this.userId = user.getId();
     }
 
     public String getContent() {
@@ -77,20 +70,25 @@ public class Comment implements DatabaseObject {
     public void setContent(String content) {
         this.content = content;
     }
-
-    public User getDeactiveByUser() throws SQLException {
-
-        if(deactiveByUser == null) {
-            UserRepository.getInstance().getById(deactiveBy);
-        }
-        return deactiveByUser;
+    public int getDeactiveBy() {
+        return deactiveBy;
     }
-
-    public void setDeactiveByUser(User user) {
-
-        this.deactiveByUser = user;
-        deactiveBy = user.getId();
+    public void setDeactiveBy(int deactiveBy) {
+        this.deactiveBy = deactiveBy;
     }
+//    public User getDeactiveByUser() throws SQLException {
+//
+//        if(deactiveByUser == null) {
+//            UserRepository.getInstance().getById(deactiveBy);
+//        }
+//        return deactiveByUser;
+//    }
+//
+//    public void setDeactiveByUser(User user) {
+//
+//        this.deactiveByUser = user;
+//        deactiveBy = user.getId();
+//    }
 
     public Timestamp getCommentTime() {
         return commentTime;
@@ -100,16 +98,16 @@ public class Comment implements DatabaseObject {
         this.commentTime = commentTime;
     }
 
-    public int getParentComment() throws SQLException {
-
-        if(parentComment == null) {
-            parentComment = CommentRepository.getInstance().getById(parentId);
-        }
-        return parentId;
-    }
-
-    public void setParent(Comment parentComment) {
-        this.parentId = parentId;
-        this.parentComment = parentComment;
-    }
+//    public int getParentComment() throws SQLException {
+//
+//        if(parentComment == null) {
+//            parentComment = CommentRepository.getInstance().getById(parentId);
+//        }
+//        return parentId;
+//    }
+//
+//    public void setParent(Comment parentComment) {
+//        this.parentId = parentId;
+//        this.parentComment = parentComment;
+//    }
 }

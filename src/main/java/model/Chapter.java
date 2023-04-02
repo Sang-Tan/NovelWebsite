@@ -36,7 +36,7 @@ public class Chapter implements DatabaseObject {
     private Timestamp modifyTime;
 
     @Column(name = "is_pending", nullable = false)
-    private boolean isPending;
+    private boolean pending;
     @Column(name = "volume_id", nullable = false)
     private int volumeId;
 
@@ -100,12 +100,12 @@ public class Chapter implements DatabaseObject {
         this.modifyTime = modifyTime;
     }
 
-    public boolean getIsPending() {
-        return isPending;
+    public boolean IsPending() {
+        return pending
     }
 
-    public void setIsPending(boolean isPending) {
-        this.isPending = isPending;
+    public void setPending(boolean isPending) {
+        this.pending = pending;
     }
 
 //
