@@ -21,16 +21,12 @@ public class Volume implements DatabaseObject {
     @Id
     @Column(name = "id", nullable = false)
     private int id;
-    @Basic
     @Column(name = "novel_id", nullable = false)
     private int novelId;
-    @Basic
     @Column(name = "name", nullable = false, length = 255)
     private String name;
-    @Basic
     @Column(name = "image", nullable = true, length = 255)
     private String image;
-    @Basic
     @Column(name = "order_index", nullable = false)
     private int orderIndex;
     @OneToMany(mappedBy = "belongVolume")
@@ -79,18 +75,6 @@ public class Volume implements DatabaseObject {
         this.orderIndex = orderIndex;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Volume volumes = (Volume) o;
-        return id == volumes.id && novelId == volumes.novelId && orderIndex == volumes.orderIndex && Objects.equals(name, volumes.name) && Objects.equals(image, volumes.image);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, novelId, name, image, orderIndex);
-    }
 
     public List<Chapter> getChaptersById() {
         return ownershipChapters;

@@ -1,18 +1,25 @@
 package model;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 
+@Entity
+@Table(name = "novel_report", schema = "novelweb")
 public class NovelReport {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private int id;
-    private Novel novelId;
-    private User reporterId;
+
+    private int novelId;
+    private int reporterId;
     private String reason;
     private Timestamp checkTime;
 
     public NovelReport() {
     }
 
-    public NovelReport(int id, Novel novelId, User reporterId, String reason, Timestamp checkTime) {
+    public NovelReport(int id, int novelId, int reporterId, String reason, Timestamp checkTime) {
         this.id = id;
         this.novelId = novelId;
         this.reporterId = reporterId;
@@ -28,19 +35,19 @@ public class NovelReport {
         this.id = id;
     }
 
-    public Novel getNovelId() {
+    public int getNovelId() {
         return novelId;
     }
 
-    public void setNovelId(Novel novelId) {
+    public void setNovelId(int novelId) {
         this.novelId = novelId;
     }
 
-    public User getReporterId() {
+    public int getReporterId() {
         return reporterId;
     }
 
-    public void setReporterId(User reporterId) {
+    public void setReporterId(int reporterId) {
         this.reporterId = reporterId;
     }
 

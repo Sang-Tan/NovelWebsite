@@ -1,15 +1,26 @@
 package model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "notifications", schema = "novelweb")
 public class Notification {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private int id;
-    private User userId;
+
+    @Column(name = "user_id", nullable = false)
+    private int userId;
+    @Column(name = "content", nullable = false)
     private String content;
+    @Column(name = "link", nullable = false)
     private String link;
 
     public Notification() {
     }
 
-    public Notification(int id, User userId, String content, String link) {
+    public Notification(int id, int userId, String content, String link) {
         this.id = id;
         this.userId = userId;
         this.content = content;
@@ -24,11 +35,11 @@ public class Notification {
         this.id = id;
     }
 
-    public User getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(User userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

@@ -22,15 +22,9 @@ public class Restriction implements DatabaseObject {
     @Column(name = "restricted_type")
     private String restrictedType;
 
-    @ManyToOne
-    @JoinColumn(name = "restricted_user_id")
-    private User restrictedUser;
     @Column(name = "executor_id")
     private int executorId;
 
-    @ManyToOne
-    @JoinColumn(name = "executor_id")
-    private User executor;
 
     @Column(name = "reason")
     private String reason;
@@ -40,23 +34,24 @@ public class Restriction implements DatabaseObject {
     public Restriction() {
     }
 
-    public Restriction(User restrictedUser, String restrictedType, User executor, String reason, Timestamp dueTime) {
-        this.restrictedUserId = restrictedUser.getId();
+    public Restriction(int restrictedUserID, String restrictedType, int executorID, String reason, Timestamp dueTime) {
+        this.restrictedUserId = restrictedUserID;
         this.restrictedType = restrictedType;
-        this.executor = executor;
+        this.executorId = executorID;
         this.reason = reason;
         this.dueTime = dueTime;
     }
 
-    public User getRestrictedUser() throws SQLException {
-        restrictedUser = UserRepository.getInstance().getById(restrictedUserId);
-        return restrictedUser;
-    }
+//    public User getRestrictedUser() throws SQLException {
+//        if (restrictedUser == null)
+//            restrictedUser = UserRepository.getInstance().getById(restrictedUserId);
+//        return restrictedUser;
+//    }
 
-    public void setRestrictedUser(User restrictedUser) {
-        this.restrictedUserId = restrictedUser.getId();
-        this.restrictedUser = restrictedUser;
-    }
+//    public void setRestrictedUser(User restrictedUser) {
+//        this.restrictedUserId = restrictedUser.getId();
+//        this.restrictedUser = restrictedUser;
+//    }
 
     public String getRestrictedType() {
         return restrictedType;
@@ -66,15 +61,16 @@ public class Restriction implements DatabaseObject {
         this.restrictedType = restrictedType;
     }
 
-    public User getExecutor() throws SQLException {
-        executor = UserRepository.getInstance().getById(executorId);
-        return executor;
-    }
-
-    public void setExecutor(User executor) {
-        this.executorId = executor.getId();
-        this.executor = executor;
-    }
+//    public User getExecutor() throws SQLException {
+//        if (executor == null)
+//            executor = UserRepository.getInstance().getById(executorId);
+//        return executor;
+//    }
+//
+//    public void setExecutor(User executor) {
+//        this.executorId = executor.getId();
+//        this.executor = executor;
+//    }
 
     public int getRestrictedUserId() {
         return restrictedUserId;

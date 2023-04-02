@@ -5,6 +5,7 @@ import repository.UserRepository;
 
 import javax.persistence.*;
 import java.sql.SQLException;
+import java.util.List;
 
 @Entity
 @Table(name = "novels", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
@@ -34,6 +35,8 @@ public class Novel implements DatabaseObject {
     private boolean pending;
     @Column(name = "status")
     private String status;
+    @OneToMany(mappedBy = "belongNovel")
+    private List<Volume> ownershipVolumes;
 
     public Novel() {
     }
@@ -74,10 +77,6 @@ public class Novel implements DatabaseObject {
         return ownerID;
     }
 
-    public void setOwnerID(int ownerID) {
-        this.ownerID = ownerID;
-    }
-
     public String getSummary() {
         return summary;
     }
@@ -116,5 +115,31 @@ public class Novel implements DatabaseObject {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    public List<Volume> getVolumesById() {
+        return ownershipVolumes;
+    }
+    public void addOwnershipChapter(Volume volume) {
+        ownershipVolumes.add(volume);
+    }
+
+    public void updateOwnershipChapter(Volume volume) {
+        for (int i = 0; i < ownershipVolumes.size(); i++) {
+            if (ownershipVolumes.get(i).getId() == volume.getId()) {
+                ownershipVolumes.set(i, volume);
+                break;
+            }
+        }
+    }
+    public void deleteChapter(Chapter chapter) {
+        deleteChapter(chapter.getId());
+    }
+    public void deleteChapter(int chapterId) {
+        for (int i = 0; i < ownershipVolumes.size(); i++) {
+            if (ownershipVolumes.get(i).getId() == chapterId) {
+                ownershipVolumes.remove(i);
+                break;
+            }
+        }
     }
 }
