@@ -18,9 +18,9 @@ public class Novel implements DatabaseObject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private int id;
     @Column(name = "owner")
-    private Integer ownerID;
+    private int ownerID;
     @ManyToOne
     @JoinColumn(name = "owner")
     private User owner;
@@ -58,7 +58,9 @@ public class Novel implements DatabaseObject {
     }
 
     public User getOwner() throws SQLException {
-        owner = UserRepository.getInstance().getById(ownerID);
+        if (owner == null || owner.getId() != ownerID) {
+            owner = UserRepository.getInstance().getById(ownerID);
+        }
         return owner;
     }
 
@@ -67,15 +69,12 @@ public class Novel implements DatabaseObject {
         this.owner = owner;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
-    public Integer getOwnerID() {
+    public int getOwnerID() {
         return ownerID;
     }
 
-    public void setOwnerID(Integer ownerID) {
+    public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
     }
 
