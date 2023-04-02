@@ -1,6 +1,7 @@
 
 package model;
 
+import core.DatabaseObject;
 import model.intermediate.ChapterMark;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "chapters", schema = "novelweb", catalog = "")
-public class Chapter {
+public class Chapter implements DatabaseObject {
     public static final String DEFAULT_CONTENT = "Không có nội dung";
 
     @Id
