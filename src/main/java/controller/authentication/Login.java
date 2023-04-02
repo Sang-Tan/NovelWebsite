@@ -15,6 +15,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
@@ -92,7 +94,6 @@ public class Login extends HttpServlet {
                     String hashedToken = TokenService.hashToken(plainToken);
                     User user = UserRepository.getInstance().getByUsername(username);
                     Token token = tokenRepository.createNewToken(user.getId(), hashedToken);
-                    token.setExpiredTime();
                     tokenRepository.insert(token);
                 }
             } catch (SQLException e) {

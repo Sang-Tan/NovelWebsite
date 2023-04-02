@@ -21,7 +21,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@MultipartConfig
 @WebServlet(name = "SearchNovelsServlet", value = "/search-novels")
 public class SearchNovels extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(SearchNovels.class.getName());

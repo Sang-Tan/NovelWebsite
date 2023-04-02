@@ -38,6 +38,7 @@ public class TokenRepository extends BaseRepository<Token> {
         Token token = createEmpty();
         token.setUserId(userID);
         token.setTokenHash(hashedToken);
+        token.setExpiredTime(TokenService.getExpiredTime());
         return token;
     }
 
