@@ -112,7 +112,9 @@ public class Novel implements DatabaseObject {
     public String getStatus() {
         return status;
     }
-
+public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
+    }
     public void setStatus(String status) {
         this.status = status;
     }
