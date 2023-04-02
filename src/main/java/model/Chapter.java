@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "chapters", schema = "novelweb", catalog = "")
+@Table(name = "chapters", schema = "novelweb")
 public class Chapter implements DatabaseObject {
     public static final String DEFAULT_CONTENT = "Không có nội dung";
 

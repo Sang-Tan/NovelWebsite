@@ -13,17 +13,25 @@ import java.sql.Timestamp;
 public class Restriction implements DatabaseObject {
     public static final String TYPE_NOVEL = "novel";
     public static final String TYPE_COMMENT = "comment";
+
+    @Id
+    @Column(name = "restricted_user_id")
+    private int restrictedUserId;
+
+    @Id
+    @Column(name = "restricted_type")
+    private String restrictedType;
+
     @ManyToOne
     @JoinColumn(name = "restricted_user_id")
     private User restrictedUser;
-    @EmbeddedId
-    private RestrictionKey restrictionKey;
+    @Column(name = "executor_id")
+    private int executorId;
 
     @ManyToOne
     @JoinColumn(name = "executor_id")
     private User executor;
-    @Column(name = "executor_id")
-    private Integer executorId;
+
     @Column(name = "reason")
     private String reason;
     @Column(name = "due_time")
@@ -33,29 +41,29 @@ public class Restriction implements DatabaseObject {
     }
 
     public Restriction(User restrictedUser, String restrictedType, User executor, String reason, Timestamp dueTime) {
-        this.restrictionKey.restrictedUserId = restrictedUser.getId();
-        this.restrictionKey.restrictedType = restrictedType;
+        this.restrictedUserId = restrictedUser.getId();
+        this.restrictedType = restrictedType;
         this.executor = executor;
         this.reason = reason;
         this.dueTime = dueTime;
     }
 
     public User getRestrictedUser() throws SQLException {
-        restrictedUser = UserRepository.getInstance().getById(restrictionKey.restrictedUserId);
+        restrictedUser = UserRepository.getInstance().getById(restrictedUserId);
         return restrictedUser;
     }
 
     public void setRestrictedUser(User restrictedUser) {
-        this.restrictionKey.restrictedUserId = restrictedUser.getId();
+        this.restrictedUserId = restrictedUser.getId();
         this.restrictedUser = restrictedUser;
     }
 
     public String getRestrictedType() {
-        return restrictionKey.restrictedType;
+        return restrictedType;
     }
 
     public void setRestrictedType(String restrictedType) {
-        this.restrictionKey.restrictedType = restrictedType;
+        this.restrictedType = restrictedType;
     }
 
     public User getExecutor() throws SQLException {
@@ -68,19 +76,19 @@ public class Restriction implements DatabaseObject {
         this.executor = executor;
     }
 
-    public Integer getRestrictedUserId() {
-        return restrictionKey.restrictedUserId;
+    public int getRestrictedUserId() {
+        return restrictedUserId;
     }
 
-    public void setRestrictedUserId(Integer restrictedUserId) {
-        this.restrictionKey.restrictedUserId = restrictedUserId;
+    public void setRestrictedUserId(int restrictedUserId) {
+        this.restrictedUserId = restrictedUserId;
     }
 
-    public Integer getExecutorId() {
+    public int getExecutorId() {
         return executorId;
     }
 
-    public void setExecutorId(Integer executorId) {
+    public void setExecutorId(int executorId) {
         this.executorId = executorId;
     }
 

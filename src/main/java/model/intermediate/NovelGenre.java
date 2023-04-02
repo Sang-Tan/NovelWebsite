@@ -1,19 +1,20 @@
-package model;
+package model.intermediate;
 
-import model.PK.NovelGenrePK;
+import core.DatabaseObject;
+import model.Genre;
+import model.Novel;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "novel_genre", schema = "novelweb", catalog = "")
-@IdClass(NovelGenrePK.class)
-public class NovelGenre {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Table(name = "novel_genre", schema = "novelweb")
+public class NovelGenre implements DatabaseObject {
+
     @Id
     @Column(name = "genre_id", nullable = false)
     private int genreId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
     @Column(name = "novel_id", nullable = false)
     private int novelId;

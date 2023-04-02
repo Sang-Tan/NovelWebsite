@@ -2,8 +2,16 @@ package model;
 
 import core.DatabaseObject;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "genres")
 public class Genre implements DatabaseObject {
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
     private int id;
+    @Column(name = "name")
     private String name;
 
     public Genre() {
