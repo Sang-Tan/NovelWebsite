@@ -15,7 +15,7 @@
                 </a>
             </li>
             <li class="navbar__list-item">
-                <a href="#" class="navbar__link navbar__list-text">Thêm truyện</a>
+                <a href="/ca-nhan/them-truyen" class="navbar__link navbar__list-text">Thêm truyện</a>
             </li>
             <li class="navbar__list-item">
                 <a href="#" class="navbar__link navbar__list-text">Truyện đã đăng</a>
