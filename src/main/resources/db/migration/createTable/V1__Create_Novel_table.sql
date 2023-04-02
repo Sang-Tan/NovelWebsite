@@ -7,6 +7,5 @@ CREATE TABLE novels
     image      VARCHAR(255),
     is_pending BOOLEAN      NOT NULL DEFAULT TRUE,
     status     VARCHAR(20)  NOT NULL
-        CHECK (status IN ('on going', 'paused', 'finished')),
-    UNIQUE (name)
+        CHECK (status IN ('on going', 'paused', 'finished'))
 );
