@@ -3,8 +3,10 @@ package model;
 
 import core.DatabaseObject;
 import model.intermediate.ChapterMark;
+import repository.VolumeRepository;
 
 import javax.persistence.*;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
@@ -20,26 +22,23 @@ public class Chapter implements DatabaseObject {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Basic
     @Column(name = "name", nullable = false, length = 255)
     private String name;
 
-    @Basic
     @Column(name = "order_index", nullable = false)
     private int orderIndex;
 
 
-    @Basic
     @Column(name = "content", nullable = true, length = -1)
     private String content;
 
-    @Basic
     @Column(name = "modify_time", nullable = false)
     private Timestamp modifyTime;
 
-    @Basic
     @Column(name = "is_pending", nullable = false)
-    private byte isPending;
+    private boolean isPending;
+    @Column(name = "volume_id", nullable = false)
+    private int volumeId;
 
 //    @OneToMany(mappedBy = "chapter")
 //    private List<ChapterMark> ownershipChapterMarks;
@@ -72,12 +71,17 @@ public class Chapter implements DatabaseObject {
         this.orderIndex = orderIndex;
     }
 
-    public Volume getBelongVolume() {
+    public Volume getBelongVolume() throws SQLException {
+
+        if(belongVolume == null)
+            belongVolume = VolumeRepository.getInstance().getById(volumeId);
         return belongVolume;
     }
 
     public void setBelongVolume(Volume volume) {
+
         this.belongVolume = volume;
+        this.volumeId = volume.getId();
     }
 
     public String getContent() {
@@ -96,13 +100,14 @@ public class Chapter implements DatabaseObject {
         this.modifyTime = modifyTime;
     }
 
-    public byte getIsPending() {
+    public boolean getIsPending() {
         return isPending;
     }
 
-    public void setIsPending(byte isPending) {
+    public void setIsPending(boolean isPending) {
         this.isPending = isPending;
     }
+
 //
 //    @Override
 //    public boolean equals(Object o) {

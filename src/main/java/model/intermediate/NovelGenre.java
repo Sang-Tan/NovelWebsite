@@ -3,9 +3,11 @@ package model.intermediate;
 import core.DatabaseObject;
 import model.Genre;
 import model.Novel;
+import repository.GenreRepository;
+import repository.NovelRepository;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.sql.SQLException;
 
 @Entity
 @Table(name = "novel_genre", schema = "novelweb")
@@ -20,10 +22,10 @@ public class NovelGenre implements DatabaseObject {
     private int novelId;
     @ManyToOne
     @JoinColumn(name = "genre_id", referencedColumnName = "id", nullable = false)
-    private Genre relativeGenre;
+    private Genre relatedGenre;
     @ManyToOne
     @JoinColumn(name = "novel_id", referencedColumnName = "id", nullable = false)
-    private Novel relativeNovel;
+    private Novel relatedNovel;
 
     public int getGenreId() {
         return genreId;
@@ -41,32 +43,28 @@ public class NovelGenre implements DatabaseObject {
         this.novelId = novelId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        NovelGenre that = (NovelGenre) o;
-        return genreId == that.genreId && novelId == that.novelId;
+    public Genre getRelatedGenre() throws SQLException {
+        if (relatedGenre == null || relatedGenre.getId() != genreId)
+            relatedGenre = GenreRepository.getInstance().findById(genreId);
+        return relatedGenre;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(genreId, novelId);
+    public void setRelatedGenre(Genre relatedGenre) {
+
+        this.genreId = genreId;
+        this.relatedGenre = relatedGenre;
     }
 
-    public Genre getRelativeGenre() {
-        return relativeGenre;
-    }
+//    public Novel getRelativeNovel() throws SQLException {
+//        if (relatedNovel == null)
+//            relatedNovel = NovelRepository.getInstance().getById(novelId);
+//        return relatedNovel;
+//
+//    }
 
-    public void setRelativeGenre(Genre relativeGenre) {
-        this.relativeGenre = relativeGenre;
-    }
-
-    public Novel getRelativeNovel() {
-        return relativeNovel;
-    }
-
-    public void setRelativeNovel(Novel relativeNovel) {
-        this.relativeNovel = relativeNovel;
-    }
+//    public void setRelativeNovel(Novel relativeNovel) {
+//
+//        this.novelId = novelId;
+//        this.relatedNovel = relativeNovel;
+//    }
 }
