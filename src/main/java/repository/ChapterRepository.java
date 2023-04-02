@@ -24,13 +24,6 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         return new Chapter();
     }
 
-    @Override
-    protected Chapter createDefault() {
-        Chapter chapter = new Chapter();
-        chapter.setContent(Chapter.DEFAULT_CONTENT);
-        //.setIsPending(true);
-        return chapter;
-    }
 
     public Chapter getById(Integer ID) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE id = ?", getTableName());

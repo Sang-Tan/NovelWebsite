@@ -47,7 +47,7 @@ public class Restriction implements DatabaseObject {
 //            restrictedUser = UserRepository.getInstance().getById(restrictedUserId);
 //        return restrictedUser;
 //    }
-
+//
 //    public void setRestrictedUser(User restrictedUser) {
 //        this.restrictedUserId = restrictedUser.getId();
 //        this.restrictedUser = restrictedUser;

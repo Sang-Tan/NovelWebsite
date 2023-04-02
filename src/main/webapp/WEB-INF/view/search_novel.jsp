@@ -13,7 +13,7 @@
 <body style="background-color: var(--silver);">
 <jsp:include page="layout/header_main.jsp"></jsp:include>
 <div class="container mt-4">
-    <form class="container-fluid basic-section p-3" id="search-form"
+    <form action="/search-novels" class="container-fluid basic-section p-3" id="search-form"
           onsubmit="event.preventDefault(); submitForm()">
         <div class="row">
             <div class="d-flex align-items-center col-10">

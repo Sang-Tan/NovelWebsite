@@ -8,13 +8,11 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Entity
-@Table(name = "novels", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
+@Table(name = "novels")
 public class Novel implements DatabaseObject {
     public static final String STATUS_ON_GOING = "on going";
     public static final String STATUS_FINISHED = "finished";
     public static final String STATUS_PAUSED = "paused";
-    public static final String DEFAULT_IMAGE = "/images/default-novel-avatar.jpg";
-    public static final String DEFAULT_SUMMARY = "Không có tóm tắt";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -25,13 +25,6 @@ public class VolumeRepository extends BaseRepository<Volume> {
         return new Volume();
     }
 
-    @Override
-    protected Volume createDefault() {
-        Volume volume = new Volume();
-        volume.setImage(Volume.DEFAULT_IMAGE);
-        return volume;
-    }
-
 
     public Volume getById(Integer ID) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE id = ?", getTableName());

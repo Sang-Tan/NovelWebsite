@@ -28,18 +28,9 @@ public class UserRepository extends BaseRepository<User> {
         return new User();
     }
 
-    @Override
-    protected User createDefault() {
-        User user = new User();
-        user.setDisplayName("Anonymous");
-        user.setAvatar(User.DEFAULT_AVATAR);
-        user.setRole(User.ROLE_MEMBER);
-        user.setActive(true);
-        return user;
-    }
 
     public User createNewUser(String username, String hashedPassword) {
-        User user = createDefault();
+        User user = createEmpty();
         user.setUsername(username);
         user.setPassword(hashedPassword);
         return user;

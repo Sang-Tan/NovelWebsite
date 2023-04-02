@@ -31,15 +31,6 @@ public class NovelRepository extends BaseRepository<Novel> {
         return new Novel();
     }
 
-    @Override
-    protected Novel createDefault() {
-        Novel novel = new Novel();
-        novel.setStatus(Novel.STATUS_ON_GOING);
-        novel.setSummary(Novel.DEFAULT_SUMMARY);
-        novel.setImage(Novel.DEFAULT_IMAGE);
-        novel.setPending(true);
-        return novel;
-    }
 
 
     public Novel getById(Integer ID) throws SQLException {
@@ -53,7 +44,7 @@ public class NovelRepository extends BaseRepository<Novel> {
 
     public Novel createNovel(String novelName, String summary,
                              String status, String imageURI, int ownerID) {
-        Novel novel = createDefault();
+        Novel novel = new Novel();
         novel.setName(novelName);
         novel.setSummary(summary);
         novel.setStatus(status);

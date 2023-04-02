@@ -22,10 +22,6 @@ public class CommentReportRepository extends BaseRepository<CommentReport> {
         return new CommentReport();
     }
 
-    @Override
-    protected CommentReport createDefault() {
-        return null;
-    }
 
 
 }

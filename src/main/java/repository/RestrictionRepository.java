@@ -22,12 +22,6 @@ public class RestrictionRepository extends BaseRepository<Restriction> {
         return new Restriction();
     }
 
-    @Override
-    protected Restriction createDefault() {
-        Restriction restriction = new Restriction();
-        restriction.setRestrictedType(Restriction.TYPE_NOVEL);
-        return restriction;
-    }
 
 
 }

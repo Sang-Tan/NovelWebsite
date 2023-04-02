@@ -15,7 +15,6 @@ import java.util.Set;
 @Entity
 @Table(name = "chapters", schema = "novelweb")
 public class Chapter implements DatabaseObject {
-    public static final String DEFAULT_CONTENT = "Không có nội dung";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -101,7 +100,7 @@ public class Chapter implements DatabaseObject {
     }
 
     public boolean IsPending() {
-        return pending
+        return pending;
     }
 
     public void setPending(boolean isPending) {

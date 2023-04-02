@@ -16,7 +16,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "volumes", uniqueConstraints = {@UniqueConstraint(columnNames = {"novel_id", "order_index"})})
 public class Volume implements DatabaseObject {
-    public static final String DEFAULT_IMAGE = "/images/default-novel-avatar.jpg";
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)

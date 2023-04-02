@@ -32,16 +32,10 @@ public class TokenRepository extends BaseRepository<Token> {
         return instance;
     }
 
-    @Override
-    protected Token createDefault() {
-        Token token = new Token();
-        token.setExpiredTime(TokenService.getExpiredTime());
-        return token;
-    }
 
 
     public Token createNewToken(int userID, String hashedToken) {
-        Token token = createDefault();
+        Token token = createEmpty();
         token.setUserId(userID);
         token.setTokenHash(hashedToken);
         return token;

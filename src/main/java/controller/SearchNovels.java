@@ -1,4 +1,4 @@
-package controller.authentication;
+package controller;
 
 import core.JSON;
 import model.Token;
@@ -22,9 +22,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @MultipartConfig
-@WebServlet(name = "LoginServlet", value = "/login")
-public class Login extends HttpServlet {
-    private static final Logger LOGGER = Logger.getLogger(Login.class.getName());
+@WebServlet(name = "SearchNovelsServlet", value = "/search-novels")
+public class SearchNovels extends HttpServlet {
+    private static final Logger LOGGER = Logger.getLogger(SearchNovels.class.getName());
 
     @Override
     public void init() throws ServletException {
@@ -92,12 +92,11 @@ public class Login extends HttpServlet {
                     String hashedToken = TokenService.hashToken(plainToken);
                     User user = UserRepository.getInstance().getByUsername(username);
                     Token token = tokenRepository.createNewToken(user.getId(), hashedToken);
-                    token.setExpiredTime();
                     tokenRepository.insert(token);
                 }
             } catch (SQLException e) {
                 response.setStatus(500);
-                Login.LOGGER.warning(e.getMessage());
+                SearchNovels.LOGGER.warning(e.getMessage());
                 return;
             }
 
@@ -108,7 +107,7 @@ public class Login extends HttpServlet {
 
         } catch (JSONException e) {
             response.setStatus(500);
-            Login.LOGGER.warning(e.getMessage());
+            SearchNovels.LOGGER.warning(e.getMessage());
         }
 
     }
