@@ -26,7 +26,7 @@
             <div class="row">
                 <c:forEach items="${novels}" var="novel">
                     <div class="col-3 col-md-2 thumb">
-                        <a href="#" class="no-decor">
+                        <a href="/ca-nhan/tieu-thuyet/${novel.id}" class="no-decor">
                             <div class="thumb__wrapper">
                                 <div class="thumb__img-panel a6-ratio">
                                     <div class="img-wrapper border "

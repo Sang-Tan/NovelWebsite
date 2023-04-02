@@ -3,11 +3,14 @@ package repository;
 import core.database.BaseRepository;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
+import core.logging.BasicLogger;
 import model.Chapter;
 import model.Volume;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChapterRepository extends BaseRepository<Chapter> {
     private static ChapterRepository instance;
@@ -62,4 +65,32 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         }
         return null;
     }
+
+    public List<Chapter> getByVolumeId(int volumeId) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE volume_id = ? " +
+                "ORDER BY order_index ASC", getTableName());
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{volumeId});
+        ArrayList<Chapter> chapters = new ArrayList<>();
+        while (result.next()) {
+            Chapter chapter = mapObject(result);
+            chapters.add(chapter);
+        }
+        return chapters;
+    }
+
+    public Chapter getVirtualChapter(int novelId) throws SQLException {
+        String sql = String.format("SELECT * FROM %s " +
+                "WHERE volume_id IN " +
+                "(SELECT id FROM volumes " +
+                "WHERE order_index = 1 " +
+                "AND novel_id = ?) ", getTableName());
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{novelId});
+        if (result.next()) {
+            return mapObject(result);
+        }
+        BasicLogger.getInstance().getLogger().
+                warning(String.format("Virtual chapter not found for novel id %d", novelId));
+        return null;
+    }
+
 }

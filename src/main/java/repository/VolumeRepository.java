@@ -8,6 +8,9 @@ import model.Volume;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class VolumeRepository extends BaseRepository<Volume> {
     private static VolumeRepository instance;
@@ -18,7 +21,6 @@ public class VolumeRepository extends BaseRepository<Volume> {
         }
         return instance;
     }
-
 
     @Override
     protected Volume createEmpty() {
@@ -76,5 +78,17 @@ public class VolumeRepository extends BaseRepository<Volume> {
         return null;
     }
 
+    public List<Volume> getByNovelId(int novelId) throws SQLException {
+        //don't get volume with order_index = 0 because it's not a real volume
+        String sql = String.format("SELECT * FROM %s WHERE novel_id = ? " +
+                "AND order_index > 1 " +
+                "ORDER BY order_index ASC", getTableName());
+        ArrayList<Volume> volumes = new ArrayList<>();
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{novelId});
+        while (result.next()) {
+            volumes.add(mapObject(result));
+        }
+        return volumes;
+    }
 
 }
