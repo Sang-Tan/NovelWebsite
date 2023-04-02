@@ -15,7 +15,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "volumes", uniqueConstraints = {@UniqueConstraint(columnNames = {"novel_id", "order_index"})})
-public class Volume {
+public class Volume implements DatabaseObject {
     public static final String DEFAULT_IMAGE = "/images/default-novel-avatar.jpg";
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -95,6 +95,7 @@ public class Volume {
     public List<Chapter> getChaptersById() {
         return ownershipChapters;
     }
+
     public void addOwnershipChapter(Chapter chapter) {
         ownershipChapters.add(chapter);
     }
@@ -107,9 +108,11 @@ public class Volume {
             }
         }
     }
+
     public void deleteChapter(Chapter chapter) {
         deleteChapter(chapter.getId());
     }
+
     public void deleteChapter(int chapterId) {
         for (int i = 0; i < ownershipChapters.size(); i++) {
             if (ownershipChapters.get(i).getId() == chapterId) {

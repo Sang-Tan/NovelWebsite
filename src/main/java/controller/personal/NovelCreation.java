@@ -2,8 +2,13 @@ package controller.personal;
 
 import core.FileUtil;
 import io.github.cdimascio.dotenv.Dotenv;
+import model.Novel;
+import model.User;
 import repository.GenreRepository;
+import repository.NovelRepository;
 import service.upload.FileMapper;
+import service.upload.NovelManageService;
+import service.validator.UserValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -17,7 +22,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @MultipartConfig(maxFileSize = 1 * 1024 * 1024) //1MB
-@WebServlet(value = "/personal/add-novel")
+@WebServlet(value = "/ca-nhan/them-truyen")
 public class NovelCreation extends HttpServlet {
     private final String IMG_DIR = Dotenv.load().get("COVER_UPLOAD_PATH");
 
@@ -41,6 +46,12 @@ public class NovelCreation extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
+            User owner = (User) request.getAttribute("user");
+            if (owner == null) {
+                response.setStatus(401);
+                return;
+            }
+
             String novelName = request.getParameter("novel_name");
             String summary = request.getParameter("summary");
             String status = request.getParameter("status");
@@ -54,24 +65,19 @@ public class NovelCreation extends HttpServlet {
             //get image
             Part image = request.getPart("image");
 
-            if (getError(novelName, summary, status, genreIds, image) != null) {
-                request.setAttribute("error", getError(novelName, summary, status, genreIds, image));
+            String error = getError(novelName, summary, status, genreIds, image);
+            if (error != null) {
+                request.setAttribute("error", error);
                 doGet(request, response);
                 return;
             }
-            String extension = FileUtil.getExtension(image.getSubmittedFileName());
-            FileMapper fileMapper = FileMapper.mapRandomFile(IMG_DIR, extension);
-            String imageURI = fileMapper.getURI();
-            /*try {
-                //TODO: implement method to create novel into database
 
-            } catch (SQLException e) {
-                //delete image if cannot create novel
-                FileUploadService.deleteFile(imageName);
-            }*/
-
+            NovelManageService.uploadNewNovel
+                    (novelName, summary, status, genreIds, image, owner.getId());
+            response.sendRedirect("/ca-nhan");
 
         } catch (Exception e) {
+            response.setStatus(500);
             e.printStackTrace();
         }
     }
@@ -89,12 +95,10 @@ public class NovelCreation extends HttpServlet {
         if (genres == null || genres.length == 0) {
             return "Thể loại không được để trống";
         }
-        if (image == null || image.getSize() == 0) {
-            return "Ảnh bìa không được để trống";
-        }
-
-        if (!FileUtil.isImage(image.getInputStream())) {
-            return "Ảnh bìa không hợp lệ";
+        if (image == null) {
+            if (!FileUtil.isImage(image.getInputStream())) {
+                return "Ảnh bìa không hợp lệ";
+            }
         }
         return null;
     }
