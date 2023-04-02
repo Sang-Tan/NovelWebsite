@@ -32,7 +32,7 @@ public class NovelRepository extends BaseRepository<Novel> {
     }
 
     @Override
-    protected Novel createDefault() {
+    public Novel createDefault() {
         Novel novel = new Novel();
         novel.setStatus(Novel.STATUS_ON_GOING);
         novel.setSummary(Novel.DEFAULT_SUMMARY);

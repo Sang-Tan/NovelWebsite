@@ -29,7 +29,7 @@ public class UserRepository extends BaseRepository<User> {
     }
 
     @Override
-    protected User createDefault() {
+    public User createDefault() {
         User user = new User();
         user.setDisplayName("Anonymous");
         user.setAvatar(User.DEFAULT_AVATAR);
