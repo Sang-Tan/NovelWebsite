@@ -2,13 +2,11 @@ package core.database;
 
 import core.DatabaseObject;
 
-import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.ParameterizedType;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -335,11 +333,12 @@ public abstract class BaseRepository<T extends DatabaseObject> {
 
     protected final void delete(SqlRecord primaryKeyRecord) throws SQLException {
         String[] pkColumns = new String[primaryKeyRecord.size()];
+        String[] pkColumnExpression = new String[primaryKeyRecord.size()];
         primaryKeyRecord.getColumns(pkColumns);
         for (int i = 0; i < pkColumns.length; i++) {
-            pkColumns[i] += " = ?";
+            pkColumnExpression[i] = pkColumns[i] + " = ?";
         }
-        String pkSelect = String.join(" AND ", pkColumns);
+        String pkSelect = String.join(" AND ", pkColumnExpression);
 
         String sql = String.format("DELETE FROM %s WHERE %s", getTableName(), pkSelect);
 
