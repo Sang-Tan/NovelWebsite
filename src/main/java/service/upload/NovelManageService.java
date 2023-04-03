@@ -33,8 +33,7 @@ public class NovelManageService {
     }
 
     private static Chapter createDefaultChapter() {
-        Chapter chapter = new Chapter();
-        return chapter;
+        return new Chapter();
     }
 
     private static Volume createVirtualVolume(int novelID) {

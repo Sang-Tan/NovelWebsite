@@ -8,12 +8,11 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 
 public class AvatarUploadService {
-    private static final String DEFAULT_AVATAR_PATH = Dotenv.load().get("DEFAULT_AVATAR_PATH");
     private static final String AVATAR_UPLOAD_PATH = Dotenv.load().get("AVATAR_UPLOAD_PATH");
 
     public static void uploadAvatar(User user, Part newAvatar) throws IOException {
         //if user has avatar
-        if ((user.getAvatar() != null) && ((user.getAvatar() != DEFAULT_AVATAR_PATH)))
+        if ((user.getAvatar() != null) && ((user.getAvatar() != User.DEFAULT_AVATAR)))
         {
             FileMapper uploadedAvatar = FileMapper.mapURI(user.getAvatar());
 
