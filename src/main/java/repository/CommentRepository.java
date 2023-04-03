@@ -35,8 +35,8 @@ public class CommentRepository extends BaseRepository<Comment> {
     }
 
     @Override
-    protected Comment createDefault() {
-        return null;
+    public Comment createDefault() {
+        return new Comment();
     }
 
 }

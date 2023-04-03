@@ -15,7 +15,6 @@ import java.util.Set;
 @Entity
 @Table(name = "chapters", schema = "novelweb")
 public class Chapter implements DatabaseObject {
-    public static final String DEFAULT_CONTENT = "Không có nội dung";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,9 +70,17 @@ public class Chapter implements DatabaseObject {
         this.orderIndex = orderIndex;
     }
 
+    public int getVolumeId() {
+        return volumeId;
+    }
+
+    public void setVolumeId(int volumeId) {
+        this.volumeId = volumeId;
+    }
+
     public Volume getBelongVolume() throws SQLException {
 
-        if(belongVolume == null)
+        if (belongVolume == null)
             belongVolume = VolumeRepository.getInstance().getById(volumeId);
         return belongVolume;
     }

@@ -1,3 +1,4 @@
+<%--@elvariable id="novels" type="java.util.Collection<model.Novel>"--%>
 <%--
   Created by IntelliJ IDEA.
   User: DELL
@@ -19,22 +20,25 @@
 <div class="container mt-3">
     <div class="basic-section">
         <div class="basic-section__header ">
-            <h4>Truyện đã đăng (10)</h4>
+            <h4>Truyện đã đăng (${novels.size()})</h4>
         </div>
         <div class="containter-fluid ml-3 mr-3">
             <div class="row">
-                <div class="col-3 col-md-2 thumb">
-                    <a href="#" class="no-decor">
-                        <div class="thumb__wrapper">
-                            <div class="thumb__img-panel a6-ratio">
-                                <div class="img-wrapper border "
-                                     style="background-image: url('https://images.fpt.shop/unsafe/filters:quality(90)/fptshop.com.vn/uploads/images/tin-tuc/152650/Originals/Hu%20Tao.jpg');">
+                <c:forEach items="${novels}" var="novel">
+                    <div class="col-3 col-md-2 thumb">
+                        <a href="/ca-nhan/tieu-thuyet/${novel.id}" class="no-decor">
+                            <div class="thumb__wrapper">
+                                <div class="thumb__img-panel a6-ratio">
+                                    <div class="img-wrapper border "
+                                         style="background-image: url('${novel.image}');">
+                                    </div>
                                 </div>
+                                <p class="thumb__caption">${novel.name}</p>
                             </div>
-                            <p class="thumb__caption">Hu Tao saves my life</p>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                </c:forEach>
+
             </div>
         </div>
 

@@ -55,16 +55,16 @@ public class NovelGenre implements DatabaseObject {
         this.relatedGenre = relatedGenre;
     }
 
-//    public Novel getRelativeNovel() throws SQLException {
-//        if (relatedNovel == null)
-//            relatedNovel = NovelRepository.getInstance().getById(novelId);
-//        return relatedNovel;
-//
-//    }
+    public Novel getRelativeNovel() throws SQLException {
+        if (relatedNovel == null || relatedNovel.getId() != novelId)
+            relatedNovel = NovelRepository.getInstance().getById(novelId);
+        return relatedNovel;
 
-//    public void setRelativeNovel(Novel relativeNovel) {
-//
-//        this.novelId = novelId;
-//        this.relatedNovel = relativeNovel;
-//    }
+    }
+
+    public void setRelativeNovel(Novel relativeNovel) {
+
+        this.novelId = novelId;
+        this.relatedNovel = relativeNovel;
+    }
 }

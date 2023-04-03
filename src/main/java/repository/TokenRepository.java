@@ -33,7 +33,7 @@ public class TokenRepository extends BaseRepository<Token> {
     }
 
     @Override
-    protected Token createDefault() {
+    public Token createDefault() {
         Token token = new Token();
         token.setExpiredTime(TokenService.getExpiredTime());
         return token;
@@ -41,9 +41,10 @@ public class TokenRepository extends BaseRepository<Token> {
 
 
     public Token createNewToken(int userID, String hashedToken) {
-        Token token = createDefault();
+        Token token = createEmpty();
         token.setUserId(userID);
         token.setTokenHash(hashedToken);
+        token.setExpiredTime(TokenService.getExpiredTime());
         return token;
     }
 

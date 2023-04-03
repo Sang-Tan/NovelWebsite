@@ -18,7 +18,7 @@ public class Servlet1 extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // phần các method theo phương thức get
-        System.out.println("Servlet1");
+//        System.out.println("Servlet1");
         String action = request.getParameter("action");
         if (action == null) {
             action = "";

@@ -4,7 +4,9 @@ import core.SHA256Hashing;
 import core.database.BaseRepository;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
+import io.github.cdimascio.dotenv.Dotenv;
 import model.User;
+import service.upload.AvatarUploadService;
 import service.validator.UserValidator;
 
 
@@ -16,6 +18,21 @@ import java.sql.SQLException;
 public class UserRepository extends BaseRepository<User> {
     private static UserRepository instance;
 
+    private static final boolean ACTIVE = true;
+    private static final String DEFAULT_AVATAR_PATH = Dotenv.load().get("DEFAULT_AVATAR_PATH");
+    public  User createNewUser(String username, String hashedPassword) {
+        User user = createEmpty();
+        user.setUsername(username);
+        user.setPassword(hashedPassword);
+        user.setAvatar(DEFAULT_AVATAR_PATH);
+        user.setActive(ACTIVE);
+        user.setRole(User.ROLE_MEMBER);
+        user.setDisplayName(username);
+        return user;
+    }
+    protected  User createEmpty() {
+        return new User();
+    }
     public static UserRepository getInstance() {
         if (instance == null) {
             instance = new UserRepository();
@@ -23,13 +40,9 @@ public class UserRepository extends BaseRepository<User> {
         return instance;
     }
 
-    @Override
-    protected User createEmpty() {
-        return new User();
-    }
 
     @Override
-    protected User createDefault() {
+    public User createDefault() {
         User user = new User();
         user.setDisplayName("Anonymous");
         user.setAvatar(User.DEFAULT_AVATAR);
@@ -38,12 +51,8 @@ public class UserRepository extends BaseRepository<User> {
         return user;
     }
 
-    public User createNewUser(String username, String hashedPassword) {
-        User user = createDefault();
-        user.setUsername(username);
-        user.setPassword(hashedPassword);
-        return user;
-    }
+
+
 
     public User getById(Integer ID) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE id = ?", getTableName());

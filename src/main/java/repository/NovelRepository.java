@@ -14,6 +14,7 @@ import javax.servlet.http.Part;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class NovelRepository extends BaseRepository<Novel> {
     }
 
     @Override
-    protected Novel createDefault() {
+    public Novel createDefault() {
         Novel novel = new Novel();
         novel.setStatus(Novel.STATUS_ON_GOING);
         novel.setSummary(Novel.DEFAULT_SUMMARY);
@@ -101,7 +102,7 @@ public class NovelRepository extends BaseRepository<Novel> {
 
     public Novel createNovel(String novelName, String summary,
                              String status, String imageURI, int ownerID) {
-        Novel novel = createDefault();
+        Novel novel = new Novel();
         novel.setName(novelName);
         novel.setSummary(summary);
         novel.setStatus(status);
@@ -119,5 +120,15 @@ public class NovelRepository extends BaseRepository<Novel> {
             novelGenres.add(novelGenre);
         }
         NovelGenreRepository.getInstance().insertBatch(novelGenres);
+    }
+
+    public Collection<Novel> getNovelsByOwnerID(int ownerID) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE owner = ?", getTableName());
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{ownerID});
+        Collection<Novel> novels = new LinkedList<>();
+        while (result.next()) {
+            novels.add(mapObject(result));
+        }
+        return novels;
     }
 }

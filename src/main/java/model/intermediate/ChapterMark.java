@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.sql.SQLException;
 
 @Entity
-@Table(name = "chapter_mark", schema = "novelweb" )
+@Table(name = "chapter_mark", schema = "novelweb")
 public class ChapterMark {
     @Id
     @Column(name = "chapter_id")
@@ -28,19 +28,26 @@ public class ChapterMark {
     public ChapterMark() {
     }
 
+
     public ChapterMark(int chapterId, int userId) {
         this.chapterId = chapterId;
         this.userId = userId;
     }
+
+    public int getChapterId() {
+        return chapterId;
+    }
+
     public void setChapterId(int chapterId) {
         this.chapterId = chapterId;
     }
+
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
     public Chapter getRelatedChapter() throws SQLException {
-        if(relatedChapter == null || relatedChapter.getId() != chapterId)
+        if (relatedChapter == null || relatedChapter.getId() != chapterId)
             relatedChapter = ChapterRepository.getInstance().getById(chapterId);
         return relatedChapter;
     }
@@ -50,16 +57,21 @@ public class ChapterMark {
         this.relatedChapter = chapter;
     }
 
-//    public User getUser() throws SQLException {
-//        if( relatedUser == null)
-//            relatedUser = UserRepository.getInstance().getById(userId);
-//        return relatedUser;
-//    }
+    public int getUserId() {
+        return userId;
+    }
 
-//    public void setUser(User user) {
-//
-//        this.userId = userId;
-//        this.relatedUser = user;
-//    }
+    public User getUser() throws SQLException {
+        if (relatedUser == null || relatedUser.getId() != userId)
+            relatedUser = UserRepository.getInstance().getById(userId);
+        return relatedUser;
+    }
+
+
+    public void setUser(User user) {
+
+        this.userId = userId;
+        this.relatedUser = user;
+    }
 
 }
