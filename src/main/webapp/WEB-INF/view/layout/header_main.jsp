@@ -25,8 +25,8 @@
         </ul>
         <ul class="navbar__list">
             <li class="navbar__list-item">
-                <form action="/testui/search_novel" class="navbar__search">
-                    <input type="text" placeholder="Tìm truyện" class="navbar__search-textbox">
+                <form onsubmit="redirectToSearch(event)" class="navbar__search">
+                    <input type="text" placeholder="Tìm truyện" class="navbar__search-textbox" id="novelName">
                     <button class="navbar__search-btn">
                         <i class="fas fa-search"></i>
                     </button>
@@ -230,5 +230,11 @@
         if (errorTextElement) {
             errorTextElement.classList.add("hidden");
         }
+    }
+
+    function redirectToSearch(event) {
+        event.preventDefault();
+        const novelName = document.getElementById('novelName').value;
+        location.assign("/search-novels?novel="+ novelName);
     }
 </script>
