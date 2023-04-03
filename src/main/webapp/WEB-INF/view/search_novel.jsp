@@ -96,6 +96,7 @@
     <header class="mb-3">
         <span class="title title--bold title--underline">Kết quả tìm kiếm</span>
     </header>
+    <main class="sect-body">
     <div class="row">
         <div class="col-4 col-md-2 thumb">
             <c:forEach items="${novelsSearched}" var="novelSearched">
@@ -127,7 +128,9 @@
             </a>
         </div>
     </div>
+    </main>
 </div>
+
 <%--Boostrap script--%>
 <%@ include file="layout/boostrap_js.jsp" %>
 <script src="/js/search_novel.js"></script>
