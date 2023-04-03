@@ -101,7 +101,7 @@ public class Chapter implements DatabaseObject {
     }
 
     public boolean IsPending() {
-        return pending
+        return pending;
     }
 
     public void setPending(boolean isPending) {

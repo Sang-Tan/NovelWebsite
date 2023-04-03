@@ -125,6 +125,7 @@ public class Novel implements DatabaseObject {
         ownershipVolumes.add(volume);
     }
 
+
     public void updateOwnershipChapter(Volume volume) {
         for (int i = 0; i < ownershipVolumes.size(); i++) {
             if (ownershipVolumes.get(i).getId() == volume.getId()) {
