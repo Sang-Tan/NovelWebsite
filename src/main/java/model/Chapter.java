@@ -100,7 +100,7 @@ public class Chapter implements DatabaseObject {
         this.modifyTime = modifyTime;
     }
 
-    public boolean IsPending() {
+    public boolean isPending() {
         return pending;
     }
 

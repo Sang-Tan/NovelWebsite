@@ -136,5 +136,4 @@
 
 <script src="/js/search_novel.js"></script>
 </body>
-
 </html>
