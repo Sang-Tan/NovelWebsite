@@ -24,17 +24,17 @@
             </li>
         </ul>
         <ul class="navbar__list">
+            <li class="navbar__list-item">
+                <form action="/testui/search_novel" class="navbar__search">
+                    <input type="text" placeholder="Tìm truyện" class="navbar__search-textbox">
+                    <button class="navbar__search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </li>
             <c:choose>
                 <%--@elvariable id="user" type="model.User"--%>
                 <c:when test="${user == null}">
-                    <li class="navbar__list-item">
-                        <form action="/testui/search_novel" class="navbar__search">
-                            <input type="text" placeholder="Tìm truyện" class="navbar__search-textbox">
-                            <button class="navbar__search-btn">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </form>
-                    </li>
                     <li class="navbar__list-item">
                         <a href="#login-modal" class="navbar__link navbar__list-text" data-toggle="modal"
                            data-target="#login-modal">Đăng

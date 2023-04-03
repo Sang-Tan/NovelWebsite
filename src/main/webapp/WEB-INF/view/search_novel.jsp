@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/css/search_novel.css">
 
 </head>
-
 <body style="background-color: var(--silver);">
 <jsp:include page="layout/header_main.jsp"></jsp:include>
 <div class="container mt-4">
@@ -83,13 +82,9 @@
             </a>
         </div>
     </div>
-
 </div>
-
 <%--Boostrap script--%>
 <%@ include file="layout/boostrap_js.jsp" %>
-
 <script src="/js/search_novel.js"></script>
 </body>
-
 </html>

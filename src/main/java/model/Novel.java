@@ -127,7 +127,7 @@ public class Novel implements DatabaseObject {
     public List<Volume> getVolumes() {
         if (volumes == null) {
             try {
-                volumes = VolumeRepository.getInstance().getByNovelId(id).stream().toList();
+                volumes = VolumeRepository.getInstance().getByNovelId(id);
             } catch (SQLException e) {
                 BasicLogger.getInstance().getLogger().warning(e.getMessage());
                 return null;

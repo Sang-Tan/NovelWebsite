@@ -3,20 +3,21 @@ package controller.authentication;
 import core.JSON;
 import model.Token;
 import model.User;
+import org.json.JSONException;
 import repository.TokenRepository;
+import repository.UserRepository;
 import service.validator.TokenService;
 import service.validator.UserValidator;
-import org.json.JSONException;
-import repository.UserRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
@@ -59,7 +60,7 @@ public class Login extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new HashMap<String, String>();
+        return new HashMap<>();
     }
 
     @Override
@@ -70,7 +71,7 @@ public class Login extends HttpServlet {
 
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            Boolean remember = request.getParameter("remember") != null;
+            boolean remember = request.getParameter("remember") != null;
 
             // create a map to store invalid input values and error messages
             HashMap<String, String> errors;
