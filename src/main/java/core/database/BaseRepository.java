@@ -131,6 +131,7 @@ public abstract class BaseRepository<T extends DatabaseObject> {
         return String.join(", ", primaryKeysColumnsName);
     }
 
+    public abstract T createDefault();
 
     protected final SqlRecord mapRecordByField(DBFieldMapping fields, T object) {
         SqlRecord record = new SqlRecord();
@@ -245,6 +246,13 @@ public abstract class BaseRepository<T extends DatabaseObject> {
         return object;
     }
 
+    public final Collection<T> insertBatch(Collection<T> objects) throws SQLException {
+        for (T object : objects) {
+            insert(object);
+        }
+        return objects;
+    }
+
     /**
      * Insert a record into the database
      *
@@ -252,7 +260,7 @@ public abstract class BaseRepository<T extends DatabaseObject> {
      * @return the auto generated key if there is any, if there is no auto generated key, ResultSet will be empty
      * @throws SQLException if a database access error occurs
      */
-    protected ResultSet insert(SqlRecord record) throws SQLException {
+    protected final ResultSet insert(SqlRecord record) throws SQLException {
         int size = record.size();
 
         //example columnsString = "col1, col2, col3,..."
@@ -273,14 +281,6 @@ public abstract class BaseRepository<T extends DatabaseObject> {
     }
 
 
-    public Collection<T> insertBatch(Collection<T> objects) throws SQLException {
-        for (T object : objects) {
-            insert(object);
-        }
-        return objects;
-    }
-
-
     public void update(T object) throws SQLException {
         SqlRecord record = mapRecord(object);
         excludePrimaryKey(record);
@@ -294,7 +294,7 @@ public abstract class BaseRepository<T extends DatabaseObject> {
         }
     }
 
-    protected void update(SqlRecord record, SqlRecord primaryKeyRecord) throws SQLException {
+    protected final void update(SqlRecord record, SqlRecord primaryKeyRecord) throws SQLException {
         int size = record.size();
 
         //=====================UPDATE COLUMNS=====================
@@ -326,6 +326,24 @@ public abstract class BaseRepository<T extends DatabaseObject> {
         String sql = String.format("UPDATE %s SET %s WHERE %s", getTableName(), setsString, pkSelect);
 
         MySQLdb.getInstance().execute(sql, parameters.toArray());
+    }
+
+    public void delete(T object) throws SQLException {
+        SqlRecord primaryKeyRecord = getPrimaryKeyMap(object);
+        delete(primaryKeyRecord);
+    }
+
+    protected final void delete(SqlRecord primaryKeyRecord) throws SQLException {
+        String[] pkColumns = new String[primaryKeyRecord.size()];
+        primaryKeyRecord.getColumns(pkColumns);
+        for (int i = 0; i < pkColumns.length; i++) {
+            pkColumns[i] += " = ?";
+        }
+        String pkSelect = String.join(" AND ", pkColumns);
+
+        String sql = String.format("DELETE FROM %s WHERE %s", getTableName(), pkSelect);
+
+        MySQLdb.getInstance().execute(sql, primaryKeyRecord.getValues(pkColumns));
     }
 
 

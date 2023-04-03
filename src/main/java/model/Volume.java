@@ -1,6 +1,7 @@
 package model;
 
 import core.DatabaseObject;
+import repository.ChapterRepository;
 import repository.NovelRepository;
 import repository.UserRepository;
 
@@ -16,6 +17,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "volumes", uniqueConstraints = {@UniqueConstraint(columnNames = {"novel_id", "order_index"})})
 public class Volume implements DatabaseObject {
+    public static final String DEFAULT_IMAGE = "/images/default-cover.jpg";
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id", nullable = false)
@@ -29,7 +31,7 @@ public class Volume implements DatabaseObject {
     @Column(name = "order_index", nullable = false)
     private int orderIndex;
     @OneToMany(mappedBy = "belongVolume")
-    private List<Chapter> ownershipChapters;
+    private List<Chapter> chapters;
     @ManyToOne
     @JoinColumn(name = "novel_id", referencedColumnName = "id", nullable = false)
     private Novel belongNovel;
@@ -74,35 +76,19 @@ public class Volume implements DatabaseObject {
         this.orderIndex = orderIndex;
     }
 
-
-    public List<Chapter> getChaptersById() {
-        return ownershipChapters;
-    }
-
-    public void addOwnershipChapter(Chapter chapter) {
-        ownershipChapters.add(chapter);
-    }
-
-    public void updateOwnershipChapter(Chapter chapter) {
-        for (int i = 0; i < ownershipChapters.size(); i++) {
-            if (ownershipChapters.get(i).getId() == chapter.getId()) {
-                ownershipChapters.set(i, chapter);
-                break;
+    public List<Chapter> getChapters() {
+        if (chapters == null) {
+            try {
+                chapters = ChapterRepository.getInstance().getByVolumeId(id);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
+        return chapters;
     }
 
-    public void deleteChapter(Chapter chapter) {
-        deleteChapter(chapter.getId());
-    }
-
-    public void deleteChapter(int chapterId) {
-        for (int i = 0; i < ownershipChapters.size(); i++) {
-            if (ownershipChapters.get(i).getId() == chapterId) {
-                ownershipChapters.remove(i);
-                break;
-            }
-        }
+    public void setChapters(List<Chapter> chapters) {
+        throw new UnsupportedOperationException("Set chapters in volume entity is not supported");
     }
 
     public Novel getBelongNovel() {

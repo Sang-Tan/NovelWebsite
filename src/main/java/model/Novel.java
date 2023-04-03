@@ -1,7 +1,10 @@
 package model;
 
 import core.DatabaseObject;
+import core.logging.BasicLogger;
+import repository.NovelRepository;
 import repository.UserRepository;
+import repository.VolumeRepository;
 
 import javax.persistence.*;
 import java.sql.SQLException;
@@ -13,6 +16,8 @@ public class Novel implements DatabaseObject {
     public static final String STATUS_ON_GOING = "on going";
     public static final String STATUS_FINISHED = "finished";
     public static final String STATUS_PAUSED = "paused";
+    public static final String DEFAULT_IMAGE = "/images/default-cover.jpg";
+    public static final String DEFAULT_SUMMARY = "Không có tóm tắt";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +39,7 @@ public class Novel implements DatabaseObject {
     @Column(name = "status")
     private String status;
     @OneToMany(mappedBy = "belongNovel")
-    private List<Volume> ownershipVolumes;
+    private List<Volume> volumes = null;
 
     public Novel() {
     }
@@ -110,36 +115,28 @@ public class Novel implements DatabaseObject {
     public String getStatus() {
         return status;
     }
+
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
     }
+
     public void setStatus(String status) {
         this.status = status;
     }
-    public List<Volume> getVolumesById() {
-        return ownershipVolumes;
-    }
-    public void addOwnershipChapter(Volume volume) {
-        ownershipVolumes.add(volume);
+
+    public List<Volume> getVolumes() {
+        if (volumes == null) {
+            try {
+                volumes = VolumeRepository.getInstance().getByNovelId(id).stream().toList();
+            } catch (SQLException e) {
+                BasicLogger.getInstance().getLogger().warning(e.getMessage());
+                return null;
+            }
+        }
+        return volumes;
     }
 
-    public void updateOwnershipChapter(Volume volume) {
-        for (int i = 0; i < ownershipVolumes.size(); i++) {
-            if (ownershipVolumes.get(i).getId() == volume.getId()) {
-                ownershipVolumes.set(i, volume);
-                break;
-            }
-        }
-    }
-    public void deleteChapter(Chapter chapter) {
-        deleteChapter(chapter.getId());
-    }
-    public void deleteChapter(int chapterId) {
-        for (int i = 0; i < ownershipVolumes.size(); i++) {
-            if (ownershipVolumes.get(i).getId() == chapterId) {
-                ownershipVolumes.remove(i);
-                break;
-            }
-        }
+    public void setVolumes(List<Volume> volumes) {
+        this.volumes = volumes;
     }
 }

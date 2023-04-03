@@ -24,6 +24,10 @@ public class GenreRepository extends BaseRepository<Genre> {
         return new Genre();
     }
 
+    @Override
+    public Genre createDefault() {
+        return new Genre();
+    }
 
     public Genre findByName(String name) throws SQLException {
         String sql = "SELECT * FROM " + getTableName() + " WHERE name = ?";

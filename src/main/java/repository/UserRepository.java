@@ -41,6 +41,15 @@ public class UserRepository extends BaseRepository<User> {
     }
 
 
+    @Override
+    public User createDefault() {
+        User user = new User();
+        user.setDisplayName("Anonymous");
+        user.setAvatar(User.DEFAULT_AVATAR);
+        user.setRole(User.ROLE_MEMBER);
+        user.setActive(true);
+        return user;
+    }
 
 
 

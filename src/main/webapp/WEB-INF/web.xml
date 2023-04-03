@@ -11,6 +11,10 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
+        <filter-name>PersonalFeatureFilter</filter-name>
+        <url-pattern>/ca-nhan/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
         <filter-name>AdminAuthorize</filter-name>
         <url-pattern>/admin/*</url-pattern>
     </filter-mapping>
@@ -18,5 +22,5 @@
         <filter-name>ModeratorAuthorize</filter-name>
         <url-pattern>/mod/*</url-pattern>
     </filter-mapping>
-    
+
 </web-app>

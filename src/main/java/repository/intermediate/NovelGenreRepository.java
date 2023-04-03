@@ -20,5 +20,8 @@ public class NovelGenreRepository extends BaseRepository<NovelGenre> {
         return new NovelGenre();
     }
 
-
+    @Override
+    public NovelGenre createDefault() {
+        return new NovelGenre();
+    }
 }
