@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.HashMap" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -39,11 +40,11 @@
                 <div class="d-flex align-items-center mt-2">
                     <label for="status" class="label">Tình trạng: </label>
                     <!-- <input style="flex-grow: 1;" type="" name="author" id="status" placeholder="Tên tác giả"> -->
-                    <select class="input-text" name="status" id="status" style="flex-grow: 1;" value="<%= request.getParameter("status") != null ? request.getParameter("status") : "Tất cả"%>">
-                        <option value="all">Tất cả</option>
-                        <option value="on going">Đang tiến hành</option>
-                        <option value="finished">Hoàn thành</option>
-                        <option value="paused">Tạm hoãn</option>
+                    <select class="input-text" name="status" id="status" style="flex-grow: 1;">
+                        <option value="all" <% if ("all".equals(request.getParameter("status"))) { %> selected <% } %>>Tất cả</option>
+                        <option value="on going" <% if ("on going".equals(request.getParameter("status"))) { %> selected <% } %>>Đang tiến hành</option>
+                        <option value="finished" <% if ("finished".equals(request.getParameter("status"))) { %> selected <% } %>>Hoàn thành</option>
+                        <option value="paused" <% if ("paused".equals(request.getParameter("status"))) { %> selected <% } %>>Tạm hoãn</option>
                     </select>
                 </div>
             </div>
@@ -51,9 +52,9 @@
                 <div class="d-flex align-items-center mt-2">
                     <label for="sort" class="label">Sắp xếp theo: </label>
                     <select class="input-text" style="flex-grow: 1;" name="sort" id="sort" value="<%= request.getParameter("sort") != null ? request.getParameter("sort") : "Tên truyện"%>">
-                        <option value="name">Tên truyện</option>
+                        <option value="name" <% if ("name".equals(request.getParameter("sort"))) { %> selected <% } %>>Tên truyện</option>
 <%--                        <option value="author name">Tác giả</option>--%>
-                        <option value="comment">Lượt bình luận</option>
+                        <option value="comment" <% if ("comment".equals(request.getParameter("sort"))) { %> selected <% } %>>Lượt bình luận</option>
                     </select>
                 </div>
             </div>

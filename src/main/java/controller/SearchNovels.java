@@ -26,7 +26,7 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+@MultipartConfig
 @WebServlet(name = "SearchNovelsServlet", value = "/search-novels")
 public class SearchNovels extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(SearchNovels.class.getName());
@@ -39,11 +39,7 @@ public class SearchNovels extends HttpServlet {
         handler.setLevel(Level.ALL);
         LOGGER.addHandler(handler);
     }
-
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    private void setGenresCheckBoxData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List genres = null;
         try {
             genres = GenreRepository.getInstance().getAll();
@@ -51,13 +47,10 @@ public class SearchNovels extends HttpServlet {
             throw new RuntimeException(e);
         }
         request.setAttribute("genres", genres);
-
-        String partialNovelName = request.getParameter("novel");
-        // exp : selectgenres=52,6,59
-        String genresIDString = request.getParameter("genres");
+    }
+    private int[] getGenresIDQuery(String genresIDString) throws ServletException, IOException {
 
         int[] genresIDList = null;
-
         if (!(genresIDString == null ) && !genresIDString.isEmpty()) {
             String[] arrGenresIDString = genresIDString.split(",");
             genresIDList = new int[arrGenresIDString.length];
@@ -65,10 +58,50 @@ public class SearchNovels extends HttpServlet {
                 genresIDList[i] = Integer.parseInt(arrGenresIDString[i]);
             }
         }
-//
+        return genresIDList;
+
+    }
+    private HashMap<String, String> getInputError(String partialNovelName, String genresIDString, String author, String status, String sort)
+    {
+        HashMap<String, String> errors = new HashMap<>();
+        String genresIDStringRegex = "^[0-9,]+$";
+
+        if(genresIDString == null || genresIDString.isEmpty())
+        {
+            //
+        }
+        else if (!genresIDString.matches(genresIDStringRegex))
+        {
+            errors.put("genres", "Genres không hợp lệ");
+        }
+        if (sort != null && !sort.isEmpty() && !sort.equals("name") && !sort.equals("name") && !sort.equals("comment") )
+        {
+            errors.put("sort", "Sort không hợp lệ");
+        }
+        if (status != null && !status.isEmpty() && !status.equals("on going") && !status.equals("finished") && !status.equals("paused") && !status.equals("all") )
+        {
+            errors.put("status", "Status không hợp lệ");
+        }
+        return errors;
+    }
+
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        try {
+        setGenresCheckBoxData(request, response);
+        String partialNovelName = request.getParameter("novel");
+        String genresIDString = request.getParameter("genres");
         String author = request.getParameter("author");
         String status = request.getParameter("status");
         String sort = request.getParameter("sort");
+        HashMap<String, String> errors = getInputError(partialNovelName, genresIDString, author, status, sort);
+        if (!errors.isEmpty()) {
+            response.getWriter().println(JSON.getResponseJson("error", errors));
+            return;
+        }
+        int[] genresIDList = getGenresIDQuery(genresIDString);
 
         List<Novel> novelsSearched = null;
         try {
@@ -89,6 +122,10 @@ public class SearchNovels extends HttpServlet {
         request.setAttribute("novelsSearched", novelsSearched);
         request.getRequestDispatcher("/WEB-INF/view/search_novel.jsp").forward(request, response);
 
+        } catch (Exception e) {
+            response.setStatus(500);
+            SearchNovels.LOGGER.warning(e.getMessage());
+        }
 
     }
 
