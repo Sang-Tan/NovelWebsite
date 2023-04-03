@@ -13,10 +13,7 @@ import repository.intermediate.NovelGenreRepository;
 import javax.servlet.http.Part;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class NovelRepository extends BaseRepository<Novel> {
     private static NovelRepository instance;
@@ -52,16 +49,16 @@ public class NovelRepository extends BaseRepository<Novel> {
         }
         return null;
     }
-    public List<Novel> getByConditionString(String condition, Object[] params) throws SQLException {
+    public HashSet<Novel> getByConditionString(String condition, Object[] params) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE %s", getTableName(), condition);
         ResultSet result = MySQLdb.getInstance().select(sql, params);
-        List<Novel> novels = new LinkedList<>();
+        HashSet<Novel> novels = new HashSet<>();
         while (result.next()) {
             novels.add(mapObject(result));
         }
         return novels;
     }
-    public List<Novel> search(String novelName, String authorName, String Status, int[] genresId, String sortAttribute) throws SQLException
+    public HashSet<Novel> search(String novelName, String authorName, String Status, Set<Integer> genresId, String sortAttribute) throws SQLException
     {
         String sql = " 1=1 ";
         List<Object> params = new ArrayList<>();
@@ -77,14 +74,12 @@ public class NovelRepository extends BaseRepository<Novel> {
             sql += " AND status = ?";
             params.add(Status);
         }
-        if (genresId != null && genresId.length > 0) {
+        if (genresId != null && !genresId.isEmpty()) {
             sql += " AND id IN (SELECT novel_id FROM novel_genre WHERE genre_id IN (";
-            for (int i = 0; i < genresId.length; i++) {
-                sql += "?,";
-                params.add(genresId[i]);
-            }
-            sql = sql.substring(0, sql.length() - 1);
+            String placeholders = String.join(",", Collections.nCopies(genresId.size(), "?"));
+            sql += placeholders;
             sql += "))";
+            params.addAll(genresId);
         }
         if (sortAttribute != null && !sortAttribute.isEmpty() && !sortAttribute.equals("comment")
         ) {

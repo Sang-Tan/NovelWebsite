@@ -20,12 +20,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
 @MultipartConfig
 @WebServlet(name = "SearchNovelsServlet", value = "/search-novels")
 public class SearchNovels extends HttpServlet {
@@ -40,26 +41,22 @@ public class SearchNovels extends HttpServlet {
         LOGGER.addHandler(handler);
     }
     private void setGenresCheckBoxData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List genres = null;
+        HashSet genres = null;
         try {
-            genres = GenreRepository.getInstance().getAll();
+            genres = new HashSet<>(GenreRepository.getInstance().getAll());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         request.setAttribute("genres", genres);
     }
-    private int[] getGenresIDQuery(String genresIDString) throws ServletException, IOException {
+    private HashSet<Integer> getGenresIDQuery(String genresIDString) throws ServletException, IOException {
 
-        int[] genresIDList = null;
+        HashSet<Integer> genresIDList = null;
         if (!(genresIDString == null ) && !genresIDString.isEmpty()) {
             String[] arrGenresIDString = genresIDString.split(",");
-            genresIDList = new int[arrGenresIDString.length];
-            for (int i = 0; i < arrGenresIDString.length; i++) {
-                genresIDList[i] = Integer.parseInt(arrGenresIDString[i]);
-            }
+            genresIDList = new HashSet<>(Arrays.stream(arrGenresIDString).map(Integer::parseInt).collect(Collectors.toList()));
         }
         return genresIDList;
-
     }
     private HashMap<String, String> getInputError(String partialNovelName, String genresIDString, String author, String status, String sort)
     {
@@ -101,9 +98,9 @@ public class SearchNovels extends HttpServlet {
             response.getWriter().println(JSON.getResponseJson("error", errors));
             return;
         }
-        int[] genresIDList = getGenresIDQuery(genresIDString);
+        HashSet<Integer> genresIDList = getGenresIDQuery(genresIDString);
 
-        List<Novel> novelsSearched = null;
+        HashSet<Novel> novelsSearched = null;
         try {
             novelsSearched =  NovelRepository.getInstance().search(partialNovelName, author, status, genresIDList, sort);
         } catch (SQLException e) {
@@ -118,7 +115,6 @@ public class SearchNovels extends HttpServlet {
         request.setAttribute("status", status);
         request.setAttribute("sort", sort);
         request.setAttribute("genresIDList", genresIDList);
-
         request.setAttribute("novelsSearched", novelsSearched);
         request.getRequestDispatcher("/WEB-INF/view/search_novel.jsp").forward(request, response);
 
