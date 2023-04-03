@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 public class NovelRepository extends BaseRepository<Novel> {
     private static NovelRepository instance;
@@ -51,6 +52,53 @@ public class NovelRepository extends BaseRepository<Novel> {
         }
         return null;
     }
+    public List<Novel> getByConditionString(String condition, Object[] params) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE %s", getTableName(), condition);
+        ResultSet result = MySQLdb.getInstance().select(sql, params);
+        List<Novel> novels = new LinkedList<>();
+        while (result.next()) {
+            novels.add(mapObject(result));
+        }
+        return novels;
+    }
+    public List<Novel> search(String novelName, String authorName, String Status, int[] genresId, String sortAttribute) throws SQLException
+    {
+        String sql = " 1=1 ";
+        List<Object> params = new ArrayList<>();
+        if (novelName != null && !novelName.isEmpty()) {
+            sql += " AND name LIKE ?";
+            params.add("%" + novelName + "%");
+        }
+        if (authorName != null && !authorName.isEmpty()) {
+            sql += " AND owner IN (SELECT id FROM users WHERE display_name LIKE ?)";
+            params.add("%" + authorName + "%");
+        }
+        if (Status != null && !Status.isEmpty() && !Status.equals("all")) {
+            sql += " AND status = ?";
+            params.add(Status);
+        }
+        if (genresId != null && genresId.length > 0) {
+            sql += " AND id IN (SELECT novel_id FROM novel_genre WHERE genre_id IN (";
+            for (int i = 0; i < genresId.length; i++) {
+                sql += "?,";
+                params.add(genresId[i]);
+            }
+            sql = sql.substring(0, sql.length() - 1);
+            sql += "))";
+        }
+        if (sortAttribute != null && !sortAttribute.isEmpty() && !sortAttribute.equals("comment")
+        ) {
+            sql += " ORDER BY " + sortAttribute;
+        }
+        else if (sortAttribute != null && !sortAttribute.isEmpty() && sortAttribute.equals("comment")) {
+            sql += " ORDER BY (SELECT COUNT(*) FROM comments WHERE novel_id = novel.id) DESC";
+        }
+//        else if (sortAttribute == null || sortAttribute.isEmpty()) && sortAttribute.equals("author name") {
+//            sql += " ORDER BY (SELECT display_name FROM users WHERE id = novel.owner_id)";
+//        }
+        return getByConditionString(sql, params.toArray());
+    }
+
 
     public Novel createNovel(String novelName, String summary,
                              String status, String imageURI, int ownerID) {

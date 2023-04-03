@@ -1,28 +1,32 @@
 package controller;
 
+import controller.authentication.Register;
 import core.JSON;
+import model.Novel;
 import model.Token;
 import model.User;
-import org.json.JSONException;
+import repository.GenreRepository;
+import repository.NovelRepository;
 import repository.TokenRepository;
-import repository.UserRepository;
 import service.validator.TokenService;
 import service.validator.UserValidator;
+import org.json.JSONException;
+import repository.UserRepository;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+@MultipartConfig
 @WebServlet(name = "SearchNovelsServlet", value = "/search-novels")
 public class SearchNovels extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(SearchNovels.class.getName());
@@ -35,81 +39,94 @@ public class SearchNovels extends HttpServlet {
         handler.setLevel(Level.ALL);
         LOGGER.addHandler(handler);
     }
-
-    private HashMap<String, String> getInputError(String username, String password) {
+    private void setGenresCheckBoxData(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List genres = null;
         try {
-            // create a map to store invalid input values and error messages
-            HashMap<String, String> errors = new HashMap<>();
-
-            // add invalid input values and error messages to the map
-            // validate username
-            if (username == null || username.isEmpty()) {
-                errors.put("username", "Username không được để trống");
-            } else if (!UserValidator.isUsernameExists(username)) {
-                errors.put("username", "Username không tồn tại");
-            } else if (password == null || password.isEmpty()) {
-                errors.put("password", "Mật khẩu không được để trống");
-            } else {
-                if (!UserValidator.credentialVerify(username, password)) {
-                    errors.put("password", "Mật khẩu không đúng");
-                }
-            }
-            return errors;
+            genres = GenreRepository.getInstance().getAll();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return new HashMap<>();
+        request.setAttribute("genres", genres);
+    }
+    private int[] getGenresIDQuery(String genresIDString) throws ServletException, IOException {
+
+        int[] genresIDList = null;
+        if (!(genresIDString == null ) && !genresIDString.isEmpty()) {
+            String[] arrGenresIDString = genresIDString.split(",");
+            genresIDList = new int[arrGenresIDString.length];
+            for (int i = 0; i < arrGenresIDString.length; i++) {
+                genresIDList[i] = Integer.parseInt(arrGenresIDString[i]);
+            }
+        }
+        return genresIDList;
+
+    }
+    private HashMap<String, String> getInputError(String partialNovelName, String genresIDString, String author, String status, String sort)
+    {
+        HashMap<String, String> errors = new HashMap<>();
+        String genresIDStringRegex = "^[0-9,]+$";
+
+        if(genresIDString == null || genresIDString.isEmpty())
+        {
+            //
+        }
+        else if (!genresIDString.matches(genresIDStringRegex))
+        {
+            errors.put("genres", "Genres không hợp lệ");
+        }
+        if (sort != null && !sort.isEmpty() && !sort.equals("name") && !sort.equals("name") && !sort.equals("comment") )
+        {
+            errors.put("sort", "Sort không hợp lệ");
+        }
+        if (status != null && !status.isEmpty() && !status.equals("on going") && !status.equals("finished") && !status.equals("paused") && !status.equals("all") )
+        {
+            errors.put("status", "Status không hợp lệ");
+        }
+        return errors;
     }
 
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         try {
-            response.setContentType("application/json");
-            HttpSession session = request.getSession();
+        setGenresCheckBoxData(request, response);
+        String partialNovelName = request.getParameter("novel");
+        String genresIDString = request.getParameter("genres");
+        String author = request.getParameter("author");
+        String status = request.getParameter("status");
+        String sort = request.getParameter("sort");
+        HashMap<String, String> errors = getInputError(partialNovelName, genresIDString, author, status, sort);
+        if (!errors.isEmpty()) {
+            response.getWriter().println(JSON.getResponseJson("error", errors));
+            return;
+        }
+        int[] genresIDList = getGenresIDQuery(genresIDString);
 
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
-            boolean remember = request.getParameter("remember") != null;
+        List<Novel> novelsSearched = null;
+        try {
+            novelsSearched =  NovelRepository.getInstance().search(partialNovelName, author, status, genresIDList, sort);
+        } catch (SQLException e) {
+            response.setStatus(500);
+            SearchNovels.LOGGER.warning(e.getMessage());
+        }
 
-            // create a map to store invalid input values and error messages
-            HashMap<String, String> errors;
-            errors = getInputError(username, password);
-            if (!errors.isEmpty()) {
-                response.getWriter().println(JSON.getResponseJson("error", errors));
-                return;
-            }
-            try {
-                if (remember) {
-                    TokenRepository tokenRepository = TokenRepository.getInstance();
+        // set input data to request attribute
+        request.setAttribute("partialNovelName", partialNovelName);
+        request.setAttribute("genresIDString", genresIDString);
+        request.setAttribute("author", author);
+        request.setAttribute("status", status);
+        request.setAttribute("sort", sort);
+        request.setAttribute("genresIDList", genresIDList);
 
-                    // generate random secure token
-                    String plainToken = TokenService.generateTokenString();
+        request.setAttribute("novelsSearched", novelsSearched);
+        request.getRequestDispatcher("/WEB-INF/view/search_novel.jsp").forward(request, response);
 
-                    //set token cookie
-                    TokenService.setTokenCookie(response, plainToken);
-
-
-                    // insert token to database
-                    String hashedToken = TokenService.hashToken(plainToken);
-                    User user = UserRepository.getInstance().getByUsername(username);
-                    Token token = tokenRepository.createNewToken(user.getId(), hashedToken);
-                    tokenRepository.insert(token);
-                }
-            } catch (SQLException e) {
-                response.setStatus(500);
-                SearchNovels.LOGGER.warning(e.getMessage());
-                return;
-            }
-
-            session.setAttribute("username", username);
-            session.setAttribute("password", password);
-
-            response.getWriter().println(JSON.getResponseJson("success"));
-
-        } catch (JSONException e) {
+        } catch (Exception e) {
             response.setStatus(500);
             SearchNovels.LOGGER.warning(e.getMessage());
         }
 
     }
+
 }

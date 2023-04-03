@@ -2,13 +2,9 @@ package controller.personal;
 
 import core.FileUtil;
 import io.github.cdimascio.dotenv.Dotenv;
-import model.Novel;
 import model.User;
 import repository.GenreRepository;
-import repository.NovelRepository;
-import service.upload.FileMapper;
 import service.upload.NovelManageService;
-import service.validator.UserValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;

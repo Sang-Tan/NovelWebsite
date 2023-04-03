@@ -1,11 +1,13 @@
 package controller.authentication;
 
 import core.JSON;
+//import service.validator.UserService;
 import service.validator.UserValidator;
 import repository.UserRepository;
 import model.User;
 import org.json.JSONException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -61,9 +63,6 @@ public class Register extends HttpServlet {
                 response.setStatus(500);
                 return;
             }
-
-            session.setAttribute("username", username);
-            session.setAttribute("password", hashedPassword);
             response.getWriter().println(JSON.getResponseJson("success"));
         } catch (JSONException | SQLException e) {
             response.setStatus(500);
