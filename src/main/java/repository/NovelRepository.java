@@ -1,16 +1,11 @@
 package repository;
 
-import core.Pair;
 import core.database.BaseRepository;
 import core.database.MySQLdb;
-import core.database.SqlRecord;
-import io.github.cdimascio.dotenv.Dotenv;
 import model.Novel;
-import model.User;
 import model.intermediate.NovelGenre;
 import repository.intermediate.NovelGenreRepository;
 
-import javax.servlet.http.Part;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -111,7 +106,10 @@ public class NovelRepository extends BaseRepository<Novel> {
         return novel;
     }
 
-    public void addGenresToNovel(int novelID, Integer[] genres) throws SQLException {
+    public void changeNovelGenres(int novelID, int[] genres) throws SQLException {
+        //delete all genres of this novel
+        NovelGenreRepository.getInstance().deleteByNovelId(novelID);
+
         ArrayList<NovelGenre> novelGenres = new ArrayList<>();
         for (Integer genre : genres) {
             NovelGenre novelGenre = new NovelGenre();

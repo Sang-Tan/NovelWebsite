@@ -1,10 +1,9 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: DELL
-  Date: 3/18/2023
-  Time: 4:13 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%--@elvariable id="managingAction" type="core.metadata.ManageNovelAction"--%>
+<%--@elvariable id="ManageNovelAction" type="core.metadata.ManageNovelAction.class"--%>
+<%--@elvariable id="error" type="java.lang.String"--%>
+<%@ page import="core.metadata.ManageNovelAction" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -14,12 +13,19 @@
 </head>
 <body style="background-color: var(--silver)">
 <%@include file="layout/header.jsp" %>
+<c:if test="${error != null}">
+    <div class="alert alert-danger" role="alert">
+            ${error}
+    </div>
+</c:if>
 <div class="container mt-5">
     <div class="row">
         <div class="col-12 col-md-3">
             <div class="basic-section">
                 <div class="basic-section__header">
-                    <h4 class="basic-section__title">Mục lục</h4>
+                    <h4 class="basic-section__title">
+                        Mục lục
+                    </h4>
                 </div>
                 <jsp:include page="layout/novel_menu.jsp"/>
             </div>
@@ -27,9 +33,37 @@
         <div class="col">
             <div class="basic-section">
                 <div class="basic-section__header">
-                    <h4 class="basic-section__title">Title</h4>
+                    <h4 class="basic-section__title">
+                        <c:choose>
+                            <c:when test="${managingAction.equals(ManageNovelAction.EDIT_NOVEL)}">
+                                Chỉnh sửa truyện
+                            </c:when>
+                            <c:when test="${managingAction.equals(ManageNovelAction.ADD_VOLUME)}">
+                                Thêm tập mới
+                            </c:when>
+                            <c:when test="${managingAction.equals(ManageNovelAction.EDIT_VOLUME)}">
+                                Chỉnh sửa tập truyện
+                            </c:when>
+                            <c:when test="${managingAction.equals(ManageNovelAction.EDIT_CHAPTER)}">
+                                Chỉnh sửa chương truyện
+                            </c:when>
+                        </c:choose>
+                    </h4>
                 </div>
-                <jsp:include page="layout/form_chapter.jsp"/>
+                <c:choose>
+                    <c:when test="${managingAction.equals(ManageNovelAction.EDIT_NOVEL)}">
+                        <jsp:include page="layout/form_novel.jsp"/>
+                    </c:when>
+                    <c:when test="${managingAction.equals(ManageNovelAction.ADD_VOLUME)}">
+                        <jsp:include page="layout/form_volume.jsp"/>
+                    </c:when>
+                    <c:when test="${managingAction.equals(ManageNovelAction.EDIT_VOLUME)}">
+                        <jsp:include page="layout/form_volume.jsp"/>
+                    </c:when>
+                    <c:when test="${managingAction.equals(ManageNovelAction.EDIT_CHAPTER)}">
+                        <jsp:include page="layout/form_chapter.jsp"/>
+                    </c:when>
+                </c:choose>
             </div>
         </div>
     </div>

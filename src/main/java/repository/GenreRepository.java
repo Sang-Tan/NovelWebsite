@@ -2,11 +2,14 @@ package repository;
 
 import core.database.BaseRepository;
 import core.database.MySQLdb;
-import core.database.SqlRecord;
 import model.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class GenreRepository extends BaseRepository<Genre> {
 
@@ -45,5 +48,21 @@ public class GenreRepository extends BaseRepository<Genre> {
             return mapObject(result);
         }
         return null;
+    }
+
+    public List<Genre> getByIds(int[] ids) throws SQLException {
+        ArrayList<Genre> genres = new ArrayList<>();
+        for (int id : ids) {
+            genres.add(findById(id));
+        }
+        return genres;
+    }
+
+    public Set<Genre> getByNovelId(int novelId) throws SQLException {
+        String sql = "SELECT * FROM " + getTableName() +
+                " WHERE id IN " +
+                "(SELECT genre_id FROM novel_genre WHERE novel_id = ?)";
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{novelId});
+        return new HashSet<>(mapObjects(result));
     }
 }

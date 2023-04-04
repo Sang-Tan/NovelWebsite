@@ -45,16 +45,6 @@ public abstract class BaseRepository<T extends DatabaseObject> {
             if (field.isAnnotationPresent(Id.class)) {
                 Column columnAnnotation = field.getAnnotation(Column.class);
                 primaryKeys.put(columnAnnotation.name(), field);
-                return primaryKeys;
-            } else if (field.isAnnotationPresent(EmbeddedId.class)) {
-                Field[] idFields = field.getType().getDeclaredFields();
-                for (Field idField : idFields) {
-                    Column columnAnnotation = idField.getType().getAnnotation(Column.class);
-                    if (columnAnnotation != null) {
-                        primaryKeys.put(columnAnnotation.name(), idField);
-                    }
-                }
-                return primaryKeys;
             }
         }
         return primaryKeys;
