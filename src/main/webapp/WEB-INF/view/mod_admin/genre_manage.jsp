@@ -60,39 +60,6 @@
                             </a>
                         </div>
                     </c:forEach>
-
-                    <%--                    <table class="table table-striped">--%>
-                    <%--                        <tr>--%>
-                    <%--                            <th>STT</th>--%>
-                    <%--                            <th>Tên thể loại</th>--%>
-                    <%--                            <th class="text-center">Thao tác</th>--%>
-                    <%--                        </tr>--%>
-
-                    <%--                        <c:forEach var="genre" items="${genreList}" varStatus="status">--%>
-                    <%--                            <tr>--%>
-                    <%--                                <td>${status.count}</td>--%>
-                    <%--                                <td>${genre.getName()}</td>--%>
-                    <%--                                <td class="text-center">--%>
-                    <%--                                    <button class="basic-btn basic-btn--olive"--%>
-                    <%--                                            data-toggle="modal" data-target="#editModal"--%>
-                    <%--                                            onclick="showEditForm(${genre.getId()}, '${genre.getName()}')">--%>
-                    <%--                                        <i class="fas fa-edit"></i> Sửa--%>
-                    <%--                                    </button>--%>
-                    <%--                                    <button class="basic-btn basic-btn--red"--%>
-                    <%--                                            data-toggle="modal" data-target="#deleteModal"--%>
-                    <%--                                            onclick="showDeleteForm(${genre.getId()}, '${genre.getName()}')">--%>
-                    <%--                                        <i class="fas fa-trash-alt"></i> Xóa--%>
-                    <%--                                    </button>--%>
-                    <%--                                </td>--%>
-                    <%--                            </tr>--%>
-                    <%--                        </c:forEach>--%>
-
-                    <%--                        <c:if test="${genreList == null}">--%>
-                    <%--                            <tr>--%>
-                    <%--                                <td colspan="3" class="text-center">Không có dữ liệu</td>--%>
-                    <%--                            </tr>--%>
-                    <%--                        </c:if>--%>
-                    <%--                    </table>--%>
                 </div>
             </div>
         </div>
