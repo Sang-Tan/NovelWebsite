@@ -35,6 +35,8 @@ public class ManageNovel extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        checkValidOwner(req, resp);
+
         if (req.getParameter("tap-moi") != null) {
             try {
                 showAddVolumePage(req, resp);
@@ -50,6 +52,8 @@ public class ManageNovel extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        checkValidOwner(req, resp);
+
         if (req.getParameter("tap-moi") != null) {
             addVolume(req, resp);
         } else {
@@ -71,7 +75,7 @@ public class ManageNovel extends HttpServlet {
                 resp.sendError(404);
                 return;
             }
-            req.setAttribute("novel", novel);
+            req.setAttribute("reqNovel", novel);
             req.setAttribute("genres", genres);
             req.setAttribute("novelGenreIds", novelGenreIds);
         } catch (SQLException | IOException e) {
@@ -85,7 +89,7 @@ public class ManageNovel extends HttpServlet {
         User performer = (User) req.getAttribute("user");
         int novelId = getNovelId(req);
         try {
-            if (NovelManageService.checkOwnership(performer, novelId) == false) {
+            if (NovelManageService.checkNovelOwnership(performer, novelId) == false) {
                 resp.sendError(403);
                 return;
             }
@@ -132,7 +136,7 @@ public class ManageNovel extends HttpServlet {
             resp.setStatus(404);
             return;
         }
-        req.setAttribute("novel", novel);
+        req.setAttribute("reqNovel", novel);
         req.setAttribute("managingAction", ManageNovelAction.ADD_VOLUME);
         req.getRequestDispatcher("/WEB-INF/view/personal/novel_manage.jsp").forward(req, resp);
     }
@@ -157,5 +161,20 @@ public class ManageNovel extends HttpServlet {
         }
         resp.sendRedirect("/ca-nhan/tieu-thuyet/" + novelId);
 
+    }
+
+    private void checkValidOwner(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int novelId = getNovelId(req);
+        User performer = (User) req.getAttribute("user");
+        try {
+            if (NovelManageService.checkNovelOwnership(performer, novelId) == false) {
+                resp.sendError(403);
+                return;
+            }
+        } catch (SQLException e) {
+            resp.sendError(500);
+            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            return;
+        }
     }
 }
