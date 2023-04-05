@@ -32,7 +32,9 @@ public class NovelManageService {
     }
 
     private static Chapter createDefaultChapter() {
-        return new Chapter();
+        Chapter newChap = new Chapter();
+        newChap.setPending(true);
+        return newChap;
     }
 
     private static Volume createVirtualVolume(int novelID) {
@@ -136,13 +138,60 @@ public class NovelManageService {
         NovelRepository.getInstance().changeNovelGenres(novelInDb.getId(), genres);
     }
 
+    public static void updateVolumeInfo(Volume newVolumeInfo, Part image) throws SQLException, IOException {
+        if (newVolumeInfo == null) {
+            throw new IllegalArgumentException("Volume cannot be null");
+        }
+        if (newVolumeInfo.getId() == 0) {
+            throw new IllegalArgumentException("Volume ID invalid");
+        }
+        Volume volumeInDb = VolumeRepository.getInstance().getById(newVolumeInfo.getId());
+        if (volumeInDb == null) {
+            throw new IllegalArgumentException("Volume not found");
+        }
+
+        volumeInDb.setName(newVolumeInfo.getName());
+
+        FileMapper imageMapper = null;
+        //create image mapper and upload image if exist
+        if (image != null && image.getSize() > 0) {
+            if (volumeInDb.getImage() == null || volumeInDb.getImage().equals(Volume.DEFAULT_IMAGE)) {
+                //if the volume has no image, create a new mapper
+                imageMapper = uploadImage(VOLUME_COVER_DIR, image);
+                volumeInDb.setImage(imageMapper.getURI());
+            } else {
+                //if the volume has an image, update the image
+                imageMapper = FileMapper.mapURI(volumeInDb.getImage());
+                imageMapper.uploadFile(image.getInputStream(), true);
+            }
+        }
+        VolumeRepository.getInstance().update(volumeInDb);
+    }
+
+    public static void updateChapterInfo(Chapter newChapterInfo) throws SQLException {
+        if (newChapterInfo == null) {
+            throw new IllegalArgumentException("Chapter cannot be null");
+        }
+        if (newChapterInfo.getId() == 0) {
+            throw new IllegalArgumentException("Chapter ID invalid");
+        }
+        Chapter chapterInDb = ChapterRepository.getInstance().getById(newChapterInfo.getId());
+        if (chapterInDb == null) {
+            throw new IllegalArgumentException("Chapter not found");
+        }
+
+        chapterInDb.setName(newChapterInfo.getName());
+        chapterInDb.setContent(newChapterInfo.getContent());
+        ChapterRepository.getInstance().update(chapterInDb);
+    }
+
     /**
      * @param performer
      * @param novelID
      * @return true if the user is the owner of the novel
      * @throws SQLException
      */
-    public static boolean checkOwnership(User performer, int novelID) throws SQLException {
+    public static boolean checkNovelOwnership(User performer, int novelID) throws SQLException {
         if (performer == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
@@ -152,6 +201,21 @@ public class NovelManageService {
 
         int novelOwnerId = NovelRepository.getInstance().getById(novelID).getOwnerID();
         if (novelOwnerId != performer.getId()) {
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean checkVolumeOwnership(User performer, int volumeID) throws SQLException {
+        if (performer == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+        if (volumeID == 0) {
+            throw new IllegalArgumentException("Volume ID invalid");
+        }
+
+        int volumeOwnerId = VolumeRepository.getInstance().getById(volumeID).getNovelId();
+        if (volumeOwnerId != performer.getId()) {
             return false;
         }
         return true;
@@ -181,11 +245,18 @@ public class NovelManageService {
         }
     }
 
-    public static void uploadNewChapter(int volumeID, String chapterName, String content) throws SQLException {
+    public static void uploadNewChapter(Chapter newChapterInfo) throws SQLException {
+        if (newChapterInfo == null) {
+            throw new IllegalArgumentException("Chapter cannot be null");
+        }
+        if (newChapterInfo.getVolumeId() == 0) {
+            throw new IllegalArgumentException("Volume ID invalid");
+        }
+
         Chapter chapter = createDefaultChapter();
-        chapter.setName(chapterName);
-        chapter.setContent(content);
-        chapter.setVolumeId(volumeID);
+        chapter.setName(newChapterInfo.getName());
+        chapter.setContent(newChapterInfo.getContent());
+        chapter.setVolumeId(newChapterInfo.getVolumeId());
 
         //insert chapter to database
         ChapterRepository.getInstance().insert(chapter);
@@ -238,5 +309,39 @@ public class NovelManageService {
             }
         }
         return null;
+    }
+
+    public static String validateUploadChapter(Chapter newChapterInfo) {
+        String chapterName = newChapterInfo.getName();
+        String content = newChapterInfo.getContent();
+
+        if (chapterName == null || chapterName.isEmpty()) {
+            return "Tên chương không được để trống";
+        }
+        if (content == null || content.isEmpty()) {
+            return "Nội dung không được để trống";
+        }
+        return null;
+    }
+
+    public static Novel getNovelByID(int novelID) throws SQLException {
+        return NovelRepository.getInstance().getById(novelID);
+    }
+
+    public static Novel getNovelByVolumeID(int volumeID) throws SQLException {
+        return NovelRepository.getInstance().getByVolumeID(volumeID);
+    }
+
+    public static Novel getNovelByChapterID(int chapterID) throws SQLException {
+        Volume volume = VolumeRepository.getInstance().getByChapterId(chapterID);
+        return NovelRepository.getInstance().getByVolumeID(volume.getId());
+    }
+
+    public static Volume getVolumeByID(int volumeID) throws SQLException {
+        return VolumeRepository.getInstance().getById(volumeID);
+    }
+
+    public static Chapter getChapterByID(int chapterID) throws SQLException {
+        return ChapterRepository.getInstance().getById(chapterID);
     }
 }

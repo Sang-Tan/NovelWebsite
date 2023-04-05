@@ -47,6 +47,7 @@ public class NovelRepository extends BaseRepository<Novel> {
         }
         return null;
     }
+
     public List<Novel> getByConditionString(String condition, Object[] params) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE %s", getTableName(), condition);
         ResultSet result = MySQLdb.getInstance().select(sql, params);
@@ -56,8 +57,8 @@ public class NovelRepository extends BaseRepository<Novel> {
         }
         return novels;
     }
-    public List<Novel> search(String novelName, String authorName, String Status, int[] genresId, String sortAttribute) throws SQLException
-    {
+
+    public List<Novel> search(String novelName, String authorName, String Status, int[] genresId, String sortAttribute) throws SQLException {
         String sql = " 1=1 ";
         List<Object> params = new ArrayList<>();
         if (novelName != null && !novelName.isEmpty()) {
@@ -84,8 +85,7 @@ public class NovelRepository extends BaseRepository<Novel> {
         if (sortAttribute != null && !sortAttribute.isEmpty() && !sortAttribute.equals("comment")
         ) {
             sql += " ORDER BY " + sortAttribute;
-        }
-        else if (sortAttribute != null && !sortAttribute.isEmpty() && sortAttribute.equals("comment")) {
+        } else if (sortAttribute != null && !sortAttribute.isEmpty() && sortAttribute.equals("comment")) {
             sql += " ORDER BY (SELECT COUNT(*) FROM comments WHERE novel_id = novel.id) DESC";
         }
 //        else if (sortAttribute == null || sortAttribute.isEmpty()) && sortAttribute.equals("author name") {
@@ -128,5 +128,15 @@ public class NovelRepository extends BaseRepository<Novel> {
             novels.add(mapObject(result));
         }
         return novels;
+    }
+
+    public Novel getByVolumeID(int volumeID) throws SQLException {
+        String sql = String.format("SELECT * FROM %s " +
+                "WHERE id = (SELECT novel_id FROM volumes WHERE id = ?)", getTableName());
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{volumeID});
+        if (result.next()) {
+            return mapObject(result);
+        }
+        return null;
     }
 }

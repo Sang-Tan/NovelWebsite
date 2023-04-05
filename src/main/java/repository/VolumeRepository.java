@@ -2,14 +2,11 @@ package repository;
 
 import core.database.BaseRepository;
 import core.database.MySQLdb;
-import core.database.SqlRecord;
-import model.Novel;
 import model.Volume;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class VolumeRepository extends BaseRepository<Volume> {
@@ -89,6 +86,16 @@ public class VolumeRepository extends BaseRepository<Volume> {
             volumes.add(mapObject(result));
         }
         return volumes;
+    }
+
+    public Volume getByChapterId(int chapterId) throws SQLException {
+        String sql = String.format("SELECT * FROM %s " +
+                "WHERE id = (SELECT volume_id FROM chapters WHERE id = ?)", getTableName());
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{chapterId});
+        if (result.next()) {
+            return mapObject(result);
+        }
+        return null;
     }
 
 }
