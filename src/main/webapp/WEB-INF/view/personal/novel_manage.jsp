@@ -44,6 +44,9 @@
                             <c:when test="${managingAction.equals(ManageNovelAction.EDIT_VOLUME)}">
                                 Chỉnh sửa tập truyện
                             </c:when>
+                            <c:when test="${managingAction.equals(ManageNovelAction.ADD_CHAPTER)}">
+                                Thêm chương mới
+                            </c:when>
                             <c:when test="${managingAction.equals(ManageNovelAction.EDIT_CHAPTER)}">
                                 Chỉnh sửa chương truyện
                             </c:when>
@@ -59,6 +62,9 @@
                     </c:when>
                     <c:when test="${managingAction.equals(ManageNovelAction.EDIT_VOLUME)}">
                         <jsp:include page="layout/form_volume.jsp"/>
+                    </c:when>
+                    <c:when test="${managingAction.equals(ManageNovelAction.ADD_CHAPTER)}">
+                        <jsp:include page="layout/form_chapter.jsp"/>
                     </c:when>
                     <c:when test="${managingAction.equals(ManageNovelAction.EDIT_CHAPTER)}">
                         <jsp:include page="layout/form_chapter.jsp"/>

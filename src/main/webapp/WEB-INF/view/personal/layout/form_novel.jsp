@@ -1,4 +1,4 @@
-<%--@elvariable id="novel" type="model.Novel"--%>
+<%--@elvariable id="reqNovel" type="model.Novel"--%>
 <%--@elvariable id="genres" type="java.util.List<model.Genre>"--%>
 <%--@elvariable id="novelGenreIds" type="java.util.Collection<java.lang.Integer>"--%>
 <%--@elvariable id="Novel" type="model.Novel.class"--%>
@@ -11,7 +11,7 @@
     <div class="d-flex flex-column align-items-center mb-3">
         <div class="a6-ratio img-cover mb-2">
             <div class="img-wrapper border" id="image-preview"
-                 style="background-image: url(${novel.image});">
+                 style="background-image: url(${reqNovel.image});">
             </div>
         </div>
         <div class="upload-btn-wrapper">
@@ -25,7 +25,7 @@
     <div class=" d-flex align-items-center mb-2">
         <label for="novel_name" class="basic-label required">Tên truyện </label>
         <input class="input-text" style="flex-grow: 1" type="text" name="novel_name" id="novel_name"
-               placeholder="Tên truyện" value="${novel.name}" required>
+               placeholder="Tên truyện" value="${reqNovel.name}" required>
     </div>
     <div class="d-flex align-items-center mb-2">
         <label for="genre" class="basic-label required" title="Chọn ít nhất 1 thể loại">Thể loại: </label>
@@ -44,22 +44,22 @@
             <label for="summary" class="basic-label required">Tóm tắt : </label>
         </div>
         <textarea name="summary" title="Tóm tắt" id="summary" rows="5" class="basic-textarea"
-                  required>${novel.summary}</textarea>
+                  required>${reqNovel.summary}</textarea>
     </div>
     <div class="d-flex align-items-start mb-4">
         <label for="status" class="basic-label">Tình trạng: </label>
         <!-- <input style="flex-grow: 1;" type="" name="author" id="status" placeholder="Tên tác giả"> -->
         <select class="input-text" name="status" id="status" style="flex-grow: 1;">
             <option value="${Novel.STATUS_ON_GOING}"
-                    <c:if test="${novel.status.equals(Novel.STATUS_ON_GOING)}">selected</c:if>>
+                    <c:if test="${reqNovel.status.equals(Novel.STATUS_ON_GOING)}">selected</c:if>>
                 Đang tiến hành
             </option>
             <option value="${Novel.STATUS_FINISHED}"
-                    <c:if test="${novel.status.equals(Novel.STATUS_FINISHED)}">selected</c:if>>
+                    <c:if test="${reqNovel.status.equals(Novel.STATUS_FINISHED)}">selected</c:if>>
                 Hoàn thành
             </option>
             <option value="${Novel.STATUS_PAUSED}"
-                    <c:if test="${novel.status.equals(Novel.STATUS_PAUSED)}">selected</c:if>>
+                    <c:if test="${reqNovel.status.equals(Novel.STATUS_PAUSED)}">selected</c:if>>
                 Tạm ngưng
             </option>
         </select>
