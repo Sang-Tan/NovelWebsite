@@ -19,10 +19,11 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="novel-item">
                 <a class="dropdown-item" href="/ca-nhan/tieu-thuyet/${reqNovel.id}">Chỉnh sửa</a>
-                <a class="dropdown-item" href="/ca-nhan/tieu-thuyet/${reqNovel.id}?tap-moi">Thêm tập</a>
+                <a class="dropdown-item" href="/ca-nhan/tieu-thuyet/${reqNovel.id}?action=add-volume">Thêm tập</a>
                 <a class="dropdown-item" href="#">Sắp xếp tập</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Xoá truyện</a>
+                <a class="dropdown-item" data-toggle="modal" data-target="#deleteModal"
+                   onclick="deleteNovel(${reqNovel.id},'${reqNovel.name}')">Xoá truyện</a>
             </div>
         </span>
         <c:if test="${reqNovel.volumes.size() > 0}">
@@ -38,11 +39,13 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="volume-item-1">
                                     <a class="dropdown-item" href="/ca-nhan/tap-truyen/${volume.id}">Chỉnh sửa</a>
-                                    <a class="dropdown-item" href="/ca-nhan/tap-truyen/${volume.id}?chuong-moi">Thêm
+                                    <a class="dropdown-item" href="/ca-nhan/tap-truyen/${volume.id}?action=add-chapter">Thêm
                                         chapter</a>
                                     <a class="dropdown-item" href="#">Sắp xếp chapter</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Xoá volume</a>
+                                    <a class="dropdown-item" data-toggle="modal" data-target="#deleteModal"
+                                       onclick="deleteVolume(${volume.id}, '${volume.name}')">Xoá
+                                        volume</a>
                                 </div>
                             </li>
                         </c:when>
@@ -56,11 +59,14 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="volume-item-2">
                                         <a class="dropdown-item" href="/ca-nhan/tap-truyen/${volume.id}">Chỉnh sửa</a>
-                                        <a class="dropdown-item" href="/ca-nhan/tap-truyen/${volume.id}?chuong-moi">Thêm
+                                        <a class="dropdown-item"
+                                           href="/ca-nhan/tap-truyen/${volume.id}?action=add-chapter">Thêm
                                             chapter</a>
                                         <a class="dropdown-item" href="#">Sắp xếp chapter</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Xoá volume</a>
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#deleteModal"
+                                           onclick="deleteVolume(${volume.id}, '${volume.name}')">Xoá
+                                            volume</a>
                                     </div>
                                 </div>
                                 <ul class="tree-nested">
@@ -74,7 +80,9 @@
                                                 <a class="dropdown-item" href="/ca-nhan/chuong-truyen/${chapter.id}">Chỉnh
                                                     sửa</a>
                                                 <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Xoá chapter</a>
+                                                <a class="dropdown-item" data-toggle="modal" data-target="#deleteModal"
+                                                   onclick="deleteChapter(${chapter.id}, '${chapter.name}')">Xoá
+                                                    chapter</a>
                                             </div>
                                         </li>
                                     </c:forEach>
@@ -85,6 +93,5 @@
                 </c:forEach>
             </ul>
         </c:if>
-
     </li>
 </ul>

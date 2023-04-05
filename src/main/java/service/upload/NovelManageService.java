@@ -344,4 +344,19 @@ public class NovelManageService {
     public static Chapter getChapterByID(int chapterID) throws SQLException {
         return ChapterRepository.getInstance().getById(chapterID);
     }
+
+    public static void deleteNovel(int novelID) throws SQLException {
+        Novel novelToDelete = NovelRepository.getInstance().getById(novelID);
+        NovelRepository.getInstance().delete(novelToDelete);
+    }
+
+    public static void deleteVolume(int volumeID) throws SQLException {
+        Volume volumeToDelete = VolumeRepository.getInstance().getById(volumeID);
+        VolumeRepository.getInstance().delete(volumeToDelete);
+    }
+
+    public static void deleteChapter(int chapterID) throws SQLException {
+        Chapter chapterToDelete = ChapterRepository.getInstance().getById(chapterID);
+        ChapterRepository.getInstance().delete(chapterToDelete);
+    }
 }

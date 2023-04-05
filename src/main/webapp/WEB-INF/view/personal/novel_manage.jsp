@@ -75,7 +75,54 @@
     </div>
 </div>
 
+<!--Modal delete-->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title title title--bold" id="staticBackdropLabel"></h5>
+                <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
+                   style="font-size: x-large"></i>
+            </div>
+            <div class="modal-body">
+                Bạn có muốn xoá <span id="objectToDelete"></span>
+                <span id="objectToDeleteName" class="text-success"></span> không?
+            </div>
+            <form id="deleteForm" method="POST">
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="basic-btn basic-btn--olive" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="basic-btn basic-btn--red">Xoá</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <%@ include file="/WEB-INF/view/layout/boostrap_js.jsp" %>
 <script src="/js/init.js"></script>
+<script>
+    const deleteModal = document.getElementById('deleteModal');
+
+    function deleteNovel(novelId, novelName) {
+        document.getElementById('objectToDelete').innerText = 'truyện ';
+        document.getElementById('objectToDeleteName').innerText = novelName;
+        document.getElementById('deleteForm').action = '/ca-nhan/tieu-thuyet/' + novelId + '?action=delete-novel';
+        deleteModal.classList.toggle('show');
+    }
+
+    function deleteVolume(volumeId, volumeName) {
+        document.getElementById('objectToDelete').innerText = 'tập ';
+        document.getElementById('objectToDeleteName').innerText = volumeName;
+        document.getElementById('deleteForm').action = '/ca-nhan/tap-truyen/' + volumeId + '?action=delete-volume';
+        deleteModal.classList.toggle('show');
+    }
+
+    function deleteChapter(chapterId, chapterName) {
+        document.getElementById('objectToDelete').innerText = 'chương ';
+        document.getElementById('objectToDeleteName').innerText = chapterName;
+        document.getElementById('deleteForm').action = '/ca-nhan/chuong-truyen/' + chapterId + '?action=delete-chapter';
+        deleteModal.classList.toggle('show');
+    }
+</script>
 </body>
 </html>

@@ -7,7 +7,6 @@ import model.Novel;
 import model.User;
 import model.Volume;
 import repository.GenreRepository;
-import repository.NovelRepository;
 import service.upload.NovelManageService;
 
 import javax.servlet.ServletException;
@@ -35,37 +34,56 @@ public class ManageNovel extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        checkValidOwner(req, resp);
+        try {
+            setRequestAttributes(req, resp);
 
-        if (req.getParameter("tap-moi") != null) {
-            try {
+            checkValidOwner(req, resp);
+
+            String action = req.getParameter("action");
+
+            if (action == null || action.isEmpty()) {
+                showNovelModificationPage(req, resp);
+            } else if (action.equals("add-volume")) {
                 showAddVolumePage(req, resp);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            } else {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
-            return;
-        } else {
-            showNovelModificationPage(req, resp);
+        } catch (SQLException e) {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            BasicLogger.getInstance().getLogger().warning(e.getMessage());
             return;
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        checkValidOwner(req, resp);
+        try {
+            setRequestAttributes(req, resp);
 
-        if (req.getParameter("tap-moi") != null) {
-            addVolume(req, resp);
-        } else {
-            updateNovel(req, resp);
+            checkValidOwner(req, resp);
 
+            String action = req.getParameter("action");
+            if (action == null || action.isEmpty()) {
+                updateNovel(req, resp);
+            } else if (action.equals("add-volume")) {
+                addVolume(req, resp);
+            } else if (action.equals("delete-novel")) {
+                deleteNovel(req, resp);
+                return;
+            } else {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        } catch (SQLException e) {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            return;
         }
     }
 
     private void showNovelModificationPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int novelId = getNovelId(req);
         try {
-            Novel novel = NovelRepository.getInstance().getById(novelId);
+            Novel novel = (Novel) req.getAttribute("reqNovel");
             List<Genre> genres = GenreRepository.getInstance().getAll();
             Set<Integer> novelGenreIds = new HashSet<>();
             for (Genre novelGenre : novel.getGenres()) {
@@ -75,7 +93,7 @@ public class ManageNovel extends HttpServlet {
                 resp.sendError(404);
                 return;
             }
-            req.setAttribute("reqNovel", novel);
+
             req.setAttribute("genres", genres);
             req.setAttribute("novelGenreIds", novelGenreIds);
         } catch (SQLException | IOException e) {
@@ -129,14 +147,20 @@ public class ManageNovel extends HttpServlet {
         resp.sendRedirect("/ca-nhan/tieu-thuyet/" + novelId);
     }
 
+    private void deleteNovel(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        NovelManageService.deleteNovel(getNovelId(req));
+        Novel novel = (Novel) req.getAttribute("reqNovel");
+        resp.sendRedirect("/ca-nhan/truyen-da-dang");
+    }
+
     private void showAddVolumePage(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
         int novelId = getNovelId(req);
-        Novel novel = NovelRepository.getInstance().getById(novelId);
+        Novel novel = (Novel) req.getAttribute("reqNovel");
         if (novel == null) {
             resp.setStatus(404);
             return;
         }
-        req.setAttribute("reqNovel", novel);
+
         req.setAttribute("managingAction", ManageNovelAction.ADD_VOLUME);
         req.getRequestDispatcher("/WEB-INF/view/personal/novel_manage.jsp").forward(req, resp);
     }
@@ -163,6 +187,7 @@ public class ManageNovel extends HttpServlet {
 
     }
 
+
     private void checkValidOwner(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int novelId = getNovelId(req);
         User performer = (User) req.getAttribute("user");
@@ -176,5 +201,10 @@ public class ManageNovel extends HttpServlet {
             BasicLogger.getInstance().getLogger().warning(e.getMessage());
             return;
         }
+    }
+
+    private void setRequestAttributes(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        Novel novel = NovelManageService.getNovelByID(getNovelId(req));
+        req.setAttribute("reqNovel", novel);
     }
 }

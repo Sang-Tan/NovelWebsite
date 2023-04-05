@@ -1,5 +1,6 @@
 package controller.personal;
 
+import core.logging.BasicLogger;
 import core.metadata.ManageNovelAction;
 import model.Chapter;
 import model.Novel;
@@ -29,13 +30,19 @@ public class ManageVolume extends HttpServlet {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } catch (Exception e) {
+            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            return;
         }
 
 
-        if (req.getParameter("chuong-moi") != null) {
+        String action = req.getParameter("action");
+        if (action == null || action.isEmpty()) {
+            showVolumeModificationPage(req, resp);
+        } else if (action.equals("add-chapter")) {
             showAddChapterPage(req, resp);
         } else {
-            showVolumeModificationPage(req, resp);
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -46,24 +53,26 @@ public class ManageVolume extends HttpServlet {
             if (!validateOwner(req, resp)) {
                 return;
             }
+
+            String action = req.getParameter("action");
+            if (action == null || action.isEmpty()) {
+                updateVolume(req, resp);
+            } else if (action.equals("add-chapter")) {
+                addChapter(req, resp);
+            } else if (action.equals("delete-volume")) {
+                deleteVolume(req, resp);
+                return;
+            } else {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }
-
-        if (req.getParameter("chuong-moi") != null) {
-            try {
-                addChapter(req, resp);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            try {
-                updateVolume(req, resp);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        } catch (Exception e) {
+            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            return;
         }
     }
+
 
     private int getVolumeId(HttpServletRequest req) {
         String pathInfo = req.getPathInfo();
@@ -89,9 +98,13 @@ public class ManageVolume extends HttpServlet {
         return true;
     }
 
-    private void setRequestAttributes(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+    private void setRequestAttributes(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         int volumeId = getVolumeId(req);
         Volume volume = NovelManageService.getVolumeByID(volumeId);
+        if (volume == null) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Tập truyện không tồn tại");
+            throw new Exception("Volume not found");
+        }
         Novel novel = NovelManageService.getNovelByID(volume.getNovelId());
 
         req.setAttribute("reqVolume", volume);
@@ -113,6 +126,12 @@ public class ManageVolume extends HttpServlet {
         NovelManageService.updateVolumeInfo(newVolumeInfo, uploadImg);
 
         resp.sendRedirect("/ca-nhan/tap-truyen/" + getVolumeId(req));
+    }
+
+    private void deleteVolume(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        NovelManageService.deleteVolume(getVolumeId(req));
+        Novel novel = (Novel) req.getAttribute("reqNovel");
+        resp.sendRedirect("/ca-nhan/tieu-thuyet/" + novel.getId());
     }
 
     private void showAddChapterPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

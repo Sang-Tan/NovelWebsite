@@ -30,6 +30,9 @@ public class ManageChapter extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             BasicLogger.getInstance().getLogger().warning(e.getMessage());
             return;
+        } catch (Exception e) {
+            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            return;
         }
 
         showChapterModificationPage(req, resp);
@@ -42,22 +45,29 @@ public class ManageChapter extends HttpServlet {
             if (!checkValidOwner(req, resp)) {
                 return;
             }
+
+            String action = req.getParameter("action");
+            if (action == null || action.isEmpty()) {
+                updateChapter(req, resp);
+            } else if (action.equals("delete-chapter")) {
+                deleteChapter(req, resp);
+                return;
+            } else {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
         } catch (SQLException e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             BasicLogger.getInstance().getLogger().warning(e.getMessage());
             return;
-        }
-
-        try {
-            updateChapter(req, resp);
-        } catch (SQLException e) {
-            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
             BasicLogger.getInstance().getLogger().warning(e.getMessage());
             return;
         }
 
         resp.sendRedirect("/ca-nhan/chuong-truyen/" + getChapterId(req));
     }
+
 
     private int getChapterId(HttpServletRequest req) {
         String pathInfo = req.getPathInfo();
@@ -86,9 +96,19 @@ public class ManageChapter extends HttpServlet {
         NovelManageService.updateChapterInfo(newChapterInfo);
     }
 
-    private void setRequestAttributes(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+    private void deleteChapter(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        NovelManageService.deleteChapter(getChapterId(req));
+        Novel reqNovel = (Novel) req.getAttribute("reqNovel");
+        resp.sendRedirect("/ca-nhan/tieu-thuyet/" + reqNovel.getId());
+    }
+
+    private void setRequestAttributes(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         int chapterId = getChapterId(req);
         Chapter chapter = NovelManageService.getChapterByID(chapterId);
+        if (chapter == null) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            throw new Exception("Chapter not found");
+        }
         Volume volume = NovelManageService.getVolumeByID(chapter.getVolumeId());
         Novel novel = NovelManageService.getNovelByID(volume.getNovelId());
         req.setAttribute("reqChapter", chapter);
