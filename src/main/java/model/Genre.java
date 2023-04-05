@@ -22,6 +22,10 @@ public class Genre implements DatabaseObject {
         this.name = name;
     }
 
+    public Genre(String name) {
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

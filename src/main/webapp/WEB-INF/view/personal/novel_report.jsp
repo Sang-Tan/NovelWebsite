@@ -19,10 +19,12 @@
             color: #3D9970;
             cursor: pointer;
         }
-        .col-05{
+
+        .col-05 {
             width: 4.17%;
         }
-        .col-115{
+
+        .col-115 {
 
         }
     </style>
@@ -39,8 +41,7 @@
                 <div class="row">
                     <div class="col-10 col-xl-6 thumb cmt-group">
                         <div class="rpt-group__item">
-                            <a href="#report-modal" class="no-decor"
-                               data-toggle="modal" data-target="#report-modal">
+                            <a href="#report-modal" class="no-decor" data-toggle="modal" data-target="#report-modal">
                                 <div class="rpt-detail"
                                      style="background-color: var(--light-gray)">
                                     <div class="row">
@@ -61,8 +62,7 @@
                         </div>
                         <br>
                         <div class="rpt-group__item">
-                            <a href="#report-modal" class="no-decor"
-                               data-toggle="modal" data-target="#report-modal">
+                            <a href="#report-modal" class="no-decor" data-toggle="modal" data-target="#report-modal">
                                 <div class="rpt-detail"
                                      style="background-color: var(--light-gray)">
                                     <div class="row">
@@ -83,8 +83,7 @@
                         </div>
                         <br>
                         <div class="rpt-group__item">
-                            <a href="#report-modal" class="no-decor"
-                               data-toggle="modal" data-target="#report-modal">
+                            <a href="#report-modal" class="no-decor" data-toggle="modal" data-target="#report-modal">
                                 <div class="rpt-detail"
                                      style="background-color: var(--light-gray)">
                                     <div class="row">
@@ -148,8 +147,8 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="report-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
+    <!--Modal delete-->
+    <div class="modal fade" id="report-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
