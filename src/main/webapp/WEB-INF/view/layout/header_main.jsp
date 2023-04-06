@@ -235,6 +235,6 @@
     function redirectToSearch(event) {
         event.preventDefault();
         const novelName = document.getElementById('novelName').value;
-        location.assign("/search-novels?novel="+ novelName);
+        location.assign("/tim-kiem-truyen?novel="+ novelName);
     }
 </script>

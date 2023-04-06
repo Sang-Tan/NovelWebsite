@@ -1,8 +1,11 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.HashSet" %>
+<%@ page import="model.Novel" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +19,7 @@
 <body style="background-color: var(--silver);">
 <jsp:include page="layout/header_main.jsp"></jsp:include>
 <div class="container mt-4">
-    <form action="/search-novels" class="container-fluid basic-section p-3" id="search-form"
+    <form action="/tim-kiem-truyen" class="container-fluid basic-section p-3" id="search-form"
           onsubmit="event.preventDefault(); submitForm()">
         <div class="row">
             <div class="d-flex align-items-center col-10">
@@ -67,9 +70,9 @@
                             Tên truyện
                         </option>
                         <%--                        <option value="author name">Tác giả</option>--%>
-                        <option value="comment" <% if ("comment".equals(request.getParameter("sort"))) { %>
-                                selected <% } %>>Lượt bình luận
-                        </option>
+                        <%--                        <option value="comment" <% if ("comment".equals(request.getParameter("sort"))) { %>--%>
+                        <%--                                selected <% } %>>Lượt bình luận--%>
+                        <%--                        </option>--%>
                     </select>
                 </div>
             </div>
@@ -92,12 +95,13 @@
     <header class="mb-3">
         <span class="title title--bold title--underline">Kết quả tìm kiếm</span>
     </header>
-    <main class="sect-body">
+    <main class="sect-body container-fluid basic-section p-3" >
         <div class="row">
-            <div class="col-4 col-md-2 thumb">
-                <%--@elvariable id="novelsSearched" type="java.util.HashSet<model.Novel>"--%>
-                <c:forEach items="${novelsSearched}" var="novelSearched">
-                    <a href="#" class="no-decor">
+            <%--@elvariable id="novelsSearched" type="java.util.List<model.Novel>"--%>
+            <c:forEach items="${novelsSearched}" var="novelSearched">
+                <div class="col-4 col-md-2 thumb">
+                    <c:set var="novelUrl" value="${novelsUri}${novelSearched.id} ${novelSearched.name}" />
+                    <a href="${fn:replace(novelUrl, ' ', '-')}" class="no-decor">
                         <div class="thumb__wrapper">
                             <div class="thumb__img-panel shadow a6-ratio">
                                 <div class="img-wrapper"
@@ -107,19 +111,13 @@
                             <p class="thumb__caption">${novelSearched.name}</p>
                         </div>
                     </a>
-                </c:forEach>
-                <%--            <a href="#" class="no-decor">--%>
-                <%--                <div class="thumb__wrapper">--%>
-                <%--                    <div class="thumb__img-panel shadow a6-ratio">--%>
-                <%--                        <div class="img-wrapper"--%>
-                <%--                             style="background-image: url('https://images.fpt.shop/unsafe/filters:quality(90)/fptshop.com.vn/uploads/images/tin-tuc/152650/Originals/Hu%20Tao.jpg');">--%>
-                <%--                        </div>--%>
-                <%--                    </div>--%>
-                <%--                    <p class="thumb__caption">Hu Tao saves my life</p>--%>
-                <%--                </div>--%>
-                <%--            </a>--%>
-            </div>
+
+                </div>
+            </c:forEach>
         </div>
+
+
+        <%@include file="layout/pagination_footer.jsp"%>
     </main>
 </div>
 
