@@ -27,17 +27,6 @@ public class NovelRepository extends BaseRepository<Novel> {
         return new Novel();
     }
 
-    @Override
-    public Novel createDefault() {
-        Novel novel = new Novel();
-        novel.setStatus(Novel.STATUS_ON_GOING);
-        novel.setSummary(Novel.DEFAULT_SUMMARY);
-        novel.setImage(Novel.DEFAULT_IMAGE);
-        novel.setPending(true);
-        return novel;
-    }
-
-
     public Novel getById(Integer ID) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(ID));

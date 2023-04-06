@@ -25,13 +25,6 @@ public class ChapterRepository extends BaseRepository<Chapter> {
     }
 
     @Override
-    public Chapter createDefault() {
-        Chapter chapter = new Chapter();
-        chapter.setPending(true);
-        return chapter;
-    }
-
-    @Override
     public Chapter insert(Chapter object) throws SQLException {
         //check valid
         int volumeId = object.getVolumeId();

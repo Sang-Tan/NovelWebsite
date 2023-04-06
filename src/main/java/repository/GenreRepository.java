@@ -27,12 +27,6 @@ public class GenreRepository extends BaseRepository<Genre> {
         return new Genre();
     }
 
-    @Override
-    public Genre createDefault() {
-        return new Genre();
-    }
-
-
     public Genre findById(int id) throws SQLException {
         String sql = "SELECT * FROM " + getTableName() + " WHERE id = ?";
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(id));

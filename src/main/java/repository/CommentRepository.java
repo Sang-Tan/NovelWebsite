@@ -32,11 +32,5 @@ public class CommentRepository extends BaseRepository<Comment> {
     protected Comment createEmpty() {
         return new Comment();
     }
-
-    @Override
-    public Comment createDefault() {
-        return new Comment();
-    }
-
 }
 

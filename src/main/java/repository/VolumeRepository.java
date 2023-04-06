@@ -25,13 +25,6 @@ public class VolumeRepository extends BaseRepository<Volume> {
     }
 
     @Override
-    public Volume createDefault() {
-        Volume volume = new Volume();
-        volume.setImage(Volume.DEFAULT_IMAGE);
-        return volume;
-    }
-
-    @Override
     public Volume insert(Volume object) throws SQLException {
         //check valid
         int novelId = object.getNovelId();

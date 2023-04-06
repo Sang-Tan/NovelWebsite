@@ -120,8 +120,6 @@ public abstract class BaseRepository<T extends DatabaseObject> {
         return String.join(", ", primaryKeysColumnsName);
     }
 
-    public abstract T createDefault();
-
     protected final SqlRecord mapRecordByField(DBFieldMapping fields, T object, boolean ignoreNullFields) {
         SqlRecord record = new SqlRecord();
         for (String columnName : fields.keySet()) {

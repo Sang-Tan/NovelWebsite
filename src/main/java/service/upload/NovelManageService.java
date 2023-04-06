@@ -98,11 +98,12 @@ public class NovelManageService {
     }
 
     /**
-     * Change the novel info
+     * Change the novel's information
      *
      * @param newNovelInfo
      * @param genres
      * @param image
+     * @throws IOException
      * @throws SQLException
      */
     public static void updateNovelInfo(Novel newNovelInfo, int[] genres, Part image) throws IOException, SQLException {

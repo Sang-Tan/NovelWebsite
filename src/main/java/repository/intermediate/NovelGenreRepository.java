@@ -24,11 +24,6 @@ public class NovelGenreRepository extends BaseRepository<NovelGenre> {
         return new NovelGenre();
     }
 
-    @Override
-    public NovelGenre createDefault() {
-        return new NovelGenre();
-    }
-
     public List<NovelGenre> getByNovelId(int novelId) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE novel_id = ?", getTableName());
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelId));
