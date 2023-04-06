@@ -22,22 +22,22 @@ public class Novel implements DatabaseObject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
-    @Column(name = "owner")
+    @Column(name = "owner", nullable = false)
     private int ownerID;
     @ManyToOne
-    @JoinColumn(name = "owner")
+    @JoinColumn(name = "owner", nullable = false)
     private User owner;
-    @Column(name = "summary")
+    @Column(name = "summary", nullable = false)
     private String summary;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "image")
     private String image;
-    @Column(name = "is_pending")
+    @Column(name = "is_pending", nullable = false)
     private boolean pending;
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private String status;
     @OneToMany(mappedBy = "belongNovel")
     private List<Volume> volumes = null;
