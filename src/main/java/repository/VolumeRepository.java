@@ -81,7 +81,7 @@ public class VolumeRepository extends BaseRepository<Volume> {
     public List<Volume> getByNovelId(int novelId) throws SQLException {
         //don't get volume with order_index = 0 because it's not a real volume
         String sql = String.format("SELECT * FROM %s WHERE novel_id = ? " +
-                "AND order_index > 1 " +
+                "AND order_index > 0 " +
                 "ORDER BY order_index ASC", getTableName());
         ArrayList<Volume> volumes = new ArrayList<>();
         ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{novelId});

@@ -2,7 +2,10 @@ package repository.intermediate;
 
 import core.DatabaseObject;
 import core.database.BaseRepository;
+import core.database.MySQLdb;
 import model.intermediate.NovelGenre;
+
+import java.util.List;
 
 public class NovelGenreRepository extends BaseRepository<NovelGenre> {
 
@@ -18,6 +21,11 @@ public class NovelGenreRepository extends BaseRepository<NovelGenre> {
     @Override
     protected NovelGenre createEmpty() {
         return new NovelGenre();
+    }
+
+    public List<NovelGenre> getByNovelId(int novelId) throws Exception {
+        String sql = "SELECT * FROM " + getTableName() + " WHERE novel_id = ?";
+        return mapObjects(MySQLdb.getInstance().select(sql, new Object[]{novelId}));
     }
 
     @Override

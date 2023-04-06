@@ -1,16 +1,11 @@
 package repository;
 
-import core.Pair;
 import core.database.BaseRepository;
 import core.database.MySQLdb;
-import core.database.SqlRecord;
-import io.github.cdimascio.dotenv.Dotenv;
 import model.Novel;
-import model.User;
 import model.intermediate.NovelGenre;
 import repository.intermediate.NovelGenreRepository;
 
-import javax.servlet.http.Part;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -49,50 +44,54 @@ public class NovelRepository extends BaseRepository<Novel> {
         }
         return null;
     }
-    public HashSet<Novel> getByConditionString(String condition, Object[] params) throws SQLException {
-        String sql = String.format("SELECT * FROM %s WHERE %s", getTableName(), condition);
+    public List<Novel> getOverviewNovels(String condition, Object[] params) throws SQLException {
+        String sql = String.format("SELECT * FROM %s %s", getTableName(), condition);
         ResultSet result = MySQLdb.getInstance().select(sql, params);
-        HashSet<Novel> novels = new HashSet<>();
-        while (result.next()) {
-            novels.add(mapObject(result));
-        }
-        return novels;
+        return mapObjects(result);
     }
-    public HashSet<Novel> search(String novelName, String authorName, String Status, Set<Integer> genresId, String sortAttribute) throws SQLException
-    {
-        String sql = " 1=1 ";
-        List<Object> params = new ArrayList<>();
-        if (novelName != null && !novelName.isEmpty()) {
-            sql += " AND name LIKE ?";
-            params.add("%" + novelName + "%");
+    public int countNovels(String condition, Object[] params) throws SQLException {
+        String sql = String.format("SELECT COUNT(id) FROM %s %s", getTableName(), condition);
+        ResultSet result = MySQLdb.getInstance().select(sql, params);
+        if (result.next()) {
+            return result.getInt(1);
         }
-        if (authorName != null && !authorName.isEmpty()) {
-            sql += " AND owner IN (SELECT id FROM users WHERE display_name LIKE ?)";
-            params.add("%" + authorName + "%");
-        }
-        if (Status != null && !Status.isEmpty() && !Status.equals("all")) {
-            sql += " AND status = ?";
-            params.add(Status);
-        }
-        if (genresId != null && !genresId.isEmpty()) {
-            sql += " AND id IN (SELECT novel_id FROM novel_genre WHERE genre_id IN (";
-            String placeholders = String.join(",", Collections.nCopies(genresId.size(), "?"));
-            sql += placeholders;
-            sql += "))";
-            params.addAll(genresId);
-        }
-        if (sortAttribute != null && !sortAttribute.isEmpty() && !sortAttribute.equals("comment")
-        ) {
-            sql += " ORDER BY " + sortAttribute;
-        }
-        else if (sortAttribute != null && !sortAttribute.isEmpty() && sortAttribute.equals("comment")) {
-            sql += " ORDER BY (SELECT COUNT(*) FROM comments WHERE novel_id = novel.id) DESC";
-        }
-//        else if (sortAttribute == null || sortAttribute.isEmpty()) && sortAttribute.equals("author name") {
-//            sql += " ORDER BY (SELECT display_name FROM users WHERE id = novel.owner_id)";
+        return 0;
+    }
+//    public HashSet<Novel> search(String novelName, String authorName, String Status, Set<Integer> genresId, String sortAttribute) throws SQLException
+//    {
+//        String sql = " 1=1 ";
+//        List<Object> params = new ArrayList<>();
+//        if (novelName != null && !novelName.isEmpty()) {
+//            sql += " AND name LIKE ?";
+//            params.add("%" + novelName + "%");
 //        }
-        return getByConditionString(sql, params.toArray());
-    }
+//        if (authorName != null && !authorName.isEmpty()) {
+//            sql += " AND owner IN (SELECT id FROM users WHERE display_name LIKE ?)";
+//            params.add("%" + authorName + "%");
+//        }
+//        if (Status != null && !Status.isEmpty() && !Status.equals("all")) {
+//            sql += " AND status = ?";
+//            params.add(Status);
+//        }
+//        if (genresId != null && !genresId.isEmpty()) {
+//            sql += " AND id IN (SELECT novel_id FROM novel_genre WHERE genre_id IN (";
+//            String placeholders = String.join(",", Collections.nCopies(genresId.size(), "?"));
+//            sql += placeholders;
+//            sql += "))";
+//            params.addAll(genresId);
+//        }
+//        if (sortAttribute != null && !sortAttribute.isEmpty() && !sortAttribute.equals("comment")
+//        ) {
+//            sql += " ORDER BY " + sortAttribute;
+//        }
+//        else if (sortAttribute != null && !sortAttribute.isEmpty() && sortAttribute.equals("comment")) {
+//            sql += " ORDER BY (SELECT COUNT(*) FROM comments WHERE novel_id = novel.id) DESC";
+//        }
+////        else if (sortAttribute == null || sortAttribute.isEmpty()) && sortAttribute.equals("author name") {
+////            sql += " ORDER BY (SELECT display_name FROM users WHERE id = novel.owner_id)";
+////        }
+//        return getByConditionString(sql, params.toArray());
+//    }
 
 
     public Novel createNovel(String novelName, String summary,

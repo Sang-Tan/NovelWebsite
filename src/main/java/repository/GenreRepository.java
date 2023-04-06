@@ -7,6 +7,7 @@ import model.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class GenreRepository extends BaseRepository<Genre> {
 
@@ -45,5 +46,16 @@ public class GenreRepository extends BaseRepository<Genre> {
             return mapObject(result);
         }
         return null;
+    }
+
+    public List<Genre>  getByListId(List<Integer> novelId) throws SQLException {
+        String sql = "SELECT * FROM " + getTableName() + " WHERE id IN (";
+        for (int i = 0; i < novelId.size(); i++) {
+            sql += "?,";
+        }
+        sql = sql.substring(0, sql.length() - 1);
+        sql += ")";
+        ResultSet result = MySQLdb.getInstance().select(sql, novelId.toArray());
+        return mapObjects(result);
     }
 }
