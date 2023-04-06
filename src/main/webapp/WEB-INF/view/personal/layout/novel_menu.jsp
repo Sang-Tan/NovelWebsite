@@ -12,7 +12,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <ul class="tree-list">
     <li class="tree-node ${(reqVolume != null) ? "expand" : ""}">
-        <span class="tree-item">
+        <div class="tree-item overflow-elipsis">
             <a class="no-decor black" href="#" role="button" id="novel-item"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 ${reqNovel.name}
@@ -25,7 +25,7 @@
                 <a class="dropdown-item" data-toggle="modal" data-target="#deleteModal"
                    onclick="deleteNovel(${reqNovel.id},'${reqNovel.name}')">Xoá truyện</a>
             </div>
-        </span>
+        </div>
         <c:if test="${reqNovel.volumes.size() > 0}">
             <span class="tree-toggle"></span>
             <ul class="tree-nested">
