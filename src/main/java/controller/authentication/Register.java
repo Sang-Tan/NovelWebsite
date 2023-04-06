@@ -46,7 +46,7 @@ public class Register extends HttpServlet {
             String password = request.getParameter("password");
             String confirmPassword = request.getParameter("confirm_password");
 
-            HashMap<String, String> errors = getInputError(username, password, confirmPassword);
+            HashMap<String, String> errors = UserValidator.getRegisterInputError(username, password, confirmPassword);
             if (!errors.isEmpty()) {
                 response.getWriter().println(JSON.getResponseJson("error", errors));
                 return;
@@ -70,31 +70,6 @@ public class Register extends HttpServlet {
         }
     }
 
-    private HashMap<String, String> getInputError(String username, String password, String confirmPassword) throws SQLException {
-
-        // create a map to store invalid input values and error messages
-        HashMap<String, String> errors = new HashMap<>();
-
-        // add invalid input values and error messages to the map
-        // validate username
-        if (username == null || username.isEmpty()) {
-            errors.put("username", "Username không được để trống");
-        } else if (!UserValidator.isValidUsername(username)) {
-            errors.put("username", "Username không hợp lệ");
-        } else if (UserValidator.isUsernameExists(username)) {
-            errors.put("username", "Username đã tồn tại");
-        }
-
-        // validate password
-        if (password == null || password.isEmpty()) {
-            errors.put("password", "Mật khẩu không được để trống");
-        } else if (!UserValidator.isValidConfirmPassword(password, confirmPassword)) {
-            errors.put("confirm_password", "Mật khẩu không khớp");
-        } else if (!UserValidator.isValidPassword(password)) {
-            errors.put("password", "Mật khẩu không hợp lệ");
-        }
-        return errors;
-    }
 
     /**
      * Get response json
