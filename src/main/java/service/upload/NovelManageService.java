@@ -13,6 +13,7 @@ import repository.VolumeRepository;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public class NovelManageService {
     private static final String NOVEL_COVER_DIR = Dotenv.load().get("COVER_UPLOAD_PATH");
@@ -347,16 +348,60 @@ public class NovelManageService {
 
     public static void deleteNovel(int novelID) throws SQLException {
         Novel novelToDelete = NovelRepository.getInstance().getById(novelID);
+        deleteNovel(novelToDelete);
+    }
+
+    private static void deleteNovel(Novel novelToDelete) throws SQLException {
+        String imageURI = novelToDelete.getImage();
+        if (imageURI == Novel.DEFAULT_IMAGE) {
+            imageURI = null;
+        }
+        //delete all belonging volumes
+        List<Volume> volumes = novelToDelete.getVolumes();
+        for (Volume volume : volumes) {
+            deleteVolume(volume);
+        }
+
+        Volume virtualVolume = VolumeRepository.getInstance().getVirtualVolumeByNovelId(novelToDelete.getId());
+        deleteVolume(virtualVolume);
+
         NovelRepository.getInstance().delete(novelToDelete);
+        if (imageURI != null) {
+            FileMapper imageMapper = FileMapper.mapURI(imageURI);
+            imageMapper.delete();
+        }
     }
 
     public static void deleteVolume(int volumeID) throws SQLException {
         Volume volumeToDelete = VolumeRepository.getInstance().getById(volumeID);
+        deleteVolume(volumeToDelete);
+    }
+
+    private static void deleteVolume(Volume volumeToDelete) throws SQLException {
+        String imageURI = volumeToDelete.getImage();
+        if (imageURI == Volume.DEFAULT_IMAGE) {
+            imageURI = null;
+        }
+
+        //delete all belonging chapters
+        List<Chapter> chapters = volumeToDelete.getChapters();
+        for (Chapter chapter : chapters) {
+            deleteChapter(chapter);
+        }
+
         VolumeRepository.getInstance().delete(volumeToDelete);
+        if (imageURI != null) {
+            FileMapper imageMapper = FileMapper.mapURI(imageURI);
+            imageMapper.delete();
+        }
     }
 
     public static void deleteChapter(int chapterID) throws SQLException {
         Chapter chapterToDelete = ChapterRepository.getInstance().getById(chapterID);
+        deleteChapter(chapterToDelete);
+    }
+
+    private static void deleteChapter(Chapter chapterToDelete) throws SQLException {
         ChapterRepository.getInstance().delete(chapterToDelete);
     }
 }

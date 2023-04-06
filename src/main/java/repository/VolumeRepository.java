@@ -88,6 +88,16 @@ public class VolumeRepository extends BaseRepository<Volume> {
         return volumes;
     }
 
+    public Volume getVirtualVolumeByNovelId(int novelId) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE novel_id = ? " +
+                "AND order_index = 1", getTableName());
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{novelId});
+        if (result.next()) {
+            return mapObject(result);
+        }
+        return null;
+    }
+
     public Volume getByChapterId(int chapterId) throws SQLException {
         String sql = String.format("SELECT * FROM %s " +
                 "WHERE id = (SELECT volume_id FROM chapters WHERE id = ?)", getTableName());
