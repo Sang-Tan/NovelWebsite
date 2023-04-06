@@ -1,10 +1,11 @@
 package repository.intermediate;
 
-import core.DatabaseObject;
 import core.database.BaseRepository;
 import core.database.MySQLdb;
 import model.intermediate.NovelGenre;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class NovelGenreRepository extends BaseRepository<NovelGenre> {
@@ -31,5 +32,18 @@ public class NovelGenreRepository extends BaseRepository<NovelGenre> {
     @Override
     public NovelGenre createDefault() {
         return new NovelGenre();
+    }
+
+    public List<NovelGenre> getByNovelId(int novelId) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE novel_id = ?", getTableName());
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{novelId});
+        return mapObjects(result);
+    }
+
+    public void deleteByNovelId(int novelId) throws SQLException {
+        List<NovelGenre> novelGenres = getByNovelId(novelId);
+        for (NovelGenre novelGenre : novelGenres) {
+            delete(novelGenre);
+        }
     }
 }

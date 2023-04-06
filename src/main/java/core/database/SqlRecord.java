@@ -1,8 +1,6 @@
 package core.database;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 public class SqlRecord extends HashMap<String, Object> {
 
@@ -11,19 +9,10 @@ public class SqlRecord extends HashMap<String, Object> {
         return super.put(column, value);
     }
 
-//    public void setValue(String column, Object value) {
-//        record.put(column, value);
-//    }
-
-
     @Override
     public Object get(Object column) {
         return super.get(column);
     }
-
-//    public Object getValue(String column) {
-//        return record.get(column);
-//    }
 
     public void getColumns(String[] columns) {
         this.keySet().toArray(columns);
@@ -36,11 +25,6 @@ public class SqlRecord extends HashMap<String, Object> {
         }
         return values;
     }
-
-//    public int size() {
-//        return record.size();
-//    }
-
 
     @Override
     public boolean remove(Object key, Object value) {

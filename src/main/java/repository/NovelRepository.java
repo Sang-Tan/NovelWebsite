@@ -105,7 +105,10 @@ public class NovelRepository extends BaseRepository<Novel> {
         return novel;
     }
 
-    public void addGenresToNovel(int novelID, Integer[] genres) throws SQLException {
+    public void changeNovelGenres(int novelID, int[] genres) throws SQLException {
+        //delete all genres of this novel
+        NovelGenreRepository.getInstance().deleteByNovelId(novelID);
+
         ArrayList<NovelGenre> novelGenres = new ArrayList<>();
         for (Integer genre : genres) {
             NovelGenre novelGenre = new NovelGenre();
@@ -124,5 +127,15 @@ public class NovelRepository extends BaseRepository<Novel> {
             novels.add(mapObject(result));
         }
         return novels;
+    }
+
+    public Novel getByVolumeID(int volumeID) throws SQLException {
+        String sql = String.format("SELECT * FROM %s " +
+                "WHERE id = (SELECT novel_id FROM volumes WHERE id = ?)", getTableName());
+        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{volumeID});
+        if (result.next()) {
+            return mapObject(result);
+        }
+        return null;
     }
 }
