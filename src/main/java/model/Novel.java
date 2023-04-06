@@ -2,12 +2,13 @@ package model;
 
 import core.DatabaseObject;
 import core.logging.BasicLogger;
-import repository.NovelRepository;
+import repository.GenreRepository;
 import repository.UserRepository;
 import repository.VolumeRepository;
 
 import javax.persistence.*;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -40,6 +41,9 @@ public class Novel implements DatabaseObject {
     private String status;
     @OneToMany(mappedBy = "belongNovel")
     private List<Volume> volumes = null;
+
+    @OneToMany
+    private Collection<Genre> genres = null;
 
     public Novel() {
     }
@@ -138,5 +142,21 @@ public class Novel implements DatabaseObject {
 
     public void setVolumes(List<Volume> volumes) {
         this.volumes = volumes;
+    }
+
+    public Collection<Genre> getGenres() {
+        if (genres == null) {
+            try {
+                genres = GenreRepository.getInstance().getByNovelId(id);
+            } catch (SQLException e) {
+                BasicLogger.getInstance().getLogger().warning(e.getMessage());
+                return null;
+            }
+        }
+        return genres;
+    }
+
+    public void setGenres(Collection<Genre> genres) {
+        this.genres = genres;
     }
 }

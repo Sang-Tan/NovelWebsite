@@ -1,3 +1,4 @@
+<%--@elvariable id="reqVolume" type="model.Volume"--%>
 <%--
   Created by IntelliJ IDEA.
   User: DELL
@@ -10,7 +11,7 @@
     <div class="d-flex flex-column align-items-center mb-3">
         <div class="a6-ratio img-cover mb-2">
             <div class="img-wrapper border" id="image-preview"
-                 style="background-image: url('https://images.fpt.shop/unsafe/filters:quality(90)/fptshop.com.vn/uploads/images/tin-tuc/152650/Originals/Hu%20Tao.jpg');">
+                 style="background-image: url('${reqVolume.image}');">
             </div>
         </div>
         <div class="upload-btn-wrapper">
@@ -24,7 +25,7 @@
     <div class=" d-flex align-items-center mb-2">
         <label for="volume_name" class="basic-label required">Tiêu đề </label>
         <input class="input-text" style="flex-grow: 1" type="text" name="volume_name" id="volume_name"
-               placeholder="Tiêu đề" required>
+               placeholder="Tiêu đề" value="${reqVolume.name}" required>
     </div>
     <div class="d-flex justify-content-center">
         <button type="submit" class="basic-btn basic-btn--olive">Xác nhận</button>

@@ -89,6 +89,12 @@ a.black:hover {
     font-weight: 700;
 }
 
+.overflow-elipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 /*===================Button=======================*/
 
 .basic-btn {
@@ -571,11 +577,11 @@ ul.tree-list,
     cursor: pointer;
 }
 
-.rpt-group__item{
+.rpt-group__item {
     margin-bottom: 1rem;
 }
 
-.rpt-detail{
+.rpt-detail {
     overflow: hidden;
     background-color: var(--light-gray);
     padding: 0.25rem 0.5rem;
