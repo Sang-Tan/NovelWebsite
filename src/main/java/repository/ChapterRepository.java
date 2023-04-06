@@ -5,11 +5,8 @@ import core.database.MySQLdb;
 import core.database.SqlRecord;
 import core.logging.BasicLogger;
 import model.Chapter;
-import model.Volume;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ChapterRepository extends BaseRepository<Chapter> {
@@ -50,18 +47,19 @@ public class ChapterRepository extends BaseRepository<Chapter> {
 
     public int getMaxChapterIndexInVolume(int volumeId) throws SQLException {
         String sql = String.format("SELECT MAX(order_index) AS max_index FROM %s WHERE volume_id = ?", getTableName());
-        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{volumeId});
-        if (result.next()) {
-            return result.getInt("max_index");
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(volumeId));
+        Object maxIndex = records.get(0).get("max_index");
+        if (maxIndex == null) {
+            return 0;
         }
-        return 0;
+        return (int) maxIndex;
     }
 
     public Chapter getById(Integer ID) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
-        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{ID});
-        if (result.next()) {
-            return mapObject(result);
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(ID));
+        for (SqlRecord record : records) {
+            return mapObject(record);
         }
         return null;
     }
@@ -69,13 +67,8 @@ public class ChapterRepository extends BaseRepository<Chapter> {
     public List<Chapter> getByVolumeId(int volumeId) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE volume_id = ? " +
                 "ORDER BY order_index ASC", getTableName());
-        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{volumeId});
-        ArrayList<Chapter> chapters = new ArrayList<>();
-        while (result.next()) {
-            Chapter chapter = mapObject(result);
-            chapters.add(chapter);
-        }
-        return chapters;
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(volumeId));
+        return mapObjects(records);
     }
 
     public Chapter getVirtualChapter(int novelId) throws SQLException {
@@ -84,9 +77,13 @@ public class ChapterRepository extends BaseRepository<Chapter> {
                 "(SELECT id FROM volumes " +
                 "WHERE order_index = 1 " +
                 "AND novel_id = ?) ", getTableName());
-        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{novelId});
-        if (result.next()) {
-            return mapObject(result);
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelId));
+        if (records.size() > 1) {
+            BasicLogger.getInstance().getLogger().
+                    warning(String.format("Multiple virtual chapter found for novel id %d", novelId));
+        }
+        for (SqlRecord record : records) {
+            return mapObject(record);
         }
         BasicLogger.getInstance().getLogger().
                 warning(String.format("Virtual chapter not found for novel id %d", novelId));

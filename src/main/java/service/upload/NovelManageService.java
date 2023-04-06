@@ -363,7 +363,10 @@ public class NovelManageService {
         }
 
         Volume virtualVolume = VolumeRepository.getInstance().getVirtualVolumeByNovelId(novelToDelete.getId());
-        deleteVolume(virtualVolume);
+        if (virtualVolume != null) {
+            deleteVolume(virtualVolume);
+        }
+
 
         NovelRepository.getInstance().delete(novelToDelete);
         if (imageURI != null) {
