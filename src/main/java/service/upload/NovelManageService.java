@@ -291,7 +291,7 @@ public class NovelManageService {
         if (genres == null || genres.length == 0) {
             return "Thể loại không được để trống";
         }
-        if (image == null) {
+        if (image != null && image.getSize() > 0) {
             if (!FileUtil.isImage(image.getInputStream())) {
                 return "Ảnh bìa không hợp lệ";
             }
