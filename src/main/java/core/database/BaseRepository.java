@@ -7,10 +7,11 @@ import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 public abstract class BaseRepository<T extends DatabaseObject> {
     private final Class<?> ENTITY_CLASS;
@@ -119,15 +120,18 @@ public abstract class BaseRepository<T extends DatabaseObject> {
         return String.join(", ", primaryKeysColumnsName);
     }
 
-    public abstract T createDefault();
-
-    protected final SqlRecord mapRecordByField(DBFieldMapping fields, T object) {
+    protected final SqlRecord mapRecordByField(DBFieldMapping fields, T object, boolean ignoreNullFields) {
         SqlRecord record = new SqlRecord();
         for (String columnName : fields.keySet()) {
             Field field = fields.get(columnName);
             try {
                 PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), object.getClass());
-                record.put(columnName, propertyDescriptor.getReadMethod().invoke(object));
+                Object fieldValue = propertyDescriptor.getReadMethod().invoke(object);
+                if (fieldValue != null) {
+                    record.put(columnName, fieldValue);
+                } else if (!ignoreNullFields) {
+                    record.put(columnName, null);
+                }
             } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
@@ -135,65 +139,74 @@ public abstract class BaseRepository<T extends DatabaseObject> {
         return record;
     }
 
-    protected final SqlRecord mapRecord(T object) {
-        return mapRecordByField(COLUMNS, object);
+    protected final SqlRecord mapRecord(T object, boolean ignoreNullFields) {
+        return mapRecordByField(COLUMNS, object, ignoreNullFields);
     }
 
     protected final SqlRecord getPrimaryKeyMap(T object) {
-        return mapRecordByField(PRIMARY_KEY_FIELDS, object);
+        return mapRecordByField(PRIMARY_KEY_FIELDS, object, false);
     }
 
-    protected final T mapObject(ResultSet resultSet) throws SQLException {
+    protected final T mapObject(SqlRecord sqlRecord) throws SQLException {
         T object = createEmpty();
-        ResultSetMetaData metaData = resultSet.getMetaData();
         try {
-            for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                String columnName = metaData.getColumnName(i);
+            for (String columnName : sqlRecord.keySet()) {
                 if (COLUMNS.containsKey(columnName)) {
                     Field field = COLUMNS.get(columnName);
                     PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), object.getClass());
-                    propertyDescriptor.getWriteMethod().invoke(object, resultSet.getObject(i, field.getType()));
+                    propertyDescriptor.getWriteMethod().invoke(object, sqlRecord.get(columnName));
                 } else {
                     throw new SQLException(String.format("Column %s not found in %s", columnName, object.getClass().getName()));
                 }
             }
+            //TODO : delete this
+//            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+//                String columnName = metaData.getColumnName(i);
+//                if (COLUMNS.containsKey(columnName)) {
+//                    Field field = COLUMNS.get(columnName);
+//                    PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), object.getClass());
+//                    propertyDescriptor.getWriteMethod().invoke(object, sqlRecord.getObject(i, field.getType()));
+//                } else {
+//                    throw new SQLException(String.format("Column %s not found in %s", columnName, object.getClass().getName()));
+//                }
+//            }
         } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
         return object;
     }
 
-    protected final List<T> mapObjects(ResultSet resultSet) throws SQLException {
+    protected final List<T> mapObjects(List<SqlRecord> records) throws SQLException {
         List<T> list = new ArrayList<>();
-        while (resultSet.next()) {
-            list.add(mapObject(resultSet));
+        for (SqlRecord record : records) {
+            list.add(mapObject(record));
         }
         return list;
     }
 
     public final List<T> getAll() throws SQLException {
         String sql = String.format("SELECT * FROM %s", getTableName());
-        ResultSet resultSet = MySQLdb.getInstance().select(sql);
-        return mapObjects(resultSet);
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql);
+        return mapObjects(records);
     }
 
     public List<T> getRange(int start, int end) throws SQLException {
         String sql = String.format("SELECT * FROM %s LIMIT %d, %d", getTableName(), start, end);
-        ResultSet resultSet = MySQLdb.getInstance().select(sql);
-        return mapObjects(resultSet);
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql);
+        return mapObjects(records);
     }
 
     /**
      * Get the object by auto generated key
      *
-     * @param autoGeneratedKeySet the result set of auto generated key
+     * @param autoGeneratedKeyMap the auto generated key map
      * @param object              the object to be modified with the auto generated key
      * @return the object with auto generated key, this is the same object as the input object,
      * but it is returned for convenience
      * @throws SQLException
      */
-    public T getObjectByAutoGeneratedKey(ResultSet autoGeneratedKeySet, T object) throws SQLException {
-        if (autoGeneratedKeySet == null) {
+    public T getObjectByAutoGeneratedKey(SqlRecord autoGeneratedKeyMap, T object) throws SQLException {
+        if (autoGeneratedKeyMap == null) {
             throw new IllegalArgumentException("autoGeneratedKeySet cannot be null");
         }
 
@@ -203,8 +216,12 @@ public abstract class BaseRepository<T extends DatabaseObject> {
             PropertyDescriptor propertyDescriptor =
                     new PropertyDescriptor(autoGeneratedField.getName(), ENTITY_CLASS);
 
-            Object value = autoGeneratedKeySet.getObject(1, autoGeneratedField.getType());
-
+            List<String> autoGeneratedKeyColumns = autoGeneratedKeyMap.getColumns();
+            if (autoGeneratedKeyColumns.size() != 1) {
+                throw new SQLException("There should be only one auto generated key");
+            }
+            Object value = autoGeneratedKeyMap.get(autoGeneratedKeyColumns.get(0));
+            Class<?> type = propertyDescriptor.getPropertyType();
             propertyDescriptor.getWriteMethod().invoke(object, value);
         } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
@@ -223,12 +240,12 @@ public abstract class BaseRepository<T extends DatabaseObject> {
      * @throws SQLException if there is any error when inserting
      */
     public T insert(T object) throws SQLException {
-        SqlRecord record = mapRecord(object);
-        ResultSet autoGeneratedKeySet = insert(record);
+        SqlRecord record = mapRecord(object, true);
+        SqlRecord autoGeneratedKeyMap = insert(record);
         if (AUTO_GENERATED_KEY_FIELDS.size() > 0) {
             //assume that there is only one auto generated key
-            if (autoGeneratedKeySet.next()) {
-                getObjectByAutoGeneratedKey(autoGeneratedKeySet, object);
+            if (autoGeneratedKeyMap.size() > 0) {
+                getObjectByAutoGeneratedKey(autoGeneratedKeyMap, object);
             }
         }
         return object;
@@ -248,12 +265,11 @@ public abstract class BaseRepository<T extends DatabaseObject> {
      * @return the auto generated key if there is any, if there is no auto generated key, ResultSet will be empty
      * @throws SQLException if a database access error occurs
      */
-    protected final ResultSet insert(SqlRecord record) throws SQLException {
+    protected final SqlRecord insert(SqlRecord record) throws SQLException {
         int size = record.size();
 
         //example columnsString = "col1, col2, col3,..."
-        String[] columns = new String[size];
-        record.getColumns(columns);
+        List<String> columns = record.getColumns();
         String columnsString = String.join(", ", columns);
 
         //example valuesString = "?, ?, ?,..."
@@ -264,13 +280,13 @@ public abstract class BaseRepository<T extends DatabaseObject> {
 
         String sql = String.format("INSERT INTO %s (%s) VALUES (%s)", getTableName(), columnsString, valuesString);
 
-        Object[] valuesArray = record.getValues(columns);
+        List<Object> valuesArray = record.getValues(columns);
         return MySQLdb.getInstance().insert(sql, valuesArray);
     }
 
 
     public void update(T object) throws SQLException {
-        SqlRecord record = mapRecord(object);
+        SqlRecord record = mapRecord(object, true);
         excludePrimaryKey(record);
         SqlRecord primaryKeyRecord = getPrimaryKeyMap(object);
         update(record, primaryKeyRecord);
@@ -286,34 +302,29 @@ public abstract class BaseRepository<T extends DatabaseObject> {
         int size = record.size();
 
         //=====================UPDATE COLUMNS=====================
+        List<String> upColumns = record.getColumns();
+
         //parameters for the sql statement
-        ArrayList<Object> parameters = new ArrayList<>(size);
+        List<Object> parameters = record.getValues(upColumns);
 
-        String[] upColumns = new String[size];
-        record.getColumns(upColumns);
-
-        //IMPORTANT : DON'T MOVE THE FOLLOWING LINE
-        Collections.addAll(parameters, record.getValues(upColumns));
-
-        record.getColumns(upColumns);
         for (int i = 0; i < size; i++) {
-            upColumns[i] += " = ?";
+            upColumns.set(i, upColumns.get(i) + " = ?");
         }
         String setsString = String.join(", ", upColumns); //example : "col1 = ?, col2 = ?, col3 = ?,..."
 
         //=====================PRIMARY KEY SELECT=====================
-        String[] pkColumns = new String[primaryKeyRecord.size()];
-        primaryKeyRecord.getColumns(pkColumns);
+        List<String> pkColumns = primaryKeyRecord.getColumns();
+
         //IMPORTANT : DON'T MOVE THE FOLLOWING LINE
-        Collections.addAll(parameters, primaryKeyRecord.getValues(pkColumns));
-        for (int i = 0; i < pkColumns.length; i++) {
-            pkColumns[i] += " = ?";
+        parameters.addAll(primaryKeyRecord.getValues(pkColumns));
+        for (int i = 0; i < pkColumns.size(); i++) {
+            pkColumns.set(i, pkColumns.get(i) + " = ?");
         }
         String pkSelect = String.join(" AND ", pkColumns);
 
         String sql = String.format("UPDATE %s SET %s WHERE %s", getTableName(), setsString, pkSelect);
 
-        MySQLdb.getInstance().execute(sql, parameters.toArray());
+        MySQLdb.getInstance().execute(sql, parameters);
     }
 
     public void delete(T object) throws SQLException {
@@ -322,11 +333,11 @@ public abstract class BaseRepository<T extends DatabaseObject> {
     }
 
     protected final void delete(SqlRecord primaryKeyRecord) throws SQLException {
-        String[] pkColumns = new String[primaryKeyRecord.size()];
-        String[] pkColumnExpression = new String[primaryKeyRecord.size()];
-        primaryKeyRecord.getColumns(pkColumns);
-        for (int i = 0; i < pkColumns.length; i++) {
-            pkColumnExpression[i] = pkColumns[i] + " = ?";
+        List<String> pkColumns = primaryKeyRecord.getColumns();
+        List<String> pkColumnExpression = new ArrayList<>(pkColumns.size());
+
+        for (int i = 0; i < pkColumns.size(); i++) {
+            pkColumnExpression.add(pkColumns.get(i) + " = ?");
         }
         String pkSelect = String.join(" AND ", pkColumnExpression);
 
@@ -337,10 +348,10 @@ public abstract class BaseRepository<T extends DatabaseObject> {
 
 
     public Integer count() throws SQLException {
-        String sql = String.format("SELECT COUNT(%s) FROM %s", getPrimaryKeyString(), getTableName());
-        ResultSet resultSet = MySQLdb.getInstance().select(sql);
-        if (resultSet.next()) {
-            return resultSet.getInt(1);
+        String sql = String.format("SELECT COUNT(%s) as count FROM %s", getPrimaryKeyString(), getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql);
+        if (records.size() > 0) {
+            return (Integer) records.get(0).get("count");
         }
         return 0;
     }

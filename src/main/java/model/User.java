@@ -2,7 +2,6 @@ package model;
 
 import core.DatabaseObject;
 
-import javax.annotation.processing.Generated;
 import javax.persistence.*;
 
 @Entity
@@ -15,25 +14,25 @@ public class User implements DatabaseObject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "username")
+    @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "display_name")
+    @Column(name = "display_name", nullable = false)
     private String displayName;
 
-    @Column(name = "is_active")
+    @Column(name = "is_active", nullable = false)
     private boolean active;
 
     @Column(name = "avatar")
     private String avatar;
 
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     private String role;
 
     public User() {

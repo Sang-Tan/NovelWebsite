@@ -1,25 +1,22 @@
 package model;
 
 import core.DatabaseObject;
-import repository.UserRepository;
 
 import javax.persistence.*;
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.DateTimeException;
 
 @Entity
 @Table(name = "tokens", uniqueConstraints = {@UniqueConstraint(columnNames = {"token_hash"})})
 public class Token implements DatabaseObject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private int userId;
-    @Column(name = "token_hash")
+    @Column(name = "token_hash", nullable = false)
     private String tokenHash;
-    @Column(name = "expired_time")
+    @Column(name = "expired_time", nullable = false)
     private Timestamp expiredTime;
 
     public Token() {

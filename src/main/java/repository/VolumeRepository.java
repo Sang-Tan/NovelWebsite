@@ -2,11 +2,11 @@ package repository;
 
 import core.database.BaseRepository;
 import core.database.MySQLdb;
+import core.database.SqlRecord;
+import core.logging.BasicLogger;
 import model.Volume;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class VolumeRepository extends BaseRepository<Volume> {
@@ -22,13 +22,6 @@ public class VolumeRepository extends BaseRepository<Volume> {
     @Override
     protected Volume createEmpty() {
         return new Volume();
-    }
-
-    @Override
-    public Volume createDefault() {
-        Volume volume = new Volume();
-        volume.setImage(Volume.DEFAULT_IMAGE);
-        return volume;
     }
 
     @Override
@@ -58,19 +51,21 @@ public class VolumeRepository extends BaseRepository<Volume> {
      * @throws SQLException
      */
     public int getMaxVolumeIndexInNovel(int novelId) throws SQLException {
-        String sql = String.format("SELECT MAX(order_index) FROM %s WHERE novel_id = ?", getTableName());
-        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{novelId});
-        if (result.next()) {
-            return result.getInt(1);
+        String sql = String.format("SELECT MAX(order_index) as max_index FROM %s WHERE novel_id = ?", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelId));
+        SqlRecord record = records.get(0);
+        Object maxIndex = record.get("max_index");
+        if (maxIndex == null) {
+            return 0;
         }
-        return 0;
+        return (int) maxIndex;
     }
 
     public Volume getById(Integer ID) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
-        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{ID});
-        if (result.next()) {
-            return mapObject(result);
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(ID));
+        for (SqlRecord record : records) {
+            return mapObject(record);
         }
         return null;
     }
@@ -80,20 +75,19 @@ public class VolumeRepository extends BaseRepository<Volume> {
         String sql = String.format("SELECT * FROM %s WHERE novel_id = ? " +
                 "AND order_index > 1 " +
                 "ORDER BY order_index ASC", getTableName());
-        ArrayList<Volume> volumes = new ArrayList<>();
-        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{novelId});
-        while (result.next()) {
-            volumes.add(mapObject(result));
-        }
-        return volumes;
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelId));
+        return mapObjects(records);
     }
 
     public Volume getVirtualVolumeByNovelId(int novelId) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE novel_id = ? " +
                 "AND order_index = 1", getTableName());
-        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{novelId});
-        if (result.next()) {
-            return mapObject(result);
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelId));
+        if (records.size() > 1) {
+            BasicLogger.getInstance().getLogger().warning("More than 1 virtual volume in novel " + novelId);
+        }
+        for (SqlRecord record : records) {
+            return mapObject(record);
         }
         return null;
     }
@@ -101,9 +95,9 @@ public class VolumeRepository extends BaseRepository<Volume> {
     public Volume getByChapterId(int chapterId) throws SQLException {
         String sql = String.format("SELECT * FROM %s " +
                 "WHERE id = (SELECT volume_id FROM chapters WHERE id = ?)", getTableName());
-        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{chapterId});
-        if (result.next()) {
-            return mapObject(result);
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(chapterId));
+        for (SqlRecord record : records) {
+            return mapObject(record);
         }
         return null;
     }
