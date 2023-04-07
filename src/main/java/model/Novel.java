@@ -134,22 +134,14 @@ public class Novel implements DatabaseObject {
     public String getAuthorName() throws SQLException {
         return getOwner().getUsername();
     }
-    public List<Genre> getGenres() throws Exception {
-        List<NovelGenre> novelGenres =  NovelGenreRepository.getInstance().getByNovelId(id);
-        List<Genre> genres = new ArrayList<>();
-        for (NovelGenre novelGenre : novelGenres) {
-            genres.add(novelGenre.getRelatedGenre());
-        }
-        return genres;
-    }
-    public List<String> getGenresNames() throws Exception {
-        List<Genre> genres = getGenres();
-        List<String> genreNames = new ArrayList<>();
-        for (Genre genre : genres) {
-            genreNames.add(genre.getName());
-        }
-        return genreNames;
-    }
+//    public List<Genre> getGenres() throws Exception {
+//        List<NovelGenre> novelGenres =  NovelGenreRepository.getInstance().getByNovelId(id);
+//        List<Genre> genres = new ArrayList<>();
+//        for (NovelGenre novelGenre : novelGenres) {
+//            genres.add(novelGenre.getRelatedGenre());
+//        }
+//        return genres;
+//    }
 
     public List<Volume> getVolumes() {
         if (volumes == null) {

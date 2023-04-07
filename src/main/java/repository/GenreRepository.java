@@ -59,6 +59,7 @@ public class GenreRepository extends BaseRepository<Genre> {
         sql += ")";
         ResultSet result = MySQLdb.getInstance().select(sql, novelId.toArray());
         return mapObjects(result);
+    }
     public List<Genre> getByIds(int[] ids) throws SQLException {
         ArrayList<Genre> genres = new ArrayList<>();
         for (int id : ids) {

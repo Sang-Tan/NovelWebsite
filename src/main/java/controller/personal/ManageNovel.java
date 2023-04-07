@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -84,7 +85,7 @@ public class ManageNovel extends HttpServlet {
         int novelId = getNovelId(req);
         try {
             Novel novel = (Novel) req.getAttribute("reqNovel");
-            List<Genre> genres = GenreRepository.getInstance().getAll();
+            Collection<Genre> genres = GenreRepository.getInstance().getAll();
             Set<Integer> novelGenreIds = new HashSet<>();
             for (Genre novelGenre : novel.getGenres()) {
                 novelGenreIds.add(novelGenre.getId());
