@@ -25,7 +25,7 @@
         </ul>
         <ul class="navbar__list">
             <li class="navbar__list-item">
-                <form action="/testui/search_novel" class="navbar__search">
+                <form action="/testui/search_novel" class="navbar__search m-auto">
                     <input type="text" placeholder="Tìm truyện" class="navbar__search-textbox">
                     <button class="navbar__search-btn">
                         <i class="fas fa-search"></i>
