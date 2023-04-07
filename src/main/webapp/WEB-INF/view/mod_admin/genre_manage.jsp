@@ -32,17 +32,6 @@
                     </button>
                 </header>
 
-                <%--                <div class="d-flex mb-3">--%>
-                <%--                    <div class="genre-item">--%>
-                <%--                        <a href="#" class="genre-link">Slice of life</a>--%>
-                <%--                    </div>--%>
-                <%--                    <div class="genre-item">--%>
-                <%--                        <a href="#" class="genre-link">Comedy</a>--%>
-                <%--                    </div>--%>
-                <%--                    <div class="genre-item">--%>
-                <%--                        <a href="#" class="genre-link">Shounen</a>--%>
-                <%--                    </div>--%>
-                <%--                </div>--%>
                 <div class="d-flex mb-3" style="flex-wrap: wrap">
                     <c:forEach var="genre" items="${genreList}" varStatus="status">
                         <div class="genre-item" style="background-color: var(--light-gray); margin-bottom: 10px">
