@@ -83,4 +83,18 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         return null;
     }
 
+    public Chapter getLastChapterOfNovel(int novelId) throws SQLException {
+        String sql = String.format("SELECT * FROM %s " +
+                "WHERE volume_id IN " +
+                "(SELECT id FROM volumes " +
+                "WHERE novel_id = ? " +
+                "AND NOT order_index = 1) " +
+                "ORDER BY modify_time DESC " +
+                "LIMIT 1", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelId));
+        for (SqlRecord record : records) {
+            return mapObject(record);
+        }
+        return null;
+    }
 }

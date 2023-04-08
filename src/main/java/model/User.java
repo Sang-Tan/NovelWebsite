@@ -1,8 +1,11 @@
 package model;
 
 import core.DatabaseObject;
+import core.logging.BasicLogger;
+import repository.NovelRepository;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
@@ -34,6 +37,9 @@ public class User implements DatabaseObject {
 
     @Column(name = "role", nullable = false)
     private String role;
+
+    @OneToMany
+    Collection<Novel> favouriteNovels;
 
     public User() {
     }
@@ -105,5 +111,19 @@ public class User implements DatabaseObject {
         this.role = role;
     }
 
+    public Collection<Novel> getFavouriteNovels() {
+        try {
+            if (favouriteNovels == null) {
+                favouriteNovels = NovelRepository.getInstance().getFavoriteNovelsByUserID(id);
+            }
+        } catch (Exception e) {
+            BasicLogger.getInstance().printStackTrace(e);
+        }
+        return favouriteNovels;
+    }
+
+    public void setFavouriteNovels(Collection<Novel> favouriteNovels) {
+        this.favouriteNovels = favouriteNovels;
+    }
 
 }
