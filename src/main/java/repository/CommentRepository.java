@@ -33,3 +33,4 @@ public class CommentRepository extends BaseRepository<Comment> {
         return new Comment();
     }
 }
+

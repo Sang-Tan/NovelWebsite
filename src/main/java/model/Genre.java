@@ -9,9 +9,9 @@ import javax.persistence.*;
 public class Genre implements DatabaseObject {
     @Id
     @GeneratedValue
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     public Genre() {

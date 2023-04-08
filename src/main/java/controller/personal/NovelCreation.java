@@ -1,7 +1,7 @@
 package controller.personal;
 
-import core.FileUtil;
 import io.github.cdimascio.dotenv.Dotenv;
+import model.Novel;
 import model.User;
 import repository.GenreRepository;
 import service.upload.NovelManageService;
@@ -54,48 +54,33 @@ public class NovelCreation extends HttpServlet {
 
             //get genres in string and convert to int array
             String[] genres = request.getParameter("genres").split(",");
-            Integer[] genreIds = new Integer[genres.length];
+            int[] genreIds = new int[genres.length];
             for (int i = 0; i < genres.length; i++) {
                 genreIds[i] = Integer.parseInt(genres[i]);
             }
             //get image
             Part image = request.getPart("image");
 
-            String error = getError(novelName, summary, status, genreIds, image);
+            Novel novelInfo = new Novel();
+            novelInfo.setName(novelName);
+            novelInfo.setSummary(summary);
+            novelInfo.setStatus(status);
+
+            String error = NovelManageService.validateUploadNovel(novelInfo, genreIds, image);
             if (error != null) {
                 request.setAttribute("error", error);
                 doGet(request, response);
                 return;
             }
 
+
             NovelManageService.uploadNewNovel
-                    (novelName, summary, status, genreIds, image, owner.getId());
+                    (novelInfo, genreIds, image, owner.getId());
             response.sendRedirect("/ca-nhan");
 
         } catch (Exception e) {
             response.setStatus(500);
             e.printStackTrace();
         }
-    }
-
-    private String getError(String novelName, String summary, String status, Integer[] genres, Part image) throws IOException {
-        if (novelName == null || novelName.isEmpty()) {
-            return "Tên truyện không được để trống";
-        }
-        if (summary == null || summary.isEmpty()) {
-            return "Mô tả không được để trống";
-        }
-        if (status == null || status.isEmpty()) {
-            return "Trạng thái không được để trống";
-        }
-        if (genres == null || genres.length == 0) {
-            return "Thể loại không được để trống";
-        }
-        if (image == null) {
-            if (!FileUtil.isImage(image.getInputStream())) {
-                return "Ảnh bìa không hợp lệ";
-            }
-        }
-        return null;
     }
 }

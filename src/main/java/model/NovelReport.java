@@ -10,7 +10,7 @@ public class NovelReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
-
+    //TODO : ...
     private int novelId;
     private int reporterId;
     private String reason;
