@@ -103,6 +103,14 @@ a.black:hover {
     border-left: 0.25rem solid var(--theme-color);
 }
 
+.brand-image-wrapper {
+    width: 2rem;
+    height: 2rem;
+    overflow: hidden;
+    display: block;
+    background-size: cover;
+}
+
 /*===================Button=======================*/
 
 .basic-btn {

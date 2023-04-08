@@ -8,7 +8,9 @@
         <ul class="navbar__list">
             <li class="navbar__list-item">
                 <a href="/home" class="navbar__link navbar__brand">
-                    NOVEL
+                    <div class="brand-image-wrapper" style="background-image: url('/images/logo.png')">
+
+                    </div>
                 </a>
             </li>
             <li class="navbar__list-item">
