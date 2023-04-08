@@ -138,6 +138,7 @@ public class ManageNovel extends HttpServlet {
             req.setAttribute("error", error);
             req.setAttribute("managingAction", ManageNovelAction.EDIT_NOVEL);
             doGet(req, resp);
+            return;
         }
 
         try {

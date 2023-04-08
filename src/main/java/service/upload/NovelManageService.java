@@ -98,11 +98,12 @@ public class NovelManageService {
     }
 
     /**
-     * Change the novel info
+     * Change the novel's information
      *
      * @param newNovelInfo
      * @param genres
      * @param image
+     * @throws IOException
      * @throws SQLException
      */
     public static void updateNovelInfo(Novel newNovelInfo, int[] genres, Part image) throws IOException, SQLException {
@@ -290,7 +291,7 @@ public class NovelManageService {
         if (genres == null || genres.length == 0) {
             return "Thể loại không được để trống";
         }
-        if (image == null) {
+        if (image != null && image.getSize() > 0) {
             if (!FileUtil.isImage(image.getInputStream())) {
                 return "Ảnh bìa không hợp lệ";
             }
@@ -363,7 +364,10 @@ public class NovelManageService {
         }
 
         Volume virtualVolume = VolumeRepository.getInstance().getVirtualVolumeByNovelId(novelToDelete.getId());
-        deleteVolume(virtualVolume);
+        if (virtualVolume != null) {
+            deleteVolume(virtualVolume);
+        }
+
 
         NovelRepository.getInstance().delete(novelToDelete);
         if (imageURI != null) {

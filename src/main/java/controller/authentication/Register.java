@@ -1,17 +1,18 @@
 package controller.authentication;
 
 import core.JSON;
-//import service.validator.UserService;
-import service.validator.UserValidator;
-import repository.UserRepository;
 import model.User;
 import org.json.JSONException;
+import service.validator.UserService;
+import service.validator.UserValidator;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -53,16 +54,12 @@ public class Register extends HttpServlet {
             }
 
             // create new user with information
-            String hashedPassword = UserValidator.hashPassword(password);
-            User user = UserRepository.getInstance().createNewUser(username, hashedPassword);
+            User user = new User();
+            user.setUsername(username);
+            user.setPassword(password);
 
-            // add user to database
-            try {
-                UserRepository.getInstance().insert(user);
-            } catch (Exception e) {
-                response.setStatus(500);
-                return;
-            }
+            UserService.insertNewUser(user);
+
             response.getWriter().println(JSON.getResponseJson("success"));
         } catch (JSONException | SQLException e) {
             response.setStatus(500);

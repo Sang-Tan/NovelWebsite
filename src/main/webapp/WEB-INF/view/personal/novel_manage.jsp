@@ -13,12 +13,13 @@
 </head>
 <body style="background-color: var(--silver)">
 <%@include file="layout/header.jsp" %>
-<c:if test="${error != null}">
-    <div class="alert alert-danger" role="alert">
-            ${error}
-    </div>
-</c:if>
-<div class="container mt-5">
+
+<div class="container mt-3">
+    <c:if test="${error != null}">
+        <div class="alert alert-danger mb-3" role="alert">
+                ${error}
+        </div>
+    </c:if>
     <div class="row">
         <div class="col-12 col-md-3">
             <div class="basic-section">
@@ -80,7 +81,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title title title--bold" id="staticBackdropLabel"></h5>
+                <h5 class="modal-title title title--bold" id="staticBackdropLabel">Xoá truyện</h5>
                 <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
                    style="font-size: x-large"></i>
             </div>
@@ -89,8 +90,8 @@
                 <span id="objectToDeleteName" class="text-success"></span> không?
             </div>
             <form id="deleteForm" method="POST">
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="basic-btn basic-btn--olive" data-bs-dismiss="modal">Đóng</button>
+                <div class="modal-footer justify-content-center pb-0">
+                    <button type="button" class="basic-btn basic-btn--olive" data-dismiss="modal">Đóng</button>
                     <button type="submit" class="basic-btn basic-btn--red">Xoá</button>
                 </div>
             </form>

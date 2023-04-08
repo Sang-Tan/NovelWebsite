@@ -102,7 +102,8 @@ public class FileMapper {
         File uploadFile = new File(Path.of(UPLOAD_ROOT, containingFolder, fileName).toString());
         Path uploadFolderPath = Path.of(UPLOAD_ROOT, containingFolder);
         if (!Files.exists(uploadFolderPath)) {
-            Files.createDirectory(uploadFolderPath);
+            File uploadFolder = new File(uploadFolderPath.toString());
+            uploadFolder.mkdirs();
         }
 
         if (overwriteExisting == false && uploadFile.exists()) {

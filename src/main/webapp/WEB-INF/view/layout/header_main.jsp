@@ -25,7 +25,7 @@
         </ul>
         <ul class="navbar__list">
             <li class="navbar__list-item">
-                <form onsubmit="redirectToSearch(event)" class="navbar__search">
+                <form onsubmit="redirectToSearch(event)" class="navbar__search m-auto">
                     <input type="text" placeholder="Tìm truyện" class="navbar__search-textbox" id="novelName">
                     <button class="navbar__search-btn">
                         <i class="fas fa-search"></i>

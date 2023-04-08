@@ -2,13 +2,15 @@ package repository;
 
 import core.database.BaseRepository;
 import core.database.MySQLdb;
+import core.database.SqlRecord;
 import model.Novel;
 import model.intermediate.NovelGenre;
 import repository.intermediate.NovelGenreRepository;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class NovelRepository extends BaseRepository<Novel> {
     private static NovelRepository instance;
@@ -25,29 +27,19 @@ public class NovelRepository extends BaseRepository<Novel> {
         return new Novel();
     }
 
-    @Override
-    public Novel createDefault() {
-        Novel novel = new Novel();
-        novel.setStatus(Novel.STATUS_ON_GOING);
-        novel.setSummary(Novel.DEFAULT_SUMMARY);
-        novel.setImage(Novel.DEFAULT_IMAGE);
-        novel.setPending(true);
-        return novel;
-    }
-
-
     public Novel getById(Integer ID) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE id = ?", getTableName());
-        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{ID});
-        if (result.next()) {
-            return mapObject(result);
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(ID));
+        for (SqlRecord record : records) {
+            return mapObject(record);
         }
         return null;
     }
-    public List<Novel> getOverviewNovels(String condition, Object[] params) throws SQLException {
-        String sql = String.format("SELECT * FROM %s %s", getTableName(), condition);
-        ResultSet result = MySQLdb.getInstance().select(sql, params);
-        return mapObjects(result);
+
+    public List<Novel> getByConditionString(String condition, List<Object> params) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE %s", getTableName(), condition);
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
+        return mapObjects(records);
     }
     public int countNovels(String condition, Object[] params) throws SQLException {
         String sql = String.format("SELECT COUNT(id) FROM %s %s", getTableName(), condition);
@@ -65,33 +57,8 @@ public class NovelRepository extends BaseRepository<Novel> {
 //            sql += " AND name LIKE ?";
 //            params.add("%" + novelName + "%");
 //        }
-//        if (authorName != null && !authorName.isEmpty()) {
-//            sql += " AND owner IN (SELECT id FROM users WHERE display_name LIKE ?)";
-//            params.add("%" + authorName + "%");
-//        }
-//        if (Status != null && !Status.isEmpty() && !Status.equals("all")) {
-//            sql += " AND status = ?";
-//            params.add(Status);
-//        }
-//        if (genresId != null && !genresId.isEmpty()) {
-//            sql += " AND id IN (SELECT novel_id FROM novel_genre WHERE genre_id IN (";
-//            String placeholders = String.join(",", Collections.nCopies(genresId.size(), "?"));
-//            sql += placeholders;
-//            sql += "))";
-//            params.addAll(genresId);
-//        }
-//        if (sortAttribute != null && !sortAttribute.isEmpty() && !sortAttribute.equals("comment")
-//        ) {
-//            sql += " ORDER BY " + sortAttribute;
-//        }
-//        else if (sortAttribute != null && !sortAttribute.isEmpty() && sortAttribute.equals("comment")) {
-//            sql += " ORDER BY (SELECT COUNT(*) FROM comments WHERE novel_id = novel.id) DESC";
-//        }
-////        else if (sortAttribute == null || sortAttribute.isEmpty()) && sortAttribute.equals("author name") {
-////            sql += " ORDER BY (SELECT display_name FROM users WHERE id = novel.owner_id)";
-////        }
-//        return getByConditionString(sql, params.toArray());
-//    }
+        return getByConditionString(sql, params);
+    }
 
 
     public Novel createNovel(String novelName, String summary,
@@ -121,20 +88,16 @@ public class NovelRepository extends BaseRepository<Novel> {
 
     public Collection<Novel> getNovelsByOwnerID(int ownerID) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE owner = ?", getTableName());
-        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{ownerID});
-        Collection<Novel> novels = new LinkedList<>();
-        while (result.next()) {
-            novels.add(mapObject(result));
-        }
-        return novels;
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(ownerID));
+        return mapObjects(records);
     }
 
     public Novel getByVolumeID(int volumeID) throws SQLException {
         String sql = String.format("SELECT * FROM %s " +
                 "WHERE id = (SELECT novel_id FROM volumes WHERE id = ?)", getTableName());
-        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{volumeID});
-        if (result.next()) {
-            return mapObject(result);
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(volumeID));
+        for (SqlRecord record : records) {
+            return mapObject(record);
         }
         return null;
     }

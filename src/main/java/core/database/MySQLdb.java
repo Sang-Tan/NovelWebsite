@@ -3,8 +3,9 @@ package core.database;
 import core.Pair;
 import io.github.cdimascio.dotenv.Dotenv;
 
+import java.math.BigInteger;
 import java.sql.*;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -42,32 +43,63 @@ public class MySQLdb {
         return connection;
     }
 
+    private List<SqlRecord> mapResultSet(ResultSet resultSet) throws SQLException {
+        List<SqlRecord> list = new ArrayList<>();
+        while (resultSet.next()) {
+            SqlRecord record = new SqlRecord();
+            int columnCount = resultSet.getMetaData().getColumnCount();
+            for (int i = 1; i <= columnCount; i++) {
+                String columnName = resultSet.getMetaData().getColumnName(i);
+                Object value = resultSet.getObject(columnName);
+                if (value instanceof BigInteger) {
+                    value = ((BigInteger) value).intValue();
+                }
+
+                record.put(columnName, value);
+            }
+            list.add(record);
+        }
+        return list;
+    }
+
 
     //region SELECT OPERATIONS
-    public ResultSet select(String sql) throws SQLException {
+    public List<SqlRecord> select(String sql) throws SQLException {
         Connection connection = getConnectDB();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
-        return resultSet;
+
+        List<SqlRecord> result = this.mapResultSet(resultSet);
+
+        resultSet.close();
+        statement.close();
+        connection.close();
+        return result;
     }
 
-    public ResultSet select(String sql, Object[] params) throws SQLException {
+    public List<SqlRecord> select(String sql, List<Object> params) throws SQLException {
         Connection connection = getConnectDB();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        for (int i = 0; i < params.length; i++) {
-            preparedStatement.setObject(i + 1, params[i]);
+        for (int i = 0; i < params.size(); i++) {
+            preparedStatement.setObject(i + 1, params.get(i));
         }
         ResultSet resultSet = preparedStatement.executeQuery();
-        return resultSet;
+
+        List<SqlRecord> result = this.mapResultSet(resultSet);
+
+        resultSet.close();
+        preparedStatement.close();
+        connection.close();
+        return result;
     }
     //endregion
 
 
     //region UPDATE AND DELETE OPERATIONS
-    public void executeOnce(Connection connection, String sql, Object[] params) throws SQLException {
+    public void executeOnce(Connection connection, String sql, List<Object> params) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        for (int i = 0; i < params.length; i++) {
-            preparedStatement.setObject(i + 1, params[i]);
+        for (int i = 0; i < params.size(); i++) {
+            preparedStatement.setObject(i + 1, params.get(i));
         }
         preparedStatement.execute();
     }
@@ -79,7 +111,7 @@ public class MySQLdb {
         connection.close();
     }
 
-    public void execute(String sql, Object[] params) throws SQLException {
+    public void execute(String sql, List<Object> params) throws SQLException {
         Connection connection = getConnectDB();
         executeOnce(connection, sql, params);
         connection.close();
@@ -98,10 +130,10 @@ public class MySQLdb {
     /**
      * @param listExecute list of pair (sql, params)
      */
-    public void executeBatchWithParam(List<Pair<String, Object[]>> listExecute) throws SQLException {
+    public void executeBatchWithParam(List<Pair<String, List<Object>>> listExecute) throws SQLException {
         Connection connection = getConnectDB();
         connection.setAutoCommit(false);
-        for (Pair<String, Object[]> pair : listExecute) {
+        for (Pair<String, List<Object>> pair : listExecute) {
             executeOnce(connection, pair.getKey(), pair.getValue());
         }
         connection.commit();
@@ -119,29 +151,33 @@ public class MySQLdb {
         return resultSet;
     }
 
-    public ResultSet insert(String sql, Object[] params) throws SQLException {
+    public SqlRecord insert(String sql, List<Object> params) throws SQLException {
         Connection connection = getConnectDB();
         PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        for (int i = 0; i < params.length; i++) {
-            preparedStatement.setObject(i + 1, params[i]);
+        for (int i = 0; i < params.size(); i++) {
+            preparedStatement.setObject(i + 1, params.get(i));
         }
         preparedStatement.execute();
         ResultSet resultSet = preparedStatement.getGeneratedKeys();
-        return resultSet;
+        List<SqlRecord> list = this.mapResultSet(resultSet);
+        if (list.size() == 0) {
+            return null;
+        }
+        return list.get(0);
     }
 
-    public ResultSet insertBatch(String sql, Collection<Object[]> listParams) throws SQLException {
+    public List<SqlRecord> insertBatch(String sql, List<List<Object>> listParams) throws SQLException {
         Connection connection = getConnectDB();
         PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        for (Object[] params : listParams) {
-            for (int i = 0; i < params.length; i++) {
-                preparedStatement.setObject(i + 1, params[i]);
+        for (List<Object> params : listParams) {
+            for (int i = 0; i < params.size(); i++) {
+                preparedStatement.setObject(i + 1, params.get(i));
             }
             preparedStatement.addBatch();
         }
         preparedStatement.executeBatch();
         ResultSet resultSet = preparedStatement.getGeneratedKeys();
-        return resultSet;
+        return this.mapResultSet(resultSet);
     }
     //endregion
 

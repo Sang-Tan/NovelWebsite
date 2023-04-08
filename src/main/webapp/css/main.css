@@ -95,6 +95,14 @@ a.black:hover {
     white-space: nowrap;
 }
 
+.overflow-elipsis--wrap {
+    white-space: normal;
+}
+
+.border-radius-50 {
+    border-radius: 50%;
+}
+
 /*===================Button=======================*/
 
 .basic-btn {
@@ -286,6 +294,10 @@ a.basic-btn--maroon:hover {
     padding: 0;
     border: 1px solid var(--light-gray);
     border-radius: 0.25rem;
+}
+
+.basic-section--silver {
+    background-color: var(--silver);
 }
 
 .basic-section__header {

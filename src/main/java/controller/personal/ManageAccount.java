@@ -44,7 +44,7 @@ public class ManageAccount extends HttpServlet {
         User user = (User) req.getAttribute("user");
 
         user.setDisplayName(displayName);
-        if (avatar != null) {
+        if (avatar != null && avatar.getSize() > 0) {
             AvatarUploadService.uploadAvatar(user, avatar);
         }
 
@@ -63,7 +63,7 @@ public class ManageAccount extends HttpServlet {
         if (displayName == null || displayName.isEmpty()) {
             errors.put("display_name", "Tên hiển thị không được để trống");
         }
-        if (avatar != null) {
+        if (avatar != null && avatar.getSize() > 0) {
             if (!FileUtil.isImage(avatar.getInputStream())) {
                 errors.put("avatar", "Ảnh đại diện không đúng định dạng");
             }
