@@ -1,7 +1,5 @@
 package core.logging;
 
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,14 +17,14 @@ public class BasicLogger {
     private BasicLogger() {
         logger = Logger.getLogger("MainLogger");
         logger.setLevel(Level.ALL);
-        Handler handler = new ConsoleHandler();
-        handler.setLevel(Level.ALL);
-        logger.addHandler(handler);
     }
 
     public Logger getLogger() {
         return logger;
     }
 
+    public void printStackTrace(Exception e) {
+        logger.log(Level.SEVERE, e.getMessage(), e);
+    }
 
 }
