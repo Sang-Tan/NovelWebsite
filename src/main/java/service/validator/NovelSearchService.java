@@ -132,11 +132,11 @@ public class NovelSearchService {
         conditionsSQL.add(generateGenresIDCondition(genresIdString, params));
         conditionsSQL.removeIf(String::isEmpty);
 
-        sql = conditionsSQL.size() > 0 ? " WHERE " + String.join(" AND ", conditionsSQL): String.join(" AND ", conditionsSQL);
-        paginator = new Paginator(NovelRepository.getInstance().countNovels(sql, params.toArray()), page);
+        sql = conditionsSQL.size() > 0 ? String.join(" AND ", conditionsSQL): "1=1";
+        paginator = new Paginator(NovelRepository.getInstance().countNovels(sql, params), page);
         // order
         sql += " " + generateSortCondition(sortAttribute);
         sql += " " + paginator.generatePaginationCondition(params);
-        return NovelRepository.getInstance().getOverviewNovels(sql, params.toArray());
+        return NovelRepository.getInstance().getByConditionString(sql, params);
     }
 }

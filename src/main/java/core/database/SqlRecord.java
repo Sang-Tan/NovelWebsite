@@ -32,4 +32,8 @@ public class SqlRecord extends HashMap<String, Object> {
     public boolean remove(Object key, Object value) {
         return super.remove(key, value);
     }
+
+    public int getInt(String s) {
+        return (int) this.get(s);
+    }
 }

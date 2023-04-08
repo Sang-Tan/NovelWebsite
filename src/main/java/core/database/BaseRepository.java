@@ -185,9 +185,9 @@ public abstract class BaseRepository<T extends DatabaseObject> {
     }
 
     public final List<T> getAll() throws SQLException {
-        String sql = String.format("SELECT * FROM %s ORDER BY NAME" , getTableName());
-        ResultSet resultSet = MySQLdb.getInstance().select(sql);
-        return mapObjects(resultSet);
+        String sql = String.format("SELECT * FROM %s", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql);
+        return mapObjects(records);
     }
 
     public List<T> getRange(int start, int end) throws SQLException {

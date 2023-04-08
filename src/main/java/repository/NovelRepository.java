@@ -7,10 +7,9 @@ import model.Novel;
 import model.intermediate.NovelGenre;
 import repository.intermediate.NovelGenreRepository;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class NovelRepository extends BaseRepository<Novel> {
     private static NovelRepository instance;
@@ -41,23 +40,13 @@ public class NovelRepository extends BaseRepository<Novel> {
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
         return mapObjects(records);
     }
-    public int countNovels(String condition, Object[] params) throws SQLException {
-        String sql = String.format("SELECT COUNT(id) FROM %s %s", getTableName(), condition);
-        ResultSet result = MySQLdb.getInstance().select(sql, params);
-        if (result.next()) {
-            return result.getInt(1);
+    public long countNovels(String condition, List<Object> params) throws SQLException {
+        String sql = String.format("SELECT COUNT(id) FROM %s WHERE %s", getTableName(), condition);
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
+        for (SqlRecord record : records) {
+            return (long) record.get("COUNT(id)");
         }
         return 0;
-    }
-//    public HashSet<Novel> search(String novelName, String authorName, String Status, Set<Integer> genresId, String sortAttribute) throws SQLException
-//    {
-//        String sql = " 1=1 ";
-//        List<Object> params = new ArrayList<>();
-//        if (novelName != null && !novelName.isEmpty()) {
-//            sql += " AND name LIKE ?";
-//            params.add("%" + novelName + "%");
-//        }
-        return getByConditionString(sql, params);
     }
 
 

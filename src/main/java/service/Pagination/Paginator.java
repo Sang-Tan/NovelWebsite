@@ -17,11 +17,11 @@ public class Paginator {
     /**
      * @param numOfObjects number of all avaible object that can be displayed
      */
-    public Paginator(int numOfObjects, int page) {
+    public Paginator(long numOfObjects, int page) {
         this(numOfObjects, page, DEFAULT_PAGE_SIZE);
     }
 
-    public Paginator(int numOfObjects, int page, int pageSize) {
+    public Paginator(long numOfObjects, int page, int pageSize) {
 
         maxPage = (int) Math.ceil((double) numOfObjects / pageSize);
         if (page < 1) page = 1;
@@ -52,6 +52,7 @@ public class Paginator {
         if (startPage < 1) startPage = 1;
 
 
+        if(startPage >= endPage) return null;
         activePages.add(new PageItem(currentUrl + "&page=1", "Đầu", false, currentPage == 1));
         for (int i = startPage; i <= endPage; i++)
             activePages.add(new PageItem(currentUrl + "&page=" + i, Integer.toString(i), currentPage == i, false));
