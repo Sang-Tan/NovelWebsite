@@ -1,6 +1,7 @@
-package controller.personal;
+package controller.personal_interest;
 
 import core.logging.BasicLogger;
+import core.metadata.PersonalInterest;
 import model.User;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,8 +20,8 @@ public class BookmarkController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //TODO: get bookmark list
-        super.doGet(req, resp);
+        req.setAttribute("interest", PersonalInterest.BOOKMARK);
+        req.getRequestDispatcher("/WEB-INF/view/personal_interest/main_page.jsp").forward(req, resp);
     }
 
     @Override
