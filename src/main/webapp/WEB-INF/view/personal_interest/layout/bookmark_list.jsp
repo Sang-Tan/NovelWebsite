@@ -18,8 +18,9 @@
                     <div style="flex-grow: 1">
                         <a href="#" class="theme-link w-600 ml-2">${novelChapterPair.key.name}</a>
                         <a role="button" href="#collapse${novelChapterPair.key.id}" data-toggle="collapse"
-                           class="float-right"><i
-                                class="fas fa-chevron-down "></i></a>
+                           class="float-right theme-link">
+                            <i class="fas fa-chevron-down "></i>
+                        </a>
                     </div>
                 </div>
                 <div class="collapse" id="collapse${novelChapterPair.key.id}">

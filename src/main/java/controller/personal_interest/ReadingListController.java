@@ -1,10 +1,15 @@
 package controller.personal_interest;
 
+import core.Pair;
 import core.logging.BasicLogger;
 import core.metadata.PersonalInterest;
+import model.Chapter;
+import model.Novel;
 import model.User;
 import org.json.JSONException;
 import org.json.JSONObject;
+import repository.ChapterRepository;
+import repository.NovelRepository;
 import service.ReadingListService;
 
 import javax.servlet.ServletException;
@@ -14,13 +19,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/theo-doi")
 public class ReadingListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("interest", PersonalInterest.READING_LIST);
-        req.getRequestDispatcher("/WEB-INF/view/personal_interest/main_page.jsp").forward(req, resp);
+        User userInRequest = (User) req.getAttribute("user");
+        try {
+            List<Pair<Novel, Chapter>> novelChapterPairs = new ArrayList<>();
+            for (Novel novel : NovelRepository.getInstance().getFavoriteNovelsByUserID(userInRequest.getId())) {
+                Pair<Novel, Chapter> novelChapterPair = new Pair<>(novel,
+                        ChapterRepository.getInstance().getLastChapterOfNovel(novel.getId()));
+                novelChapterPairs.add(novelChapterPair);
+            }
+            req.setAttribute("novelChapterPairs", novelChapterPairs);
+            req.setAttribute("interest", PersonalInterest.READING_LIST);
+            req.getRequestDispatcher("/WEB-INF/view/personal_interest/main_page.jsp").forward(req, resp);
+        } catch (SQLException e) {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+        }
     }
 
     @Override
