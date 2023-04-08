@@ -8,6 +8,8 @@ import repository.VolumeRepository;
 import repository.intermediate.ChapterMarkRepository;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookmarkService {
 
@@ -55,5 +57,14 @@ public class BookmarkService {
         ChapterMarkRepository.getInstance().delete(chapterMark);
 
         return null;
+    }
+
+    public static List<Chapter> getMarkedChapters(Integer userId) throws SQLException {
+        List<ChapterMark> chapterMarks = ChapterMarkRepository.getInstance().getChapterMarksByUserId(userId);
+        List<Chapter> chapters = new ArrayList<>();
+        for (ChapterMark mark : chapterMarks) {
+            chapters.add(ChapterRepository.getInstance().getById(mark.getChapterId()));
+        }
+        return chapters;
     }
 }

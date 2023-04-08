@@ -59,7 +59,7 @@
                     <%@include file="layout/reading_list.jsp" %>
                 </c:when>
                 <c:when test="${interest.equals(PersonalInterest.BOOKMARK)}">
-                    <h3>Đánh dấu</h3>
+                    <%@include file="layout/bookmark_list.jsp" %>
                 </c:when>
                 <c:when test="${interest.equals(PersonalInterest.NOTIFICATION)}">
                     <h3>Thông báo</h3>
