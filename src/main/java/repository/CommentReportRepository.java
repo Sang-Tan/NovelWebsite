@@ -1,11 +1,7 @@
 package repository;
 
 import core.database.BaseRepository;
-import core.database.SqlRecord;
 import model.CommentReport;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class CommentReportRepository extends BaseRepository<CommentReport> {
     private static CommentReportRepository instance;
@@ -21,11 +17,5 @@ public class CommentReportRepository extends BaseRepository<CommentReport> {
     protected CommentReport createEmpty() {
         return new CommentReport();
     }
-
-    @Override
-    public CommentReport createDefault() {
-        return new CommentReport();
-    }
-
 
 }

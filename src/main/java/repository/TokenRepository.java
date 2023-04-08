@@ -1,20 +1,13 @@
 package repository;
 
 import core.database.BaseRepository;
-import io.github.cdimascio.dotenv.Dotenv;
-import model.Token;
-import core.SHA256Hashing;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
-import model.User;
+import model.Token;
 import service.validator.TokenService;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import java.security.SecureRandom;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Base64;
+import java.util.List;
 
 public class TokenRepository extends BaseRepository<Token> {
     private static TokenRepository instance;
@@ -32,14 +25,6 @@ public class TokenRepository extends BaseRepository<Token> {
         return instance;
     }
 
-    @Override
-    public Token createDefault() {
-        Token token = new Token();
-        token.setExpiredTime(TokenService.getExpiredTime());
-        return token;
-    }
-
-
     public Token createNewToken(int userID, String hashedToken) {
         Token token = createEmpty();
         token.setUserId(userID);
@@ -50,9 +35,9 @@ public class TokenRepository extends BaseRepository<Token> {
 
     public Token getByHashedToken(String hashedToken) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE token_hash = ?", getTableName());
-        ResultSet result = MySQLdb.getInstance().select(sql, new Object[]{hashedToken});
-        if (result.next()) {
-            return mapObject(result);
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(hashedToken));
+        for (SqlRecord record : records) {
+            return mapObject(record);
         }
         return null;
     }
@@ -60,7 +45,7 @@ public class TokenRepository extends BaseRepository<Token> {
 
     public void deleteToken(String hashedToken) throws SQLException {
         String sql = String.format("DELETE FROM %s WHERE token_hash = ?", getTableName());
-        MySQLdb.getInstance().execute(sql, new Object[]{hashedToken});
+        MySQLdb.getInstance().execute(sql, List.of(hashedToken));
     }
 
 }

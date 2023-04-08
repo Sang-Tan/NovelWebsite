@@ -1,11 +1,7 @@
 package repository;
 
 import core.database.BaseRepository;
-import core.database.SqlRecord;
 import model.intermediate.Restriction;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class RestrictionRepository extends BaseRepository<Restriction> {
     private static RestrictionRepository instance;
@@ -21,13 +17,4 @@ public class RestrictionRepository extends BaseRepository<Restriction> {
     protected Restriction createEmpty() {
         return new Restriction();
     }
-
-    @Override
-    public Restriction createDefault() {
-        Restriction restriction = new Restriction();
-        restriction.setRestrictedType(Restriction.TYPE_NOVEL);
-        return restriction;
-    }
-
-
 }

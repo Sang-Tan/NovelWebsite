@@ -1,6 +1,8 @@
 package core.database;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class SqlRecord extends HashMap<String, Object> {
 
@@ -14,14 +16,14 @@ public class SqlRecord extends HashMap<String, Object> {
         return super.get(column);
     }
 
-    public void getColumns(String[] columns) {
-        this.keySet().toArray(columns);
+    public List<String> getColumns() {
+        return new ArrayList<>(this.keySet());
     }
 
-    public Object[] getValues(String[] columns) {
-        Object[] values = new Object[columns.length];
-        for (int i = 0; i < columns.length; i++) {
-            values[i] = this.get(columns[i]);
+    public List<Object> getValues(List<String> columns) {
+        List<Object> values = new ArrayList<>();
+        for (String column : columns) {
+            values.add(this.get(column));
         }
         return values;
     }
