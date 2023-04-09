@@ -1,6 +1,7 @@
 package core.database;
 
 import core.DatabaseObject;
+import model.Chapter;
 
 import javax.persistence.*;
 import java.beans.IntrospectionException;
@@ -355,8 +356,8 @@ public abstract class BaseRepository<T extends DatabaseObject> {
         List<String> pkColumns = primaryKeyRecord.getColumns();
         List<String> pkColumnExpression = new ArrayList<>(pkColumns.size());
 
-        for (int i = 0; i < pkColumns.size(); i++) {
-            pkColumnExpression.add(pkColumns.get(i) + " = ?");
+        for (String pkColumn : pkColumns) {
+            pkColumnExpression.add(pkColumn + " = ?");
         }
         String pkSelect = String.join(" AND ", pkColumnExpression);
 
@@ -374,6 +375,4 @@ public abstract class BaseRepository<T extends DatabaseObject> {
         }
         return 0;
     }
-
-
 }

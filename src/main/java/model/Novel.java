@@ -8,6 +8,7 @@ import repository.VolumeRepository;
 
 import javax.persistence.*;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,10 +36,12 @@ public class Novel implements DatabaseObject {
     private String name;
     @Column(name = "image")
     private String image;
-    @Column(name = "is_pending", nullable = false)
-    private boolean pending;
+    @Column(name = "approval_status", nullable = false)
+    private String approvalStatus;
     @Column(name = "status", nullable = false)
     private String status;
+    @Column(name = "created_at")
+    private Timestamp createdTime;
     @OneToMany(mappedBy = "belongNovel")
     private List<Volume> volumes = null;
 
@@ -49,14 +52,15 @@ public class Novel implements DatabaseObject {
     }
 
     public Novel(int id, User owner, String summary, String name,
-                 String image, boolean pending, String status) {
+                 String image, String approvalStatus, String status, Timestamp createdTime) {
         this.id = id;
         this.owner = owner;
         this.summary = summary;
         this.name = name;
         this.image = image;
-        this.pending = pending;
+        this.approvalStatus = approvalStatus;
         this.status = status;
+        this.createdTime = createdTime;
     }
 
     public int getId() {
@@ -108,12 +112,12 @@ public class Novel implements DatabaseObject {
         this.image = image;
     }
 
-    public boolean isPending() {
-        return pending;
+    public String getApprovalStatus() {
+        return approvalStatus;
     }
 
-    public void setPending(boolean pending) {
-        this.pending = pending;
+    public void setApprovalStatus(String pending) {
+        this.approvalStatus = pending;
     }
 
     public String getStatus() {
@@ -126,6 +130,14 @@ public class Novel implements DatabaseObject {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Timestamp createdTime) {
+        this.createdTime = createdTime;
     }
 
     public List<Volume> getVolumes() {

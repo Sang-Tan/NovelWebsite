@@ -4,6 +4,8 @@ import core.DatabaseObject;
 import core.logging.BasicLogger;
 import repository.ChapterRepository;
 import repository.NovelRepository;
+import repository.UserRepository;
+import repository.VolumeRepository;
 
 import javax.persistence.*;
 import java.sql.SQLException;

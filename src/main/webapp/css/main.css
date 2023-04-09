@@ -200,6 +200,15 @@ a.basic-btn--maroon:hover {
     color: var(--white);
 }
 
+.basic-btn--primary {
+    background-color: var(--blue);
+    color: var(--white);
+}
+
+a.basic-btn--primary:hover {
+    color: var(--white);
+}
+
 /*Upload button*/
 .upload-btn-wrapper {
     position: relative;

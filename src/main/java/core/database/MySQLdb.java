@@ -180,6 +180,4 @@ public class MySQLdb {
         return this.mapResultSet(resultSet);
     }
     //endregion
-
-
 }

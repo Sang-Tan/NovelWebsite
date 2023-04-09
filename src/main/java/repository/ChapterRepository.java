@@ -5,8 +5,10 @@ import core.database.MySQLdb;
 import core.database.SqlRecord;
 import core.logging.BasicLogger;
 import model.Chapter;
+import model.Novel;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 
 public class ChapterRepository extends BaseRepository<Chapter> {
@@ -96,5 +98,12 @@ public class ChapterRepository extends BaseRepository<Chapter> {
             return mapObject(record);
         }
         return null;
+    }
+}
+    public Collection<Chapter> getAllPendingChapter(String approvalStatus) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE approval_status = ?", getTableName());
+        sql += "ORDER BY modify_time DESC";
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(approvalStatus));
+        return mapObjects(records);
     }
 }

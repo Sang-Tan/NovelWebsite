@@ -29,5 +29,4 @@ public class UserService {
         UserRepository.getInstance().insert(user);
 
     }
-
 }

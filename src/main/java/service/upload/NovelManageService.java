@@ -22,7 +22,7 @@ public class NovelManageService {
     private static Novel createDefaultNovel() {
         Novel novel = new Novel();
         novel.setImage(Novel.DEFAULT_IMAGE);
-        novel.setPending(true);
+        novel.setApprovalStatus("pending");
         return novel;
     }
 
@@ -34,7 +34,7 @@ public class NovelManageService {
 
     private static Chapter createDefaultChapter() {
         Chapter newChap = new Chapter();
-        newChap.setPending(true);
+        newChap.setApprovalStatus("pending");
         return newChap;
     }
 
@@ -121,7 +121,7 @@ public class NovelManageService {
         novelInDb.setName(newNovelInfo.getName());
         novelInDb.setSummary(newNovelInfo.getSummary());
         novelInDb.setStatus(newNovelInfo.getStatus());
-        novelInDb.setPending(newNovelInfo.isPending());
+        novelInDb.setApprovalStatus(newNovelInfo.getApprovalStatus());
 
         FileMapper imageMapper = null;
         //create image mapper and upload image if exist

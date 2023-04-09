@@ -110,6 +110,13 @@ public class NovelRepository extends BaseRepository<Novel> {
         return mapObjects(records);
     }
 
+    public Collection<Novel> getAllPendingNovel(String approvalStatus) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE approval_status = ?", getTableName());
+        sql += "ORDER BY created_at DESC";
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(approvalStatus));
+        return mapObjects(records);
+    }
+
     public Novel getByVolumeID(int volumeID) throws SQLException {
         String sql = String.format("SELECT * FROM %s " +
                 "WHERE id = (SELECT novel_id FROM volumes WHERE id = ?)", getTableName());
