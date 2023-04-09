@@ -2,15 +2,11 @@
 package model;
 
 import core.DatabaseObject;
-import model.intermediate.ChapterMark;
 import repository.VolumeRepository;
 
 import javax.persistence.*;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "chapters", schema = "novelweb")
@@ -34,8 +30,9 @@ public class Chapter implements DatabaseObject {
     @Column(name = "modify_time", nullable = false)
     private Timestamp modifyTime;
 
-    @Column(name = "is_pending", nullable = false)
-    private boolean pending;
+    @Column(name = "approval_status", nullable = false)
+    private String approvalStatus;
+
     @Column(name = "volume_id", nullable = false)
     private int volumeId;
 
@@ -79,7 +76,6 @@ public class Chapter implements DatabaseObject {
     }
 
     public Volume getBelongVolume() throws SQLException {
-
         if (belongVolume == null)
             belongVolume = VolumeRepository.getInstance().getById(volumeId);
         return belongVolume;
@@ -107,15 +103,15 @@ public class Chapter implements DatabaseObject {
         this.modifyTime = modifyTime;
     }
 
-    public boolean isPending() {
-        return pending;
+    public String getApprovalStatus() {
+        return approvalStatus;
     }
 
-    public void setPending(boolean isPending) {
-        this.pending = pending;
+    public void setApprovalStatus(String approvalStatus) {
+        this.approvalStatus = approvalStatus;
     }
 
-//
+    //
 //    @Override
 //    public boolean equals(Object o) {
 //        if (this == o) return true;

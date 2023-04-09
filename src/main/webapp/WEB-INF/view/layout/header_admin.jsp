@@ -20,6 +20,9 @@
                     NOVEL
                 </a>
             </li>
+            <li>
+                <a href="" class="navbar__link navbar__list-text">Duyệt truyện</a>
+            </li>
             <li class="navbar__list-item">
                 <a href="/admin/genre-manage" class="navbar__link navbar__list-text">Thể loại</a>
             </li>
