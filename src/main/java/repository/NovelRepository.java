@@ -126,4 +126,11 @@ public class NovelRepository extends BaseRepository<Novel> {
         }
         return null;
     }
+
+    public Collection<Novel> getFavoriteNovelsByUserID(int userID) throws SQLException {
+        String sql = String.format("SELECT * FROM %s " +
+                "WHERE id IN (SELECT novel_id FROM novel_favourite WHERE user_id = ?)", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(userID));
+        return mapObjects(records);
+    }
 }

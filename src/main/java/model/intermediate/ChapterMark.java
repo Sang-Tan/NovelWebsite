@@ -1,5 +1,6 @@
 package model.intermediate;
 
+import core.DatabaseObject;
 import model.Chapter;
 import model.User;
 import repository.ChapterRepository;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 
 @Entity
 @Table(name = "chapter_mark", schema = "novelweb")
-public class ChapterMark {
+public class ChapterMark implements DatabaseObject {
     @Id
     @Column(name = "chapter_id")
     private int chapterId;

@@ -160,17 +160,6 @@ public abstract class BaseRepository<T extends DatabaseObject> {
                     throw new SQLException(String.format("Column %s not found in %s", columnName, object.getClass().getName()));
                 }
             }
-            //TODO : delete this
-//            for (int i = 1; i <= metaData.getColumnCount(); i++) {
-//                String columnName = metaData.getColumnName(i);
-//                if (COLUMNS.containsKey(columnName)) {
-//                    Field field = COLUMNS.get(columnName);
-//                    PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), object.getClass());
-//                    propertyDescriptor.getWriteMethod().invoke(object, sqlRecord.getObject(i, field.getType()));
-//                } else {
-//                    throw new SQLException(String.format("Column %s not found in %s", columnName, object.getClass().getName()));
-//                }
-//            }
         } catch (IntrospectionException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
@@ -229,6 +218,36 @@ public abstract class BaseRepository<T extends DatabaseObject> {
         }
 
         return object;
+    }
+
+    /**
+     * Get the object by primary keys
+     *
+     * @param object the object with primary keys, primary keys must not be null
+     * @return the object with primary keys, null if no such object
+     * @throws SQLException
+     */
+    public T getByPrimaryKey(T object) throws SQLException {
+        SqlRecord primaryKeyMap = getPrimaryKeyMap(object);
+        List<String> whereConditions = new ArrayList<>();
+        for (String columnName : primaryKeyMap.getColumns()) {
+            if (primaryKeyMap.get(columnName) == null) {
+                throw new IllegalArgumentException("Primary key cannot be null");
+            }
+            whereConditions.add(String.format("%s = ?", columnName));
+        }
+        String whereCondition = String.join(" AND ", whereConditions);
+        String sql = String.format("SELECT * FROM %s WHERE %s", getTableName(), whereCondition);
+        List<SqlRecord> records =
+                MySQLdb.getInstance().select(sql,
+                        primaryKeyMap.getValues(primaryKeyMap.getColumns()));
+        if (records.size() == 0) {
+            return null;
+        } else if (records.size() == 1) {
+            return mapObject(records.get(0));
+        } else {
+            throw new SQLException("More than one record found");
+        }
     }
 
     /**

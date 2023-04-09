@@ -4,6 +4,6 @@ CREATE TABLE comment_report
     comment_id  INT          NOT NULL,
     reporter_id INT          NOT NULL,
     reason      VARCHAR(255) NOT NULL,
-    check_time  TIMESTAMP DEFAULT NULL,
+    check_time  TIMESTAMP    NULL DEFAULT NULL,
     UNIQUE (comment_id, reporter_id)
 );

@@ -5,7 +5,6 @@ import core.database.MySQLdb;
 import core.database.SqlRecord;
 import core.logging.BasicLogger;
 import model.Chapter;
-import model.Novel;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -82,6 +81,21 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         }
         BasicLogger.getInstance().getLogger().
                 warning(String.format("Virtual chapter not found for novel id %d", novelId));
+        return null;
+    }
+
+    public Chapter getLastChapterOfNovel(int novelId) throws SQLException {
+        String sql = String.format("SELECT * FROM %s " +
+                "WHERE volume_id IN " +
+                "(SELECT id FROM volumes " +
+                "WHERE novel_id = ? " +
+                "AND NOT order_index = 1) " +
+                "ORDER BY modify_time DESC " +
+                "LIMIT 1", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelId));
+        for (SqlRecord record : records) {
+            return mapObject(record);
+        }
         return null;
     }
 

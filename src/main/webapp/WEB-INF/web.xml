@@ -13,6 +13,8 @@
     <filter-mapping>
         <filter-name>PersonalFeatureFilter</filter-name>
         <url-pattern>/ca-nhan/*</url-pattern>
+        <url-pattern>/danh-dau</url-pattern>
+        <url-pattern>/theo-doi</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>AdminAuthorize</filter-name>
