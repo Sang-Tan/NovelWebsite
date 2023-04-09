@@ -18,6 +18,10 @@ ALTER TABLE comments
     ADD CONSTRAINT FK_comment_User FOREIGN KEY (user_id)
         REFERENCES users (ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
+ALTER TABLE comments
+    ADD CONSTRAINT FK_Comment_Chapter FOREIGN KEY (chapter_id)
+        REFERENCES chapters (ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
 ALTER TABLE comment_report
     ADD CONSTRAINT FK_CommentReport_comment FOREIGN KEY (comment_id)
         REFERENCES comments (ID) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -73,3 +77,4 @@ ALTER TABLE novel_favourite
 ALTER TABLE novel_favourite
     ADD CONSTRAINT FK_Bookmark_Novel FOREIGN KEY (novel_id)
         REFERENCES novels (ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
