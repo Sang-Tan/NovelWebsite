@@ -20,6 +20,9 @@ public class Novel implements DatabaseObject {
     public static final String STATUS_PAUSED = "paused";
     public static final String DEFAULT_IMAGE = "/images/default-cover.jpg";
     public static final String DEFAULT_SUMMARY = "Không có tóm tắt";
+    public static final String STATUS_PENDING = "pending";
+    public static final String STATUS_REJECTED = "rejected";
+    public static final String STATUS_APPROVED = "approved";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

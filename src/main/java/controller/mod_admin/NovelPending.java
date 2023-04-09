@@ -1,5 +1,7 @@
 package controller.mod_admin;
 
+import model.Chapter;
+import model.Novel;
 import repository.ChapterRepository;
 import repository.NovelRepository;
 
@@ -28,13 +30,23 @@ public class NovelPending extends HttpServlet {
             action = "";
         }
 
+        switch (action){
+            case "reject":
+                break;
+
+            case "approve":
+                break;
+
+            default:
+                showList(req, resp);
+        }
 
     }
 
     public void showList(HttpServletRequest req, HttpServletResponse resp){
         try {
-            req.setAttribute("novelList", NovelRepository.getInstance().getAllPendingNovel("pending"));
-            req.setAttribute("chapterList", ChapterRepository.getInstance().getAllPendingChapter("pending"));
+            req.setAttribute("novelList", NovelRepository.getInstance().getAllPendingNovel(Novel.STATUS_PENDING));
+            req.setAttribute("chapterList", ChapterRepository.getInstance().getAllPendingChapter(Chapter.STATUS_PENDING));
         } catch (SQLException e) {
             e.printStackTrace();
         }

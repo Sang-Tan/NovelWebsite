@@ -99,10 +99,14 @@
                                                         <i class="fas fa-external-link-alt"></i> Chi tiết
                                                     </button>
                                                 </a>
-                                                <button class="basic-btn basic-btn--red">
+                                                <button class="basic-btn basic-btn--red"
+                                                        data-toggle="modal" data-target="#rejectChapterModal"
+                                                        onclick="showChapterForm(${chapter.getId()}, '${chapter.getName()}')">
                                                     <i class="fas fa-times-circle"></i> Từ chối
                                                 </button>
-                                                <button class="basic-btn basic-btn--olive">
+                                                <button class="basic-btn basic-btn--olive"
+                                                        data-toggle="modal" data-target="#approveChapterModal"
+                                                        onclick="showChapterForm(${chapter.getId()}, '${chapter.getName()}')">
                                                     <i class="fas fa-check"></i> Duyệt
                                                 </button>
                                             </td>
@@ -117,6 +121,29 @@
         </div>
     </div>
 </main>
+<!--Modal delete-->
+<div class="modal fade" id="rejectChapterModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title title title--bold" id="staticBackdropLabel">Từ chối chương</h5>
+                <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
+                   style="font-size: x-large"></i>
+            </div>
+            <div class="modal-body">
+                Bạn có muốn từ chối <span id="nameChapter" class="text-success"></span><span> không?</span>
+            </div>
+            <form action="/mod/duyet-truyen" method="post">
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="basic-btn basic-btn--olive" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="basic-btn basic-btn--red">Xoá</button>
+                    <input hidden name="id" type="text" id="idChapter">
+                    <input hidden name="action" value="reject" type="text" id="">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 <%@include file="/WEB-INF/view/layout/boostrap_js.jsp" %>
 <script>
@@ -155,5 +182,15 @@
             targetPanels.children[targetIndex].classList.add('active');
         });
     });
+
+    function showChapterForm(id, name){
+        document.getElementById("idChapter").value = id;
+        document.getElementById("nameChapter").innerText = name;
+    }
+
+    function showNovelForm(id, name){
+        document.getElementById("idNovel").value = id;
+        document.getElementById("nameNovel").innerText = name;
+    }
 </script>
 </html>
