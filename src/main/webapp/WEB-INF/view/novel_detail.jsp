@@ -74,32 +74,6 @@
                 <div class="container-fluid">
                     <h5>Tóm tắt</h5>
                     <p>${novel.summary}</p>
-                    <%--                    <p>Tôi và thằng bạn của mình đã tham gia vào một dự án mới, tưởng chừng như mọi thứ sẽ dễ--%>
-                    <%--                        dàng--%>
-                    <%--                        với kinh nghiệm của chúng tôi trong lĩnh vực backend. Tuy nhiên, dự án đòi hỏi cả phần--%>
-                    <%--                        frontend và backend, và đồng nghiệp của tôi được giao nhiệm vụ trên phần backend. Và--%>
-                    <%--                        tôi?--%>
-                    <%--                        Tôi phải làm việc trên phần frontend - một lĩnh vực mà tôi không có kinh nghiệm.</p>--%>
-                    <%--                    <p>Một vài ngày đầu tiên là cực kỳ khó khăn. Tôi phải tìm hiểu và học hỏi rất nhiều thứ mới.--%>
-                    <%--                        Tuy--%>
-                    <%--                        nhiên, sau một thời gian, tôi bắt đầu cảm thấy thoải mái hơn. Tôi đã nắm bắt được cách--%>
-                    <%--                        thức--%>
-                    <%--                        hoạt động của các công nghệ phía frontend và đã bắt đầu tạo ra các giao diện người dùng--%>
-                    <%--                        đơn--%>
-                    <%--                        giản.</p>--%>
-                    <%--                    <p>Những ngày tiếp theo là những ngày đầy thử thách. Tôi phải làm việc khẩn trương và chăm--%>
-                    <%--                        chỉ--%>
-                    <%--                        để hoàn thành dự án đúng thời hạn. Tuy nhiên, tôi không bỏ cuộc. Tôi đã học được rất--%>
-                    <%--                        nhiều--%>
-                    <%--                        từ việc làm việc trên phần frontend và trở thành một lập trình viên full-stack chuyên--%>
-                    <%--                        nghiệp.</p>--%>
-                    <%--                    <p>Sau những ngày đầy thử thách, tôi đã trở thành một lập trình viên full-stack đích thực.--%>
-                    <%--                        Tôi--%>
-                    <%--                        học được rất nhiều và vượt qua được rào cản của việc làm việc trên phần frontend. Nhưng--%>
-                    <%--                        liệu--%>
-                    <%--                        rằng điều gì sẽ chờ tôi trong tương lai? Hãy cùng đón xem những thử thách và cơ hội mới--%>
-                    <%--                        sẽ--%>
-                    <%--                        đến với tôi trong thế giới lập trình.</p>--%>
                 </div>
             </section>
             <section class="basic-section">
@@ -119,6 +93,7 @@
                             <div class="col col-md-9">
                                 <ul class="chapters">
                                     <c:forEach items="${volume.chapters}" var="chapter">
+                                        <c:if test="${chapter.approvalStatus.equals('approved')}">
                                         <li class="chapters__item">
                                             <div class="chapters__title">
                                                 <a class="chapters__link" href="/doc-tieu-thuyet/${volume.id}-${volume.name.replace(" ", "-")}/${chapter.id}-${chapter.name.replace(" ","-")}">${chapter.name}</a>
@@ -127,6 +102,7 @@
                                             </div>
                                             <span class="chapters__time">${chapter.modifyTime}</span>
                                         </li>
+                                        </c:if>
                                     </c:forEach>
                                         <%--                                    <li class="chapters__item">--%>
                                         <%--                                        <div class="chapters__title">--%>

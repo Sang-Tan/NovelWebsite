@@ -46,7 +46,12 @@ public class ReadChapter extends HttpServlet {
             Chapter chapter = ChapterRepository.getInstance().getById(chapterID);
             Chapter nextChapter = ChapterRepository.getInstance().getNextChapter(chapterID);
             Chapter previousChapter = ChapterRepository.getInstance().getPreviousChapter(chapterID);
-
+            if(!chapter.getApprovalStatus().equals("approved"))
+                throw new Exception("Chapter is not approved yet");
+            if(nextChapter !=null && !nextChapter.getApprovalStatus().equals("approved"))
+                nextChapter = null;
+            if(previousChapter != null && !previousChapter.getApprovalStatus().equals("approved"))
+                previousChapter = null;
             String novelUrl = pathInfo.split("/")[1];
             request.setAttribute("novelUrl", novelUrl);
             request.setAttribute("chapter", chapter);

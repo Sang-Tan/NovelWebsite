@@ -69,10 +69,10 @@
                         <option value="name" <% if ("name".equals(request.getParameter("sort"))) { %> selected <% } %>>
                             Tên truyện
                         </option>
-                        <%--<option value="author name">Tác giả</option>--%>
-                        <option value="comment" <% if ("comment".equals(request.getParameter("sort"))) { %>
-                                selected <% } %>>Lượt bình luận
-                        </option>
+<%--                        &lt;%&ndash;<option value="author name">Tác giả</option>&ndash;%&gt;--%>
+<%--                        <option value="comment" <% if ("comment".equals(request.getParameter("sort"))) { %>--%>
+<%--                                selected <% } %>>Lượt bình luận--%>
+<%--                        </option>--%>
                     </select>
                 </div>
             </div>
@@ -104,11 +104,14 @@
     <header class="mb-3">
         <span class="title title--bold title--underline">Kết quả tìm kiếm</span>
     </header>
-    <main class="sect-body">
+    <main class="sect-body container-fluid basic-section p-3" >
         <div class="row">
             <div class="col-4 col-md-2 thumb">
+                <%--@elvariable id="novelsSearched" type="java.util.List<model.Novel>"--%>
                 <c:forEach items="${novelsSearched}" var="novelSearched">
-                    <a href="#" class="no-decor">
+                <div class="col-4 col-md-2 thumb">
+                    <c:set var="novelUrl" value="${novelsUri}${novelSearched.id} ${novelSearched.name}" />
+                    <a href="${fn:replace(novelUrl, ' ', '-')}" class="no-decor">
                         <div class="thumb__wrapper">
                             <div class="thumb__img-panel shadow a6-ratio">
                                 <div class="img-wrapper"
@@ -118,23 +121,13 @@
                             <p class="thumb__caption">${novelSearched.name}</p>
                         </div>
                     </a>
+                </div>
                     <%--                <div class="checkbox-holder">--%>
                     <%--                    <input class="checkbox1" type="checkbox" data-genre="${genre.id}"--%>
                     <%--                           id="genre${genre.id}">--%>
                     <%--                    <label for="genre${genre.id}"> ${genre.name}</label>--%>
                     <%--                </div>--%>
                 </c:forEach>
-                <a href="#" class="no-decor">
-                    <div class="thumb__wrapper">
-                        <div class="thumb__img-panel shadow a6-ratio">
-                            <div class="img-wrapper"
-                                 style="background-image: url('https://images.fpt.shop/unsafe/filters:quality(90)/fptshop.com.vn/uploads/images/tin-tuc/152650/Originals/Hu%20Tao.jpg');">
-                            </div>
-                            <p class="thumb__caption">${novelSearched.name}</p>
-                        </div>
-                        <p class="thumb__caption">Hu Tao saves my life</p>
-                    </div>
-                </a>
             </div>
         </div>
     </main>

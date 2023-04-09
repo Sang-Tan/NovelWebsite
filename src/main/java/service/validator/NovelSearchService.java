@@ -122,7 +122,7 @@ public class NovelSearchService {
      * @return
      * @throws SQLException
      */
-    public List<Novel> searchNovels(String name, String authorName, String status, String genresIdString, String sortAttribute, int page) throws SQLException {
+    public List<Novel> searchApprovedNovels(String name, String authorName, String status, String genresIdString, String sortAttribute, int page) throws SQLException {
         List<Object> params = new ArrayList<>();
         List<String> conditionsSQL = new ArrayList<>();
 
@@ -133,6 +133,7 @@ public class NovelSearchService {
         conditionsSQL.removeIf(String::isEmpty);
 
         sql = conditionsSQL.size() > 0 ? String.join(" AND ", conditionsSQL): "1=1";
+        sql += " AND approval_status = 'approved'";
         paginator = new Paginator(NovelRepository.getInstance().countNovels(sql, params), page);
         // order
         sql += " " + generateSortCondition(sortAttribute);

@@ -5,10 +5,6 @@ import model.Novel;
 import repository.GenreRepository;
 import service.Pagination.Paginator;
 import service.validator.NovelSearchService;
-import core.JSON;
-import model.Novel;
-import repository.GenreRepository;
-import repository.NovelRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -92,35 +88,47 @@ public class SearchNovels extends HttpServlet {
             String author = request.getParameter("author");
             String status = request.getParameter("status");
             String sort = request.getParameter("sort");
-            HashMap<String, String> errors = getInputError(partialNovelName, genresIDString, author, status, sort);
-            if (!errors.isEmpty()) {
-                response.getWriter().println(JSON.getResponseJson("error", errors));
-                return;
-            }
-            int[] genresIDList = getGenresIDQuery(genresIDString);
-
+            int page = Integer.parseInt(request.getParameter("page") == null ? "0" : request.getParameter("page"));
+            Paginator paginator  = new Paginator();
+//            NovelService.getNovelHashSetBySearchCondition(partialNovelName, genresIDString, author, status, sort);
+//            UserValidator.hashPassword("123456");
             List<Novel> novelsSearched = null;
             try {
-                novelsSearched = NovelRepository.getInstance().search(partialNovelName, author, status, genresIDList, sort);
+                novelsSearched = NovelSearchService.getInstance().searchApprovedNovels(partialNovelName, author, status, genresIDString, sort, page);
+                paginator = NovelSearchService.getInstance().getPaginator();
             } catch (SQLException e) {
                 response.setStatus(500);
                 SearchNovels.LOGGER.warning(e.getMessage());
             }
-
             // set input data to request attribute
             request.setAttribute("partialNovelName", partialNovelName);
             request.setAttribute("genresIDString", genresIDString);
             request.setAttribute("author", author);
             request.setAttribute("status", status);
             request.setAttribute("sort", sort);
-            request.setAttribute("genresIDList", genresIDList);
-
+            request.setAttribute("genresIDList", NovelSearchService.extractGenresIDs(genresIDString));
             request.setAttribute("novelsSearched", novelsSearched);
-            request.getRequestDispatcher("/WEB-INF/view/search_novel.jsp").forward(request, response);
+            request.setAttribute("paginator", paginator);
 
+            String novelsUri = "http://localhost:8080/truyen/";
+            request.setAttribute("novelsUri", novelsUri);
+
+            // set paging url for pagination, remove page parameter
+            String pagingUrl = "http://localhost:8080/tim-kiem-truyen?" + request.getQueryString();
+            if(pagingUrl.contains("page="))
+            {
+                pagingUrl = pagingUrl.substring(0, pagingUrl.indexOf("&page="));
+            }
+            request.setAttribute("pageItems", paginator.getActivePageItems(pagingUrl));
+            request.getRequestDispatcher("/WEB-INF/view/search_novel.jsp").forward(request, response);
         } catch (Exception e) {
             response.setStatus(500);
             SearchNovels.LOGGER.warning(e.getMessage());
         }
+
     }
+
 }
+
+
+
