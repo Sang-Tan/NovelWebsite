@@ -66,14 +66,14 @@ public class NovelPending extends HttpServlet {
             e.printStackTrace();
         }
         if (idChapter == 0) {
-            novel.setApprovalStatus(Novel.STATUS_REJECTED);
+            novel.setApprovalStatus(Novel.APPROVE_STATUS_REJECTED);
             try {
                 NovelRepository.getInstance().update(novel);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-            chapter.setApprovalStatus(Chapter.STATUS_REJECTED);
+            chapter.setApprovalStatus(Chapter.APPROVE_STATUS_REJECTED);
             try {
                 ChapterRepository.getInstance().update(chapter);
             } catch (SQLException e) {
@@ -106,14 +106,14 @@ public class NovelPending extends HttpServlet {
             e.printStackTrace();
         }
         if (idChapter == 0) {
-            novel.setApprovalStatus(Novel.STATUS_APPROVED);
+            novel.setApprovalStatus(Novel.APPROVE_STATUS_APPROVED);
             try {
                 NovelRepository.getInstance().update(novel);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-            chapter.setApprovalStatus(Chapter.STATUS_APPROVED);
+            chapter.setApprovalStatus(Chapter.APPROVE_STATUS_APPROVED);
             try {
                 ChapterRepository.getInstance().update(chapter);
             } catch (SQLException e) {
@@ -125,8 +125,8 @@ public class NovelPending extends HttpServlet {
 
     public void showList(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            req.setAttribute("novelList", NovelRepository.getInstance().getAllPendingNovel(Novel.STATUS_PENDING));
-            req.setAttribute("chapterList", ChapterRepository.getInstance().getAllPendingChapter(Chapter.STATUS_PENDING));
+            req.setAttribute("novelList", NovelRepository.getInstance().getAllPendingNovel(Novel.APPROVE_STATUS_PENDING));
+            req.setAttribute("chapterList", ChapterRepository.getInstance().getAllPendingChapter(Chapter.APPROVE_STATUS_PENDING));
         } catch (SQLException e) {
             e.printStackTrace();
         }

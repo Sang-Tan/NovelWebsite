@@ -22,7 +22,7 @@ public class NovelManageService {
     private static Novel createDefaultNovel() {
         Novel novel = new Novel();
         novel.setImage(Novel.DEFAULT_IMAGE);
-        novel.setApprovalStatus(Novel.STATUS_PENDING);
+        novel.setApprovalStatus(Novel.APPROVE_STATUS_PENDING);
         return novel;
     }
 
@@ -34,7 +34,7 @@ public class NovelManageService {
 
     private static Chapter createDefaultChapter() {
         Chapter newChap = new Chapter();
-        newChap.setApprovalStatus(Chapter.STATUS_PENDING);
+        newChap.setApprovalStatus(Chapter.APPROVE_STATUS_PENDING);
         return newChap;
     }
 
