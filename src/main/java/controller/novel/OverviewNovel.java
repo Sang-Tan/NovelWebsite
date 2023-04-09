@@ -50,7 +50,6 @@ public class OverviewNovel extends HttpServlet {
             int novelId = Integer.parseInt(part.substring(0, part.indexOf("-")));
             Novel novel = NovelRepository.getInstance().getById(novelId);
             List<Volume> volumes = novel.getVolumes();
-            volumes.remove(0);
 
             request.setAttribute("novel", novel);
 

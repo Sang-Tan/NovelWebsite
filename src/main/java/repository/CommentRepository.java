@@ -31,13 +31,7 @@ public class CommentRepository extends BaseRepository<Comment> {
     protected Comment createEmpty() {
         return new Comment();
     }
-
-    public List<Comment> getByNovelId(int id) throws SQLException {
-        String condition = "novel_id = ?";
-        List<Object> params = List.of(id);
-        List<SqlRecord> record = MySQLdb.getInstance().select(condition, params);
-        return mapObjects(record);
-    }
+    
 
     public List<Comment> getRootCommentsInChapter(Integer chapterId, Integer limit, Integer offset) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE chapter_id = ? " +
