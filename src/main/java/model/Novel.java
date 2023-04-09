@@ -2,7 +2,6 @@ package model;
 
 import core.DatabaseObject;
 import core.logging.BasicLogger;
-import repository.ChapterRepository;
 import repository.GenreRepository;
 import repository.UserRepository;
 import repository.VolumeRepository;
@@ -45,10 +44,6 @@ public class Novel implements DatabaseObject {
 
     @OneToMany
     private Collection<Genre> genres = null;
-
-    @OneToOne
-    private Chapter lastChapter = null;
-
 
     public Novel() {
     }
@@ -164,21 +159,4 @@ public class Novel implements DatabaseObject {
     public void setGenres(Collection<Genre> genres) {
         this.genres = genres;
     }
-
-    public Chapter getLastChapter() {
-        if (lastChapter == null) {
-            try {
-                lastChapter = ChapterRepository.getInstance().getLastChapterOfNovel(id);
-            } catch (SQLException e) {
-                BasicLogger.getInstance().getLogger().warning(e.getMessage());
-                return null;
-            }
-        }
-        return lastChapter;
-    }
-
-    public void setLastChapter(Chapter lastChapter) {
-        throw new UnsupportedOperationException();
-    }
-
 }
