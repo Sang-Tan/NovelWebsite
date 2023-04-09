@@ -5,7 +5,6 @@ import core.database.MySQLdb;
 import core.database.SqlRecord;
 import core.logging.BasicLogger;
 import model.Chapter;
-import model.Novel;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -99,7 +98,7 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         }
         return null;
     }
-}
+
     public Collection<Chapter> getAllPendingChapter(String approvalStatus) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE approval_status = ?", getTableName());
         sql += "ORDER BY modify_time DESC";
