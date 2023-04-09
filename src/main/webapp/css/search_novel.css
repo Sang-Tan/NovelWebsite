@@ -13,10 +13,14 @@
     text-align: right;
     margin-right: 0.25rem;
     user-select: none;
-    font-family: OpenSans;
 }
 .sect-body {
     padding: 10px;
     display: block;
     background-color: white;
+}
+.disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    pointer-events: none;
 }

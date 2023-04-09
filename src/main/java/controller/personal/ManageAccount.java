@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-@MultipartConfig(maxFileSize = 1 * 1024 * 1024) //1MB
+@MultipartConfig(maxFileSize = 1024 * 1024) //1MB
 @WebServlet("/ca-nhan/thong-tin")
 public class ManageAccount extends HttpServlet {
 

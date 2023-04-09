@@ -10,7 +10,7 @@ import java.util.Collection;
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 public class User implements DatabaseObject {
-    public static final String DEFAULT_AVATAR = "images/default-avatar.jpg";
+    public static final String DEFAULT_AVATAR = "/images/default-avatar.jpg";
     public static final String ROLE_ADMIN = "admin";
     public static final String ROLE_MODERATOR = "moderator";
     public static final String ROLE_MEMBER = "member";

@@ -8,6 +8,7 @@ import repository.NovelRepository;
 
 import javax.persistence.*;
 import java.sql.SQLException;
+import java.util.List;
 
 @Entity
 @Table(name = "novel_genre", schema = "novelweb")

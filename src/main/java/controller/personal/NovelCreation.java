@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@MultipartConfig(maxFileSize = 1 * 1024 * 1024) //1MB
+@MultipartConfig(maxFileSize = 1024 * 1024) //1MB
 @WebServlet(value = "/ca-nhan/them-truyen")
 public class NovelCreation extends HttpServlet {
     private final String IMG_DIR = Dotenv.load().get("COVER_UPLOAD_PATH");

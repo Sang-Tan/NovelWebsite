@@ -83,6 +83,42 @@ public class ChapterRepository extends BaseRepository<Chapter> {
                 warning(String.format("Virtual chapter not found for novel id %d", novelId));
         return null;
     }
+    public Chapter getPreviousChapter(int chapterID) throws SQLException {
+        Chapter chapter = getById(chapterID);
+        if (chapter == null) {
+            return null;
+        }
+        int volumeId = chapter.getVolumeId();
+        int orderIndex = chapter.getOrderIndex();
+        String sql = String.format("SELECT * FROM %s " +
+                "WHERE volume_id = ? " +
+                "AND order_index < ? " +
+                "ORDER BY order_index DESC " +
+                "LIMIT 1", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(volumeId, orderIndex));
+        for (SqlRecord record : records) {
+            return mapObject(record);
+        }
+        return null;
+    }
+    public Chapter getNextChapter(int chapterID) throws SQLException {
+        Chapter chapter = getById(chapterID);
+        if (chapter == null) {
+            return null;
+        }
+        int volumeId = chapter.getVolumeId();
+        int orderIndex = chapter.getOrderIndex();
+        String sql = String.format("SELECT * FROM %s " +
+                "WHERE volume_id = ? " +
+                "AND order_index > ? " +
+                "ORDER BY order_index ASC " +
+                "LIMIT 1", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(volumeId, orderIndex));
+        for (SqlRecord record : records) {
+            return mapObject(record);
+        }
+        return null;
+    }
 
     public Chapter getLastChapterOfNovel(int novelId) throws SQLException {
         String sql = String.format("SELECT * FROM %s " +

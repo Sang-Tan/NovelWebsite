@@ -1,6 +1,7 @@
 package controller.personal;
 
 import core.logging.BasicLogger;
+import model.Novel;
 import model.User;
 import repository.NovelRepository;
 
@@ -20,7 +21,7 @@ public class ShowUploadedNovel extends HttpServlet {
         User user = (User) req.getAttribute("user");
 
         try {
-            Collection novels = NovelRepository.getInstance().getNovelsByOwnerID(user.getId());
+            Collection<Novel> novels = NovelRepository.getInstance().getNovelsByOwnerID(user.getId());
             req.setAttribute("novels", novels);
         } catch (SQLException e) {
             resp.setStatus(500);
