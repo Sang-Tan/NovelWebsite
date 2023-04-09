@@ -32,9 +32,11 @@ public class NovelPending extends HttpServlet {
 
         switch (action){
             case "reject":
+
                 break;
 
             case "approve":
+
                 break;
 
             default:

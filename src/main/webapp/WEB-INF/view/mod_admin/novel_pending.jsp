@@ -59,10 +59,14 @@
                                                             <i class="fas fa-external-link-alt"></i> Chi tiết
                                                         </button>
                                                     </a>
-                                                    <button class="basic-btn basic-btn--red">
+                                                    <button class="basic-btn basic-btn--red"
+                                                            data-toggle="modal" data-target="#rejectNovelModal"
+                                                            onclick="showNovelForm(${novel.getId()}, '${novel.getName()}')">
                                                         <i class="fas fa-times-circle"></i> Từ chối
                                                     </button>
-                                                    <button class="basic-btn basic-btn--olive">
+                                                    <button class="basic-btn basic-btn--olive"
+                                                            data-toggle="modal" data-target="#approveNovelModal"
+                                                            onclick="showNovelForm(${novel.getId()}, '${novel.getName()}')">
                                                         <i class="fas fa-check"></i> Duyệt
                                                     </button>
                                                 </td>
@@ -74,7 +78,6 @@
                                             </tr>
                                         </c:if>
                                     </table>
-
                                 </div>
                             </div>
                             <div class="p-0 tab-panel ">
@@ -82,6 +85,7 @@
                                     <tr>
                                         <th style="width: 20%">Tên chương</th>
                                         <th>Tên truyện</th>
+                                        <th>Tác giả</th>
                                         <th>Thời gian sửa</th>
                                         <th>Hành động</th>
                                     </tr>
@@ -91,6 +95,7 @@
                                             <td style="overflow: hidden; text-overflow: ellipsis">
                                                     ${chapter.getBelongVolume().getBelongNovel().name}
                                             </td>
+                                            <td>${chapter.getBelongVolume().getBelongNovel().owner.displayName}</td>
                                             <td>${chapter.modifyTime}</td>
                                             <td>
                                                 <a href="/ca-nhan/tap-truyen/${chapter.id}" target="_blank">
@@ -121,7 +126,7 @@
         </div>
     </div>
 </main>
-<!--Modal delete-->
+<!--Modal reject chapter-->
 <div class="modal fade" id="rejectChapterModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -131,14 +136,37 @@
                    style="font-size: x-large"></i>
             </div>
             <div class="modal-body">
-                Bạn có muốn từ chối <span id="nameChapter" class="text-success"></span><span> không?</span>
+                Bạn có muốn từ chối <span class="text-success nameChapter"></span><span> không?</span>
             </div>
             <form action="/mod/duyet-truyen" method="post">
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="basic-btn basic-btn--olive" data-bs-dismiss="modal">Đóng</button>
                     <button type="submit" class="basic-btn basic-btn--red">Xoá</button>
-                    <input hidden name="id" type="text" id="idChapter">
-                    <input hidden name="action" value="reject" type="text" id="">
+                    <input hidden name="idChapter" type="text" class="idChapter">
+                    <input hidden name="action" value="reject" type="text">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--Modal approve chapter-->
+<div class="modal fade" id="approveChapterModal" tabindex="-1" aria-labelledby="staticBackdropLabel1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title title title--bold" id="staticBackdropLabel1">Duyệt chương</h5>
+                <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
+                   style="font-size: x-large"></i>
+            </div>
+            <div class="modal-body">
+                Bạn có muốn duyệt <span class="text-success nameChapter"></span><span> không?</span>
+            </div>
+            <form action="/mod/duyet-truyen" method="post">
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="basic-btn basic-btn--olive" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="basic-btn basic-btn--red">Xoá</button>
+                    <input hidden name="idChapter" type="text" id="idChapter">
+                    <input hidden name="action" value="approve" type="text">
                 </div>
             </form>
         </div>
@@ -183,14 +211,14 @@
         });
     });
 
-    function showChapterForm(id, name){
-        document.getElementById("idChapter").value = id;
-        document.getElementById("nameChapter").innerText = name;
+    function showChapterForm(id, name) {
+        document.getElementsByClassName("idChapter").value = id;
+        document.getElementsByClassName("nameChapter").innerText = name;
     }
 
-    function showNovelForm(id, name){
-        document.getElementById("idNovel").value = id;
-        document.getElementById("nameNovel").innerText = name;
+    function showNovelForm(id, name) {
+        document.getElementsByClassName("idNovel").value = id;
+        document.getElementsByClassName("nameNovel").innerText = name;
     }
 </script>
 </html>

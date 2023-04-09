@@ -16,7 +16,7 @@ CREATE TABLE chapters (
     content     TEXT               DEFAULT NULL,
     modify_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     approval_status VARCHAR(20)  NOT NULL DEFAULT 'pending'
-		CHECK (status IN ('pending', 'approved', 'rejected')),
+		CHECK (approval_status IN ('pending', 'approved', 'rejected')),
     UNIQUE (order_index, volume_id)
 );
 
@@ -73,7 +73,7 @@ CREATE TABLE novels (
     name       VARCHAR(255) NOT NULL,
     image      VARCHAR(255),
     approval_status VARCHAR(20)  NOT NULL DEFAULT 'pending'
-		CHECK (status IN ('pending', 'approved', 'rejected')),
+		CHECK (approval_status IN ('pending', 'approved', 'rejected')),
     status     VARCHAR(20)  NOT NULL
         CHECK (status IN ('on going', 'paused', 'finished')),
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
