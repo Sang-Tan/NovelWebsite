@@ -14,8 +14,9 @@ CREATE TABLE chapters (
     order_index INT       NOT NULL,
     volume_id   INT       NOT NULL,
     content     TEXT               DEFAULT NULL,
-    modify_time TIMESTAMP NOT NULL,
-    is_pending  BOOLEAN   NOT NULL DEFAULT TRUE,
+    modify_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+    approval_status VARCHAR(20)  NOT NULL DEFAULT 'pending'
+		CHECK (status IN ('pending', 'approved', 'rejected')),
     UNIQUE (order_index, volume_id)
 );
 
@@ -71,9 +72,11 @@ CREATE TABLE novels (
     summary    TEXT         NOT NULL,
     name       VARCHAR(255) NOT NULL,
     image      VARCHAR(255),
-    is_pending BOOLEAN      NOT NULL DEFAULT TRUE,
+    approval_status VARCHAR(20)  NOT NULL DEFAULT 'pending'
+		CHECK (status IN ('pending', 'approved', 'rejected')),
     status     VARCHAR(20)  NOT NULL
-        CHECK (status IN ('on going', 'paused', 'finished'))
+        CHECK (status IN ('on going', 'paused', 'finished')),
+	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP
 );
 
 CREATE TABLE restrictions (

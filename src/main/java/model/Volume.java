@@ -4,6 +4,7 @@ import core.DatabaseObject;
 import repository.ChapterRepository;
 import repository.NovelRepository;
 import repository.UserRepository;
+import repository.VolumeRepository;
 
 import javax.persistence.*;
 import java.sql.SQLException;
@@ -91,7 +92,15 @@ public class Volume implements DatabaseObject {
         throw new UnsupportedOperationException("Set chapters in volume entity is not supported");
     }
 
-    public Novel getBelongNovel() {
+    public Novel getBelongNovel() throws SQLException {
+        if (belongNovel == null)
+            belongNovel = NovelRepository.getInstance().getById(novelId);
         return belongNovel;
+    }
+
+    public void setBelongVolume(Novel novel) {
+
+        this.belongNovel = novel;
+        this.novelId = novel.getId();
     }
 }
