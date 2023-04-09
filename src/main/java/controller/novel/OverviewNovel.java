@@ -1,6 +1,5 @@
 package controller.novel;
 
-import model.Comment;
 import model.Genre;
 import model.Novel;
 import model.Volume;
@@ -13,9 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.ConsoleHandler;

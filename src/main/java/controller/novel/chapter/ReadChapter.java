@@ -1,11 +1,7 @@
 package controller.novel.chapter;
 
-import controller.novel.OverviewNovel;
-import controller.novel.SearchNovels;
 import model.Chapter;
-import model.Novel;
 import repository.ChapterRepository;
-import repository.NovelRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;

@@ -69,7 +69,7 @@ public class SearchNovels extends HttpServlet {
         } else if (!genresIDString.matches(genresIDStringRegex)) {
             errors.put("genres", "Genres không hợp lệ");
         }
-        if (sort != null && !sort.isEmpty() && !sort.equals("name") && !sort.equals("name") && !sort.equals("comment")) {
+        if (sort != null && !sort.isEmpty() && !sort.equals("name") && !sort.equals("comment")) {
             errors.put("sort", "Sort không hợp lệ");
         }
         if (status != null && !status.isEmpty() && !status.equals("on going") && !status.equals("finished") && !status.equals("paused") && !status.equals("all")) {
