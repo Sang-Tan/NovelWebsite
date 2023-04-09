@@ -20,32 +20,110 @@ import java.sql.SQLException;
 public class NovelPending extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        showList(req, resp);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if (action == null) {
             action = "";
         }
 
-        switch (action){
+        switch (action) {
             case "reject":
-
+                reject(req, resp);
                 break;
 
             case "approve":
-
+                approve(req, resp);
                 break;
 
             default:
                 showList(req, resp);
+                break;
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
     }
 
-    public void showList(HttpServletRequest req, HttpServletResponse resp){
+    private void reject(HttpServletRequest req, HttpServletResponse resp) {
+        Novel novel = new Novel();
+        Chapter chapter = new Chapter();
+
+        int idNovel = 0;
+        if (req.getParameter("idNovel") != null) {
+            idNovel = Integer.parseInt(req.getParameter("idNovel"));
+        }
+
+        int idChapter = 0;
+        if (req.getParameter("idChapter") != null) {
+            idChapter = Integer.parseInt(req.getParameter("idChapter"));
+        }
+
+        try {
+            novel = NovelRepository.getInstance().getById(idNovel);
+            chapter = ChapterRepository.getInstance().getById(idChapter);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (idChapter == 0) {
+            novel.setApprovalStatus(Novel.STATUS_REJECTED);
+            try {
+                NovelRepository.getInstance().update(novel);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            chapter.setApprovalStatus(Chapter.STATUS_REJECTED);
+            try {
+                ChapterRepository.getInstance().update(chapter);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        showList(req, resp);
+    }
+
+    private void approve(HttpServletRequest req, HttpServletResponse resp) {
+        Novel novel = new Novel();
+        Chapter chapter = new Chapter();
+
+        int idNovel = 0;
+        if (req.getParameter("idChapter") != null) {
+            idNovel = Integer.parseInt(req.getParameter("idNovel"));
+        }
+
+        int idChapter = 0;
+        if (req.getParameter("idChapter") != null) {
+            idChapter = Integer.parseInt(req.getParameter("idChapter"));
+        }
+        if (req.getParameter("idChapter") != null) {
+            idChapter = Integer.parseInt(req.getParameter("idChapter"));
+        }
+        try {
+            novel = NovelRepository.getInstance().getById(idNovel);
+            chapter = ChapterRepository.getInstance().getById(idChapter);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (idChapter == 0) {
+            novel.setApprovalStatus(Novel.STATUS_APPROVED);
+            try {
+                NovelRepository.getInstance().update(novel);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            chapter.setApprovalStatus(Chapter.STATUS_APPROVED);
+            try {
+                ChapterRepository.getInstance().update(chapter);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        showList(req, resp);
+    }
+
+    public void showList(HttpServletRequest req, HttpServletResponse resp) {
         try {
             req.setAttribute("novelList", NovelRepository.getInstance().getAllPendingNovel(Novel.STATUS_PENDING));
             req.setAttribute("chapterList", ChapterRepository.getInstance().getAllPendingChapter(Chapter.STATUS_PENDING));

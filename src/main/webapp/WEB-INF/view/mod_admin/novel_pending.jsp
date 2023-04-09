@@ -82,7 +82,7 @@
                             </div>
                             <div class="p-0 tab-panel ">
                                 <table class="table table-striped">
-                                    <tr>
+                                    <tr class="text-center">
                                         <th style="width: 20%">Tên chương</th>
                                         <th>Tên truyện</th>
                                         <th>Tác giả</th>
@@ -90,7 +90,7 @@
                                         <th>Hành động</th>
                                     </tr>
                                     <c:forEach var="chapter" items="${chapterList}">
-                                        <tr>
+                                        <tr class="text-center">
                                             <td style="overflow: hidden; text-overflow: ellipsis">${chapter.name}</td>
                                             <td style="overflow: hidden; text-overflow: ellipsis">
                                                     ${chapter.getBelongVolume().getBelongNovel().name}
@@ -98,7 +98,7 @@
                                             <td>${chapter.getBelongVolume().getBelongNovel().owner.displayName}</td>
                                             <td>${chapter.modifyTime}</td>
                                             <td>
-                                                <a href="/ca-nhan/tap-truyen/${chapter.id}" target="_blank">
+                                                <a href="/ca-nhan/chuong-truyen/${chapter.id}" target="_blank">
                                                     <button class="basic-btn basic-btn--olive"
                                                             style="background-color: dodgerblue; color: white">
                                                         <i class="fas fa-external-link-alt"></i> Chi tiết
@@ -117,6 +117,11 @@
                                             </td>
                                         </tr>
                                     </c:forEach>
+                                    <c:if test="${chapterList == null}">
+                                        <tr>
+                                            <td colspan="10" class="text-center">Không có chương cần duyệt</td>
+                                        </tr>
+                                    </c:if>
                                 </table>
                             </div>
                         </div>
@@ -126,7 +131,7 @@
         </div>
     </div>
 </main>
-<!--Modal reject chapter-->
+<!--Modal reject novel-->
 <div class="modal fade" id="rejectNovelModal" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -138,18 +143,18 @@
             <div class="modal-body">
                 Bạn có muốn từ chối <span class="text-success nameNovel"></span><span> không?</span>
             </div>
-            <form action="/mod/duyet-truyen" method="post">
+            <form action="/mod/duyet-truyen" method="get">
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="basic-btn basic-btn--olive" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="basic-btn basic-btn--red">OK</button>
-                    <input hidden name="idNovel" type="text" class="idNovel">
+                    <button type="button" class="basic-btn basic-btn--red" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="basic-btn basic-btn--olive">OK</button>
                     <input hidden name="action" value="reject" type="text">
+                    <input hidden name="idNovel" type="text" class="idNovel">
                 </div>
             </form>
         </div>
     </div>
 </div>
-<!--Modal reject chapter-->
+<!--Modal approve novel-->
 <div class="modal fade" id="approveNovelModal" tabindex="-1" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -161,12 +166,12 @@
             <div class="modal-body">
                 Bạn có muốn duyệt <span class="text-success nameNovel"></span><span> không?</span>
             </div>
-            <form action="/mod/duyet-truyen" method="post">
+            <form action="/mod/duyet-truyen" method="get">
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="basic-btn basic-btn--olive" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="basic-btn basic-btn--red">OK</button>
-                    <input hidden name="idNovel" type="text" class="idNovel">
+                    <button type="button" class="basic-btn basic-btn--red" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="basic-btn basic-btn--olive">OK</button>
                     <input hidden name="action" value="reject" type="text">
+                    <input hidden name="idNovel" type="text" class="idNovel">
                 </div>
             </form>
         </div>
@@ -184,12 +189,12 @@
             <div class="modal-body">
                 Bạn có muốn từ chối <span class="text-success nameChapter"></span><span> không?</span>
             </div>
-            <form action="/mod/duyet-truyen" method="post">
+            <form action="/mod/duyet-truyen" method="get">
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="basic-btn basic-btn--olive" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="basic-btn basic-btn--red">OK</button>
-                    <input hidden name="idChapter" type="text" class="idChapter">
+                    <button type="button" class="basic-btn basic-btn--red" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="basic-btn basic-btn--olive">OK</button>
                     <input hidden name="action" value="reject" type="text">
+                    <input hidden name="idChapter" type="text" class="idChapter">
                 </div>
             </form>
         </div>
@@ -207,12 +212,12 @@
             <div class="modal-body">
                 Bạn có muốn duyệt <span class="text-success nameChapter"></span><span> không?</span>
             </div>
-            <form action="/mod/duyet-truyen" method="post">
+            <form action="/mod/duyet-truyen" method="get">
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="basic-btn basic-btn--olive" data-bs-dismiss="modal">Đóng</button>
-                    <button type="submit" class="basic-btn basic-btn--red">OK</button>
+                    <button type="button" class="basic-btn basic-btn--red" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="basic-btn basic-btn--olive">OK</button>
+                    <input hidden name="action" value="reject" type="text">
                     <input hidden name="idChapter" type="text" class="idChapter">
-                    <input hidden name="action" value="approve" type="text">
                 </div>
             </form>
         </div>
