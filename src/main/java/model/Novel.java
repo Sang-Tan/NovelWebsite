@@ -188,8 +188,4 @@ public class Novel implements DatabaseObject {
     public void setGenres(Collection<Genre> genres) {
         this.genres = genres;
     }
-
-    public List<Comment> getComments() throws SQLException {
-            return NovelRepository.getInstance().getComments(id);
-    }
 }

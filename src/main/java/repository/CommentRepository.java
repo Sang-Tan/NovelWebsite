@@ -31,7 +31,6 @@ public class CommentRepository extends BaseRepository<Comment> {
     protected Comment createEmpty() {
         return new Comment();
     }
-    
 
     /**
      * Get root comments in a chapter (comments that are not replies to other comments)
@@ -66,4 +65,3 @@ public class CommentRepository extends BaseRepository<Comment> {
         return mapObjects(records);
     }
 }
-

@@ -15,8 +15,7 @@ public class CommentService {
      * @return Root comments (comments reply no comment) in a chapter (newest first)
      */
     public static List<Comment> getCommentsInChapter(Integer chapterId, Integer limit, Integer offset) throws SQLException, JSONException {
-        List<Comment> rootComments = CommentRepository.getInstance().
+        return CommentRepository.getInstance().
                 getRootCommentsInChapter(chapterId, limit, offset);
-        return rootComments;
     }
 }

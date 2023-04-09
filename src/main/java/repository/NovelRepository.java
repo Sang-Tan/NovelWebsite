@@ -3,14 +3,14 @@ package repository;
 import core.database.BaseRepository;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
-import model.Comment;
 import model.Novel;
 import model.intermediate.NovelGenre;
 import repository.intermediate.NovelGenreRepository;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class NovelRepository extends BaseRepository<Novel> {
     private static NovelRepository instance;
@@ -99,9 +99,6 @@ public class NovelRepository extends BaseRepository<Novel> {
         return null;
     }
 
-    public List<Comment> getComments(int id) throws SQLException {
-            return CommentRepository.getInstance().getByNovelId(id);
-    }
     public Collection<Novel> getFavoriteNovelsByUserID(int userID) throws SQLException {
         String sql = String.format("SELECT * FROM %s " +
                 "WHERE id IN (SELECT novel_id FROM novel_favourite WHERE user_id = ?)", getTableName());

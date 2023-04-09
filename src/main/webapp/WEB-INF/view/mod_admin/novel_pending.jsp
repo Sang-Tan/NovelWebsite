@@ -18,7 +18,7 @@
           integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
-<jsp:include page="/WEB-INF/view/layout/header_mod.jsp.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/layout/header_mod.jsp"></jsp:include>
 <body style="background-color: var(--silver)">
 <main class="mt-2">
     <div class="container">
