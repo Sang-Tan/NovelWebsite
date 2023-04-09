@@ -5,5 +5,6 @@ CREATE TABLE comments
     content      TEXT NOT NULL,
     deactive_by  INT DEFAULT NULL,
     time_comment TIMESTAMP    NOT NULL,
-    parent_id    INT DEFAULT NULL
+    parent_id    INT DEFAULT NULL,
+    chapter_id   INT          NOT NULL
 );
