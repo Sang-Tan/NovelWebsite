@@ -3,14 +3,14 @@ package repository;
 import core.database.BaseRepository;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
+import model.Comment;
 import model.Novel;
 import model.intermediate.NovelGenre;
 import repository.intermediate.NovelGenreRepository;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class NovelRepository extends BaseRepository<Novel> {
     private static NovelRepository instance;
@@ -41,41 +41,13 @@ public class NovelRepository extends BaseRepository<Novel> {
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
         return mapObjects(records);
     }
-
-    public List<Novel> search(String novelName, String authorName, String Status, int[] genresId, String sortAttribute) throws SQLException {
-        String sql = " 1=1 ";
-        List<Object> params = new ArrayList<>();
-        if (novelName != null && !novelName.isEmpty()) {
-            sql += " AND name LIKE ?";
-            params.add("%" + novelName + "%");
+    public long countNovels(String condition, List<Object> params) throws SQLException {
+        String sql = String.format("SELECT COUNT(id) FROM %s WHERE %s", getTableName(), condition);
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
+        for (SqlRecord record : records) {
+            return (long) record.get("COUNT(id)");
         }
-        if (authorName != null && !authorName.isEmpty()) {
-            sql += " AND owner IN (SELECT id FROM users WHERE display_name LIKE ?)";
-            params.add("%" + authorName + "%");
-        }
-        if (Status != null && !Status.isEmpty() && !Status.equals("all")) {
-            sql += " AND status = ?";
-            params.add(Status);
-        }
-        if (genresId != null && genresId.length > 0) {
-            sql += " AND id IN (SELECT novel_id FROM novel_genre WHERE genre_id IN (";
-            for (int i = 0; i < genresId.length; i++) {
-                sql += "?,";
-                params.add(genresId[i]);
-            }
-            sql = sql.substring(0, sql.length() - 1);
-            sql += "))";
-        }
-        if (sortAttribute != null && !sortAttribute.isEmpty() && !sortAttribute.equals("comment")
-        ) {
-            sql += " ORDER BY " + sortAttribute;
-        } else if (sortAttribute != null && !sortAttribute.isEmpty() && sortAttribute.equals("comment")) {
-            sql += " ORDER BY (SELECT COUNT(*) FROM comments WHERE novel_id = novel.id) DESC";
-        }
-//        else if (sortAttribute == null || sortAttribute.isEmpty()) && sortAttribute.equals("author name") {
-//            sql += " ORDER BY (SELECT display_name FROM users WHERE id = novel.owner_id)";
-//        }
-        return getByConditionString(sql, params);
+        return 0;
     }
 
 
@@ -127,6 +99,9 @@ public class NovelRepository extends BaseRepository<Novel> {
         return null;
     }
 
+    public List<Comment> getComments(int id) throws SQLException {
+            return CommentRepository.getInstance().getByNovelId(id);
+    }
     public Collection<Novel> getFavoriteNovelsByUserID(int userID) throws SQLException {
         String sql = String.format("SELECT * FROM %s " +
                 "WHERE id IN (SELECT novel_id FROM novel_favourite WHERE user_id = ?)", getTableName());

@@ -38,30 +38,7 @@ public class Login extends HttpServlet {
         LOGGER.addHandler(handler);
     }
 
-    private HashMap<String, String> getInputError(String username, String password) {
-        try {
-            // create a map to store invalid input values and error messages
-            HashMap<String, String> errors = new HashMap<>();
 
-            // add invalid input values and error messages to the map
-            // validate username
-            if (username == null || username.isEmpty()) {
-                errors.put("username", "Username không được để trống");
-            } else if (!UserValidator.isUsernameExists(username)) {
-                errors.put("username", "Username không tồn tại");
-            } else if (password == null || password.isEmpty()) {
-                errors.put("password", "Mật khẩu không được để trống");
-            } else {
-                if (!UserValidator.credentialVerify(username, password)) {
-                    errors.put("password", "Mật khẩu không đúng");
-                }
-            }
-            return errors;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return new HashMap<>();
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -75,7 +52,7 @@ public class Login extends HttpServlet {
 
             // create a map to store invalid input values and error messages
             HashMap<String, String> errors;
-            errors = getInputError(username, password);
+            errors = UserValidator.getLoginInputError(username, password);
             if (!errors.isEmpty()) {
                 response.getWriter().println(JSON.getResponseJson("error", errors));
                 return;

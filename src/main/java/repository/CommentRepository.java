@@ -31,6 +31,7 @@ public class CommentRepository extends BaseRepository<Comment> {
     protected Comment createEmpty() {
         return new Comment();
     }
+    
 
     public List<Comment> getRootCommentsInChapter(Integer chapterId, Integer limit, Integer offset) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE chapter_id = ? " +

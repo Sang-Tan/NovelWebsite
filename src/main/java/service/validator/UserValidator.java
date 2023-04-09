@@ -10,6 +10,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 
 public class UserValidator {
@@ -104,5 +105,55 @@ public class UserValidator {
         }
         return null;
     }
+    public static HashMap<String, String> getRegisterInputError(String username, String password, String confirmPassword) throws SQLException {
+
+        // create a map to store invalid input values and error messages
+        HashMap<String, String> errors = new HashMap<>();
+
+        // add invalid input values and error messages to the map
+        // validate username
+        if (username == null || username.isEmpty()) {
+            errors.put("username", "Username không được để trống");
+        } else if (!UserValidator.isValidUsername(username)) {
+            errors.put("username", "Username không hợp lệ");
+        } else if (UserValidator.isUsernameExists(username)) {
+            errors.put("username", "Username đã tồn tại");
+        }
+
+        // validate password
+        if (password == null || password.isEmpty()) {
+            errors.put("password", "Mật khẩu không được để trống");
+        } else if (!UserValidator.isValidConfirmPassword(password, confirmPassword)) {
+            errors.put("confirm_password", "Mật khẩu không khớp");
+        } else if (!UserValidator.isValidPassword(password)) {
+            errors.put("password", "Mật khẩu không hợp lệ");
+        }
+        return errors;
+    }
+    public static HashMap<String, String> getLoginInputError(String username, String password) {
+        try {
+            // create a map to store invalid input values and error messages
+            HashMap<String, String> errors = new HashMap<>();
+
+            // add invalid input values and error messages to the map
+            // validate username
+            if (username == null || username.isEmpty()) {
+                errors.put("username", "Username không được để trống");
+            } else if (!UserValidator.isUsernameExists(username)) {
+                errors.put("username", "Username không tồn tại");
+            } else if (password == null || password.isEmpty()) {
+                errors.put("password", "Mật khẩu không được để trống");
+            } else {
+                if (!UserValidator.credentialVerify(username, password)) {
+                    errors.put("password", "Mật khẩu không đúng");
+                }
+            }
+            return errors;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new HashMap<>();
+    }
+
 
 }

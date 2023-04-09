@@ -2,12 +2,16 @@ package model;
 
 import core.DatabaseObject;
 import core.logging.BasicLogger;
+import model.intermediate.NovelGenre;
 import repository.GenreRepository;
+import repository.NovelRepository;
 import repository.UserRepository;
 import repository.VolumeRepository;
+import repository.intermediate.NovelGenreRepository;
 
 import javax.persistence.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -131,6 +135,17 @@ public class Novel implements DatabaseObject {
     public void setStatus(String status) {
         this.status = status;
     }
+    public String getAuthorName() throws SQLException {
+        return getOwner().getUsername();
+    }
+//    public List<Genre> getGenres() throws Exception {
+//        List<NovelGenre> novelGenres =  NovelGenreRepository.getInstance().getByNovelId(id);
+//        List<Genre> genres = new ArrayList<>();
+//        for (NovelGenre novelGenre : novelGenres) {
+//            genres.add(novelGenre.getRelatedGenre());
+//        }
+//        return genres;
+//    }
 
     public Timestamp getCreatedTime() {
         return createdTime;
@@ -170,5 +185,9 @@ public class Novel implements DatabaseObject {
 
     public void setGenres(Collection<Genre> genres) {
         this.genres = genres;
+    }
+
+    public List<Comment> getComments() throws SQLException {
+            return NovelRepository.getInstance().getComments(id);
     }
 }
