@@ -1,32 +1,41 @@
 package model;
 
 import core.DatabaseObject;
+import core.metadata.JSONSerializable;
+import org.json.JSONException;
+import org.json.JSONObject;
+import repository.CommentRepository;
+import repository.UserRepository;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "comments", schema = "novelweb")
-public class Comment implements DatabaseObject {
+public class Comment implements DatabaseObject, JSONSerializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
     @Column(name = "user_id", nullable = false)
     private int userId;
-
     @Column(name = "chapter_id", nullable = false)
     private int chapterId;
-
-
     @Column(name = "content", nullable = false)
     private String content;
     @Column(name = "deactive_by")
-    private int deactiveBy;
+    private Integer deactiveBy;
     @Column(name = "time_comment", nullable = false)
     private Timestamp commentTime;
     @Column(name = "parent_id")
-    private int parentId;
+    private Integer parentId;
+
+    @OneToOne
+    private User owner;
+
+    @OneToMany
+    private List<Comment> replies;
 
     public Comment() {
     }
@@ -40,11 +49,11 @@ public class Comment implements DatabaseObject {
         this.parentId = parentId;
     }
 
-    public int getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
 
@@ -60,9 +69,8 @@ public class Comment implements DatabaseObject {
         return userId;
     }
 
-    public void setUserId(User user) {
-
-        this.userId = user.getId();
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getContent() {
@@ -73,11 +81,11 @@ public class Comment implements DatabaseObject {
         this.content = content;
     }
 
-    public int getDeactiveBy() {
+    public Integer getDeactiveBy() {
         return deactiveBy;
     }
 
-    public void setDeactiveBy(int deactiveBy) {
+    public void setDeactiveBy(Integer deactiveBy) {
         this.deactiveBy = deactiveBy;
     }
 //    public User getDeactiveByUser() throws SQLException {
@@ -121,4 +129,46 @@ public class Comment implements DatabaseObject {
     public void setChapterId(int chapterId) {
         this.chapterId = chapterId;
     }
+
+    public List<Comment> getReplies() {
+        if (replies == null) {
+            try {
+                replies = CommentRepository.getInstance().getRepliesComments(id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return replies;
+    }
+
+    public void setReplies(List<Comment> replies) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public JSONObject toJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("userId", userId);
+        json.put("content", content);
+        json.put("deactiveBy", deactiveBy);
+        json.put("commentTime", commentTime);
+        return json;
+    }
+
+    public User getOwner() {
+        if (owner == null) {
+            try {
+                owner = UserRepository.getInstance().getById(userId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        throw new UnsupportedOperationException();
+    }
+
 }
