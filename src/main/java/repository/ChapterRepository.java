@@ -7,6 +7,7 @@ import core.logging.BasicLogger;
 import model.Chapter;
 
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.List;
 
 public class ChapterRepository extends BaseRepository<Chapter> {
@@ -119,4 +120,25 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         return null;
     }
 
+    public Chapter getLastChapterOfNovel(int novelId) throws SQLException {
+        String sql = String.format("SELECT * FROM %s " +
+                "WHERE volume_id IN " +
+                "(SELECT id FROM volumes " +
+                "WHERE novel_id = ? " +
+                "AND NOT order_index = 1) " +
+                "ORDER BY modify_time DESC " +
+                "LIMIT 1", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelId));
+        for (SqlRecord record : records) {
+            return mapObject(record);
+        }
+        return null;
+    }
+
+    public Collection<Chapter> getAllPendingChapter(String approvalStatus) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE approval_status = ?", getTableName());
+        sql += "ORDER BY modify_time DESC";
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(approvalStatus));
+        return mapObjects(records);
+    }
 }

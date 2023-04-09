@@ -82,6 +82,13 @@ public class NovelRepository extends BaseRepository<Novel> {
         return mapObjects(records);
     }
 
+    public Collection<Novel> getAllPendingNovel(String approvalStatus) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE approval_status = ?", getTableName());
+        sql += "ORDER BY created_at DESC";
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(approvalStatus));
+        return mapObjects(records);
+    }
+
     public Novel getByVolumeID(int volumeID) throws SQLException {
         String sql = String.format("SELECT * FROM %s " +
                 "WHERE id = (SELECT novel_id FROM volumes WHERE id = ?)", getTableName());
@@ -94,5 +101,11 @@ public class NovelRepository extends BaseRepository<Novel> {
 
     public List<Comment> getComments(int id) throws SQLException {
             return CommentRepository.getInstance().getByNovelId(id);
+    }
+    public Collection<Novel> getFavoriteNovelsByUserID(int userID) throws SQLException {
+        String sql = String.format("SELECT * FROM %s " +
+                "WHERE id IN (SELECT novel_id FROM novel_favourite WHERE user_id = ?)", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(userID));
+        return mapObjects(records);
     }
 }

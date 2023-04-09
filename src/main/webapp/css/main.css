@@ -37,16 +37,12 @@
     height: 100%;
 }
 
-/* a.link-fill {
+a.link-fill {
     display: block;
     width: 100%;
     height: 100%;
     color: inherit;
 }
-
-a.link-fill:hover {
-    color: inherit;
-} */
 
 a.black {
     color: var(--black);
@@ -103,6 +99,18 @@ a.black:hover {
     border-radius: 50%;
 }
 
+.left-highlight {
+    border-left: 0.25rem solid var(--theme-color);
+}
+
+.brand-image-wrapper {
+    width: 2rem;
+    height: 2rem;
+    overflow: hidden;
+    display: block;
+    background-size: cover;
+}
+
 /*===================Button=======================*/
 
 .basic-btn {
@@ -148,6 +156,10 @@ a.basic-btn {
     filter: brightness(0.9);
 }
 
+.basic-btn.hidden {
+    display: none;
+}
+
 .basic-btn--round {
     border-radius: 2rem;
 }
@@ -185,6 +197,15 @@ a.basic-btn--olive:hover {
 }
 
 a.basic-btn--maroon:hover {
+    color: var(--white);
+}
+
+.basic-btn--primary {
+    background-color: var(--blue);
+    color: var(--white);
+}
+
+a.basic-btn--primary:hover {
     color: var(--white);
 }
 
