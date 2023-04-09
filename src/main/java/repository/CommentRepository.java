@@ -27,10 +27,17 @@ public class CommentRepository extends BaseRepository<Comment> {
         return null;
     }
 
-
     @Override
     protected Comment createEmpty() {
         return new Comment();
+    }
+
+    public List<Comment> getRootCommentsInChapter(Integer chapterId, Integer limit, Integer offset) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE chapter_id = ? " +
+                "AND parent_id IS NULL " +
+                "ORDER BY time_comment DESC LIMIT ? OFFSET ?", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(chapterId, limit, offset));
+        return mapObjects(records);
     }
 }
 

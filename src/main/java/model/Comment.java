@@ -1,11 +1,8 @@
 package model;
 
 import core.DatabaseObject;
-import repository.CommentRepository;
-import repository.UserRepository;
 
 import javax.persistence.*;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 
 @Entity
@@ -17,6 +14,9 @@ public class Comment implements DatabaseObject {
     private int id;
     @Column(name = "user_id", nullable = false)
     private int userId;
+
+    @Column(name = "chapter_id", nullable = false)
+    private int chapterId;
 
 
     @Column(name = "content", nullable = false)
@@ -43,9 +43,11 @@ public class Comment implements DatabaseObject {
     public int getParentId() {
         return parentId;
     }
+
     public void setParentId(int parentId) {
         this.parentId = parentId;
     }
+
     public int getId() {
         return id;
     }
@@ -70,9 +72,11 @@ public class Comment implements DatabaseObject {
     public void setContent(String content) {
         this.content = content;
     }
+
     public int getDeactiveBy() {
         return deactiveBy;
     }
+
     public void setDeactiveBy(int deactiveBy) {
         this.deactiveBy = deactiveBy;
     }
@@ -98,7 +102,7 @@ public class Comment implements DatabaseObject {
         this.commentTime = commentTime;
     }
 
-//    public int getParentComment() throws SQLException {
+    //    public int getParentComment() throws SQLException {
 //
 //        if(parentComment == null) {
 //            parentComment = CommentRepository.getInstance().getById(parentId);
@@ -110,4 +114,11 @@ public class Comment implements DatabaseObject {
 //        this.parentId = parentId;
 //        this.parentComment = parentComment;
 //    }
+    public int getChapterId() {
+        return chapterId;
+    }
+
+    public void setChapterId(int chapterId) {
+        this.chapterId = chapterId;
+    }
 }
