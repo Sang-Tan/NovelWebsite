@@ -2,6 +2,9 @@ package model;
 
 import core.DatabaseObject;
 import core.logging.BasicLogger;
+import core.metadata.JSONSerializable;
+import org.json.JSONException;
+import org.json.JSONObject;
 import repository.NovelRepository;
 
 import javax.persistence.*;
@@ -9,8 +12,8 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
-public class User implements DatabaseObject {
-    public static final String DEFAULT_AVATAR = "/images/default-avatar.jpg";
+public class User implements DatabaseObject, JSONSerializable {
+    public static final String DEFAULT_AVATAR = "images/default-avatar.jpg";
     public static final String ROLE_ADMIN = "admin";
     public static final String ROLE_MODERATOR = "moderator";
     public static final String ROLE_MEMBER = "member";
@@ -126,4 +129,14 @@ public class User implements DatabaseObject {
         this.favouriteNovels = favouriteNovels;
     }
 
+    @Override
+    public JSONObject toJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("username", username);
+        json.put("display_name", displayName);
+        json.put("avatar", avatar);
+        json.put("role", role);
+        return json;
+    }
 }
