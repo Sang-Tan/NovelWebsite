@@ -32,5 +32,13 @@ public class CommentRepository extends BaseRepository<Comment> {
     protected Comment createEmpty() {
         return new Comment();
     }
+
+    public List<Comment> getByNovelId(int id) throws SQLException {
+        String condition = "novel_id = ?";
+        List<Object> params = List.of(id);
+        List<SqlRecord> record = MySQLdb.getInstance().select(condition, params);
+        return mapObjects(record);
+    }
+
 }
 

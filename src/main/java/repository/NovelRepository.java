@@ -3,6 +3,7 @@ package repository;
 import core.database.BaseRepository;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
+import model.Comment;
 import model.Novel;
 import model.intermediate.NovelGenre;
 import repository.intermediate.NovelGenreRepository;
@@ -89,5 +90,9 @@ public class NovelRepository extends BaseRepository<Novel> {
             return mapObject(record);
         }
         return null;
+    }
+
+    public List<Comment> getComments(int id) throws SQLException {
+            return CommentRepository.getInstance().getByNovelId(id);
     }
 }
