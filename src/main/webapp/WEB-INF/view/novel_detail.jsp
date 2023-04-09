@@ -27,8 +27,9 @@
                             <div class="series-cover">
                                 <div class="a6-ratio">
                                     <div class="img-wrapper border"
-                                         style="background-image: url('https://i.etsystatic.com/20023820/r/il/e12dd6/2885404230/il_fullxfull.2885404230_tb41.jpg');">
-                                    </div>
+<%--                                         style="background-image: url('https://i.etsystatic.com/20023820/r/il/e12dd6/2885404230/il_fullxfull.2885404230_tb41.jpg');">--%>
+                                         style="background-image: url('${novel.image}');">
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -105,7 +106,6 @@
                 <c:forEach items="${novel.volumes}" var="volume">
                     <div class="basic-section__header">
                         <h5>${volume.name}</h5>
-
                     </div>
                     <div class="container fluid">
                         <div class="row">
@@ -121,7 +121,7 @@
                                     <c:forEach items="${volume.chapters}" var="chapter">
                                         <li class="chapters__item">
                                             <div class="chapters__title">
-                                                <a class="chapters__link" href="">${chapter.name}</a>
+                                                <a class="chapters__link" href="/doc-tieu-thuyet/${volume.id}-${volume.name.replace(" ", "-")}/${chapter.id}-${chapter.name.replace(" ","-")}">${chapter.name}</a>
                                                     <%--                                            <a class="chapters__link" href="">Chap 1--%>
                                                     <%--                                                overflow test overflow test overflow test overflow test</a>--%>
                                             </div>
@@ -145,22 +145,35 @@
                     <h5>Bình luận</h5>
                 </header>
                 <div class="container-fluid">
-                    <p>Bạn phải <a href="#">Đăng nhập</a> hoặc <a href="#">Đăng ký</a> để có thể bình luận</p>
-                    <form action="novel_detail.jsp" method="post" class="mb-3">
+                    <c:choose>
+                        <c:when test="${user == null}">
+                            <p>Bạn phải <a href="#login-modal" class="navbar__link navbar__list-text" data-toggle="modal"
+                                           data-target="#login-modal">Đăng nhập</a> hoặc <a href="#register-modal" class="navbar__link navbar__list-text" data-toggle="modal"
+                                                                                            data-target="#register-modal">Tạo ta khoản</a> để có thể bình
+                                luận</p>
+
+                        </c:when>
+
+                        <c:otherwise>
+                            <form action="novel_detail.jsp" method="post" class="mb-3">
                                 <textarea name="cmtText" title="cmt" id="" rows="10" class="cmt-box"
                                           style="min-height: 100px;resize: none;scroll-behavior: auto"></textarea>
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="basic-btn basic-btn--green"
-                                    style="width: 100px">Gửi
-                            </button>
-                        </div>
-                    </form>
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="basic-btn basic-btn--green"
+                                            style="width: 100px">Gửi
+                                    </button>
+                                </div>
+                            </form>
+                        </c:otherwise>
+                    </c:choose>
                     <div class="cmt-group">
+                        <%--@elvariable id="comments" type="java.util.List<model.Comment>"--%>
                         <div class="cmt-group__item">
                             <div class="cmt-group__avatar"
                                  style="background-image: url(https://a.ppy.sh/10969666_1614400439.jpeg);">
                             </div>
                             <div class="cmt-detail">
+<%--                                <a href="" class="cmt-detail__name">Hu Tao</a>--%>
                                 <a href="" class="cmt-detail__name">Hu Tao</a>
                                 <p>Tin chuẩn chưa a</p>
                                 <div class="cmt-toolkit">

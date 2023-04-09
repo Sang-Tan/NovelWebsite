@@ -5,3 +5,36 @@
 .reading-part>p {
     margin-bottom: 2rem;
 }
+.rd_sidebar main {
+    background-color: white;
+    height: 100%;
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+}
+.animation {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+.rd_sidebar-header {
+    background-color: black;
+    width: 100%;
+}
+.rd_sidebar #chap_list {
+    font-size: 14px;
+    padding: 12px 12px 80px;
+}
+.unstyled {
+    list-style: none;
+    text-decoration: none;
+}
+.rd-sidebar #chap_list li.current
+{
+    background-color : darkgrey;
+    border-radius: 4px;
+    font-weight: 700;
+}
+.rd-sidebar #chap_list li {
+    margin: 6px 0;
+}

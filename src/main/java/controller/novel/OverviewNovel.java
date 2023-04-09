@@ -1,5 +1,6 @@
 package controller.novel;
 
+import model.Comment;
 import model.Genre;
 import model.Novel;
 import model.Volume;
@@ -49,6 +50,7 @@ public class OverviewNovel extends HttpServlet {
             int novelId = Integer.parseInt(part.substring(0, part.indexOf("-")));
             Novel novel = NovelRepository.getInstance().getById(novelId);
             List<Volume> volumes = novel.getVolumes();
+            volumes.remove(0);
 
             request.setAttribute("novel", novel);
 
@@ -65,8 +67,6 @@ public class OverviewNovel extends HttpServlet {
             request.setAttribute("searchNovelUri", searchNovelUri);
 
             request.getRequestDispatcher("/WEB-INF/view/novel_detail.jsp").forward(request, response);
-            // Generate the appropriate response for the truyen URL
-            // ...
         } catch (Exception e) {
             response.setStatus(500);
             OverviewNovel.LOGGER.warning(e.getMessage());
