@@ -49,6 +49,7 @@ public class NovelManageService {
         Chapter chapter = new Chapter();
         chapter.setName("Virtual");
         chapter.setVolumeId(volumeID);
+        chapter.setApprovalStatus(Chapter.APPROVE_STATUS_APPROVED);
         return chapter;
     }
 
