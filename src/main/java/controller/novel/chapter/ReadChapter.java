@@ -49,6 +49,7 @@ public class ReadChapter extends HttpServlet {
                 || user.getRole() == User.ROLE_MODERATOR)
             {
                 response.setStatus(401);// unauthorized
+                return;
             }
             if(nextChapter !=null && !nextChapter.getApprovalStatus().equals("approved"))
                 nextChapter = null;
