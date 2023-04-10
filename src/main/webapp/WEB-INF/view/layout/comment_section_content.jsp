@@ -8,7 +8,8 @@
                  style="background-image: url('${rootComment.owner.avatar}');">
             </div>
             <div class="cmt-detail">
-                <a href="" class="cmt-detail__name">${rootComment.owner.displayName}</a>
+                <a href="/thanh-vien/${rootComment.owner.id}"
+                   class="cmt-detail__name">${rootComment.owner.displayName}</a>
                 <p>${rootComment.content}</p>
                 <div class="cmt-toolkit">
                     <div class="cmt-toolkit__item">

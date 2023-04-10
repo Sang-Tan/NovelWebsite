@@ -2,6 +2,7 @@ package controller;
 
 import core.logging.BasicLogger;
 import model.Comment;
+import model.User;
 import org.json.JSONException;
 import service.CommentService;
 
@@ -31,7 +32,31 @@ public class CommentController extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             BasicLogger.getInstance().printStackTrace(e);
         }
+    }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (req.getAttribute("user") == null) {
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+        String postType = req.getParameter("type");
+        if (postType == null || postType.isEmpty()) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        try {
+            if (postType.equals("comment-chapter")) {
+                postRootComment(req, resp);
+            } else if (postType.equals("reply-comment")) {
+                postReplyComment(req, resp);
+            } else {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        } catch (SQLException e) {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            BasicLogger.getInstance().printStackTrace(e);
+        }
     }
 
     private void getCommentsInChapter(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException, JSONException, ServletException {
@@ -60,7 +85,54 @@ public class CommentController extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             BasicLogger.getInstance().printStackTrace(e);
         }
+    }
 
+    private void postRootComment(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
+        String content = req.getParameter("content");
+        if (content == null || content.isEmpty()) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
+        Integer chapterId;
+        try {
+            chapterId = Integer.parseInt(req.getParameter("chapter_id"));
+        } catch (Exception e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            BasicLogger.getInstance().printStackTrace(e);
+            return;
+        }
+        User reqUser = (User) req.getAttribute("user");
+
+        Comment commentInfo = new Comment();
+        commentInfo.setContent(content);
+        commentInfo.setChapterId(chapterId);
+        commentInfo.setUserId(reqUser.getId());
+        CommentService.postRootComment(commentInfo);
+    }
+
+    private void postReplyComment(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
+        String content = req.getParameter("content");
+        if (content == null || content.isEmpty()) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        Integer parentId;
+        try {
+            parentId = Integer.parseInt(req.getParameter("parent_id"));
+        } catch (Exception e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            BasicLogger.getInstance().printStackTrace(e);
+            return;
+        }
+        User reqUser = (User) req.getAttribute("user");
+
+        Comment commentInfo = new Comment();
+        commentInfo.setContent(content);
+        commentInfo.setParentId(parentId);
+        commentInfo.setUserId(reqUser.getId());
+
+        CommentService.postReplyComment(commentInfo);
     }
 }
