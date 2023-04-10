@@ -27,9 +27,9 @@
                             <div class="series-cover">
                                 <div class="a6-ratio">
                                     <div class="img-wrapper border"
-<%--                                         style="background-image: url('https://i.etsystatic.com/20023820/r/il/e12dd6/2885404230/il_fullxfull.2885404230_tb41.jpg');">--%>
+                                    <%--                                         style="background-image: url('https://i.etsystatic.com/20023820/r/il/e12dd6/2885404230/il_fullxfull.2885404230_tb41.jpg');">--%>
                                          style="background-image: url('${novel.image}');">
-                                </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -94,14 +94,15 @@
                                 <ul class="chapters">
                                     <c:forEach items="${volume.chapters}" var="chapter">
                                         <c:if test="${chapter.approvalStatus.equals('approved')}">
-                                        <li class="chapters__item">
-                                            <div class="chapters__title">
-                                                <a class="chapters__link" href="/doc-tieu-thuyet/${volume.id}-${volume.name.replace(" ", "-")}/${chapter.id}-${chapter.name.replace(" ","-")}">${chapter.name}</a>
-                                                    <%--                                            <a class="chapters__link" href="">Chap 1--%>
-                                                    <%--                                                overflow test overflow test overflow test overflow test</a>--%>
-                                            </div>
-                                            <span class="chapters__time">${chapter.modifyTime}</span>
-                                        </li>
+                                            <li class="chapters__item">
+                                                <div class="chapters__title">
+                                                    <a class="chapters__link"
+                                                       href="/doc-tieu-thuyet/${volume.id}-${volume.name.replace(" ", "-")}/${chapter.id}-${chapter.name.replace(" ","-")}">${chapter.name}</a>
+                                                        <%--                                            <a class="chapters__link" href="">Chap 1--%>
+                                                        <%--                                                overflow test overflow test overflow test overflow test</a>--%>
+                                                </div>
+                                                <span class="chapters__time">${chapter.modifyTime}</span>
+                                            </li>
                                         </c:if>
                                     </c:forEach>
                                         <%--                                    <li class="chapters__item">--%>
@@ -123,9 +124,13 @@
                 <div class="container-fluid">
                     <c:choose>
                         <c:when test="${user == null}">
-                            <p>Bạn phải <a href="#login-modal" class="navbar__link navbar__list-text" data-toggle="modal"
-                                           data-target="#login-modal">Đăng nhập</a> hoặc <a href="#register-modal" class="navbar__link navbar__list-text" data-toggle="modal"
-                                                                                            data-target="#register-modal">Tạo ta khoản</a> để có thể bình
+                            <p>Bạn phải <a href="#login-modal" class="navbar__link navbar__list-text"
+                                           data-toggle="modal"
+                                           data-target="#login-modal">Đăng nhập</a> hoặc <a href="#register-modal"
+                                                                                            class="navbar__link navbar__list-text"
+                                                                                            data-toggle="modal"
+                                                                                            data-target="#register-modal">Tạo
+                                tài khoản</a> để có thể bình
                                 luận</p>
 
                         </c:when>
@@ -149,7 +154,7 @@
                                  style="background-image: url(https://a.ppy.sh/10969666_1614400439.jpeg);">
                             </div>
                             <div class="cmt-detail">
-<%--                                <a href="" class="cmt-detail__name">Hu Tao</a>--%>
+                                <%--                                <a href="" class="cmt-detail__name">Hu Tao</a>--%>
                                 <a href="" class="cmt-detail__name">Hu Tao</a>
                                 <p>Tin chuẩn chưa a</p>
                                 <div class="cmt-toolkit">
