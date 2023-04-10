@@ -1,7 +1,6 @@
 package controller.novel.chapter;
 
 import model.Chapter;
-import model.User;
 import repository.ChapterRepository;
 
 import javax.servlet.ServletException;
@@ -43,10 +42,7 @@ public class ReadChapter extends HttpServlet {
             Chapter chapter = ChapterRepository.getInstance().getById(chapterID);
             Chapter nextChapter = ChapterRepository.getInstance().getNextChapter(chapterID);
             Chapter previousChapter = ChapterRepository.getInstance().getPreviousChapter(chapterID);
-            User user = (User) request.getSession().getAttribute("user");
-            if(!chapter.getApprovalStatus().equals(Chapter.APPROVE_STATUS_APPROVED)
-                || user.getRole() == User.ROLE_ADMIN
-                || user.getRole() == User.ROLE_MODERATOR)
+            if(!chapter.getApprovalStatus().equals("approved"))
                 throw new Exception("Chapter is not approved yet");
             if(nextChapter !=null && !nextChapter.getApprovalStatus().equals("approved"))
                 nextChapter = null;

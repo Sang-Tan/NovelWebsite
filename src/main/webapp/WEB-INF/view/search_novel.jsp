@@ -69,10 +69,10 @@
                         <option value="name" <% if ("name".equals(request.getParameter("sort"))) { %> selected <% } %>>
                             Tên truyện
                         </option>
-                        <%--                        &lt;%&ndash;<option value="author name">Tác giả</option>&ndash;%&gt;--%>
-                        <%--                        <option value="comment" <% if ("comment".equals(request.getParameter("sort"))) { %>--%>
-                        <%--                                selected <% } %>>Lượt bình luận--%>
-                        <%--                        </option>--%>
+<%--                        &lt;%&ndash;<option value="author name">Tác giả</option>&ndash;%&gt;--%>
+<%--                        <option value="comment" <% if ("comment".equals(request.getParameter("sort"))) { %>--%>
+<%--                                selected <% } %>>Lượt bình luận--%>
+<%--                        </option>--%>
                     </select>
                 </div>
             </div>
@@ -104,16 +104,13 @@
     <header class="mb-3">
         <span class="title title--bold title--underline">Kết quả tìm kiếm</span>
     </header>
-    <main class="sect-body container-fluid basic-section p-3">
-
-        <%--@elvariable id="novelsSearched" type="java.util.List<model.Novel>"--%>
-            <c:choose>
-            <c:when test="${novelsSearched!=null}">
-            <div class="row">
-            <c:forEach items="${novelsSearched}" var="novelSearched">
-
+    <main class="sect-body container-fluid basic-section p-3" >
+        <div class="row">
+            <div class="col-4 col-md-2 thumb">
+                <%--@elvariable id="novelsSearched" type="java.util.List<model.Novel>"--%>
+                <c:forEach items="${novelsSearched}" var="novelSearched">
                 <div class="col-4 col-md-2 thumb">
-                    <c:set var="novelUrl" value="${novelsUri}${novelSearched.id} ${novelSearched.name}"/>
+                    <c:set var="novelUrl" value="${novelsUri}${novelSearched.id} ${novelSearched.name}" />
                     <a href="${fn:replace(novelUrl, ' ', '-')}" class="no-decor">
                         <div class="thumb__wrapper">
                             <div class="thumb__img-panel shadow a6-ratio">
@@ -124,28 +121,18 @@
                             <p class="thumb__caption">${novelSearched.name}</p>
                         </div>
                     </a>
-                        <%--                <div class="checkbox-holder">--%>
-                        <%--                    <input class="checkbox1" type="checkbox" data-genre="${genre.id}"--%>
-                        <%--                           id="genre${genre.id}">--%>
-                        <%--                    <label for="genre${genre.id}"> ${genre.name}</label>--%>
-                        <%--                </div>--%>
                 </div>
-
-            </c:forEach>
-                </c:when>
-                <c:otherwise>
-                    <div class="row">
-                        <div class="col-12">
-                            <p class="text-center">Không có kết quả nào</p>
-                        </div>
-                    </div>
-                </c:otherwise>
-                </c:choose>
-                </div>
-        <%@include file="layout/pagination_footer.jsp" %>
+                    <%--                <div class="checkbox-holder">--%>
+                    <%--                    <input class="checkbox1" type="checkbox" data-genre="${genre.id}"--%>
+                    <%--                           id="genre${genre.id}">--%>
+                    <%--                    <label for="genre${genre.id}"> ${genre.name}</label>--%>
+                    <%--                </div>--%>
+                </c:forEach>
+            </div>
+        </div>
     </main>
 </div>
-
+<%@include file="layout/pagination_footer.jsp"%>
 <%--Boostrap script--%>
 <%@ include file="layout/boostrap_js.jsp" %>
 <script src="/js/search_novel.js"></script>
