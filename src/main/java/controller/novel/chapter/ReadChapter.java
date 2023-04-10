@@ -1,8 +1,10 @@
 package controller.novel.chapter;
 
+import core.URIHandler;
 import model.Chapter;
 import model.User;
 import repository.ChapterRepository;
+import repository.NovelRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -39,11 +41,29 @@ public class ReadChapter extends HttpServlet {
 
             String pathInfo = request.getPathInfo();
             String part = pathInfo.split("/")[2];
-            int chapterID = Integer.parseInt(part.substring(0, part.indexOf("-")));
+            int chapterID = URIHandler.getIdFromPathComponent(part);
+            if(chapterID == -1) {
+                response.setStatus(404);// not found
+                return;
+            }
+            else if(!ChapterRepository.getInstance().generatePathComponent(chapterID).equals(part)) {
+                response.sendRedirect(ChapterRepository.getInstance().generatePathComponent(chapterID));
+                return;
+            }
             Chapter chapter = ChapterRepository.getInstance().getById(chapterID);
             Chapter nextChapter = ChapterRepository.getInstance().getNextChapter(chapterID);
             Chapter previousChapter = ChapterRepository.getInstance().getPreviousChapter(chapterID);
-            User user = (User) request.getSession().getAttribute("user");
+
+            // guess cannot read chapter if not approved
+            User user = (User) request.getAttribute("user");
+            if(user == null && !chapter.getApprovalStatus().equals(Chapter.APPROVE_STATUS_APPROVED))
+            {
+                response.setStatus(401);// unauthorized
+                return;
+            }
+
+            if(user != null)
+            // admin and moderator can read chapter even if not approved
             if(!chapter.getApprovalStatus().equals(Chapter.APPROVE_STATUS_APPROVED)
                 || user.getRole() == User.ROLE_ADMIN
                 || user.getRole() == User.ROLE_MODERATOR)
@@ -51,6 +71,7 @@ public class ReadChapter extends HttpServlet {
                 response.setStatus(401);// unauthorized
                 return;
             }
+
             if(nextChapter !=null && !nextChapter.getApprovalStatus().equals("approved"))
                 nextChapter = null;
             if(previousChapter != null && !previousChapter.getApprovalStatus().equals("approved"))

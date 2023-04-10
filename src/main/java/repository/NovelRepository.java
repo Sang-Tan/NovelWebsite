@@ -105,4 +105,8 @@ public class NovelRepository extends BaseRepository<Novel> {
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(userID));
         return mapObjects(records);
     }
+    public String generatePathComponent(int novelID) throws SQLException {
+        Novel novel = getById(novelID);
+        return novel.getId()+"-"+novel.getName().replaceAll("\\s+", "-").toLowerCase();
+    }
 }

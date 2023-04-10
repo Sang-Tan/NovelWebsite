@@ -83,7 +83,7 @@
                                             <li class="chapters__item">
                                                 <div class="chapters__title">
                                                     <a class="chapters__link"
-                                                       href="/doc-tieu-thuyet/${volume.id}-${volume.name.replace(" ", "-")}/${chapter.id}-${chapter.name.replace(" ","-")}">${chapter.name}</a>
+                                                       href="/doc-tieu-thuyet/${volume.belongNovel.id}-${volume.belongNovel.name.replace(" ", "-")}/${chapter.id}-${chapter.name.replace(" ","-")}">${chapter.name}</a>
                                                         <%--                                            <a class="chapters__link" href="">Chap 1--%>
                                                         <%--                                                overflow test overflow test overflow test overflow test</a>--%>
                                                 </div>
