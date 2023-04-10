@@ -11,6 +11,9 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "chapters", schema = "novelweb")
 public class Chapter implements DatabaseObject {
+    public static final String APPROVE_STATUS_PENDING = "pending";
+    public static final String APPROVE_STATUS_REJECTED = "rejected";
+    public static final String APPROVE_STATUS_APPROVED = "approved";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

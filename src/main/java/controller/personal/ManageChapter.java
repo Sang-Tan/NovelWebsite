@@ -140,8 +140,5 @@ public class ManageChapter extends HttpServlet {
         }
 
         return true;
-
     }
-
-
 }

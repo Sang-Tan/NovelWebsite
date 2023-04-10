@@ -35,11 +35,8 @@ public class OverviewNovel extends HttpServlet {
     }
 
     @Override
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-
-
             // exp : pathInfo = /truyen/1-ten-truyen
 
             String pathInfo = request.getPathInfo();

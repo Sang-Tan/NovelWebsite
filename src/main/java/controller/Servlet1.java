@@ -1,8 +1,5 @@
 package controller;
 
-import service.IObjectService;
-import service.ObjectService;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +10,7 @@ import java.io.IOException;
 
 @WebServlet(name = "Servlet1", value = "/home") //phần value sẽ đổi tên vì nó là phần hiển thị trên thanh URL.
 public class Servlet1 extends HttpServlet {
-    private final IObjectService objectService = new ObjectService();
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ACER
-  Date: 03/04/2023
-  Time: 8:54 SA
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page import="model.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -22,7 +15,7 @@
             </li>
 
             <li class="navbar__list-item">
-                <a href="/admin/genre-manage" class="navbar__link navbar__list-text">Thể loại</a>
+                <a href="/mod/duyet-truyen" class="navbar__link navbar__list-text">Duyệt truyện</a>
             </li>
         </ul>
         <ul class="navbar__list">
