@@ -138,7 +138,7 @@ public class Novel implements DatabaseObject {
         this.status = status;
     }
     public String getAuthorName() throws SQLException {
-        return getOwner().getUsername();
+        return getOwner().getDisplayName();
     }
 //    public List<Genre> getGenres() throws Exception {
 //        List<NovelGenre> novelGenres =  NovelGenreRepository.getInstance().getByNovelId(id);

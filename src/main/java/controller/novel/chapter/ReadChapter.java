@@ -47,7 +47,10 @@ public class ReadChapter extends HttpServlet {
             if(!chapter.getApprovalStatus().equals(Chapter.APPROVE_STATUS_APPROVED)
                 || user.getRole() == User.ROLE_ADMIN
                 || user.getRole() == User.ROLE_MODERATOR)
-                throw new Exception("Chapter is not approved yet");
+            {
+                response.setStatus(401);// unauthorized
+                return;
+            }
             if(nextChapter !=null && !nextChapter.getApprovalStatus().equals("approved"))
                 nextChapter = null;
             if(previousChapter != null && !previousChapter.getApprovalStatus().equals("approved"))
