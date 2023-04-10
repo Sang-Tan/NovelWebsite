@@ -27,7 +27,6 @@
                             <div class="series-cover">
                                 <div class="a6-ratio">
                                     <div class="img-wrapper border"
-                                    <%--                                         style="background-image: url('https://i.etsystatic.com/20023820/r/il/e12dd6/2885404230/il_fullxfull.2885404230_tb41.jpg');">--%>
                                          style="background-image: url('${novel.image}');">
                                     </div>
                                 </div>
@@ -35,9 +34,6 @@
                         </div>
                         <div class="col">
                             <h1 class="text-center user-select-none mb-3">${novel.name}</h1>
-                            <%--                            <h1 class="text-center user-select-none mb-3">Team có 2 thằng nhưng thằng kia làm BE--%>
-                            <%--                                rồi--%>
-                            <%--                                nên tôi phải làm FE</h1>--%>
                             <div class="d-flex mb-3">
                                 <%--@elvariable id="genres" type="java.util.List<model.Genre>"--%>
                                 <c:forEach items="${genres}" var="genre">
@@ -46,21 +42,11 @@
                                            class="genre-link">${genre.name}</a>
                                     </div>
                                 </c:forEach>
-                                <%--                                    <div class="genre-item">--%>
-                                <%--                                        <a href="#" class="genre-link">Comedy</a>--%>
-                                <%--                                    </div>--%>
-                                <%--                                    <div class="genre-item">--%>
-                                <%--                                        <a href="#" class="genre-link">Shounen</a>--%>
-                                <%--                                    </div>--%>
                             </div>
                             <div class="flex-column">
                                 <p class="mb-1"><b>Tác giả:</b> ${novel.authorName}</p>
-                                <%--                                    <p class="mb-1"><b>Tác giả:</b> SPRV</p>--%>
-
                                 <c:set var="status" value="${novel.status}"/>
                                 <p class="mb-1"><b>Tình trạng:</b> ${statusMap.get(status)}</p>
-
-                                <%--                                    <p class="mb-1"><b>Tình trạng:</b> Đang tiến hành</p>--%>
                                 <p class="mb-1"><b>Lượt xem:</b> 100.000</p>
                                 <button class="basic-btn basic-btn--green">Theo dõi</button>
                                 <button class="basic-btn basic-btn--red">Bỏ theo dõi</button>
@@ -105,12 +91,6 @@
                                             </li>
                                         </c:if>
                                     </c:forEach>
-                                        <%--                                    <li class="chapters__item">--%>
-                                        <%--                                        <div class="chapters__title">--%>
-                                        <%--                                            <a class="chapters__link" href="">Chap 2</a>--%>
-                                        <%--                                        </div>--%>
-                                        <%--                                        <span class="chapters__time">2/1/2022</span>--%>
-                                        <%--                                    </li>--%>
                                 </ul>
                             </div>
                         </div>
@@ -154,7 +134,6 @@
                                  style="background-image: url(https://a.ppy.sh/10969666_1614400439.jpeg);">
                             </div>
                             <div class="cmt-detail">
-                                <%--                                <a href="" class="cmt-detail__name">Hu Tao</a>--%>
                                 <a href="" class="cmt-detail__name">Hu Tao</a>
                                 <p>Tin chuẩn chưa a</p>
                                 <div class="cmt-toolkit">

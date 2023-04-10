@@ -44,7 +44,6 @@
             <div class="col-12 col-lg-4">
                 <div class="d-flex align-items-center mt-2">
                     <label for="status" class="label">Tình trạng: </label>
-                    <!-- <input style="flex-grow: 1;" type="" name="author" id="status" placeholder="Tên tác giả"> -->
                     <select class="input-text" name="status" id="status" style="flex-grow: 1;">
                         <option value="all" <% if ("all".equals(request.getParameter("status"))) { %> selected <% } %>>
                             Tất cả
@@ -69,10 +68,6 @@
                         <option value="name" <% if ("name".equals(request.getParameter("sort"))) { %> selected <% } %>>
                             Tên truyện
                         </option>
-                        <%--                        &lt;%&ndash;<option value="author name">Tác giả</option>&ndash;%&gt;--%>
-                        <%--                        <option value="comment" <% if ("comment".equals(request.getParameter("sort"))) { %>--%>
-                        <%--                                selected <% } %>>Lượt bình luận--%>
-                        <%--                        </option>--%>
                     </select>
                 </div>
             </div>
@@ -89,15 +84,6 @@
                         <label for="genre${genre.id}">${genre.name}</label>
                     </div>
                 </c:forEach>
-
-                <%--                <div class="checkbox-holder">--%>
-                <%--                    <input class="checkbox1" type="checkbox" data-genre="1" id="genre1">--%>
-                <%--                    <label for="genre1"> Genre1</label>--%>
-                <%--                </div>--%>
-                <%--                <div class="checkbox-holder">--%>
-                <%--                    <input class="checkbox1" type="checkbox" data-genre="2" id="genre2">--%>
-                <%--                    <label for="genre2"> Genre2</label>--%>
-                <%--                </div>--%>
             </div>
         </div>
     </form>
@@ -124,11 +110,6 @@
                             <p class="thumb__caption">${novelSearched.name}</p>
                         </div>
                     </a>
-                        <%--                <div class="checkbox-holder">--%>
-                        <%--                    <input class="checkbox1" type="checkbox" data-genre="${genre.id}"--%>
-                        <%--                           id="genre${genre.id}">--%>
-                        <%--                    <label for="genre${genre.id}"> ${genre.name}</label>--%>
-                        <%--                </div>--%>
                 </div>
 
             </c:forEach>
