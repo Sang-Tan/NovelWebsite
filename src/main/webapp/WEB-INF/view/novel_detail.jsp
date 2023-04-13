@@ -2,7 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--@elvariable id="novel" type="model.Novel"--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ page import="core.StringCoverter" %>
+<%--@elvariable id="StringCoverter" type="core.StringCoverter.class"--%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -83,7 +84,7 @@
                                             <li class="chapters__item">
                                                 <div class="chapters__title">
                                                     <a class="chapters__link"
-                                                       href="/doc-tieu-thuyet/${volume.belongNovel.id}-${volume.belongNovel.name.replace(" ", "-")}/${chapter.id}-${chapter.name.replace(" ","-")}">${chapter.name}</a>
+                                                       href="/doc-tieu-thuyet/${novel.id}-${StringCoverter.removeAccent(novel.name.replace(" ", "-"))}/${chapter.id}-${StringCoverter.removeAccent(chapter.name.replace(" ","-"))}">${chapter.name}</a>
                                                         <%--                                            <a class="chapters__link" href="">Chap 1--%>
                                                         <%--                                                overflow test overflow test overflow test overflow test</a>--%>
                                                 </div>

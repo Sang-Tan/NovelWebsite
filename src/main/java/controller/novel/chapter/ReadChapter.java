@@ -1,10 +1,10 @@
 package controller.novel.chapter;
 
-import core.URIHandler;
+import controller.URIHandler;
+import core.StringCoverter;
 import model.Chapter;
 import model.User;
 import repository.ChapterRepository;
-import repository.NovelRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -42,31 +42,39 @@ public class ReadChapter extends HttpServlet {
             String pathInfo = request.getPathInfo();
             String part = pathInfo.split("/")[2];
             int chapterID = URIHandler.getIdFromPathComponent(part);
+            Chapter chapter = ChapterRepository.getInstance().getById(chapterID);
+            String chapterUri = ChapterRepository.getInstance().generatePathComponent(chapterID);
             if(chapterID == -1) {
                 response.setStatus(404);// not found
                 return;
             }
-            else if(!ChapterRepository.getInstance().generatePathComponent(chapterID).equals(part)) {
-                response.sendRedirect(ChapterRepository.getInstance().generatePathComponent(chapterID));
+            else if(!chapterUri.equals(part)) {
+                response.sendRedirect(chapterUri);
                 return;
             }
-            Chapter chapter = ChapterRepository.getInstance().getById(chapterID);
+
             Chapter nextChapter = ChapterRepository.getInstance().getNextChapter(chapterID);
             Chapter previousChapter = ChapterRepository.getInstance().getPreviousChapter(chapterID);
 
             // guess cannot read chapter if not approved
             User user = (User) request.getAttribute("user");
-            if(user == null && !chapter.getApprovalStatus().equals(Chapter.APPROVE_STATUS_APPROVED))
-            {
-                response.setStatus(401);// unauthorized
-                return;
+            if(!chapter.getApprovalStatus().equals(Chapter.APPROVE_STATUS_APPROVED)){
+                if(user == null || user.getRole().equals(User.ROLE_MEMBER))
+                {
+                    response.setStatus(401);// unauthorized
+                    return;
+                }
+                // admin and moderator can read chapter even if not approved
+
+
+
             }
 
             if(user != null)
-            // admin and moderator can read chapter even if not approved
+
             if(!chapter.getApprovalStatus().equals(Chapter.APPROVE_STATUS_APPROVED)
-                || user.getRole() == User.ROLE_ADMIN
-                || user.getRole() == User.ROLE_MODERATOR)
+                || user.getRole().equals( User.ROLE_ADMIN)
+                || user.getRole().equals(User.ROLE_MODERATOR))
             {
                 response.setStatus(401);// unauthorized
                 return;

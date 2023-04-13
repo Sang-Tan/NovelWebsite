@@ -3,10 +3,8 @@
 <%--@elvariable id="previousChapter" type="model.Chapter"--%>
 <%--@elvariable id="nextChapter" type="model.Chapter"--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--<<<<<<< Updated upstream--%>
-
-<%--=======--%>
-<%-->>>>>>> Stashed changes--%>
+<%@ page import="core.StringCoverter" %>
+<%--@elvariable id="StringCoverter" type="core.StringCoverter.class"--%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,30 +41,17 @@
                 </a>
             </c:otherwise>
         </c:choose>
-
-
-<%--        <a--%>
-<%--                href="/doc-tieu-thuyet/${novelUrl}/--%>
-<%--            ${previousChapter.id}-${previousChapter.name.replace(" ", "-")}}" r class="basic-btn disabled basic-btn--olive"--%>
-<%--                style="min-width: 25%;">--%>
-<%--            Chương trước--%>
-<%--        </a>--%>
-<%--        <a class="basic-btn basic-btn--olive" style="min-width: 25%;" data-affect="#rd_sidebar.chapters">--%>
-<%--            Danh sách--%>
-<%--        </a>--%>
         <a href="#list-novel-modal" class="basic-btn basic-btn--olive" style="min-width: 25%;" data-toggle="modal"
            data-target="#list-novel-modal">Danh sách</a>
-<%--        <a id="rd-info_icon" data-affect="#rd_sidebar.chapters" class="rd_sd-button_item"><i class="fas fa-info"></i></a>--%>
-        <c:choose>
+       <c:choose>
             <c:when test="${nextChapter == null}">
                 <a href="#" class="basic-btn disabled basic-btn--olive" style="min-width: 25%;">
                     Chương Sau
                 </a>
-
             </c:when>
             <c:otherwise>
                 <a
-                        href="/doc-tieu-thuyet/${novelUrl}/${nextChapter.id}-${nextChapter.name.replace(" ", "-")}"
+                        href="/doc-tieu-thuyet/${novelUrl}/${nextChapter.id}-${StringCoverter.removeAccent(nextChapter.name.replace(" ", "-"))}"
                         class="basic-btn basic-btn--olive"
                         style="min-width: 25%;">
                     Chương trước

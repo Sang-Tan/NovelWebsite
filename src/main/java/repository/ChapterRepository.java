@@ -1,5 +1,6 @@
 package repository;
 
+import core.StringCoverter;
 import core.database.BaseRepository;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
@@ -123,7 +124,7 @@ public class ChapterRepository extends BaseRepository<Chapter> {
     public String generatePathComponent(int chapterID) throws SQLException {
         Chapter chapter = getById(chapterID);
         Novel novel = chapter.getBelongVolume().getBelongNovel();
-        return chapter.getId()+"-"+chapter.getName().replaceAll("\\s+", "-").toLowerCase();
+        return StringCoverter.removeAccent(chapter.getId()+"-"+chapter.getName().replaceAll("\\s+", "-").toLowerCase());
 
     }
 

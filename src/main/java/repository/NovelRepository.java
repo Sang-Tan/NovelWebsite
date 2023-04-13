@@ -1,5 +1,6 @@
 package repository;
 
+import core.StringCoverter;
 import core.database.BaseRepository;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
@@ -107,6 +108,6 @@ public class NovelRepository extends BaseRepository<Novel> {
     }
     public String generatePathComponent(int novelID) throws SQLException {
         Novel novel = getById(novelID);
-        return novel.getId()+"-"+novel.getName().replaceAll("\\s+", "-").toLowerCase();
+        return StringCoverter.removeAccent(novel.getId()+"-"+novel.getName().replaceAll("\\s+", "-").toLowerCase());
     }
 }

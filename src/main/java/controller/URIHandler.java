@@ -1,4 +1,4 @@
-package core;
+package controller;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import repository.UserRepository;

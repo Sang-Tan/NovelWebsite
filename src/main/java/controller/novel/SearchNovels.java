@@ -1,5 +1,7 @@
 package controller.novel;
 
+import core.StringCoverter;
+import core.Pair;
 import model.Genre;
 import model.Novel;
 import repository.GenreRepository;
@@ -89,7 +91,7 @@ public class SearchNovels extends HttpServlet {
             String status = request.getParameter("status");
             String sort = request.getParameter("sort");
             int page = Integer.parseInt(request.getParameter("page") == null ? "0" : request.getParameter("page"));
-            Paginator paginator  = new Paginator();
+            Paginator paginator = new Paginator();
 //            NovelService.getNovelHashSetBySearchCondition(partialNovelName, genresIDString, author, status, sort);
 //            UserValidator.hashPassword("123456");
             List<Novel> novelsSearched = null;
@@ -110,13 +112,12 @@ public class SearchNovels extends HttpServlet {
             request.setAttribute("novelsSearched", novelsSearched);
             request.setAttribute("paginator", paginator);
 
-            String novelsUri = "http://localhost:8080/truyen/";
+            String novelsUri = "/truyen/";
             request.setAttribute("novelsUri", novelsUri);
 
             // set paging url for pagination, remove page parameter
-            String pagingUrl = "http://localhost:8080/tim-kiem-truyen?" + request.getQueryString();
-            if(pagingUrl.contains("page="))
-            {
+            String pagingUrl = "/tim-kiem-truyen?" + request.getQueryString();
+            if (pagingUrl.contains("page=")) {
                 pagingUrl = pagingUrl.substring(0, pagingUrl.indexOf("&page="));
             }
             request.setAttribute("pageItems", paginator.getActivePageItems(pagingUrl));
