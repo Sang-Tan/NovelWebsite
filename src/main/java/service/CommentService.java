@@ -33,6 +33,14 @@ public class CommentService {
         CommentRepository.getInstance().insert(commentInfo);
     }
 
+    public static int getCommentCountInChapter(int chapterId) throws SQLException {
+        return CommentRepository.getInstance().getCommentCountInChapter(chapterId);
+    }
+
+    public static int getRootCommentCountInChapter(int chapterId) throws SQLException {
+        return CommentRepository.getInstance().getRootCommentCountInChapter(chapterId);
+    }
+
     public static void postReplyComment(Comment commentInfo) throws SQLException {
         if (commentInfo.getContent() == null || commentInfo.getContent().isEmpty()) {
             throw new IllegalArgumentException("content is not set");
@@ -44,7 +52,11 @@ public class CommentService {
             throw new IllegalArgumentException("parentId is not set");
         }
 
-        commentInfo.setParentId(getRootCommentId(commentInfo.getParentId()));
+        int rootCommentId = getRootCommentId(commentInfo.getParentId());
+        Comment rootComment = CommentRepository.getInstance().getById(rootCommentId);
+
+        commentInfo.setParentId(rootComment.getId());
+        commentInfo.setChapterId(rootComment.getChapterId());
 
         CommentRepository.getInstance().insert(commentInfo);
     }
@@ -52,7 +64,7 @@ public class CommentService {
     /**
      * Get root comment id of a comment (recursive)
      *
-     * @param commentId id of a comment
+     * @param commentId id of a comment in database
      * @return root comment id
      * @throws SQLException
      */

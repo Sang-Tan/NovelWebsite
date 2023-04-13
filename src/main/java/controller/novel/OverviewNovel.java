@@ -1,9 +1,11 @@
 package controller.novel;
 
-import model.*;
+import model.Chapter;
+import model.Genre;
+import model.Novel;
+import model.Volume;
 import repository.ChapterRepository;
 import repository.NovelRepository;
-import service.CommentService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -24,7 +26,7 @@ import java.util.logging.Logger;
 @WebServlet(name = "OverviewNovelServlet", value = "/truyen/*")
 public class OverviewNovel extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(OverviewNovel.class.getName());
-    private static final int COMMENT_LIMIT = 10;
+    private static final Integer COMMENT_LIMIT = 10;
 
     @Override
     public void init() throws ServletException {
@@ -61,10 +63,8 @@ public class OverviewNovel extends HttpServlet {
             request.setAttribute("searchNovelUri", searchNovelUri);
 
             Chapter virtualChapter = ChapterRepository.getInstance().getVirtualChapter(novelId);
-            List<Comment> rootComments = CommentService.getCommentsInChapter(virtualChapter.getId(), COMMENT_LIMIT, 0);
             request.setAttribute("reqChapter", virtualChapter);
-            request.setAttribute("reqRootComments", rootComments);
-
+            request.setAttribute("commentLimit", COMMENT_LIMIT);
             request.getRequestDispatcher("/WEB-INF/view/novel_detail.jsp").forward(request, response);
         } catch (Exception e) {
             response.setStatus(500);
