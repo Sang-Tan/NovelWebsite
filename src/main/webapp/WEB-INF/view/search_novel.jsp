@@ -6,6 +6,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page import="core.StringCoverter" %>
+<%--@elvariable id="StringCoverter" type="core.StringCoverter.class"--%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,36 +95,36 @@
     <main class="sect-body container-fluid basic-section p-3">
 
         <%--@elvariable id="novelsSearched" type="java.util.List<model.Novel>"--%>
-            <c:choose>
+        <c:choose>
             <c:when test="${novelsSearched!=null}">
-            <div class="row">
-            <c:forEach items="${novelsSearched}" var="novelSearched">
-
-                <div class="col-4 col-md-2 thumb">
-                    <c:set var="novelUrl" value="${novelsUri}${novelSearched.id} ${novelSearched.name}"/>
-                    <a href="${fn:replace(novelUrl, ' ', '-')}" class="no-decor">
-                        <div class="thumb__wrapper">
-                            <div class="thumb__img-panel shadow a6-ratio">
-                                <div class="img-wrapper"
-                                     style="background-image: url(${novelSearched.image});">
+                <div class="row">
+                    <c:forEach items="${novelsSearched}" var="novelSearched">
+                        <div class="col-4 col-md-2 thumb">
+                            <c:set var="novelUrl"
+                                   value="${novelsUri}${novelSearched.id} ${StringCoverter.removeAccent(novelSearched.name)}"/>
+                            <a href="${fn:replace(novelUrl, ' ', '-')}" class="no-decor">
+                                <div class="thumb__wrapper">
+                                    <div class="thumb__img-panel shadow a6-ratio">
+                                        <div class="img-wrapper"
+                                             style="background-image: url(${novelSearched.image});">
+                                        </div>
+                                    </div>
+                                    <p class="thumb__caption">${novelSearched.name}</p>
                                 </div>
-                            </div>
-                            <p class="thumb__caption">${novelSearched.name}</p>
+                            </a>
                         </div>
-                    </a>
+                    </c:forEach>
                 </div>
-
-            </c:forEach>
-                </c:when>
-                <c:otherwise>
-                    <div class="row">
-                        <div class="col-12">
-                            <p class="text-center">Không có kết quả nào</p>
-                        </div>
+            </c:when>
+            <c:otherwise>
+                <div class="row">
+                    <div class="col-12">
+                        <p class="text-center">Không có kết quả nào</p>
                     </div>
-                </c:otherwise>
-                </c:choose>
                 </div>
+            </c:otherwise>
+        </c:choose>
+
         <%@include file="layout/pagination_footer.jsp" %>
     </main>
 </div>

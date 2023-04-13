@@ -1,10 +1,12 @@
 package repository;
 
+import core.StringCoverter;
 import core.database.BaseRepository;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
 import core.logging.BasicLogger;
 import model.Chapter;
+import model.Novel;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -118,6 +120,12 @@ public class ChapterRepository extends BaseRepository<Chapter> {
             return mapObject(record);
         }
         return null;
+    }
+    public String generatePathComponent(int chapterID) throws SQLException {
+        Chapter chapter = getById(chapterID);
+        Novel novel = chapter.getBelongVolume().getBelongNovel();
+        return StringCoverter.removeAccent(chapter.getId()+"-"+chapter.getName().replaceAll("\\s+", "-").toLowerCase());
+
     }
 
     public Chapter getLastChapterOfNovel(int novelId) throws SQLException {

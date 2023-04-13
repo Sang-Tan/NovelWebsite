@@ -1,5 +1,7 @@
 package controller.novel;
 
+import controller.URIHandler;
+import core.StringCoverter;
 import model.Genre;
 import model.Novel;
 import model.Volume;
@@ -41,7 +43,17 @@ public class OverviewNovel extends HttpServlet {
 
             String pathInfo = request.getPathInfo();
             String part = pathInfo.split("/")[1];
-            int novelId = Integer.parseInt(part.substring(0, part.indexOf("-")));
+            int novelId = URIHandler.getIdFromPathComponent(part);
+
+           String novelUri = NovelRepository.getInstance().generatePathComponent(novelId);
+            if(novelId == -1) {
+                response.setStatus(404);
+                return;
+            }
+            else if(!novelUri.equals(part)) {
+                response.sendRedirect(novelUri);
+                return;
+            }
             Novel novel = NovelRepository.getInstance().getById(novelId);
             List<Volume> volumes = novel.getVolumes();
 

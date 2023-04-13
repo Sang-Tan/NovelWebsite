@@ -1,5 +1,6 @@
 package repository;
 
+import core.StringCoverter;
 import core.database.BaseRepository;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
@@ -104,5 +105,9 @@ public class NovelRepository extends BaseRepository<Novel> {
                 "WHERE id IN (SELECT novel_id FROM novel_favourite WHERE user_id = ?)", getTableName());
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(userID));
         return mapObjects(records);
+    }
+    public String generatePathComponent(int novelID) throws SQLException {
+        Novel novel = getById(novelID);
+        return StringCoverter.removeAccent(novel.getId()+"-"+novel.getName().replaceAll("\\s+", "-").toLowerCase());
     }
 }
