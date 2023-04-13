@@ -2,8 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--@elvariable id="novel" type="model.Novel"--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="core.StringCoverter" %>
-<%--@elvariable id="StringCoverter" type="core.StringCoverter.class"--%>
+<%@ page import="core.StringUtils" %>
+<%--@elvariable id="StringUtils" type="core.StringUtils.class"--%>
+<%@ page import="service.URLSlugification" %>
+<%--@elvariable id="URLSlugification" type="service.URLSlugification.class"--%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,7 +41,7 @@
                                 <%--@elvariable id="genres" type="java.util.List<model.Genre>"--%>
                                 <c:forEach items="${genres}" var="genre">
                                     <div class="genre-item">
-                                        <a href="${searchNovelUri}?genres=${genre.id}"
+                                        <a href="/tim-kiem-truyen?genres=${genre.id}"
                                            class="genre-link">${genre.name}</a>
                                     </div>
                                 </c:forEach>
@@ -80,17 +82,13 @@
                             <div class="col col-md-9">
                                 <ul class="chapters">
                                     <c:forEach items="${volume.chapters}" var="chapter">
-                                        <c:if test="${chapter.approvalStatus.equals('approved')}">
-                                            <li class="chapters__item">
-                                                <div class="chapters__title">
-                                                    <a class="chapters__link"
-                                                       href="/doc-tieu-thuyet/${novel.id}-${StringCoverter.removeAccent(novel.name.replace(" ", "-"))}/${chapter.id}-${StringCoverter.removeAccent(chapter.name.replace(" ","-"))}">${chapter.name}</a>
-                                                        <%--                                            <a class="chapters__link" href="">Chap 1--%>
-                                                        <%--                                                overflow test overflow test overflow test overflow test</a>--%>
-                                                </div>
-                                                <span class="chapters__time">${chapter.modifyTime}</span>
-                                            </li>
-                                        </c:if>
+                                        <li class="chapters__item">
+                                            <div class="chapters__title">
+                                                <a class="chapters__link"
+                                                   href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">${StringUtils.truncate(chapter.name, 100)}</a>
+                                            </div>
+                                            <span class="chapters__time">${chapter.modifyTime}</span>
+                                        </li>
                                     </c:forEach>
                                 </ul>
                             </div>
