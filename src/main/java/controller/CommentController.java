@@ -25,6 +25,8 @@ public class CommentController extends HttpServlet {
                 getCommentsInChapter(req, resp);
             } else if (getType.equals("by_id")) {
                 getCommentsById(req, resp);
+            } else if (getType.equals("count_in_chapter")) {
+                getCommentCountInChapter(req, resp);
             } else {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
@@ -46,9 +48,9 @@ public class CommentController extends HttpServlet {
             return;
         }
         try {
-            if (postType.equals("comment-chapter")) {
+            if (postType.equals("comment_chapter")) {
                 postRootComment(req, resp);
-            } else if (postType.equals("reply-comment")) {
+            } else if (postType.equals("reply_comment")) {
                 postReplyComment(req, resp);
             } else {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -64,7 +66,7 @@ public class CommentController extends HttpServlet {
         Integer limit;
         Integer offset;
         try {
-            chapterId = Integer.parseInt(req.getParameter("chapter_id"));
+            chapterId = Integer.parseInt(req.getParameter("chapter-id"));
             limit = Integer.parseInt(req.getParameter("limit"));
             offset = Integer.parseInt(req.getParameter("offset"));
         } catch (Exception e) {
@@ -87,6 +89,21 @@ public class CommentController extends HttpServlet {
         }
     }
 
+    private void getCommentCountInChapter(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int chapterId;
+        try {
+            chapterId = Integer.parseInt(req.getParameter("chapter-id"));
+            int count = CommentService.getRootCommentCountInChapter(chapterId);
+            resp.getWriter().write(String.valueOf(count));
+        } catch (NumberFormatException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            BasicLogger.getInstance().printStackTrace(e);
+        } catch (Exception e) {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            BasicLogger.getInstance().printStackTrace(e);
+        }
+    }
+
     private void postRootComment(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
         String content = req.getParameter("content");
         if (content == null || content.isEmpty()) {
@@ -96,7 +113,7 @@ public class CommentController extends HttpServlet {
 
         Integer chapterId;
         try {
-            chapterId = Integer.parseInt(req.getParameter("chapter_id"));
+            chapterId = Integer.parseInt(req.getParameter("chapter-id"));
         } catch (Exception e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             BasicLogger.getInstance().printStackTrace(e);
@@ -109,6 +126,8 @@ public class CommentController extends HttpServlet {
         commentInfo.setChapterId(chapterId);
         commentInfo.setUserId(reqUser.getId());
         CommentService.postRootComment(commentInfo);
+
+        resp.setStatus(HttpServletResponse.SC_CREATED);
     }
 
     private void postReplyComment(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
@@ -120,7 +139,7 @@ public class CommentController extends HttpServlet {
 
         Integer parentId;
         try {
-            parentId = Integer.parseInt(req.getParameter("parent_id"));
+            parentId = Integer.parseInt(req.getParameter("comment-id"));
         } catch (Exception e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             BasicLogger.getInstance().printStackTrace(e);
@@ -134,5 +153,7 @@ public class CommentController extends HttpServlet {
         commentInfo.setUserId(reqUser.getId());
 
         CommentService.postReplyComment(commentInfo);
+
+        resp.setStatus(HttpServletResponse.SC_CREATED);
     }
 }
