@@ -13,7 +13,8 @@
                 <p>${rootComment.content}</p>
                 <div class="cmt-toolkit">
                     <div class="cmt-toolkit__item">
-                        <a href="" class="cmt-toolkit__link">Trả lời</a>
+                        <a href="#" data-reply-to="${rootComment.id}"
+                           class="cmt-toolkit__link">Trả lời</a>
                     </div>
                     <div class="cmt-toolkit__item">
                         <a href="" class="cmt-toolkit__link">Báo cáo</a>
@@ -37,7 +38,7 @@
                     <p>${replyComment.content}</p>
                     <div class="cmt-toolkit">
                         <div class="cmt-toolkit__item">
-                            <a href="" class="cmt-toolkit__link">Trả lời</a>
+                            <a href="#" data-reply-to="${rootComment.id}" class="cmt-toolkit__link">Trả lời</a>
                         </div>
                         <div class="cmt-toolkit__item">
                             <a href="" class="cmt-toolkit__link">Báo cáo</a>
