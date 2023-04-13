@@ -5,6 +5,7 @@ import core.logging.BasicLogger;
 import model.Genre;
 import model.Novel;
 import model.Volume;
+import repository.ChapterRepository;
 import repository.NovelRepository;
 import service.URLSlugification;
 
@@ -53,6 +54,9 @@ public class OverviewNovel extends HttpServlet {
 
             request.setAttribute("genres", genres);
 
+            Chapter virtualChapter = ChapterRepository.getInstance().getVirtualChapter(novelId);
+            request.setAttribute("reqChapter", virtualChapter);
+            request.setAttribute("commentLimit", COMMENT_LIMIT);
             request.getRequestDispatcher("/WEB-INF/view/novel_detail.jsp").forward(request, response);
         } catch (Exception e) {
             response.setStatus(500);

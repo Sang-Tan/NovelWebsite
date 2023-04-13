@@ -64,4 +64,23 @@ public class CommentRepository extends BaseRepository<Comment> {
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(parentId));
         return mapObjects(records);
     }
+
+    public int getCommentCountInChapter(int chapterId) throws SQLException {
+        String sql = String.format("SELECT COUNT(*) as count FROM %s WHERE chapter_id = ?", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(chapterId));
+        for (SqlRecord record : records) {
+            return Integer.parseInt(record.get("count").toString());
+        }
+        return 0;
+    }
+
+    public int getRootCommentCountInChapter(int chapterId) throws SQLException {
+        String sql = String.format("SELECT COUNT(*) as count FROM %s WHERE chapter_id = ? " +
+                "AND parent_id IS NULL", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(chapterId));
+        for (SqlRecord record : records) {
+            return Integer.parseInt(record.get("count").toString());
+        }
+        return 0;
+    }
 }

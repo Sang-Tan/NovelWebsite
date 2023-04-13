@@ -69,6 +69,11 @@ a.black:hover {
     color: var(--theme-color);
 }
 
+.theme-text {
+    color: var(--theme-color) !important;
+}
+
+
 .w-400 {
     font-weight: 400;
 }
@@ -109,6 +114,18 @@ a.black:hover {
     overflow: hidden;
     display: block;
     background-size: cover;
+}
+
+.trans-hover-80:hover {
+    opacity: 0.2;
+}
+
+.trans-hover-60:hover {
+    opacity: 0.6;
+}
+
+.trans-hover-40:hover {
+    opacity: 0.4;
 }
 
 /*===================Button=======================*/
@@ -461,10 +478,16 @@ a.basic-btn--primary:hover {
 
 .cmt-group__item {
     margin-bottom: 1rem;
+    animation: fadeIn 0.2s ease-in-out;
 }
 
 .cmt-group__item:nth-child(n+2) {
     margin-left: 4rem;
+}
+
+.cmt-group__item > .cmt-form {
+    margin-left: 4rem;
+    margin-top: 1rem;
 }
 
 .cmt-group__avatar {
