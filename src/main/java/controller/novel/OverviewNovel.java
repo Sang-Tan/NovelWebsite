@@ -2,9 +2,11 @@ package controller.novel;
 
 import controller.URIHandler;
 import core.StringCoverter;
+import model.Chapter;
 import model.Genre;
 import model.Novel;
 import model.Volume;
+import repository.ChapterRepository;
 import repository.NovelRepository;
 
 import javax.servlet.ServletException;
@@ -26,6 +28,7 @@ import java.util.logging.Logger;
 @WebServlet(name = "OverviewNovelServlet", value = "/truyen/*")
 public class OverviewNovel extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(OverviewNovel.class.getName());
+    private static final Integer COMMENT_LIMIT = 10;
 
     @Override
     public void init() throws ServletException {
@@ -71,6 +74,9 @@ public class OverviewNovel extends HttpServlet {
             String searchNovelUri = "/tim-kiem-truyen";
             request.setAttribute("searchNovelUri", searchNovelUri);
 
+            Chapter virtualChapter = ChapterRepository.getInstance().getVirtualChapter(novelId);
+            request.setAttribute("reqChapter", virtualChapter);
+            request.setAttribute("commentLimit", COMMENT_LIMIT);
             request.getRequestDispatcher("/WEB-INF/view/novel_detail.jsp").forward(request, response);
         } catch (Exception e) {
             response.setStatus(500);

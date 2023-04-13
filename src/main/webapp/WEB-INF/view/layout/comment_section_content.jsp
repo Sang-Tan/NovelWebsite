@@ -8,11 +8,13 @@
                  style="background-image: url('${rootComment.owner.avatar}');">
             </div>
             <div class="cmt-detail">
-                <a href="" class="cmt-detail__name">${rootComment.owner.displayName}</a>
+                <a href="/thanh-vien/${rootComment.owner.id}"
+                   class="cmt-detail__name">${rootComment.owner.displayName}</a>
                 <p>${rootComment.content}</p>
                 <div class="cmt-toolkit">
                     <div class="cmt-toolkit__item">
-                        <a href="" class="cmt-toolkit__link">Trả lời</a>
+                        <a href="#" data-reply-to="${rootComment.id}"
+                           class="cmt-toolkit__link">Trả lời</a>
                     </div>
                     <div class="cmt-toolkit__item">
                         <a href="" class="cmt-toolkit__link">Báo cáo</a>
@@ -36,7 +38,7 @@
                     <p>${replyComment.content}</p>
                     <div class="cmt-toolkit">
                         <div class="cmt-toolkit__item">
-                            <a href="" class="cmt-toolkit__link">Trả lời</a>
+                            <a href="#" data-reply-to="${rootComment.id}" class="cmt-toolkit__link">Trả lời</a>
                         </div>
                         <div class="cmt-toolkit__item">
                             <a href="" class="cmt-toolkit__link">Báo cáo</a>
