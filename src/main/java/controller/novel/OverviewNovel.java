@@ -2,6 +2,7 @@ package controller.novel;
 
 import core.StringUtils;
 import core.logging.BasicLogger;
+import model.Chapter;
 import model.Genre;
 import model.Novel;
 import model.Volume;
@@ -23,6 +24,7 @@ import java.util.List;
 @MultipartConfig
 @WebServlet(name = "OverviewNovelServlet", value = "/truyen/*")
 public class OverviewNovel extends HttpServlet {
+    private static final Integer COMMENT_LIMIT = 10;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
