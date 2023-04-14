@@ -57,7 +57,7 @@ public class OverviewNovel extends HttpServlet {
             request.setAttribute("genres", genres);
 
             Chapter virtualChapter = ChapterRepository.getInstance().getVirtualChapter(novelId);
-            boolean isFavourite = NovelFavouriteRepository.getInstance().isFavourite(novelId, user.getId());
+            boolean isFavourite = NovelFavouriteRepository.getInstance().isFavourite(user.getId(), novelId);
             request.setAttribute("reqChapter", virtualChapter);
             request.setAttribute("commentLimit", COMMENT_LIMIT);
             request.setAttribute("isFavourite", isFavourite);
