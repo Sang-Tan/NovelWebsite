@@ -4,6 +4,7 @@ import core.database.BaseRepository;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
 import core.logging.BasicLogger;
+import model.Chapter;
 import model.Volume;
 
 import java.sql.SQLException;
@@ -102,4 +103,42 @@ public class VolumeRepository extends BaseRepository<Volume> {
         return null;
     }
 
+    public Volume getNextVolumeId(int volumeId) throws SQLException {
+        Volume volume = getById(volumeId);
+        if (volume == null) {
+            return null;
+        }
+        int orderIndex = volume.getOrderIndex();
+        int novelId = volume.getNovelId();
+        String sql = String.format("SELECT * FROM %s " +
+                "WHERE novel_id = ? " +
+                "AND order_index > ? " +
+                "ORDER BY order_index ASC " +
+                "LIMIT 1", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelId, orderIndex));
+        for (SqlRecord record : records) {
+            return mapObject(record);
+        }
+        return null;
+
+    }
+
+    public Volume getPreviousVolume(int volumeId) throws SQLException {
+        Volume volume = getById(volumeId);
+        if (volume == null) {
+            return null;
+        }
+        int orderIndex = volume.getOrderIndex();
+        int novelId = volume.getNovelId();
+        String sql = String.format("SELECT * FROM %s " +
+                "WHERE novel_id = ? " +
+                "AND order_index < ? " +
+                "ORDER BY order_index DESC " +
+                "LIMIT 1", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelId, orderIndex));
+        for (SqlRecord record : records) {
+            return mapObject(record);
+        }
+        return null;
+    }
 }
