@@ -6,10 +6,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page import="core.StringUtils" %>
-<%--@elvariable id="StringUtils" type="core.StringUtils.class"--%>
-<%@ page import="service.URLSlugification" %>
-<%--@elvariable id="URLSlugification" type="service.URLSlugification.class"--%>
+<%@ page import="core.StringCoverter" %>
+<%--@elvariable id="StringCoverter" type="core.StringCoverter.class"--%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -102,14 +100,16 @@
                 <div class="row">
                     <c:forEach items="${novelsSearched}" var="novelSearched">
                         <div class="col-4 col-md-2 thumb">
-                            <a href="/truyen/${novelSearched.id}-${URLSlugification.sluging(novelSearched.name)}" class="no-decor">
+                            <c:set var="novelUrl"
+                                   value="${novelsUri}${novelSearched.id} ${StringCoverter.removeAccent(novelSearched.name)}"/>
+                            <a href="${fn:replace(novelUrl, ' ', '-')}" class="no-decor">
                                 <div class="thumb__wrapper">
                                     <div class="thumb__img-panel shadow a6-ratio">
                                         <div class="img-wrapper"
                                              style="background-image: url(${novelSearched.image});">
                                         </div>
                                     </div>
-                                    <p class="thumb__caption">${StringUtils.truncate(novelSearched.name,100)}</p>
+                                    <p class="thumb__caption">${novelSearched.name}</p>
                                 </div>
                             </a>
                         </div>
