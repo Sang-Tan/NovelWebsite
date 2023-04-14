@@ -548,6 +548,13 @@ a.cmt-detail__name:hover {
     color: var(--gray);
 }
 
+.cmt-time {
+    font-size: 0.8rem;
+    color: var(--gray);
+    float: right;
+    cursor: pointer;
+}
+
 /*==================TreeView======================*/
 .tree-list {
     margin-bottom: 1rem;
