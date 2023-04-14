@@ -1,12 +1,13 @@
 package repository;
 
-import core.StringCoverter;
 import core.database.BaseRepository;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
 import core.logging.BasicLogger;
 import model.Chapter;
 import model.Novel;
+import model.Volume;
+import service.URLSlugification;
 
 import java.sql.SQLException;
 import java.util.Collection;
@@ -101,7 +102,10 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         for (SqlRecord record : records) {
             return mapObject(record);
         }
-        return null;
+        // in case previous chapter is in previous volume
+        Volume previousVolume = VolumeRepository.getInstance().getPreviousVolume(volumeId);
+        if(previousVolume == null) return null;
+        return previousVolume.getChapters().get(previousVolume.getChapters().size() - 1);
     }
     public Chapter getNextChapter(int chapterID) throws SQLException {
         Chapter chapter = getById(chapterID);
@@ -119,13 +123,11 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         for (SqlRecord record : records) {
             return mapObject(record);
         }
-        return null;
-    }
-    public String generatePathComponent(int chapterID) throws SQLException {
-        Chapter chapter = getById(chapterID);
-        Novel novel = chapter.getBelongVolume().getBelongNovel();
-        return StringCoverter.removeAccent(chapter.getId()+"-"+chapter.getName().replaceAll("\\s+", "-").toLowerCase());
 
+        // in case next chapter is in next volume
+        Volume nextVolume = VolumeRepository.getInstance().getNextVolumeId(volumeId);
+        if(nextVolume == null) return null;
+        return nextVolume.getChapters().get(0);
     }
 
     public Chapter getLastChapterOfNovel(int novelId) throws SQLException {
