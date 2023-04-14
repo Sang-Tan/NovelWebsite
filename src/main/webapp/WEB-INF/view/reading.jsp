@@ -12,6 +12,8 @@
 <%--@elvariable id="Chapter" type="model.Chapter.class"--%>
 <%@ page import="service.VolumeService" %>
 <%--@elvariable id="VolumeService" type="service.VolumeService.class"--%>
+<%@page import="core.string_process.HTMLParser" %>
+<%--@elvariable id="HTMLParser" type="core.string_process.HTMLParser.class"--%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,9 +29,7 @@
     <h2 class="text-center">${chapter.belongVolume.name}</h2>
     <h4 class="text-center">${chapter.name}</h4>
     <main class="reading-part">
-        <p>
-            ${chapter.content}
-        </p>
+        ${HTMLParser.wrapEachLineWithTag(chapter.content,"p")}
     </main>
     <div class="d-flex justify-content-between mb-3">
 
@@ -40,10 +40,9 @@
                 </a>
             </c:when>
             <c:otherwise>
-                <a
-                        href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${previousChapter.id}-${URLSlugification.sluging(previousChapter.name)}"
-                        class="basic-btn basic-btn--olive"
-                        style="min-width: 25%;">
+                <a href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${previousChapter.id}-${URLSlugification.sluging(previousChapter.name)}"
+                   class="basic-btn basic-btn--olive"
+                   style="min-width: 25%;">
                     Chương trước
                 </a>
             </c:otherwise>
@@ -53,15 +52,14 @@
         <c:choose>
             <c:when test="${nextChapter == null}">
                 <a href="#" class="basic-btn disabled basic-btn--olive" style="min-width: 25%;">
-                    Chương Sau
+                    Chương sau
                 </a>
             </c:when>
             <c:otherwise>
-                <a
-                        href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${nextChapter.id}-${URLSlugification.sluging(nextChapter.name)}"
-                        class="basic-btn basic-btn--olive"
-                        style="min-width: 25%;">
-                    Chương Sau
+                <a href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${nextChapter.id}-${URLSlugification.sluging(nextChapter.name)}"
+                   class="basic-btn basic-btn--olive"
+                   style="min-width: 25%;">
+                    Chương sau
                 </a>
             </c:otherwise>
         </c:choose>
@@ -86,7 +84,7 @@
             <ul id="chap_list" class="unstyled">
                 <c:forEach items="${novel.volumes}" var="volume">
                     <c:if test="${VolumeService.getFirstApprovedChapter(volume.id) != null}">
-                    <c:choose>
+                        <c:choose>
                             <c:when test="${volume.id == chapter.volumeId}">
                                 <li class="current"><a
                                         href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${VolumeService.getFirstApprovedChapter(volume.id).id}-${URLSlugification.sluging(VolumeService.getFirstApprovedChapter(volume.id).name)}">${StringUtils.truncate(volume.name, 120)}</a>
@@ -120,9 +118,9 @@
                                         href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${volume.chapters[0].id}-${URLSlugification.sluging(volume.chapters[0].name)}">${StringUtils.truncate(volume.name, 120)}</a>
                                 </li>
                             </c:otherwise>
-                    </c:choose>
-                </c:if>
-            </c:forEach>
+                        </c:choose>
+                    </c:if>
+                </c:forEach>
             </ul>
         </div>
     </div>
