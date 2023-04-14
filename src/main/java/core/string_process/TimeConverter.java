@@ -32,4 +32,12 @@ public class TimeConverter {
     public static String convertToVietnameseTime(Timestamp timestamp) {
         return convertToVietnameseTime(timestamp.getTime());
     }
+
+    public static String convertToddMMyyyy(long timeInMilis) {
+        return new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date(timeInMilis));
+    }
+
+    public static String convertToddMMyyyy(Timestamp timestamp) {
+        return convertToddMMyyyy(timestamp.getTime());
+    }
 }
