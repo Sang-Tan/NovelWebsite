@@ -1,5 +1,7 @@
 package controller.novel;
 
+import core.StringCoverter;
+import core.Pair;
 import model.Genre;
 import model.Novel;
 import repository.GenreRepository;
