@@ -43,4 +43,10 @@ public class NovelFavouriteRepository extends BaseRepository<NovelFavourite> {
         return Integer.parseInt(value.toString());
     }
 
+    public boolean isFavourite(int userId, int novelId) throws Exception {
+        String sql = String.format("SELECT * FROM %s WHERE user_id = ? AND novel_id = ?", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(userId, novelId));
+        return records.size() > 0;
+    }
+
 }

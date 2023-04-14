@@ -5,8 +5,9 @@ import core.logging.BasicLogger;
 import model.Chapter;
 import model.Genre;
 import model.Novel;
-import model.Volume;
+import model.User;
 import repository.ChapterRepository;
+import repository.NovelFavouriteRepository;
 import repository.NovelRepository;
 import service.URLSlugification;
 
@@ -19,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 @MultipartConfig
 @WebServlet(name = "OverviewNovelServlet", value = "/truyen/*")
@@ -29,17 +29,17 @@ public class OverviewNovel extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+            User user = (User) request.getAttribute("user");
             String pathInfo = request.getPathInfo();
             String novelPathComponent = pathInfo.split("/")[1];
             int novelId = StringUtils.extractFirstInt(novelPathComponent);
             Novel novel = NovelRepository.getInstance().getById(novelId);
 
-           String novelUri = novelId + "-" + URLSlugification.sluging(novel.getName());
-            if(novelId == -1) {
+            String novelUri = novelId + "-" + URLSlugification.sluging(novel.getName());
+            if (novelId == -1) {
                 response.setStatus(404);
                 return;
-            }
-            else if(!novelUri.equals(novelPathComponent)) {
+            } else if (!novelUri.equals(novelPathComponent)) {
                 response.sendRedirect(novelUri);
                 return;
             }
@@ -57,8 +57,10 @@ public class OverviewNovel extends HttpServlet {
             request.setAttribute("genres", genres);
 
             Chapter virtualChapter = ChapterRepository.getInstance().getVirtualChapter(novelId);
+            boolean isFavourite = NovelFavouriteRepository.getInstance().isFavourite(novelId, user.getId());
             request.setAttribute("reqChapter", virtualChapter);
             request.setAttribute("commentLimit", COMMENT_LIMIT);
+            request.setAttribute("isFavourite", isFavourite);
             request.getRequestDispatcher("/WEB-INF/view/novel_detail.jsp").forward(request, response);
         } catch (Exception e) {
             response.setStatus(500);
