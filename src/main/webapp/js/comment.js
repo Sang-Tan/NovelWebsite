@@ -161,6 +161,10 @@ function getRootCmtCountInChap(chapterId) {
         });
 }
 
+function showReportChapterForm(commentId, ownerId) {
+
+}
+
 assignPostRootCommentForm();
 assignNextCommentsButton();
 assignPreviousCommentsButton();

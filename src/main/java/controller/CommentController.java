@@ -21,14 +21,11 @@ public class CommentController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String getType = req.getParameter("type");
         try {
-            if (getType.equals("in_chapter")) {
-                getCommentsInChapter(req, resp);
-            } else if (getType.equals("by_id")) {
-                getCommentsById(req, resp);
-            } else if (getType.equals("count_in_chapter")) {
-                getCommentCountInChapter(req, resp);
-            } else {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            switch (getType) {
+                case "in_chapter" -> getCommentsInChapter(req, resp);
+                case "by_id" -> getCommentsById(req, resp);
+                case "count_in_chapter" -> getCommentCountInChapter(req, resp);
+                default -> resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
         } catch (SQLException | JSONException e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

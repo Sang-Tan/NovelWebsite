@@ -25,7 +25,10 @@
                            class="cmt-toolkit__link">Trả lời</a>
                     </div>
                     <div class="cmt-toolkit__item">
-                        <a href="" class="cmt-toolkit__link">Báo cáo</a>
+                        <a href="" class="cmt-toolkit__link" data-toggle="modal" data-target="#reportCommentModal"
+                           onclick="showReportChapterForm(${rootComment.id}, '${rootComment.owner.id}')">
+                            Báo cáo
+                        </a>
                     </div>
                     <div class="cmt-toolkit__item">
                         <a href="" class="cmt-toolkit__link">
@@ -52,7 +55,10 @@
                             <a href="#" data-reply-to="${rootComment.id}" class="cmt-toolkit__link">Trả lời</a>
                         </div>
                         <div class="cmt-toolkit__item">
-                            <a href="" class="cmt-toolkit__link">Báo cáo</a>
+                            <a href="" class="cmt-toolkit__link" data-toggle="modal" data-target="#reportCommentModal"
+                               onclick="showReportChapterForm(${replyComment.id}, '${replyComment.owner.id}')">
+                                Báo cáo
+                            </a>
                         </div>
                         <div class="cmt-toolkit__item">
                             <a href="" class="cmt-toolkit__link">
@@ -65,3 +71,57 @@
             </div>
         </c:forEach></div>
 </c:forEach>
+
+<!--Modal reject novel-->
+<div class="modal fade" id="reportCommentModal" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title title title--bold" id="staticBackdropLabel2">Báo cáo bình luận</h5>
+                <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
+                   style="font-size: x-large"></i>
+            </div>
+            <div class="modal-body">
+                Bạn có muốn từ chối <span class="text-success nameNovel"></span><span> không?</span>
+            </div>
+            <form action="#" method="get">
+                <div class="modal-footer justify-content-center">
+                    <label>
+                        <textarea></textarea>
+                    </label>
+                    <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="basic-btn basic-btn--olive" data-toggle="modal" data-target="#confirmModal">
+                        OK
+                    </button>
+                    <input hidden name="action" value="reject" type="text">
+                    <input hidden name="idNovel" type="text" class="idNovel">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--Modal reject novel-->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title title title--bold" id="">Bạn chắc chứ?</h5>
+                <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
+                   style="font-size: x-large"></i>
+            </div>
+            <div class="modal-body">
+                Bạn có muốn từ chối <span class="text-success nameNovel"></span><span> không?</span>
+            </div>
+            <form action="#" method="get">
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">Đóng</button>
+                    <button class="basic-btn basic-btn--olive" data-toggle="modal" data-target="#confirmModal">
+                        OK
+                    </button>
+                    <input hidden name="action" value="reject" type="text">
+                    <input hidden name="idNovel" type="text" class="idNovel">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
