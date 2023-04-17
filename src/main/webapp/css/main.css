@@ -501,8 +501,10 @@ a.basic-btn--primary:hover {
 }
 
 .cmt-detail {
-    /* display: inline-block; */
+    display: block;
+    hyphens: auto;
     overflow: hidden;
+    overflow-wrap: break-word;
     background-color: var(--silver);
     padding: 0.25rem 0.5rem;
     border-radius: 0.2rem;
@@ -645,7 +647,11 @@ ul.tree-list,
 }
 
 .rpt-detail {
+    white-space: nowrap;
+    display: block;
+    hyphens: auto;
     overflow: hidden;
+    overflow-wrap: break-word;
     background-color: var(--light-gray);
     padding: 0.25rem 0.5rem;
     border-radius: 0.2rem;

@@ -7,13 +7,14 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<link rel="stylesheet" href="/css/novel_detail.css">
 <c:forEach items="${reqRootComments}" var="rootComment">
     <div class="cmt-group">
         <div class="cmt-group__item">
             <div class="cmt-group__avatar"
                  style="background-image: url('${rootComment.owner.avatar}');">
             </div>
-            <div class="cmt-detail">
+            <div class="cmt-detail"  style="display: block; hyphens: auto; overflow: hidden; overflow-wrap: break-word;">
                 <a href="/thanh-vien/${rootComment.owner.id}"
                    class="cmt-detail__name">${rootComment.owner.displayName}</a>
                 <time title="${TimeConverter.convertToVietnameseTime(rootComment.commentTime)}"
@@ -44,7 +45,7 @@
                 <div class="cmt-group__avatar"
                      style="background-image: url('${replyComment.owner.avatar}');">
                 </div>
-                <div class="cmt-detail">
+                <div class="cmt-detail" style="display: block; hyphens: auto; overflow: hidden; overflow-wrap: break-word;">
                     <a href="/thanh-vien/${replyComment.owner.id}"
                        class="cmt-detail__name">${replyComment.owner.displayName}</a>
                     <time title="${TimeConverter.convertToVietnameseTime(replyComment.commentTime)}"
@@ -56,7 +57,7 @@
                         </div>
                         <div class="cmt-toolkit__item">
                             <a href="" class="cmt-toolkit__link" data-toggle="modal" data-target="#reportCommentModal"
-                               onclick="showReportChapterForm(${replyComment.id}, '${replyComment.owner.id}')">
+                               onclick="showReportChapterForm(${replyComment.id}, ${replyComment.owner.id}, ${user.id})">
                                 Báo cáo
                             </a>
                         </div>
@@ -72,7 +73,7 @@
         </c:forEach></div>
 </c:forEach>
 
-<!--Modal reject novel-->
+<!--Comment report modal-->
 <div class="modal fade" id="reportCommentModal" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -100,7 +101,7 @@
         </div>
     </div>
 </div>
-<!--Modal reject novel-->
+<!--Comment report modal 2-->
 <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

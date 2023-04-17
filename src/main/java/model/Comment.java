@@ -1,14 +1,19 @@
 package model;
 
 import core.DatabaseObject;
+import core.logging.BasicLogger;
 import core.metadata.JSONSerializable;
 import org.json.JSONException;
 import org.json.JSONObject;
+import repository.CommentReportRepository;
 import repository.CommentRepository;
 import repository.UserRepository;
 
 import javax.persistence.*;
+import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -36,6 +41,9 @@ public class Comment implements DatabaseObject, JSONSerializable {
 
     @OneToMany
     private List<Comment> replies;
+
+    @OneToMany
+    private List<CommentReport> reports;
 
     public Comment() {
     }
@@ -171,4 +179,28 @@ public class Comment implements DatabaseObject, JSONSerializable {
         throw new UnsupportedOperationException();
     }
 
+    public List<CommentReport> getReports() {
+        if (reports == null) {
+            try {
+                reports = CommentReportRepository.getInstance().getAllReportContentByCommentId(this.id);
+            } catch (SQLException e) {
+                BasicLogger.getInstance().getLogger().warning(e.getMessage());
+                return null;
+            }
+        }
+        return reports;
+    }
+
+    public void setReports(List<CommentReport> reports) {
+        this.reports = reports;
+    }
+
+    public String[] getContentReports() {
+        List<CommentReport> commentReports = this.getReports();
+        List<String> contentList = new ArrayList<>();
+        for (CommentReport commentReport : commentReports) {
+            contentList.add(commentReport.getReason());
+        }
+        return contentList.toArray(new String[0]);
+    }
 }
