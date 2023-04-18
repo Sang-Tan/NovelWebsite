@@ -3,10 +3,7 @@ package model;
 import core.DatabaseObject;
 import core.logging.BasicLogger;
 import model.intermediate.NovelGenre;
-import repository.GenreRepository;
-import repository.NovelRepository;
-import repository.UserRepository;
-import repository.VolumeRepository;
+import repository.*;
 import repository.intermediate.NovelGenreRepository;
 
 import javax.persistence.*;
@@ -50,7 +47,8 @@ public class Novel implements DatabaseObject {
     private Timestamp createdTime;
     @OneToMany(mappedBy = "belongNovel")
     private List<Volume> volumes = null;
-
+    @OneToMany
+    private List<NovelReport> reports;
     @OneToMany
     private Collection<Genre> genres = null;
 
@@ -187,5 +185,21 @@ public class Novel implements DatabaseObject {
 
     public void setGenres(Collection<Genre> genres) {
         this.genres = genres;
+    }
+
+    public List<NovelReport> getReports() {
+        if (reports == null) {
+            try {
+                reports = NovelReportRepository.getInstance().getAllReportContentByNovelId(this.id);
+            } catch (SQLException e) {
+                BasicLogger.getInstance().getLogger().warning(e.getMessage());
+                return null;
+            }
+        }
+        return reports;
+    }
+
+    public void setReports(List<NovelReport> reports) {
+        this.reports = reports;
     }
 }

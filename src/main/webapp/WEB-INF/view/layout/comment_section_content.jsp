@@ -14,7 +14,7 @@
             <div class="cmt-group__avatar"
                  style="background-image: url('${rootComment.owner.avatar}');">
             </div>
-            <div class="cmt-detail"  style="display: block; hyphens: auto; overflow: hidden; overflow-wrap: break-word;">
+            <div class="cmt-detail" style="display: block; hyphens: auto; overflow: hidden; overflow-wrap: break-word;">
                 <a href="/thanh-vien/${rootComment.owner.id}"
                    class="cmt-detail__name">${rootComment.owner.displayName}</a>
                 <time title="${TimeConverter.convertToVietnameseTime(rootComment.commentTime)}"
@@ -27,7 +27,7 @@
                     </div>
                     <div class="cmt-toolkit__item">
                         <a href="" class="cmt-toolkit__link" data-toggle="modal" data-target="#reportCommentModal"
-                           onclick="showReportChapterForm(${rootComment.id}, '${rootComment.owner.id}')">
+                           onclick="showReportCommentForm(${rootComment.id}, ${user.id})">
                             Báo cáo
                         </a>
                     </div>
@@ -45,7 +45,8 @@
                 <div class="cmt-group__avatar"
                      style="background-image: url('${replyComment.owner.avatar}');">
                 </div>
-                <div class="cmt-detail" style="display: block; hyphens: auto; overflow: hidden; overflow-wrap: break-word;">
+                <div class="cmt-detail"
+                     style="display: block; hyphens: auto; overflow: hidden; overflow-wrap: break-word;">
                     <a href="/thanh-vien/${replyComment.owner.id}"
                        class="cmt-detail__name">${replyComment.owner.displayName}</a>
                     <time title="${TimeConverter.convertToVietnameseTime(replyComment.commentTime)}"
@@ -57,7 +58,7 @@
                         </div>
                         <div class="cmt-toolkit__item">
                             <a href="" class="cmt-toolkit__link" data-toggle="modal" data-target="#reportCommentModal"
-                               onclick="showReportChapterForm(${replyComment.id}, ${replyComment.owner.id}, ${user.id})">
+                               onclick="showReportCommentForm(${replyComment.id}, ${user.id})">
                                 Báo cáo
                             </a>
                         </div>
@@ -75,7 +76,7 @@
 
 <!--Comment report modal-->
 <div class="modal fade" id="reportCommentModal" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title title title--bold" id="staticBackdropLabel2">Báo cáo bình luận</h5>
@@ -83,21 +84,20 @@
                    style="font-size: x-large"></i>
             </div>
             <div class="modal-body">
-                Bạn có muốn từ chối <span class="text-success nameNovel"></span><span> không?</span>
+                <b>Lý do</b>
+                <textarea id="reason" class="col-12" rows="5"></textarea>
             </div>
-            <form action="#" method="get">
-                <div class="modal-footer justify-content-center">
-                    <label>
-                        <textarea></textarea>
-                    </label>
-                    <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">Đóng</button>
-                    <button type="button" class="basic-btn basic-btn--olive" data-toggle="modal" data-target="#confirmModal">
-                        OK
-                    </button>
-                    <input hidden name="action" value="reject" type="text">
-                    <input hidden name="idNovel" type="text" class="idNovel">
-                </div>
-            </form>
+
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">Đóng</button>
+                <button type="button" class="basic-btn basic-btn--olive" data-toggle="modal"
+                        data-target="#confirmModal" onclick="confirmForm()">
+                    OK
+                </button>
+                <input hidden id="commentId" type="text">
+                <input hidden id="userId" type="text">
+            </div>
+
         </div>
     </div>
 </div>
@@ -110,17 +110,19 @@
                 <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
                    style="font-size: x-large"></i>
             </div>
-            <div class="modal-body">
-                Bạn có muốn từ chối <span class="text-success nameNovel"></span><span> không?</span>
+            <div class="modal-body text-center">
+                <p>Bạn có muốn báo cáo bình luận này không?</p>
             </div>
-            <form action="#" method="get">
+            <form action="/mod/bao-cao-binh-luan" method="post">
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">Đóng</button>
-                    <button class="basic-btn basic-btn--olive" data-toggle="modal" data-target="#confirmModal">
+                    <button type="submit" class="basic-btn basic-btn--olive">
                         OK
                     </button>
-                    <input hidden name="action" value="reject" type="text">
-                    <input hidden name="idNovel" type="text" class="idNovel">
+                    <input hidden name="action" value="report_comment" type="text">
+                    <input hidden name="commentId" id="comment_id" type="text">
+                    <input hidden name="userId" id="user_id" type="text">
+                    <input hidden name="reasonReport" id="reasonReport" type="text">
                 </div>
             </form>
         </div>

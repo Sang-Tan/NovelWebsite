@@ -194,13 +194,4 @@ public class Comment implements DatabaseObject, JSONSerializable {
     public void setReports(List<CommentReport> reports) {
         this.reports = reports;
     }
-
-    public String[] getContentReports() {
-        List<CommentReport> commentReports = this.getReports();
-        List<String> contentList = new ArrayList<>();
-        for (CommentReport commentReport : commentReports) {
-            contentList.add(commentReport.getReason());
-        }
-        return contentList.toArray(new String[0]);
-    }
 }

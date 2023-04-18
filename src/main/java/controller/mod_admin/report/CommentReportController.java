@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 @WebServlet(urlPatterns = "/mod/bao-cao-binh-luan")
@@ -39,7 +40,27 @@ public class CommentReportController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action");
+        if (action == null) action = "";
+        else {
+            try {
+                postCommentReport(req, resp);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
+    private void postCommentReport(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        int commentId = Integer.parseInt(req.getParameter("commentId"));
+        int reportId = Integer.parseInt(req.getParameter("userId"));
+        String reason = req.getParameter("reasonReport");
+        CommentReport commentReport = new CommentReport();
+        commentReport.setCommentId(commentId);
+        commentReport.setReporterId(reportId);
+        commentReport.setReason(reason);
+
+        CommentReportRepository.getInstance().insert(commentReport);
     }
 
     private void showList(HttpServletRequest req, HttpServletResponse resp) {

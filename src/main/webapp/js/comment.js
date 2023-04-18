@@ -161,8 +161,15 @@ function getRootCmtCountInChap(chapterId) {
         });
 }
 
-function showReportChapterForm(commentId, ownerId) {
+function showReportCommentForm(commentId, userId) {
+    document.getElementById("commentId").innerText = commentId;
+    document.getElementById("userId").innerText = userId;
+}
 
+function confirmForm(){
+    document.getElementById("comment_id").innerText = document.getElementById("commentId").value;
+    document.getElementById("user_id").innerText = document.getElementById("userId").value;
+    document.getElementById("reasonReport").innerText = document.getElementById("reason").value;
 }
 
 assignPostRootCommentForm();

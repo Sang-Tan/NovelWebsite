@@ -36,7 +36,7 @@ public class GenreRepository extends BaseRepository<Genre> {
         return null;
     }
 
-    public List<Genre>  getByListId(List<Object> novelId) throws SQLException {
+    public List<Genre> getByListId(List<Object> novelId) throws SQLException {
         String sql = "SELECT * FROM " + getTableName() + " WHERE id IN (";
         for (int i = 0; i < novelId.size(); i++) {
             sql += "?,";
@@ -46,6 +46,7 @@ public class GenreRepository extends BaseRepository<Genre> {
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, novelId);
         return mapObjects(records);
     }
+
     public List<Genre> getByIds(int[] ids) throws SQLException {
         ArrayList<Genre> genres = new ArrayList<>();
         for (int id : ids) {

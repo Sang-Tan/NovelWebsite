@@ -1,6 +1,6 @@
 //["Bao cao 1", "Bao cao 2"]
 async function getReportsInComment(commentId) {
-    var res = await fetch(`/mod/bao-cao-binh-luan?type=comment_report&comment-id=${commentId}`)
+    let res = await fetch(`/mod/bao-cao-binh-luan?type=comment_report&comment-id=${commentId}`)
         .then(response => {
             if (response.ok) {
                 const respText = response.text();
@@ -27,7 +27,7 @@ async function reportCommentForm(commentId, ownerName, ownerAvatar, commentConte
         console.log(reportArr);
         reportArr.forEach((value) => {
             const node = document.createElement("p");
-            node.innerText = value;
+            node.innerText = value + document.createElement("hr");
             reasonDiv.appendChild(node);
         });
     });

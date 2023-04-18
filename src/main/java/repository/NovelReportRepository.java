@@ -29,4 +29,10 @@ public class NovelReportRepository extends BaseRepository<NovelReport> {
         List<SqlRecord> records = MySQLdb.getInstance().select(sql);
         return mapObjects(records);
     }
+
+    public List<NovelReport> getAllReportContentByNovelId(int novelId) throws SQLException{
+        String sql = String.format("SELECT * FROM %s " + "WHERE novel_id = ?", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelId));
+        return mapObjects(records);
+    }
 }

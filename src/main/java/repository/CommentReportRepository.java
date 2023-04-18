@@ -34,8 +34,10 @@ public class CommentReportRepository extends BaseRepository<CommentReport> {
     }
 
     public List<CommentReport> getAllReportContentByCommentId(int commentId) throws SQLException{
-        String sql = String.format("SELECT * FROM %s" + " WHERE comment_id = ?", getTableName());
+        String sql = String.format("SELECT * FROM %s " + "WHERE comment_id = ?", getTableName());
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(commentId));
         return mapObjects(records);
     }
+
+
 }
