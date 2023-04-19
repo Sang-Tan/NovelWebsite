@@ -54,7 +54,7 @@ public class CommentReportController extends HttpServlet {
     private void postCommentReport(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         int commentId = Integer.parseInt(req.getParameter("commentId"));
         int reportId = Integer.parseInt(req.getParameter("userId"));
-        String reason = req.getParameter("reasonReport");
+        String reason = req.getParameter("reason");
         CommentReport commentReport = new CommentReport();
         commentReport.setCommentId(commentId);
         commentReport.setReporterId(reportId);

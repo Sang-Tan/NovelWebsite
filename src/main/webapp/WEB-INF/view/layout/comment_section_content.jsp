@@ -1,4 +1,5 @@
 <%--@elvariable id="reqRootComments" type="java.util.List<model.Comment>"--%>
+<%--@elvariable id="user" type="model.User"--%>
 <%@page import="core.string_process.TimeConverter" %>
 <%--@elvariable id="TimeConverter" type="core.string_process.TimeConverter.class"--%>
 
@@ -83,21 +84,24 @@
                 <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
                    style="font-size: x-large"></i>
             </div>
+            <form action="/mod/bao-cao-binh-luan?action=report_comment" method="post" id="reportCommentForm">
             <div class="modal-body">
                 <b>Lý do</b>
-                <textarea id="reason" class="col-12" rows="5"></textarea>
+                <textarea id="reason" name="reason" class="col-12" rows="5" style="padding: 5px"></textarea>
             </div>
 
             <div class="modal-footer justify-content-center">
                 <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">Đóng</button>
                 <button type="button" class="basic-btn basic-btn--olive" data-toggle="modal"
-                        data-target="#confirmModal" onclick="confirmForm()">
+                        data-target="#confirmModal" >
+<%--                    onclick="confirmForm()"--%>
                     OK
                 </button>
-                <input hidden id="commentId" type="text">
-                <input hidden id="userId" type="text">
+<%--                <input hidden name="action" value="report_comment" type="text">--%>
+                <input name="commentId" hidden id="commentId" type="text">
+                <input name="userId" hidden id="userId" type="text">
             </div>
-
+            </form>
         </div>
     </div>
 </div>
@@ -113,18 +117,23 @@
             <div class="modal-body text-center">
                 <p>Bạn có muốn báo cáo bình luận này không?</p>
             </div>
-            <form action="/mod/bao-cao-binh-luan" method="post">
+
                 <div class="modal-footer justify-content-center">
                     <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">Đóng</button>
-                    <button type="submit" class="basic-btn basic-btn--olive">
+                    <button type="button" class="basic-btn basic-btn--olive" id="send"
+                            onclick="submitCommentReport()" data-dismiss="modal">
                         OK
                     </button>
-                    <input hidden name="action" value="report_comment" type="text">
-                    <input hidden name="commentId" id="comment_id" type="text">
-                    <input hidden name="userId" id="user_id" type="text">
-                    <input hidden name="reasonReport" id="reasonReport" type="text">
+<%--                    <input hidden name="action" value="report_comment" type="text">--%>
+<%--                    <input hidden name="commentId" id="comment_id" type="text">--%>
+
+<%--                    <input name="userId" id="user_id" type="text">--%>
+<%--                    <input name="reasonReport" id="reasonReport" type="text">--%>
                 </div>
-            </form>
+
         </div>
     </div>
 </div>
+<script>
+
+</script>

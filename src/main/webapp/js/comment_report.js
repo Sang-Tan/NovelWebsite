@@ -27,8 +27,9 @@ async function reportCommentForm(commentId, ownerName, ownerAvatar, commentConte
         console.log(reportArr);
         reportArr.forEach((value) => {
             const node = document.createElement("p");
-            node.innerText = value + document.createElement("hr");
+            node.innerText = value;
             reasonDiv.appendChild(node);
+            reasonDiv.appendChild(document.createElement("hr"));
         });
     });
 }
