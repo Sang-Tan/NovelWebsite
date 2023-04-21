@@ -1,12 +1,16 @@
 <%--@elvariable id="reqRootComments" type="java.util.List<model.Comment>"--%>
+<%--@elvariable id="reqChapter" type="model.Chapter"--%>
 <%--@elvariable id="user" type="model.User"--%>
+<%--@elvariable id="postCommentAllowed" type="boolean"--%>
 
 <%@page import="core.string_process.HTMLParser" %>
 <%--@elvariable id="HTMLParser" type="core.string_process.HTMLParser.class"--%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<link rel="stylesheet" href="/css/novel_detail.css">
+
+<%--TODO: delete the following lind--%>
+<%--<link rel="stylesheet" href="/css/novel_detail.css">--%>
 <c:forEach items="${reqRootComments}" var="rootComment">
     <div class="cmt-group">
         <c:set var="reqComment" value="${rootComment}"/>

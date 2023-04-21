@@ -3,8 +3,10 @@ package controller;
 import core.logging.BasicLogger;
 import model.Comment;
 import model.User;
+import model.intermediate.Restriction;
 import org.json.JSONException;
 import service.CommentService;
+import service.RestrictionService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -35,16 +37,24 @@ public class CommentController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getAttribute("user") == null) {
+        User reqUser = (User) req.getAttribute("user");
+        if (reqUser == null) {
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
+
+
         String postType = req.getParameter("type");
         if (postType == null || postType.isEmpty()) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
         try {
+            // Not allow to post comment if user is restricted
+            if (RestrictionService.getUnexpiredRestriction(reqUser.getId(), Restriction.TYPE_COMMENT) != null) {
+                resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
             if (postType.equals("comment_chapter")) {
                 postRootComment(req, resp);
             } else if (postType.equals("reply_comment")) {
