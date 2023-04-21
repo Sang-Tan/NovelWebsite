@@ -86,7 +86,8 @@
                         <c:otherwise>
                             <div class="basic-section">
                                 <button id="remove-restriction-comment-btn" data-user-id="${user.id}"
-                                        class="basic-btn basic-btn--olive mb-3}"
+                                        data-restriction="comment"
+                                        class="basic-btn basic-btn--blue mb-3}"
                                         data-toggle="modal" data-target="#remove-restriction-modal">
                                     Gỡ lệnh cấm bình luận
                                 </button>
@@ -97,15 +98,16 @@
                         <c:when test="${novelRestriction == null}">
                             <button id="add-restriction-novel-btn" data-restriction="novel"
                                     data-user-id="${user.id}" data-toggle="modal" data-target="#add-restriction-modal"
-                                    class="basic-btn basic-btn--red mb-3 hidden${(novelRestriction != null)? "" : "hidden"}">
+                                    class="basic-btn basic-btn--red mb-3">
                                 Cấm đăng truyện
                             </button>
                         </c:when>
                         <c:otherwise>
-                            <button id="remove-restriction-novel-btn" data-user-id="${user.id}"
-                                    class="basic-btn basic-btn--olive mb-3 hidden${(novelRestriction != null)? "hidden" : ""}"
-                                    onclick="removeRestriction(${user.id},'novel')">
-                                Bỏ cấm đăng truyện
+                            <button id="remove-restriction-novel-btn" data-toggle="modal"
+                                    data-target="#remove-restriction-modal"
+                                    data-user-id="${user.id}" data-restriction="novel"
+                                    class="basic-btn basic-btn--blue mb-3 ">
+                                Gỡ lệnh cấm đăng truyện
                             </button>
                         </c:otherwise>
                     </c:choose>
@@ -122,8 +124,12 @@
                                     <label class="col-12 pl-0 mb-1">Thời gian cấm</label>
                                     <select name="restrict-time" required>
                                         <option value="86400000">1 ngày</option>
+                                        <option value="259200000">3 ngày</option>
                                         <option value="604800000">1 tuần</option>
+                                        <option value="1209600000">2 tuần</option>
                                         <option value="2592000000">1 tháng</option>
+                                        <option value="7776000000">3 tháng</option>
+                                        <option value="31536000000">1 năm</option>
                                     </select>
                                 </div>
                                 <div class="row mb-3">
@@ -158,7 +164,7 @@
                             <div class="d-flex justify-content-center mb-2">
                                 <button class="pl-3 pr-3 mr-3 basic-btn basic-btn--gray" data-dismiss="modal">Đóng
                                 </button>
-                                <button type="submit" class="pl-3 pr-3 basic-btn basic-btn--olive">
+                                <button data-name="submit-btn" class="pl-3 pr-3 basic-btn basic-btn--olive">
                                     Xác nhận
                                 </button>
                             </div>

@@ -92,4 +92,5 @@ public class RestrictionService {
         RestrictionRepository.getInstance().delete(restrictionToRemove);
         return null;
     }
+    
 }

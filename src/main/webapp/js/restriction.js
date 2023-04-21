@@ -38,6 +38,17 @@ function removeRestriction(userId, restrictionType) {
     })
 }
 
+async function getRestriction(userId, restrictionType) {
+    return fetch(`/mod/restrictions?type=get_one&user-id=${userId}&restriction-type=${restrictionType}`,
+        {method: "GET"}).then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error("Error when getting restriction");
+        }
+    });
+}
+
 function showButton(button) {
     button.classList.remove("hidden");
 }
@@ -66,11 +77,21 @@ addRestrictionForm.addEventListener("submit", submitAddRestrictionForm);
 
 $('#remove-restriction-modal').on("show.bs.modal", function (event) {
     const button = $(event.relatedTarget);
-    const restrictionType = button.data("restriction");
     const modal = $(this);
+    const restrictionType = button.data("restriction");
+    const userId = button.data("user-id");
 
     let restrictionHeaderText = button.text();
-    modal.find("#restriction-modal-header").text(restrictionHeaderText);
-    
-    modal.find("[data-name='reason']").text(button.data("reason"));
+
+    getRestriction(userId, restrictionType).then(restriction => {
+        console.log(restriction);
+        modal.find("#remove-restriction-modal-header").text(restrictionHeaderText);
+        modal.find("[data-name='reason']").text("Lí do cấm : " + restriction['reason']);
+        modal.find("[data-name='due-time']").text("Thời gian cấm đến : " + restriction['dueTime']);
+        modal.find("[data-name='submit-btn']").on("click", function () {
+            removeRestriction(userId, restrictionType);
+        });
+    }).catch(error => {
+        console.log(error);
+    })
 });
