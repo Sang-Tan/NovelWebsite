@@ -1,16 +1,16 @@
 package model.intermediate;
 
 import core.DatabaseObject;
-import model.User;
-import repository.UserRepository;
+import core.metadata.JSONSerializable;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.persistence.*;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "restrictions", uniqueConstraints = {@UniqueConstraint(columnNames = {"restricted_user_id", "restricted_type"})})
-public class Restriction implements DatabaseObject {
+public class Restriction implements DatabaseObject, JSONSerializable {
     public static final String TYPE_NOVEL = "novel";
     public static final String TYPE_COMMENT = "comment";
 
@@ -102,5 +102,16 @@ public class Restriction implements DatabaseObject {
 
     public void setDueTime(Timestamp dueTime) {
         this.dueTime = dueTime;
+    }
+
+    @Override
+    public JSONObject toJSON() throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put("restrictedUserId", restrictedUserId);
+        json.put("restrictedType", restrictedType);
+        json.put("executorId", executorId);
+        json.put("reason", reason);
+        json.put("dueTime", dueTime);
+        return json;
     }
 }
