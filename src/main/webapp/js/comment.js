@@ -191,6 +191,11 @@ function submitCommentReport() {
     }).then(response => {
         console.log(response);
     });
+    Swal.fire({
+            title: 'Bạn đã báo cáo!',
+            confirmButtonColor: '#3d9970'
+        }
+    )
     document.getElementById("reason").value = "";
     $('#reportCommentModal').hide();
     $('.modal-backdrop').remove();

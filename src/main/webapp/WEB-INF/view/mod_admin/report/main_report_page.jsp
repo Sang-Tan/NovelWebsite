@@ -39,46 +39,42 @@
                 <header class="mb-3">
                     <span class="title title--underline title--bold">Danh sách báo cáo</span>
                 </header>
-                <div class="row">
-                    <div class="col-10 col-xl-9 thumb cmt-group">
-                        <c:choose>
-                            <c:when test="${selection.equals(ReportSelection.COMMENT_REPORT)}">
-                                <%@include file="layout/comment_report.jsp"%>
-                            </c:when>
 
-                            <c:when test="${selection.equals(ReportSelection.NOVEL_REPORT)}">
-                                <%@include file="layout/novel_report.jsp"%>
-                            </c:when>
-                        </c:choose>
+                <c:choose>
+                    <c:when test="${selection.equals(ReportSelection.COMMENT_REPORT)}">
+                        <%@include file="layout/comment_report.jsp" %>
+                    </c:when>
 
-                    </div>
-                </div>
+                    <c:when test="${selection.equals(ReportSelection.NOVEL_REPORT)}">
+                        <%@include file="layout/novel_report.jsp" %>
+                    </c:when>
+                </c:choose>
 
-                <nav class="mt-1">
-                    <ul class="d-flex justify-content-end">
-                        <li class="page-list__item">
-                            <a href="#" class="page-list__link">Đầu</a>
-                        </li>
-                        <li class="page-list__item">
-                            <a href="#" class="page-list__link">1</a>
-                        </li>
-                        <li class="page-list__item active">
-                            <a href="#" class="page-list__link">2</a>
-                        </li>
-                        <li class="page-list__item">
-                            <a href="#" class="page-list__link">3</a>
-                        </li>
-                        <li class="page-list__item">
-                            <a href="#" class="page-list__link">4</a>
-                        </li>
-                        <li class="page-list__item">
-                            <a href="#" class="page-list__link">5</a>
-                        </li>
-                        <li class="page-list__item">
-                            <a href="#" class="page-list__link">Cuối</a>
-                        </li>
-                    </ul>
-                </nav>
+                <%--                <nav class="mt-1">--%>
+                <%--                    <ul class="d-flex justify-content-end">--%>
+                <%--                        <li class="page-list__item">--%>
+                <%--                            <a href="#" class="page-list__link">Đầu</a>--%>
+                <%--                        </li>--%>
+                <%--                        <li class="page-list__item">--%>
+                <%--                            <a href="#" class="page-list__link">1</a>--%>
+                <%--                        </li>--%>
+                <%--                        <li class="page-list__item active">--%>
+                <%--                            <a href="#" class="page-list__link">2</a>--%>
+                <%--                        </li>--%>
+                <%--                        <li class="page-list__item">--%>
+                <%--                            <a href="#" class="page-list__link">3</a>--%>
+                <%--                        </li>--%>
+                <%--                        <li class="page-list__item">--%>
+                <%--                            <a href="#" class="page-list__link">4</a>--%>
+                <%--                        </li>--%>
+                <%--                        <li class="page-list__item">--%>
+                <%--                            <a href="#" class="page-list__link">5</a>--%>
+                <%--                        </li>--%>
+                <%--                        <li class="page-list__item">--%>
+                <%--                            <a href="#" class="page-list__link">Cuối</a>--%>
+                <%--                        </li>--%>
+                <%--                    </ul>--%>
+                <%--                </nav>--%>
             </div>
             <div class="col col-lg-3">
                 <table class="table table-hover mb-0 basic-section">

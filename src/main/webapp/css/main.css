@@ -657,3 +657,7 @@ ul.tree-list,
     border-radius: 0.2rem;
     text-decoration: none !important;
 }
+
+.swal2-popup {
+    font-family: 'Open Sans', sans-serif;
+}

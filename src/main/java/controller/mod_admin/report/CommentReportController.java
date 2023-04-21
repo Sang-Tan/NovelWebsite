@@ -5,6 +5,8 @@ import core.metadata.ReportSelection;
 import model.CommentReport;
 import org.json.JSONArray;
 import repository.CommentReportRepository;
+import service.Pagination.Paginator;
+import service.report.CommentReportService;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,11 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.List;
+import java.util.logging.Logger;
 
 @WebServlet(urlPatterns = "/mod/bao-cao-binh-luan")
 public class CommentReportController extends HttpServlet {
+    private static final Logger LOGGER = Logger.getLogger(CommentReportController.class.getName());
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
@@ -63,18 +67,28 @@ public class CommentReportController extends HttpServlet {
         CommentReportRepository.getInstance().insert(commentReport);
     }
 
-    private void showList(HttpServletRequest req, HttpServletResponse resp) {
+    private void showList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int page = Integer.parseInt(req.getParameter("page") == null ? "0" : req.getParameter("page"));
+        Paginator paginator = new Paginator();
         try {
-            req.setAttribute("commentReportList", CommentReportRepository.getInstance().getAllCommentReport());
+            req.setAttribute("commentReportList", CommentReportService.getInstance().getAllCommentReport(page));
+            paginator = CommentReportService.getInstance().getPaginator();
         } catch (SQLException e) {
-            e.printStackTrace();
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
         }
         req.setAttribute("selection", ReportSelection.COMMENT_REPORT);
+        String pagingUrl = "/mod/bao-cao-binh-luan" + req.getQueryString();
+        if (pagingUrl.contains("page=")) {
+            pagingUrl = pagingUrl.substring(0, pagingUrl.indexOf("&page="));
+        }
+        req.setAttribute("pageItems", paginator.getActivePageItems(pagingUrl));
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/view/mod_admin/report/main_report_page.jsp");
         try {
             dispatcher.forward(req, resp);
         } catch (ServletException | IOException e) {
-            e.printStackTrace();
+            resp.setStatus(500);
+            CommentReportController.LOGGER.warning(e.getMessage());
         }
     }
 
@@ -86,8 +100,7 @@ public class CommentReportController extends HttpServlet {
         Integer commentId = Integer.parseInt(req.getParameter("comment-id"));
         List<CommentReport> reports = CommentReportRepository.getInstance().getAllReportContentByCommentId(commentId);
         JSONArray jsonArr = new JSONArray();
-        for (CommentReport commentReport : reports)
-        {
+        for (CommentReport commentReport : reports) {
             jsonArr.put(commentReport.getReason());
         }
 

@@ -17,6 +17,10 @@
             <li class="navbar__list-item">
                 <a href="/mod/duyet-truyen" class="navbar__link navbar__list-text">Duyệt truyện</a>
             </li>
+
+            <li class="navbar__list-item">
+                <a href="/mod/bao-cao-binh-luan" class="navbar__link navbar__list-text">Báo cáo</a>
+            </li>
         </ul>
         <ul class="navbar__list">
             <c:choose>

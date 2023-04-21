@@ -26,10 +26,10 @@ public class CommentReportRepository extends BaseRepository<CommentReport> {
         return new CommentReport();
     }
 
-    public List<CommentReport> getAllCommentReport() throws SQLException {
-        String sql = String.format("SELECT * FROM %s " +
-                "GROUP BY comment_id ORDER BY report_time DESC", getTableName());
-        List<SqlRecord> records = MySQLdb.getInstance().select(sql);
+    public List<CommentReport> getAllCommentReport(String condition, List<Object> params) throws SQLException {
+        String sql = String.format("SELECT * FROM %s  GROUP BY comment_id ORDER BY report_time DESC LIMIT ? OFFSET ?", getTableName());
+        sql += "";
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
         return mapObjects(records);
     }
 
@@ -39,5 +39,12 @@ public class CommentReportRepository extends BaseRepository<CommentReport> {
         return mapObjects(records);
     }
 
-
+    public long countCommentReports(String condition, List<Object> params) throws SQLException {
+        String sql = String.format("SELECT COUNT(id) FROM %s WHERE %s", getTableName(), condition);
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
+        for (SqlRecord record : records) {
+            return (long) record.get("COUNT(id)");
+        }
+        return 0;
+    }
 }

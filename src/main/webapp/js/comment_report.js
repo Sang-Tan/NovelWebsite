@@ -15,10 +15,12 @@ async function getReportsInComment(commentId) {
     return res;
 }
 
-async function reportCommentForm(commentId, ownerName, ownerAvatar, commentContent) {
+async function reportCommentForm(commentId, ownerName, ownerAvatar, ownerId, commentContent) {
     document.getElementById("commentId").value = commentId;
     document.getElementById("ownerName").innerText = ownerName;
     document.getElementById("ownerAvatar").src = ownerAvatar;
+    let link = document.getElementById("ownerId");
+    link.href = "/thanh-vien/" + ownerId;
     document.getElementById("commentContent").innerText = commentContent;
     const reasonDiv = document.getElementById("reasons");
     reasonDiv.innerHTML = null;

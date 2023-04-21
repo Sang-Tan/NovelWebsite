@@ -9,33 +9,37 @@
 <%--@elvariable id="reporter" type="model.User"--%>
 <%--@elvariable id="novel" type="model.Novel"--%>
 <%--@elvariable id="novelReport" type="model.NovelReport"--%>
-
-<c:forEach var="novelReport" items="${novelReportList}">
-    <div class="rpt-group__item">
-        <a href="#report-modal" class="no-decor" data-toggle="modal" data-target="#report-modal">
-            <div class="rpt-detail"
-                 style="background-color: var(--dark-silver)">
-                <div class="row">
-                    <div class="col-05">
-                        <button class="btn basic-btn--olive h-100"></button>
-                    </div>
-                    <div class="col-115">
+<div class="row">
+    <div class="col-10 col-xl-9 thumb cmt-group">
+        <c:forEach var="novelReport" items="${novelReportList}">
+            <div class="rpt-group__item">
+                <a href="#report-modal" class="no-decor" data-toggle="modal" data-target="#report-modal">
+                    <div class="rpt-detail"
+                         style="background-color: var(--dark-silver)">
+                        <div class="row">
+                            <div class="col-05">
+                                <button class="btn basic-btn--olive h-100"></button>
+                            </div>
+                            <div class="col-115">
                     <span class="title title--bold" style="margin-left: 20px; color: black">
                             ${novelReport.novel.name}
                     </span>
-                        <p style="margin-left: 20px; color: black">
-                            Người gửi: ${novelReport.reporter.displayName}
-                        </p>
+                                <p style="margin-left: 20px; color: black">
+                                    Người gửi: ${novelReport.reporter.displayName}
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
-        </a>
+            <br>
+        </c:forEach>
+        <c:if test="${novelReportList == null}">
+            <h3 class="text-center">Không có báo cáo</h3>
+        </c:if>
     </div>
-    <br>
-</c:forEach>
-<c:if test="${novelReportList == null}">
-    <h3 class="text-center">Không có báo cáo</h3>
-</c:if>
+</div>
+<%@include file="/WEB-INF/view/layout/pagination_footer.jsp" %>
 
 <!--Modal report-->
 <div class="modal fade" id="report-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
