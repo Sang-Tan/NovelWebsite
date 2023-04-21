@@ -3,14 +3,24 @@
 <%--@elvariable id="user" type="model.User"--%>
 <%--@elvariable id="postCommentAllowed" type="boolean"--%>
 
-<%@page import="core.string_process.HTMLParser" %>
 <%--@elvariable id="HTMLParser" type="core.string_process.HTMLParser.class"--%>
+<%@page import="core.string_process.HTMLParser" %>
+
+<%--@elvariable id="RestrictionService" type="service.RestrictionService.class"--%>
+<%@page import="service.RestrictionService" %>
+
+<%--@elvariable id="Restriction" type="model.Restriction.class"--%>
+<%@page import="model.intermediate.Restriction" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%--TODO: delete the following lind--%>
-<%--<link rel="stylesheet" href="/css/novel_detail.css">--%>
+<%--@elvariable id="postCommentAllowed" type="boolean"--%>
+<c:set var="postCommentAllowed"
+       value="${(user != null) &&
+       (RestrictionService.getUnexpiredRestriction(user.id, Restriction.TYPE_COMMENT) == null)}"
+       scope="request"/>
+
 <c:forEach items="${reqRootComments}" var="rootComment">
     <div class="cmt-group">
         <c:set var="reqComment" value="${rootComment}"/>

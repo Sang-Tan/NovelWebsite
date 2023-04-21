@@ -14,7 +14,8 @@
 <%--@elvariable id="postCommentAllowed" type="boolean"--%>
 <c:set var="postCommentAllowed"
        value="${(user != null) &&
-       (RestrictionService.getUnexpiredRestriction(user.id, Restriction.TYPE_COMMENT) == null)}"/>
+       (RestrictionService.getUnexpiredRestriction(user.id, Restriction.TYPE_COMMENT) == null)}"
+       scope="request"/>
 
 <section class="basic-section">
     <header class="basic-section__header">
