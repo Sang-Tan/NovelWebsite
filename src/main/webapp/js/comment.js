@@ -19,11 +19,12 @@
         }
     }).then(response => {
         if (response.ok) {
-            console.log("Comment posted");
         } else {
             alert("Có lỗi xảy ra");
         }
     }).then(() => {
+        const commentSection = document.getElementById('comment-section-contents');
+        commentSection.dataset.offset = "0";
         reloadComments();
     });
 
