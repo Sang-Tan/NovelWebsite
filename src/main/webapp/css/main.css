@@ -226,6 +226,15 @@ a.basic-btn--gray:hover {
     color: var(--white);
 }
 
+.basic-btn--blue {
+    background-color: var(--blue);
+    color: var(--white);
+}
+
+a.basic-btn--blue:hover {
+    color: var(--white);
+}
+
 .basic-btn--primary {
     background-color: var(--blue);
     color: var(--white);
