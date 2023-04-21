@@ -36,7 +36,7 @@ public class Paginator {
     }
 
     public List<PageItem> getActivePageItems(String currentUrl) {
-        List<PageItem> activePages = new LinkedList<PageItem>();
+        List<PageItem> activePages = new LinkedList<>();
 
         // calculate start and end page
         int startPage = currentPage - DEFAULT_MAX_ACTIVE_PAGES / 2;

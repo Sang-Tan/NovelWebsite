@@ -161,6 +161,59 @@ function getRootCmtCountInChap(chapterId) {
         });
 }
 
+function showReportCommentForm(commentId, userId) {
+    document.getElementById("commentId").value = commentId;
+    document.getElementById("userId").value = userId;
+}
+
+function confirmForm() {
+    document.getElementById("comment_id").innerText = document.getElementById("commentId").innerText;
+    document.getElementById("comment_id").value = document.getElementById("comment_id").innerText;
+    document.getElementById("user_id").innerText = document.getElementById("userId").innerText;
+    document.getElementById("user_id").value = document.getElementById("user_id").innerText;
+    document.getElementById("reasonReport").innerText = document.getElementById("reason").innerText;
+    document.getElementById("reasonReport").value = document.getElementById("reasonReport").innerText;
+}
+
+function submitCommentReport() {
+    const form = document.getElementById('reportCommentForm');
+    const formData = new FormData(form);
+    let parameters = [];
+    for (const [key, value] of formData) {
+        parameters.push(`${key}=${value}`)
+    }
+    let parameterString = "&" + parameters.join("&");
+    fetch(`${form.action}${parameterString}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    }).then(response => {
+        console.log(response);
+    });
+    Swal.fire({
+            title: 'Bạn đã báo cáo!',
+            confirmButtonColor: '#3d9970'
+        }
+    )
+    document.getElementById("reason").value = "";
+    $('#reportCommentModal').hide();
+    $('.modal-backdrop').remove();
+    // e.preventDefault();
+    // $.ajax({
+    //     url: $('reportCommentForm').attr('action'),
+    //     type: "POST",
+    //     data: {
+    //         "commentId=": $("input[name='commentId']").val(),
+    //         "userId=": $("input[name='userId']").val(),
+    //     }
+    //
+    // });
+    // $(document).ready(function (){
+    //     setInterval("$('#send').click();",8000);
+    // })
+}
+
 assignPostRootCommentForm();
 assignNextCommentsButton();
 assignPreviousCommentsButton();
