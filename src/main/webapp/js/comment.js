@@ -31,10 +31,12 @@
 
 function assignPostRootCommentForm() {
     const form = document.getElementById('root-comment-form');
-    form.addEventListener('submit', (e) => {
-        postComment.bind(form)(e);
-        form.reset();
-    });
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            postComment.bind(form)(e);
+            form.reset();
+        });
+    }
 }
 
 function loadRootComments(offset, limit, chapterId) {
