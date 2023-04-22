@@ -64,7 +64,7 @@
             <div class="row pl-1">
                 <c:forEach items="${userNovels}" var="userNovel">
                     <div class="col-3 col-xl-2 thumb">
-                        <a href="/testui/novel_detail" class="no-decor">
+                        <a href="/truyen/${userNovel.id}" class="no-decor">
                             <div class="thumb__wrapper">
                                 <div class="thumb__img-panel shadow a6-ratio">
                                     <div class="img-wrapper img-wrapper--shadow"

@@ -25,13 +25,15 @@
                                 </div>
                             </div>
                             <div class="ml-3">
-                                <a class="theme-link  w-600" href="#">${favouriteNovel.name}</a>
+                                <a href="/truyen/${favouriteNovel.id}" class="theme-link  w-600"
+                                >${favouriteNovel.name}</a>
                                 <div>${favouriteNovel.owner.displayName}</div>
                             </div>
                         </div>
                     </td>
                     <td>
-                        <a class="theme-link w-600" href="#">${latestChapter.name}</a>
+                        <a class="theme-link w-600"
+                           href="/doc-tieu-thuyet/${favouriteNovel.id}/${latestChapter.id}">${latestChapter.name}</a>
                     </td>
                     <td>
                         <button data-action="unfollow" data-id="${favouriteNovel.id}" class="basic-btn basic-btn--red">

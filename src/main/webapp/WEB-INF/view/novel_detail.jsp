@@ -1,3 +1,5 @@
+<%--@elvariable id="isFavourite" type="boolean"--%>
+<%--@elvariable id="user" type="model.User"--%>
 <%--@elvariable id="statusMap" type="java.util.HashMap<String,String>"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--@elvariable id="novel" type="model.Novel"--%>
@@ -53,8 +55,18 @@
                                 <c:set var="status" value="${novel.status}"/>
                                 <p class="mb-1"><b>Tình trạng:</b> ${statusMap.get(status)}</p>
                                 <p class="mb-1"><b>Lượt xem:</b> 100.000</p>
-                                <button class="basic-btn basic-btn--green">Theo dõi</button>
-                                <button class="basic-btn basic-btn--red">Bỏ theo dõi</button>
+                                <c:if test="${user != null}">
+                                    <button data-action="unfollow" data-id="${novel.id}"
+                                            class="basic-btn basic-btn--red ${isFavourite ? "" : "hidden"}">
+                                        <i class="fas fa-times"></i>
+                                        Bỏ theo dõi
+                                    </button>
+                                    <button data-action="follow" data-id="${novel.id}"
+                                            class="basic-btn basic-btn--green ${isFavourite ? "hidden" : ""}">
+                                        <i class="fas fa-heart"></i>
+                                        Theo dõi
+                                    </button>
+                                </c:if>
                             </div>
                         </div>
 
@@ -105,5 +117,7 @@
 
 <!-- Bootstrap -->
 <%@ include file="layout/boostrap_js.jsp" %>
+
+<script src="/js/personal_interest.js"></script>
 </body>
 </html>
