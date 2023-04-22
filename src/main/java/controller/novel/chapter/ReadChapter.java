@@ -68,7 +68,7 @@ public class ReadChapter extends HttpServlet {
 
             request.setAttribute("novel", novel);
             request.setAttribute("volume", chapter.getBelongVolume());
-            request.setAttribute("chapter", chapter);
+            request.setAttribute("currentChapter", chapter);
             request.setAttribute("nextChapter", nextChapter);
             request.setAttribute("previousChapter", previousChapter);
 
