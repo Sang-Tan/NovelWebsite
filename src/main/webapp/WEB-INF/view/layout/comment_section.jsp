@@ -1,8 +1,22 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%--@elvariable id="user" type="model.User"--%>
 <%--@elvariable id="reqChapter" type="model.Chapter"--%>
 <%--@elvariable id="commentLimit" type="java.lang.Integer"--%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%--@elvariable id="RestrictionService" type="service.RestrictionService.class"--%>
+<%@page import="service.RestrictionService" %>
+
+<%--@elvariable id="Restriction" type="model.Restriction.class"--%>
+<%@page import="model.intermediate.Restriction" %>
+
+<%--@elvariable id="postCommentAllowed" type="boolean"--%>
+<c:set var="postCommentAllowed"
+       value="${(user != null) &&
+       (RestrictionService.getUnexpiredRestriction(user.id, Restriction.TYPE_COMMENT) == null)}"
+       scope="request"/>
+
 <section class="basic-section">
     <header class="basic-section__header">
         <h5>Bình luận</h5>
@@ -21,6 +35,9 @@
                        data-target="#register-modal">Tạo
                         tài khoản</a>
                     để có thể bình luận</p>
+            </c:when>
+            <c:when test="${postCommentAllowed != true}">
+                <p>Bạn đã bị cấm bình luận</p>
             </c:when>
 
             <c:otherwise>

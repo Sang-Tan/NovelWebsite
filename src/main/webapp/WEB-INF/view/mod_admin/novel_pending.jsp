@@ -145,7 +145,7 @@
             </div>
             <form action="/mod/duyet-truyen" method="get">
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="basic-btn basic-btn--red" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">Đóng</button>
                     <button type="submit" class="basic-btn basic-btn--olive">OK</button>
                     <input hidden name="action" value="reject" type="text">
                     <input hidden name="idNovel" type="text" class="idNovel">
@@ -168,7 +168,7 @@
             </div>
             <form action="/mod/duyet-truyen" method="get">
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="basic-btn basic-btn--red" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">Đóng</button>
                     <button type="submit" class="basic-btn basic-btn--olive">OK</button>
                     <input hidden name="action" value="reject" type="text">
                     <input hidden name="idNovel" type="text" class="idNovel">
@@ -191,7 +191,7 @@
             </div>
             <form action="/mod/duyet-truyen" method="get">
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="basic-btn basic-btn--red" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">Đóng</button>
                     <button type="submit" class="basic-btn basic-btn--olive">OK</button>
                     <input hidden name="action" value="reject" type="text">
                     <input hidden name="idChapter" type="text" class="idChapter">
@@ -201,7 +201,8 @@
     </div>
 </div>
 <!--Modal approve chapter-->
-<div class="modal fade" id="approveChapterModal" tabindex="-1" aria-labelledby="staticBackdropLabel1" aria-hidden="true">
+<div class="modal fade" id="approveChapterModal" tabindex="-1" aria-labelledby="staticBackdropLabel1"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -214,7 +215,7 @@
             </div>
             <form action="/mod/duyet-truyen" method="get">
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="basic-btn basic-btn--red" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">Đóng</button>
                     <button type="submit" class="basic-btn basic-btn--olive">OK</button>
                     <input hidden name="action" value="reject" type="text">
                     <input hidden name="idChapter" type="text" class="idChapter">

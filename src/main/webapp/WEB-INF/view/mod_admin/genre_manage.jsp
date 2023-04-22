@@ -13,7 +13,7 @@
     <%@include file="/WEB-INF/view/layout/basic_stylesheet.jsp" %>
     <link rel="stylesheet" href="/css/novel_detail.css">
     <style>
-        .genre-item:hover{
+        .genre-item:hover {
             color: #3d9970;
         }
     </style>
@@ -34,8 +34,9 @@
 
                 <div class="d-flex mb-3" style="flex-wrap: wrap">
                     <c:forEach var="genre" items="${genreList}" varStatus="status">
-                        <div class="genre-item" style="background-color: var(--light-gray); margin-bottom: 10px">
-                            <a class="genre-link">${genre.getName()}
+                        <div style="background-color: var(--light-gray); padding: 0.25rem;
+                        margin-bottom: 10px; border-radius: 0.25rem; margin-right: 1rem;">
+                            <a>${genre.getName()}
                                 <button class="basic-btn basic-btn--olive"
                                         data-toggle="modal" data-target="#editModal"
                                         onclick="showEditForm(${genre.getId()}, '${genre.getName()}')">
@@ -67,7 +68,7 @@
                 </div>
                 <form action="/admin/genre-manage" method="post">
                     <div class="modal-footer justify-content-center">
-                        <button type="button" class="basic-btn basic-btn--olive" data-bs-dismiss="modal">Đóng</button>
+                        <button type="button" class="basic-btn basic-btn--olive" data-dismiss="modal">Đóng</button>
                         <button type="submit" class="basic-btn basic-btn--red">Xoá</button>
                         <input hidden name="id" type="text" id="idDelete">
                         <input hidden name="action" value="delete" type="text" id="">
@@ -89,7 +90,7 @@
                 <form action="/admin/genre-manage" method="post">
                     <div class="modal-body">
                         <label>Tên thể loại</label>
-                        <input type="text" name="genreName" class="w-100" placeholder="Nhập tên thể loại">
+                        <input type="text" name="genreName" class="w-100" placeholder="Nhập tên thể loại" required>
                     </div>
                     <div class="modal-footer justify-content-center">
                         <button type="reset" class="basic-btn basic-btn--red" data-bs-dismiss="modal">Reset</button>
@@ -100,12 +101,12 @@
             </div>
         </div>
     </div>
-    <!--Modal create-->
+    <!--Modal edit-->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title title title--bold" id="staticBackdropLabel2">Thêm thể loại</h5>
+                    <h5 class="modal-title title title--bold" id="staticBackdropLabel2">Sửa thể loại</h5>
                     <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
                        style="font-size: x-large"></i>
                 </div>
@@ -115,7 +116,7 @@
                         <label for="idUpdate"></label><input id="idUpdate" name="idUpdate" hidden>
                         <label for="genreNameUpdate">Tên thể loại</label>
                         <input type="text" id="genreNameUpdate" name="genreName" class="w-100"
-                               placeholder="Nhập tên thể loại">
+                               placeholder="Nhập tên thể loại" required>
                     </div>
                     <div class="modal-footer justify-content-center">
                         <button type="reset" class="basic-btn basic-btn--red" data-bs-dismiss="modal">Reset</button>

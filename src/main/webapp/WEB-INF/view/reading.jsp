@@ -1,6 +1,6 @@
-<%--@elvariable id="novel" type="model.Novel"--%>
+<%--@elvariable id="reqNovel" type="model.Novel"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--@elvariable id="currentChapter" type="model.Chapter"--%>
+<%--@elvariable id="reqChapter" type="model.Chapter"--%>
 <%--@elvariable id="previousChapter" type="model.Chapter"--%>
 <%--@elvariable id="nextChapter" type="model.Chapter"--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>

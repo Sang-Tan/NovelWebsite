@@ -217,6 +217,24 @@ a.basic-btn--maroon:hover {
     color: var(--white);
 }
 
+.basic-btn--gray {
+    background-color: var(--gray);
+    color: var(--white);
+}
+
+a.basic-btn--gray:hover {
+    color: var(--white);
+}
+
+.basic-btn--blue {
+    background-color: var(--blue);
+    color: var(--white);
+}
+
+a.basic-btn--blue:hover {
+    color: var(--white);
+}
+
 .basic-btn--primary {
     background-color: var(--blue);
     color: var(--white);
@@ -225,6 +243,7 @@ a.basic-btn--maroon:hover {
 a.basic-btn--primary:hover {
     color: var(--white);
 }
+
 
 /*Upload button*/
 .upload-btn-wrapper {
@@ -501,8 +520,10 @@ a.basic-btn--primary:hover {
 }
 
 .cmt-detail {
-    /* display: inline-block; */
+    display: block;
+    hyphens: auto;
     overflow: hidden;
+    overflow-wrap: break-word;
     background-color: var(--silver);
     padding: 0.25rem 0.5rem;
     border-radius: 0.2rem;
@@ -645,9 +666,17 @@ ul.tree-list,
 }
 
 .rpt-detail {
+    white-space: nowrap;
+    display: block;
+    hyphens: auto;
     overflow: hidden;
+    overflow-wrap: break-word;
     background-color: var(--light-gray);
     padding: 0.25rem 0.5rem;
     border-radius: 0.2rem;
     text-decoration: none !important;
+}
+
+.swal2-popup {
+    font-family: 'Open Sans', sans-serif;
 }
