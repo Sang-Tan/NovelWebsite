@@ -73,4 +73,13 @@ public class StringUtils {
             return -1;
         }
     }
+    public static String removeSpecialCharacter(String str)
+    {
+        String specialCharsRegex = "[^a-zA-Z0-9\s]";
+        return str.replaceAll(specialCharsRegex, "");
+    }
+    public static String removeDuplicateDash(String str)
+    {
+        return str.replaceAll("^-+$", "-").replaceAll("^-", "").replaceAll("-$", "");
+    }
 }
