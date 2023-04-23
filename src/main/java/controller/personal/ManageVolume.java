@@ -6,6 +6,8 @@ import model.Chapter;
 import model.Novel;
 import model.User;
 import model.Volume;
+import model.intermediate.Restriction;
+import service.RestrictionService;
 import service.upload.NovelManageService;
 
 import javax.servlet.ServletException;
@@ -17,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @MultipartConfig(maxFileSize = 1024 * 1024 * 2) //2MB
 @WebServlet("/ca-nhan/tap-truyen/*")
@@ -28,6 +32,14 @@ public class ManageVolume extends HttpServlet {
             if (!validateOwner(req, resp)) {
                 return;
             }
+
+            User owner = (User) req.getAttribute("user");
+            List<String> warnings = new ArrayList<>();
+            if (RestrictionService.getUnexpiredRestriction(owner.getId(), Restriction.TYPE_NOVEL) != null) {
+                warnings.add("Bạn đang bị cấm đăng truyện nên không thể đăng cũng như chỉnh sửa truyện");
+            }
+            req.setAttribute("warnings", warnings);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -50,7 +62,15 @@ public class ManageVolume extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             setRequestAttributes(req, resp);
+
+            User owner = (User) req.getAttribute("user");
             if (!validateOwner(req, resp)) {
+                return;
+            }
+
+            if (RestrictionService.getUnexpiredRestriction(owner.getId(), Restriction.TYPE_NOVEL) != null) {
+                req.setAttribute("errorMessage", "Bạn đã bị cấm đăng truyện nên không thể thực hiện thao tác này");
+                req.getRequestDispatcher("/WEB-INF/view/personal/error_page.jsp").forward(req, resp);
                 return;
             }
 
