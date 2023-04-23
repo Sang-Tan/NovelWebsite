@@ -3,7 +3,8 @@ package controller.novel;
 import model.Genre;
 import model.Novel;
 import repository.GenreRepository;
-import service.Pagination.Paginator;
+import core.pagination.Paginator;
+import service.PagingService;
 import service.validator.NovelSearchService;
 
 import javax.servlet.ServletException;
@@ -119,7 +120,7 @@ public class SearchNovels extends HttpServlet {
             if (pagingUrl.contains("page=")) {
                 pagingUrl = pagingUrl.substring(0, pagingUrl.indexOf("&page="));
             }
-            request.setAttribute("pageItems", paginator.getActivePageItems(pagingUrl));
+            request.setAttribute("pageItems", PagingService.getActivePageItems(pagingUrl, paginator));
             request.getRequestDispatcher("/WEB-INF/view/search_novel.jsp").forward(request, response);
         } catch (Exception e) {
             response.setStatus(500);
@@ -129,6 +130,3 @@ public class SearchNovels extends HttpServlet {
     }
 
 }
-
-
-

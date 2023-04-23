@@ -3,10 +3,10 @@
 
 <div class="pagination_wrap">
 
-    <%--@elvariable id="paginator" type="service.Pagination.Paginator"--%>
+    <%--@elvariable id="paginator" type="core.pagination.Paginator"--%>
     <nav class="mt-1">
         <ul class="d-flex justify-content-end">
-            <%--@elvariable id="pageItems" type="java.util.HashSet<service.Pagination.PageItem>"--%>
+            <%--@elvariable id="pageItems" type="java.util.HashSet<core.pagination.PageItem>"--%>
             <c:forEach items="${pageItems}" var="pageItem">
                 <li class="page-list__item <c:if
                         test="${pageItem.active}"> active </c:if>
