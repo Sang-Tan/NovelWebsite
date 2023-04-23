@@ -34,13 +34,13 @@
         </c:when>
         <c:otherwise>
             <a class="rd_sd-button_item"
-               href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${previousChapter.id}-${URLSlugification.sluging(previousChapter.name)}">
+               href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${previousChapter.id}-${URLSlugification.sluging(previousChapter.name)}">
                 <i class="fas fa-backward"></i>
             </a>
         </c:otherwise>
     </c:choose>
 
-    <a class="rd_sd-button_item" href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}">
+    <a class="rd_sd-button_item" href="/truyen/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}">
         <i class="fas fa-home"></i>
     </a>
     <a class="rd_sd-button_item" onclick="switchChaptersMode()"><i class="fas fa-info"></i></a>
@@ -52,7 +52,7 @@
         </c:when>
         <c:otherwise>
             <a class="rd_sd-button_item"
-               href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${nextChapter.id}-${URLSlugification.sluging(nextChapter.name)}">
+               href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${nextChapter.id}-${URLSlugification.sluging(nextChapter.name)}">
                 <i class="fas fa-forward"></i>
             </a>
         </c:otherwise>
@@ -61,37 +61,37 @@
 <section class="sidebar rdtoggle" id="chapters" aria-labelledby="...">
     <main class="rdtoggle_body">
         <header class="rd_sidebar-header clear">
-            <a class="img" href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}"
-               style="background: url('${novel.image}') no-repeat"></a>
+            <a class="img" href="/truyen/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}"
+               style="background: url('${reqNovel.image}') no-repeat"></a>
             <div class="rd_sidebar-name">
                 <h5>
-                    <a href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}">${StringUtils.truncate(novel.name, 35)}</a>
+                    <a href="/truyen/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}">${StringUtils.truncate(reqNovel.name, 35)}</a>
                 </h5>
-                <small><i class="fas fa-pen"></i>${StringUtils.truncate(novel.authorName, 15)}</small>
+                <small><i class="fas fa-pen"></i>${StringUtils.truncate(reqNovel.authorName, 15)}</small>
             </div>
         </header>
         <ul id="chap_list" class="unstyled">
-            <c:forEach items="${novel.volumes}" var="volume">
+            <c:forEach items="${reqNovel.volumes}" var="volume">
                 <c:if test="${VolumeService.getFirstApprovedChapter(volume.id) != null}">
                     <c:choose>
-                        <c:when test="${volume.id == currentChapter.volumeId}">
+                        <c:when test="${volume.id == reqChapter.volumeId}">
                             <li class="current"><a
-                                    href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${VolumeService.getFirstApprovedChapter(volume.id).id}-${URLSlugification.sluging(VolumeService.getFirstApprovedChapter(volume.id).name)}">${StringUtils.truncate(volume.name, 120)}</a>
+                                    href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${VolumeService.getFirstApprovedChapter(volume.id).id}-${URLSlugification.sluging(VolumeService.getFirstApprovedChapter(volume.id).name)}">${StringUtils.truncate(volume.name, 120)}</a>
                             </li>
                             <ul class="sub-chap_list unstyled">
                                 <c:forEach items="${volume.chapters}" var="chapter">
                                     <c:if test="${chapter.approvalStatus.equals(Chapter.APPROVE_STATUS_APPROVED)}">
                                         <c:choose>
-                                            <c:when test="${chapter.id == currentChapter.id}">
+                                            <c:when test="${chapter.id == reqChapter.id}">
                                                 <li class="current">
-                                                    <a href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">
+                                                    <a href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">
                                                             ${StringUtils.truncate(chapter.name, 50)}
                                                     </a>
                                                 </li>
                                             </c:when>
                                             <c:otherwise>
                                                 <li class="">
-                                                    <a href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">
+                                                    <a href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">
                                                             ${StringUtils.truncate(chapter.name, 50)}
                                                     </a>
                                                 </li>
@@ -104,7 +104,7 @@
                         </c:when>
                         <c:otherwise>
                             <li class=""><a
-                                    href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${volume.chapters[0].id}-${URLSlugification.sluging(volume.chapters[0].name)}">${StringUtils.truncate(volume.name, 50)}</a>
+                                    href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${volume.chapters[0].id}-${URLSlugification.sluging(volume.chapters[0].name)}">${StringUtils.truncate(volume.name, 50)}</a>
                             </li>
                         </c:otherwise>
                     </c:choose>
@@ -116,11 +116,11 @@
 <div class="container pt-3">
     <div class="reading-content">
         <div class="title-top" style="padding-top: 20px">
-            <h2 class="text-center">${currentChapter.belongVolume.name}</h2>
-            <h4 class="text-center">${currentChapter.name}</h4>
+            <h2 class="text-center">${reqChapter.belongVolume.name}</h2>
+            <h4 class="text-center">${reqChapter.name}</h4>
         </div>
         <main class="chapter-content">
-            ${HTMLParser.wrapEachLineWithTag(currentChapter.content,"p")}
+            ${HTMLParser.wrapEachLineWithTag(reqChapter.content,"p")}
         </main>
         <div class="d-flex justify-content-between mb-3">
             <c:choose>
@@ -130,7 +130,7 @@
                     </a>
                 </c:when>
                 <c:otherwise>
-                    <a href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${previousChapter.id}-${URLSlugification.sluging(previousChapter.name)}"
+                    <a href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${previousChapter.id}-${URLSlugification.sluging(previousChapter.name)}"
                        class="basic-btn basic-btn--olive"
                        style="min-width: 25%;">
                         Chương trước
@@ -147,7 +147,7 @@
                     </a>
                 </c:when>
                 <c:otherwise>
-                    <a href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${nextChapter.id}-${URLSlugification.sluging(nextChapter.name)}"
+                    <a href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${nextChapter.id}-${URLSlugification.sluging(nextChapter.name)}"
                        class="basic-btn basic-btn--olive"
                        style="min-width: 25%;">
                         Chương sau
@@ -165,7 +165,7 @@
             } else {
                 chapters.classList.add("on");
             }
-        };
+        }
     </script>
 
     <%--Boostrap script--%>
