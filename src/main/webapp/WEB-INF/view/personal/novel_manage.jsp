@@ -1,6 +1,8 @@
 <%--@elvariable id="managingAction" type="core.metadata.ManageNovelAction"--%>
-<%--@elvariable id="ManageNovelAction" type="core.metadata.ManageNovelAction.class"--%>
 <%--@elvariable id="error" type="java.lang.String"--%>
+<%--@elvariable id="warnings" type="java.util.List<java.lang.String>"--%>
+
+<%--@elvariable id="ManageNovelAction" type="core.metadata.ManageNovelAction.class"--%>
 <%@ page import="core.metadata.ManageNovelAction" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -13,8 +15,12 @@
 </head>
 <body style="background-color: var(--silver)">
 <%@include file="layout/header.jsp" %>
-
 <div class="container mt-3">
+    <c:forEach items="${warnings}" var="warning">
+        <div class="alert alert-warning mb-3" role="alert">
+                ${warning}
+        </div>
+    </c:forEach>
     <c:if test="${error != null}">
         <div class="alert alert-danger mb-3" role="alert">
                 ${error}

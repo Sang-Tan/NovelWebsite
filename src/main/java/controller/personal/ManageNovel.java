@@ -6,7 +6,9 @@ import model.Genre;
 import model.Novel;
 import model.User;
 import model.Volume;
+import model.intermediate.Restriction;
 import repository.GenreRepository;
+import service.RestrictionService;
 import service.upload.NovelManageService;
 
 import javax.servlet.ServletException;
@@ -18,10 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @MultipartConfig(maxFileSize = 1024 * 1024 * 2) //2MB
 @WebServlet("/ca-nhan/tieu-thuyet/*")
@@ -38,7 +37,19 @@ public class ManageNovel extends HttpServlet {
         try {
             setRequestAttributes(req, resp);
 
-            checkValidOwner(req, resp);
+            List<String> warnings = new ArrayList<>();
+
+            User owner = (User) req.getAttribute("user");
+            int novelId = getNovelId(req);
+            if (!NovelManageService.checkNovelOwnership(owner, novelId)) {
+                resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+            if (RestrictionService.getUnexpiredRestriction(owner.getId(), Restriction.TYPE_NOVEL) != null) {
+                warnings.add("Bạn đang bị cấm đăng truyện nên không thể đăng cũng như chỉnh sửa truyện");
+            }
+
+            req.setAttribute("warnings", warnings);
 
             String action = req.getParameter("action");
 
@@ -60,8 +71,17 @@ public class ManageNovel extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             setRequestAttributes(req, resp);
-
-            checkValidOwner(req, resp);
+            User owner = (User) req.getAttribute("user");
+            int novelId = getNovelId(req);
+            if (!NovelManageService.checkNovelOwnership(owner, novelId)) {
+                resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+            if (RestrictionService.getUnexpiredRestriction(owner.getId(), Restriction.TYPE_NOVEL) != null) {
+                req.setAttribute("errorMessage", "Bạn đã bị cấm đăng truyện nên không thể thực hiện thao tác này");
+                req.getRequestDispatcher("/WEB-INF/view/personal/error_page.jsp").forward(req, resp);
+                return;
+            }
 
             String action = req.getParameter("action");
             if (action == null || action.isEmpty()) {
@@ -187,22 +207,6 @@ public class ManageNovel extends HttpServlet {
         }
         resp.sendRedirect("/ca-nhan/tieu-thuyet/" + novelId);
 
-    }
-
-
-    private void checkValidOwner(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int novelId = getNovelId(req);
-        User performer = (User) req.getAttribute("user");
-        try {
-            if (NovelManageService.checkNovelOwnership(performer, novelId) == false) {
-                resp.sendError(403);
-                return;
-            }
-        } catch (SQLException e) {
-            resp.sendError(500);
-            BasicLogger.getInstance().getLogger().warning(e.getMessage());
-            return;
-        }
     }
 
     private void setRequestAttributes(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
