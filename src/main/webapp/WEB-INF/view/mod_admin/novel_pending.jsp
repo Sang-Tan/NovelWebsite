@@ -6,6 +6,11 @@
   Time: 10:34 SA
   To change this template use File | Settings | File Templates.
 --%>
+<%--@elvariable id="StringUtils" type="core.StringUtils.class"--%>
+<%@ page import="service.URLSlugification" %>
+<%--@elvariable id="URLSlugification" type="service.URLSlugification.class"--%>
+<%--@elvariable id="chapter" type="model.Chapter"--%>
+<%--@elvariable id="novel" type="model.Novel"--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -53,7 +58,7 @@
                                                 <td>${novel.owner.displayName}</td>
                                                 <td>${novel.createdTime}</td>
                                                 <td>
-                                                    <a href="/ca-nhan/tap-truyen/${novel.id}" target="_blank">
+                                                    <a href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}" target="_blank">
                                                         <button class="basic-btn basic-btn--olive"
                                                                 style="background-color: dodgerblue; color: white">
                                                             <i class="fas fa-external-link-alt"></i> Chi tiết
@@ -61,12 +66,12 @@
                                                     </a>
                                                     <button class="basic-btn basic-btn--red"
                                                             data-toggle="modal" data-target="#rejectNovelModal"
-                                                            onclick="showNovelForm(${novel.getId()}, '${novel.getName()}')">
+                                                            onclick="showNovelForm(${novel.id}, '${novel.name}')">
                                                         <i class="fas fa-times-circle"></i> Từ chối
                                                     </button>
                                                     <button class="basic-btn basic-btn--olive"
                                                             data-toggle="modal" data-target="#approveNovelModal"
-                                                            onclick="showNovelForm(${novel.getId()}, '${novel.getName()}')">
+                                                            onclick="showNovelForm(${novel.id}, '${novel.name}')">
                                                         <i class="fas fa-check"></i> Duyệt
                                                     </button>
                                                 </td>
@@ -93,12 +98,13 @@
                                         <tr class="text-center">
                                             <td style="overflow: hidden; text-overflow: ellipsis">${chapter.name}</td>
                                             <td style="overflow: hidden; text-overflow: ellipsis">
-                                                    ${chapter.getBelongVolume().getBelongNovel().name}
+                                                    ${chapter.belongVolume.belongNovel.name}
                                             </td>
-                                            <td>${chapter.getBelongVolume().getBelongNovel().owner.displayName}</td>
+                                            <td>${chapter.belongVolume.belongNovel.owner.displayName}</td>
                                             <td>${chapter.modifyTime}</td>
                                             <td>
-                                                <a href="/ca-nhan/chuong-truyen/${chapter.id}" target="_blank">
+                                                <a href="/doc-tieu-thuyet/${chapter.belongVolume.belongNovel.id}-${URLSlugification.sluging(chapter.belongVolume.belongNovel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}"
+                                                   target="_blank">
                                                     <button class="basic-btn basic-btn--olive"
                                                             style="background-color: dodgerblue; color: white">
                                                         <i class="fas fa-external-link-alt"></i> Chi tiết
@@ -106,12 +112,12 @@
                                                 </a>
                                                 <button class="basic-btn basic-btn--red"
                                                         data-toggle="modal" data-target="#rejectChapterModal"
-                                                        onclick="showChapterForm(${chapter.getId()}, '${chapter.getName()}')">
+                                                        onclick="showChapterForm(${chapter.id}, '${chapter.name}')">
                                                     <i class="fas fa-times-circle"></i> Từ chối
                                                 </button>
                                                 <button class="basic-btn basic-btn--olive"
                                                         data-toggle="modal" data-target="#approveChapterModal"
-                                                        onclick="showChapterForm(${chapter.getId()}, '${chapter.getName()}')">
+                                                        onclick="showChapterForm(${chapter.id}, '${chapter.name}')">
                                                     <i class="fas fa-check"></i> Duyệt
                                                 </button>
                                             </td>

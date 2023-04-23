@@ -9,6 +9,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="stylesheet" href="/css/novel_detail.css">
+<style>
+    .modal:nth-of-type(even) {
+        z-index: 1062 !important;
+    }
+    .modal-backdrop.show:nth-of-type(even) {
+        z-index: 1061 !important;
+    }
+</style>
 <c:forEach items="${reqRootComments}" var="rootComment">
     <div class="cmt-group">
         <div class="cmt-group__item">
