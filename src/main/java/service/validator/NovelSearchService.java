@@ -2,7 +2,8 @@ package service.validator;
 
 import model.Novel;
 import repository.NovelRepository;
-import service.Pagination.Paginator;
+import core.pagination.Paginator;
+import service.PagingService;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -137,7 +138,7 @@ public class NovelSearchService {
         paginator = new Paginator(NovelRepository.getInstance().countNovels(sql, params), page);
         // order
         sql += " " + generateSortCondition(sortAttribute);
-        sql += " " + paginator.generatePaginationCondition(params);
+        sql += " " + PagingService.generatePaginationCondition(params, paginator);
         return NovelRepository.getInstance().getByConditionString(sql, params);
     }
 }

@@ -1,4 +1,4 @@
-package service.Pagination;
+package core.pagination;
 
 public class PageItem {
     public String url;
