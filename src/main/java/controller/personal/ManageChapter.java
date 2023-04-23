@@ -6,6 +6,8 @@ import model.Chapter;
 import model.Novel;
 import model.User;
 import model.Volume;
+import model.intermediate.Restriction;
+import service.RestrictionService;
 import service.upload.NovelManageService;
 
 import javax.servlet.ServletException;
@@ -15,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @WebServlet("/ca-nhan/chuong-truyen/*")
@@ -23,9 +27,17 @@ public class ManageChapter extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             setRequestAttributes(req, resp);
+            User owner = (User) req.getAttribute("user");
+            List<String> warnings = new ArrayList<>();
             if (!checkValidOwner(req, resp)) {
                 return;
             }
+
+            if (RestrictionService.getUnexpiredRestriction(owner.getId(), Restriction.TYPE_NOVEL) != null) {
+                warnings.add("Bạn đang bị cấm đăng truyện nên không thể đăng cũng như chỉnh sửa truyện");
+            }
+
+            req.setAttribute("warnings", warnings);
         } catch (SQLException e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             BasicLogger.getInstance().getLogger().warning(e.getMessage());
@@ -42,9 +54,19 @@ public class ManageChapter extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             setRequestAttributes(req, resp);
+
+            User owner = (User) req.getAttribute("user");
+
             if (!checkValidOwner(req, resp)) {
                 return;
             }
+
+            if (RestrictionService.getUnexpiredRestriction(owner.getId(), Restriction.TYPE_NOVEL) != null) {
+                req.setAttribute("errorMessage", "Bạn đã bị cấm đăng truyện nên không thể thực hiện thao tác này");
+                req.getRequestDispatcher("/WEB-INF/view/personal/error_page.jsp").forward(req, resp);
+                return;
+            }
+
 
             String action = req.getParameter("action");
             if (action == null || action.isEmpty()) {
