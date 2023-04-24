@@ -1,7 +1,6 @@
 package core.database;
 
 import core.DatabaseObject;
-import model.Chapter;
 
 import javax.persistence.*;
 import java.beans.IntrospectionException;
@@ -347,6 +346,12 @@ public abstract class BaseRepository<T extends DatabaseObject> {
         MySQLdb.getInstance().execute(sql, parameters);
     }
 
+    /**
+     * Delete the object from the database by primary key
+     *
+     * @param object
+     * @throws SQLException
+     */
     public void delete(T object) throws SQLException {
         SqlRecord primaryKeyRecord = getPrimaryKeyMap(object);
         delete(primaryKeyRecord);

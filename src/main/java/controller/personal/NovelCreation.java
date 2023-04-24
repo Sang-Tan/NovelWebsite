@@ -3,7 +3,9 @@ package controller.personal;
 import io.github.cdimascio.dotenv.Dotenv;
 import model.Novel;
 import model.User;
+import model.intermediate.Restriction;
 import repository.GenreRepository;
+import service.RestrictionService;
 import service.upload.NovelManageService;
 
 import javax.servlet.ServletException;
@@ -27,6 +29,17 @@ public class NovelCreation extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 
         try {
+            User owner = (User) request.getAttribute("user");
+            if (owner == null) {
+                response.setStatus(401);
+                return;
+            }
+            if (RestrictionService.getUnexpiredRestriction(owner.getId(), Restriction.TYPE_NOVEL) != null) {
+                request.setAttribute("errorMessage", "Bạn đang bị cấm đăng truyện");
+                request.getRequestDispatcher("/WEB-INF/view/personal/error_page.jsp").forward(request, response);
+                return;
+            }
+
             List genres = GenreRepository.getInstance().getAll();
             request.setAttribute("genres", genres);
 
@@ -45,6 +58,10 @@ public class NovelCreation extends HttpServlet {
             User owner = (User) request.getAttribute("user");
             if (owner == null) {
                 response.setStatus(401);
+                return;
+            }
+            if (RestrictionService.getUnexpiredRestriction(owner.getId(), Restriction.TYPE_NOVEL) != null) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Bạn đang bị cấm đăng truyện");
                 return;
             }
 
