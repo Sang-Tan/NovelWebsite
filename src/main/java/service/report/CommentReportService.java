@@ -2,7 +2,8 @@ package service.report;
 
 import model.CommentReport;
 import repository.CommentReportRepository;
-import service.Pagination.Paginator;
+import core.pagination.Paginator;
+import service.PagingService;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -35,8 +36,8 @@ public class CommentReportService {
         List<Object> params = new ArrayList<>();
         List<String> conditionsSQL = new ArrayList<>();
         sql = conditionsSQL.size() > 0 ? String.join(" AND ", conditionsSQL) : "1=1";
-        paginator = new Paginator(CommentReportRepository.getInstance().countCommentReports(sql, params), page);
-        sql += " " + paginator.generatePaginationCondition(params);
+        paginator = new Paginator(CommentReportRepository.getInstance().countCommentReports(sql, params), page, 4);
+        sql += " " + PagingService.generatePaginationCondition(params, paginator);
         return CommentReportRepository.getInstance().getAllCommentReport(sql, params);
     }
 

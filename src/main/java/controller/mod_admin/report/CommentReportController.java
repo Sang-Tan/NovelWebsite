@@ -2,10 +2,11 @@ package controller.mod_admin.report;
 
 import core.logging.BasicLogger;
 import core.metadata.ReportSelection;
+import core.pagination.Paginator;
 import model.CommentReport;
 import org.json.JSONArray;
 import repository.CommentReportRepository;
-import service.Pagination.Paginator;
+import service.PagingService;
 import service.report.CommentReportService;
 
 import javax.servlet.RequestDispatcher;
@@ -81,8 +82,10 @@ public class CommentReportController extends HttpServlet {
         String pagingUrl = "/mod/bao-cao-binh-luan" + req.getQueryString();
         if (pagingUrl.contains("page=")) {
             pagingUrl = pagingUrl.substring(0, pagingUrl.indexOf("&page="));
+        } else if (req.getQueryString() == null){
+            pagingUrl = "/mod/bao-cao-binh-luan";
         }
-        req.setAttribute("pageItems", paginator.getActivePageItems(pagingUrl));
+        req.setAttribute("pageItems", PagingService.getActivePageItems(pagingUrl, paginator));
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/view/mod_admin/report/main_report_page.jsp");
         try {
             dispatcher.forward(req, resp);
