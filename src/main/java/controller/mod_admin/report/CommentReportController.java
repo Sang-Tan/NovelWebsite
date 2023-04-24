@@ -82,6 +82,8 @@ public class CommentReportController extends HttpServlet {
         String pagingUrl = "/mod/bao-cao-binh-luan" + req.getQueryString();
         if (pagingUrl.contains("page=")) {
             pagingUrl = pagingUrl.substring(0, pagingUrl.indexOf("&page="));
+        } else if (req.getQueryString() == null){
+            pagingUrl = "/mod/bao-cao-binh-luan";
         }
         req.setAttribute("pageItems", PagingService.getActivePageItems(pagingUrl, paginator));
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/view/mod_admin/report/main_report_page.jsp");
