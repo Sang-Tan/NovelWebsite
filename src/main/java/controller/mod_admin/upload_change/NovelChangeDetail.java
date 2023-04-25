@@ -25,8 +25,8 @@ public class NovelChangeDetail extends BaseChangeController {
 
         List<Pair<String, MediaObject>> newContents = new ArrayList<>();
         newContents.add(makeNewContentPair(MediaType.INLINE_TEXT, "Tên tiểu thuyết", novel.getName()));
-        newContents.add(makeNewContentPair(MediaType.MULTILINE_TEXT, "Tóm tắt", novel.getSummary()));
         newContents.add(makeNewContentPair(MediaType.IMAGE_URL, "Ảnh bìa", novel.getImage()));
+        newContents.add(makeNewContentPair(MediaType.MULTILINE_TEXT, "Tóm tắt", novel.getSummary()));
         return newContents;
     }
 
