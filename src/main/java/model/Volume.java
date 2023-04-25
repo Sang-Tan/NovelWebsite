@@ -4,8 +4,6 @@ import core.DatabaseObject;
 import core.logging.BasicLogger;
 import repository.ChapterRepository;
 import repository.NovelRepository;
-import repository.UserRepository;
-import repository.VolumeRepository;
 
 import javax.persistence.*;
 import java.sql.SQLException;
@@ -14,6 +12,9 @@ import java.util.List;
 @Entity
 @Table(name = "volumes", uniqueConstraints = {@UniqueConstraint(columnNames = {"novel_id", "order_index"})})
 public class Volume implements DatabaseObject {
+    public static final String APPROVE_STATUS_PENDING = "pending";
+    public static final String APPROVE_STATUS_REJECTED = "rejected";
+    public static final String APPROVE_STATUS_APPROVED = "approved";
     public static final String DEFAULT_IMAGE = "/images/default-cover.jpg";
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -32,6 +33,9 @@ public class Volume implements DatabaseObject {
     @ManyToOne
     @JoinColumn(name = "novel_id", referencedColumnName = "id", nullable = false)
     private Novel belongNovel;
+
+    @Column(name = "approval_status", nullable = false)
+    private String approvalStatus;
 
     public int getId() {
         return id;
@@ -101,5 +105,13 @@ public class Volume implements DatabaseObject {
 
     public void setBelongNovel(Novel belongNovel) {
         throw new UnsupportedOperationException("Set novel in volume entity is not supported");
+    }
+
+    public String getApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(String approvalStatus) {
+        this.approvalStatus = approvalStatus;
     }
 }
