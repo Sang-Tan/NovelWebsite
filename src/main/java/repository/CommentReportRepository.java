@@ -27,7 +27,7 @@ public class CommentReportRepository extends BaseRepository<CommentReport> {
     }
 
     public List<CommentReport> getAllCommentReport(String condition, List<Object> params) throws SQLException {
-        String sql = String.format("SELECT * FROM %s  GROUP BY comment_id ORDER BY report_time DESC LIMIT ? OFFSET ?", getTableName());
+        String sql = String.format("SELECT DISTINCT comment_id FROM %s ORDER BY report_time DESC LIMIT ? OFFSET ?", getTableName());
         sql += "";
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
         return mapObjects(records);
@@ -46,5 +46,11 @@ public class CommentReportRepository extends BaseRepository<CommentReport> {
             return (long) record.get("COUNT(id)");
         }
         return 0;
+    }
+
+    public void setCheckTime(int commentId) throws SQLException {
+        String sql = String.format("UPDATE %s SET check_time = CURRENT_TIMESTAMP WHERE comment_id = ?", getTableName());
+        MySQLdb.getInstance().execute(sql, List.of(commentId));
+
     }
 }

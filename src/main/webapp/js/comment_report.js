@@ -35,3 +35,15 @@ async function reportCommentForm(commentId, ownerName, ownerAvatar, ownerId, com
         });
     });
 }
+
+function commentReportChecked(){
+    let commentId = document.getElementById("commentId").value;
+    fetch(`/mod/bao-cao-binh-luan?action=checked&commentId=${commentId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    }).then(response => {
+        console.log(response);
+    });
+}

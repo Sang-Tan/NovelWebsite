@@ -101,11 +101,14 @@
 
                 </div>
             </div>
-            <input id="commentId" name="commentId" hidden>
             <div class="">
-                <button type="button" class="btn basic-btn--olive col-md-12" data-dismiss="modal">
-                    <i class="fas fa-check-circle"></i>
-                </button>
+                <form action="/mod/bao-cao-binh-luan?action=checked" style="margin-block-end: 0">
+                    <input id="commentId" name="commentId" hidden>
+                    <button type="button" class="btn basic-btn--olive col-md-12" data-dismiss="modal"
+                        onclick="commentReportChecked()">
+                        <i class="fas fa-check-circle"></i> Đã đọc
+                    </button>
+                </form>
             </div>
         </div>
     </div>
