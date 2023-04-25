@@ -128,6 +128,19 @@ a.black:hover {
     opacity: 0.4;
 }
 
+.paragraph-spacing-1 p {
+    margin-bottom: 1rem;
+}
+
+.paragraph-spacing-2 p {
+    margin-bottom: 2rem;
+}
+
+.paragraph-spacing-3 p {
+    margin-bottom: 3rem;
+}
+
+
 /*===================Button=======================*/
 
 .basic-btn {

@@ -78,3 +78,19 @@ ALTER TABLE novel_favourite
     ADD CONSTRAINT FK_Bookmark_Novel FOREIGN KEY (novel_id)
         REFERENCES novels (ID) ON DELETE CASCADE ON UPDATE CASCADE;
 
+ALTER TABLE novel_changes
+    ADD CONSTRAINT FK_NovelChange_Novel FOREIGN KEY (novel_id)
+        REFERENCES novels (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE volume_changes
+    ADD CONSTRAINT FK_VolumeChange_Volume FOREIGN KEY (volume_id)
+        REFERENCES volumes (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE chapter_changes
+    ADD CONSTRAINT FK_ChapterChange_Chapter FOREIGN KEY (chapter_id)
+        REFERENCES chapters (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+
+
