@@ -1,21 +1,24 @@
 package core.pagination;
 
 public class PageItem {
-    public String url;
     public String text;
+    public int page;
     public boolean active;
     public boolean isDisabled;
-    public PageItem(String url, String text, boolean active, boolean isDisabled) {
-        this.url = url;
+    public PageItem(int page, String text, boolean active, boolean isDisabled) {
         this.text = text;
         this.active = active;
         this.isDisabled = isDisabled;
+        this.page = page;
 
     }
-    public String getUrl() {
-        return url;
-    }
 
+    public int getPage() {
+        return page;
+    }
+    public void setPage(int page) {
+        this.page = page;
+    }
     public boolean isActive() {
         return active;
     }
@@ -24,9 +27,6 @@ public class PageItem {
     }
     public String getText() {
         return text;
-    }
-    public void setUrl(String url) {
-        this.url = url;
     }
     public void setActive(boolean active) {
         this.active = active;
