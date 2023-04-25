@@ -24,37 +24,45 @@
 </head>
 
 <body style="background-color: var(--silver);">
+
 <jsp:include page="layout/header_main.jsp"></jsp:include>
 <section id="side_icon" class="d-flex flex-column align-items-center none force-block-l">
     <c:choose>
         <c:when test="${previousChapter == null}">
-            <a class="rd_sd-button_item disabled" href="#">
+            <a class="button_item disabled" href="#">
                 <i class="fas fa-backward"></i>
             </a>
         </c:when>
         <c:otherwise>
-            <a class="rd_sd-button_item"
+            <a class="button_item"
                href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${previousChapter.id}-${URLSlugification.sluging(previousChapter.name)}">
                 <i class="fas fa-backward"></i>
             </a>
         </c:otherwise>
     </c:choose>
 
-    <a class="rd_sd-button_item" href="/truyen/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}">
+    <a class="button_item" href="/truyen/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}">
         <i class="fas fa-home"></i>
     </a>
-    <a id="add-bookmark" class="rd_sd-button_item" onclick="addBookmark()">
-        <i class="fas fa-bookmark"></i>
-    </a>
-    <a class="rd_sd-button_item" onclick="switchChaptersMode()"><i class="fas fa-info"></i></a>
+    <%--@elvariable id="user" type="model.User"--%>
+
+    <c:if test="${user != null}">
+        <a id="add-bookmark" onclick="addBookMark()" data-chapter-id="${reqChapter.id}" class="button_item" ${isBookMarkYet ? "hidden" : ""}>
+            <i class="fas fa-bookmark"></i>
+        </a>
+        <a id="delete-bookmark" onclick="deleteBookmark()" data-chapter-id="${reqChapter.id}" class="button_item" ${isBookMarkYet ? "" : "hidden"}>
+            <i class="far fa-bookmark"></i>
+        </a>
+    </c:if>
+    <a class="button_item" onclick="switchChaptersMode()"><i class="fas fa-info"></i></a>
     <c:choose>
         <c:when test="${nextChapter == null}">
-            <a class="disabled rd_sd-button_item">
+            <a class="disabled button_item">
                 <i class="fas fa-forward"></i>
             </a>
         </c:when>
         <c:otherwise>
-            <a class="rd_sd-button_item"
+            <a class="button_item"
                href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${nextChapter.id}-${URLSlugification.sluging(nextChapter.name)}">
                 <i class="fas fa-forward"></i>
             </a>
@@ -171,11 +179,9 @@
         }
     </script>
 
-    <%--Boostrap script--%>
-    <script>
-        <%@ include file="/js/bookmark_manage.js" %>
-    </script>
     <%@ include file="layout/boostrap_js.jsp" %>
+    <script src="/js/bookmark_manage.js"></script>
+
 </body>
 
 
