@@ -43,6 +43,9 @@
     <a class="rd_sd-button_item" href="/truyen/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}">
         <i class="fas fa-home"></i>
     </a>
+    <a id="add-bookmark" class="rd_sd-button_item" onclick="addBookmark()">
+        <i class="fas fa-bookmark"></i>
+    </a>
     <a class="rd_sd-button_item" onclick="switchChaptersMode()"><i class="fas fa-info"></i></a>
     <c:choose>
         <c:when test="${nextChapter == null}">
@@ -169,6 +172,11 @@
     </script>
 
     <%--Boostrap script--%>
+    <script>
+        <%@ include file="/js/bookmark_manage.js" %>
+    </script>
     <%@ include file="layout/boostrap_js.jsp" %>
 </body>
+
+
 </html>
