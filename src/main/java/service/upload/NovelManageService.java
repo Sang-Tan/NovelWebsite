@@ -41,6 +41,7 @@ public class NovelManageService {
     private static Volume createVirtualVolume(int novelID) {
         Volume volume = new Volume();
         volume.setName("Virtual");
+        volume.setApprovalStatus(Volume.APPROVE_STATUS_APPROVED);
         volume.setNovelId(novelID);
         return volume;
     }
