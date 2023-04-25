@@ -130,6 +130,3 @@ public class SearchNovels extends HttpServlet {
     }
 
 }
-
-
-

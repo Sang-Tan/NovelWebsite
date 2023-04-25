@@ -1,7 +1,6 @@
 package service;
 
-import static core.StringUtils.removeAccent;
-import static core.StringUtils.spaceToDash;
+import static core.StringUtils.*;
 
 public class URLSlugification {
     /**
@@ -11,7 +10,7 @@ public class URLSlugification {
      */
     public static String sluging(String str)
     {
-        return spaceToDash(removeAccent(str).toLowerCase());
+        return removeDuplicateDash(spaceToDash(removeSpecialCharacter(removeAccent(str)).toLowerCase()));
     }
     /**
      *

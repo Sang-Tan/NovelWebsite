@@ -1,5 +1,4 @@
 package service;
-
 import core.pagination.PageItem;
 import core.pagination.Paginator;
 
