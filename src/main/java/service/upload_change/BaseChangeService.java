@@ -43,13 +43,16 @@ public abstract class BaseChangeService<T1 extends INovelContent, T2 extends INo
         }
     }
 
-    public boolean canUpdateContent(int id) throws SQLException {
+    public boolean waitingForModeration(int id) throws SQLException {
         T2 change = getChangeByResourceId(id);
         String approvalStatus = getApprovalStatus(id);
         if (change == null && !approvalStatus.equals(APPROVAL_STATUS_PENDING)) {
-            return true;
+            return false;
         }
-        return false;
+        if (change != null && !approvalStatus.equals(APPROVAL_STATUS_APPROVED)) {
+            throw new RuntimeException("Invalid approval state");
+        }
+        return true;
     }
 
     public boolean canCreateChange(int id) throws SQLException {

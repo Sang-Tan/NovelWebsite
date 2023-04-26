@@ -42,19 +42,15 @@ public class ChapterChangeService extends BaseChangeService<Chapter, ChapterChan
         ChapterChange chapterChange = new ChapterChange();
         chapterChange.setChapterId(oldChapterInfo.getId());
 
-        boolean makeChange = false;
-
         if (!oldChapterInfo.getName().equals(newChapterInfo.getName())) {
             chapterChange.setName(newChapterInfo.getName());
-            makeChange = true;
         }
 
         if (!oldChapterInfo.getContent().equals(newChapterInfo.getContent())) {
             chapterChange.setContent(newChapterInfo.getContent());
-            makeChange = true;
         }
 
-        if (makeChange) {
+        if (chapterChange.getName() != null || chapterChange.getContent() != null) {
             ChapterChangeRepository.getInstance().insert(chapterChange);
         }
     }

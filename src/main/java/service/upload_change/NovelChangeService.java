@@ -42,24 +42,19 @@ public class NovelChangeService extends BaseChangeService<Novel, NovelChange> {
         NovelChange novelChange = new NovelChange();
         novelChange.setNovelId(oldNovelInfo.getId());
 
-        boolean makeChange = false;
-
         if (!oldNovelInfo.getName().equals(newNovelInfo.getName())) {
             novelChange.setName(newNovelInfo.getName());
-            makeChange = true;
         }
 
         if (!oldNovelInfo.getImage().equals(newNovelInfo.getImage())) {
             novelChange.setImage(newNovelInfo.getImage());
-            makeChange = true;
         }
 
         if (!oldNovelInfo.getSummary().equals(newNovelInfo.getSummary())) {
             novelChange.setSummary(newNovelInfo.getSummary());
-            makeChange = true;
         }
 
-        if (makeChange) {
+        if (novelChange.getName() != null || novelChange.getImage() != null || novelChange.getSummary() != null) {
             NovelChangeRepository.getInstance().insert(novelChange);
         }
 

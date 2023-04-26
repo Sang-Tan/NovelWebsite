@@ -42,20 +42,16 @@ public class VolumeChangeService extends BaseChangeService<Volume, VolumeChange>
     public void createChange(Volume oldVolumeInfo, Volume newVolumeInfo) throws SQLException {
         VolumeChange volumeChange = new VolumeChange();
         volumeChange.setVolumeId(oldVolumeInfo.getId());
-
-        boolean makeChange = false;
-
+        
         if (!oldVolumeInfo.getName().equals(newVolumeInfo.getName())) {
             volumeChange.setName(newVolumeInfo.getName());
-            makeChange = true;
         }
 
         if (!oldVolumeInfo.getImage().equals(newVolumeInfo.getImage())) {
             volumeChange.setImage(newVolumeInfo.getImage());
-            makeChange = true;
         }
 
-        if (makeChange) {
+        if (volumeChange.getName() != null || volumeChange.getImage() != null) {
             VolumeChangeRepository.getInstance().insert(volumeChange);
         }
 

@@ -114,7 +114,7 @@ public class NovelManageService {
             throw new IllegalArgumentException("Novel ID invalid");
         }
 
-        if (NovelChangeService.getInstance().canUpdateContent(newNovelInfo.getId()) == false) {
+        if (NovelChangeService.getInstance().waitingForModeration(newNovelInfo.getId())) {
             throw new IllegalArgumentException("This novel is not editable in current state");
         }
 
@@ -126,6 +126,9 @@ public class NovelManageService {
         if (novelInDb.getApprovalStatus().equals(Novel.APPROVE_STATUS_APPROVED)) {
             updateNovelInfoAndCreateChange(novelInDb, newNovelInfo, genres, image);
         } else {
+            if (novelInDb.getApprovalStatus().equals(Novel.APPROVE_STATUS_REJECTED)) {
+                novelInDb.setApprovalStatus(Novel.APPROVE_STATUS_PENDING);
+            }
             updateNovelInfoOnly(novelInDb, newNovelInfo, genres, image);
         }
     }
@@ -175,7 +178,7 @@ public class NovelManageService {
             throw new IllegalArgumentException("Volume ID invalid");
         }
 
-        if (!VolumeChangeService.getInstance().canUpdateContent(newVolumeInfo.getId())) {
+        if (VolumeChangeService.getInstance().waitingForModeration(newVolumeInfo.getId())) {
             throw new IllegalArgumentException("This volume is not editable in current state");
         }
         Volume volumeInDb = VolumeRepository.getInstance().getById(newVolumeInfo.getId());
@@ -186,6 +189,9 @@ public class NovelManageService {
         if (volumeInDb.getApprovalStatus().equals(Volume.APPROVE_STATUS_APPROVED)) {
             updateVolumeInfoAndCreateChange(volumeInDb, newVolumeInfo, image);
         } else {
+            if (volumeInDb.getApprovalStatus().equals(Volume.APPROVE_STATUS_REJECTED)) {
+                volumeInDb.setApprovalStatus(Volume.APPROVE_STATUS_PENDING);
+            }
             updateVolumeInfoOnly(volumeInDb, newVolumeInfo, image);
         }
     }
@@ -227,7 +233,7 @@ public class NovelManageService {
             throw new IllegalArgumentException("Chapter ID invalid");
         }
 
-        if (!ChapterChangeService.getInstance().canUpdateContent(newChapterInfo.getId())) {
+        if (ChapterChangeService.getInstance().waitingForModeration(newChapterInfo.getId())) {
             throw new IllegalArgumentException("This chapter is not editable in current state");
         }
 
@@ -239,6 +245,9 @@ public class NovelManageService {
         if (chapterInDb.getApprovalStatus().equals(Chapter.APPROVE_STATUS_APPROVED)) {
             updateChapterInfoAndCreateChange(chapterInDb, newChapterInfo);
         } else {
+            if (chapterInDb.getApprovalStatus().equals(Chapter.APPROVE_STATUS_REJECTED)) {
+                chapterInDb.setApprovalStatus(Chapter.APPROVE_STATUS_PENDING);
+            }
             updateChapterInfoOnly(chapterInDb, newChapterInfo);
         }
     }
