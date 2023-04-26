@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "novel_changes")
-public class NovelChange implements DatabaseObject {
+public class NovelChange implements DatabaseObject, INovelContentChange {
 
     @Id
     @Column(name = "novel_id", nullable = false)

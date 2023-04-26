@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "volumes", uniqueConstraints = {@UniqueConstraint(columnNames = {"novel_id", "order_index"})})
-public class Volume implements DatabaseObject {
+public class Volume implements DatabaseObject, INovelContent {
     public static final String APPROVE_STATUS_PENDING = "pending";
     public static final String APPROVE_STATUS_REJECTED = "rejected";
     public static final String APPROVE_STATUS_APPROVED = "approved";

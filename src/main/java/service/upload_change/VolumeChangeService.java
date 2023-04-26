@@ -7,7 +7,7 @@ import repository.temporary.VolumeChangeRepository;
 
 import java.sql.SQLException;
 
-public class VolumeChangeService extends BaseChangeService<VolumeChange> {
+public class VolumeChangeService extends BaseChangeService<Volume, VolumeChange> {
 
     private static VolumeChangeService instance;
 
@@ -36,5 +36,28 @@ public class VolumeChangeService extends BaseChangeService<VolumeChange> {
     @Override
     public VolumeChange getChangeByResourceId(int id) throws SQLException {
         return VolumeChangeRepository.getInstance().getByVolumeId(id);
+    }
+
+    @Override
+    public void createChange(Volume oldVolumeInfo, Volume newVolumeInfo) throws SQLException {
+        VolumeChange volumeChange = new VolumeChange();
+        volumeChange.setVolumeId(oldVolumeInfo.getId());
+
+        boolean makeChange = false;
+
+        if (!oldVolumeInfo.getName().equals(newVolumeInfo.getName())) {
+            volumeChange.setName(newVolumeInfo.getName());
+            makeChange = true;
+        }
+
+        if (!oldVolumeInfo.getImage().equals(newVolumeInfo.getImage())) {
+            volumeChange.setImage(newVolumeInfo.getImage());
+            makeChange = true;
+        }
+
+        if (makeChange) {
+            VolumeChangeRepository.getInstance().insert(volumeChange);
+        }
+
     }
 }

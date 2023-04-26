@@ -7,7 +7,7 @@ import repository.temporary.NovelChangeRepository;
 
 import java.sql.SQLException;
 
-public class NovelChangeService extends BaseChangeService<NovelChange> {
+public class NovelChangeService extends BaseChangeService<Novel, NovelChange> {
     private static NovelChangeService instance;
 
     public static NovelChangeService getInstance() {
@@ -36,4 +36,33 @@ public class NovelChangeService extends BaseChangeService<NovelChange> {
     public NovelChange getChangeByResourceId(int id) throws SQLException {
         return NovelChangeRepository.getInstance().getByNovelId(id);
     }
+
+    @Override
+    public void createChange(Novel oldNovelInfo, Novel newNovelInfo) throws SQLException {
+        NovelChange novelChange = new NovelChange();
+        novelChange.setNovelId(oldNovelInfo.getId());
+
+        boolean makeChange = false;
+
+        if (!oldNovelInfo.getName().equals(newNovelInfo.getName())) {
+            novelChange.setName(newNovelInfo.getName());
+            makeChange = true;
+        }
+
+        if (!oldNovelInfo.getImage().equals(newNovelInfo.getImage())) {
+            novelChange.setImage(newNovelInfo.getImage());
+            makeChange = true;
+        }
+
+        if (!oldNovelInfo.getSummary().equals(newNovelInfo.getSummary())) {
+            novelChange.setSummary(newNovelInfo.getSummary());
+            makeChange = true;
+        }
+
+        if (makeChange) {
+            NovelChangeRepository.getInstance().insert(novelChange);
+        }
+
+    }
+
 }

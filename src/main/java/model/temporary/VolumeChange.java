@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "volume_changes")
-public class VolumeChange implements DatabaseObject {
+public class VolumeChange implements DatabaseObject, INovelContentChange {
     @Id
     @Column(name = "volume_id", nullable = false)
     private int volumeId;

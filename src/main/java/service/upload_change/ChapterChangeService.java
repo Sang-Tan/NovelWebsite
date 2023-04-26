@@ -3,10 +3,11 @@ package service.upload_change;
 import model.Chapter;
 import model.temporary.ChapterChange;
 import repository.ChapterRepository;
+import repository.temporary.ChapterChangeRepository;
 
 import java.sql.SQLException;
 
-public class ChapterChangeService extends BaseChangeService<ChapterChange> {
+public class ChapterChangeService extends BaseChangeService<Chapter, ChapterChange> {
     private static ChapterChangeService instance;
 
     public static ChapterChangeService getInstance() {
@@ -33,6 +34,28 @@ public class ChapterChangeService extends BaseChangeService<ChapterChange> {
 
     @Override
     public ChapterChange getChangeByResourceId(int id) throws SQLException {
-        return null;
+        return ChapterChangeRepository.getInstance().getByChapterId(id);
+    }
+
+    @Override
+    public void createChange(Chapter oldChapterInfo, Chapter newChapterInfo) throws SQLException {
+        ChapterChange chapterChange = new ChapterChange();
+        chapterChange.setChapterId(oldChapterInfo.getId());
+
+        boolean makeChange = false;
+
+        if (!oldChapterInfo.getName().equals(newChapterInfo.getName())) {
+            chapterChange.setName(newChapterInfo.getName());
+            makeChange = true;
+        }
+
+        if (!oldChapterInfo.getContent().equals(newChapterInfo.getContent())) {
+            chapterChange.setContent(newChapterInfo.getContent());
+            makeChange = true;
+        }
+
+        if (makeChange) {
+            ChapterChangeRepository.getInstance().insert(chapterChange);
+        }
     }
 }

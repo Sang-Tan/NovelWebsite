@@ -9,6 +9,9 @@ import model.Volume;
 import repository.ChapterRepository;
 import repository.NovelRepository;
 import repository.VolumeRepository;
+import service.upload_change.ChapterChangeService;
+import service.upload_change.NovelChangeService;
+import service.upload_change.VolumeChangeService;
 
 import javax.servlet.http.Part;
 import java.io.IOException;
@@ -101,45 +104,67 @@ public class NovelManageService {
 
     /**
      * Change the novel's information
-     *
-     * @param newNovelInfo
-     * @param genres
-     * @param image
-     * @throws IOException
-     * @throws SQLException
      */
     public static void updateNovelInfo(Novel newNovelInfo, int[] genres, Part image) throws IOException, SQLException {
         if (newNovelInfo == null) {
             throw new IllegalArgumentException("Novel cannot be null");
         }
+
         if (newNovelInfo.getId() == 0) {
             throw new IllegalArgumentException("Novel ID invalid");
         }
+
+        if (NovelChangeService.getInstance().canUpdateContent(newNovelInfo.getId()) == false) {
+            throw new IllegalArgumentException("This novel is not editable in current state");
+        }
+
         Novel novelInDb = NovelRepository.getInstance().getById(newNovelInfo.getId());
         if (novelInDb == null) {
             throw new IllegalArgumentException("Novel not found");
         }
 
-        novelInDb.setName(newNovelInfo.getName());
-        novelInDb.setSummary(newNovelInfo.getSummary());
-        novelInDb.setStatus(newNovelInfo.getStatus());
-        novelInDb.setApprovalStatus(newNovelInfo.getApprovalStatus());
+        if (novelInDb.getApprovalStatus().equals(Novel.APPROVE_STATUS_APPROVED)) {
+            updateNovelInfoAndCreateChange(novelInDb, newNovelInfo, genres, image);
+        } else {
+            updateNovelInfoOnly(novelInDb, newNovelInfo, genres, image);
+        }
+    }
 
-        FileMapper imageMapper = null;
+    private static void updateNovelInfoAndCreateChange(Novel oldNovelInfo, Novel newNovelInfo, int[] genres, Part image) throws IOException, SQLException {
+        if (image != null && image.getSize() > 0) {
+            FileMapper imageMapper = FileMapper.mapRandomFile(NOVEL_COVER_DIR, FileUtil.getExtension(image.getSubmittedFileName()));
+            imageMapper.uploadFile(image.getInputStream());
+            newNovelInfo.setImage(imageMapper.getURI());
+        }
+
+        NovelChangeService.getInstance().createChange(oldNovelInfo, newNovelInfo);
+
+        oldNovelInfo.setStatus(newNovelInfo.getStatus());
+
+        NovelRepository.getInstance().update(oldNovelInfo);
+        NovelRepository.getInstance().changeNovelGenres(oldNovelInfo.getId(), genres);
+    }
+
+    private static void updateNovelInfoOnly(Novel oldNovelInfo, Novel newNovelInfo, int[] genres, Part image) throws IOException, SQLException {
+        oldNovelInfo.setName(newNovelInfo.getName());
+        oldNovelInfo.setSummary(newNovelInfo.getSummary());
+        oldNovelInfo.setStatus(newNovelInfo.getStatus());
+
+        FileMapper imageMapper;
         //create image mapper and upload image if exist
         if (image != null && image.getSize() > 0) {
-            if (novelInDb.getImage() == null || novelInDb.getImage().equals(Novel.DEFAULT_IMAGE)) {
+            if (oldNovelInfo.getImage() == null || oldNovelInfo.getImage().equals(Novel.DEFAULT_IMAGE)) {
                 //if the novel has no image, create a new mapper
                 imageMapper = uploadImage(NOVEL_COVER_DIR, image);
-                novelInDb.setImage(imageMapper.getURI());
+                oldNovelInfo.setImage(imageMapper.getURI());
             } else {
                 //if the novel has an image, update the image
-                imageMapper = FileMapper.mapURI(novelInDb.getImage());
+                imageMapper = FileMapper.mapURI(oldNovelInfo.getImage());
                 imageMapper.uploadFile(image.getInputStream(), true);
             }
         }
-        NovelRepository.getInstance().update(novelInDb);
-        NovelRepository.getInstance().changeNovelGenres(novelInDb.getId(), genres);
+        NovelRepository.getInstance().update(oldNovelInfo);
+        NovelRepository.getInstance().changeNovelGenres(oldNovelInfo.getId(), genres);
     }
 
     public static void updateVolumeInfo(Volume newVolumeInfo, Part image) throws SQLException, IOException {
@@ -149,27 +174,49 @@ public class NovelManageService {
         if (newVolumeInfo.getId() == 0) {
             throw new IllegalArgumentException("Volume ID invalid");
         }
+
+        if (!VolumeChangeService.getInstance().canUpdateContent(newVolumeInfo.getId())) {
+            throw new IllegalArgumentException("This volume is not editable in current state");
+        }
         Volume volumeInDb = VolumeRepository.getInstance().getById(newVolumeInfo.getId());
         if (volumeInDb == null) {
             throw new IllegalArgumentException("Volume not found");
         }
 
-        volumeInDb.setName(newVolumeInfo.getName());
+        if (volumeInDb.getApprovalStatus().equals(Volume.APPROVE_STATUS_APPROVED)) {
+            updateVolumeInfoAndCreateChange(volumeInDb, newVolumeInfo, image);
+        } else {
+            updateVolumeInfoOnly(volumeInDb, newVolumeInfo, image);
+        }
+    }
 
-        FileMapper imageMapper = null;
+    private static void updateVolumeInfoAndCreateChange(Volume oldVolumeInfo, Volume newVolumeInfo, Part image) throws IOException, SQLException {
+        if (image != null && image.getSize() > 0) {
+            FileMapper imageMapper = FileMapper.mapRandomFile(VOLUME_COVER_DIR, FileUtil.getExtension(image.getSubmittedFileName()));
+            imageMapper.uploadFile(image.getInputStream());
+            newVolumeInfo.setImage(imageMapper.getURI());
+        }
+
+        VolumeChangeService.getInstance().createChange(oldVolumeInfo, newVolumeInfo);
+    }
+
+    private static void updateVolumeInfoOnly(Volume oldVolumeInfo, Volume newVolumeInfo, Part image) throws IOException, SQLException {
+        oldVolumeInfo.setName(newVolumeInfo.getName());
+
+        FileMapper imageMapper;
         //create image mapper and upload image if exist
         if (image != null && image.getSize() > 0) {
-            if (volumeInDb.getImage() == null || volumeInDb.getImage().equals(Volume.DEFAULT_IMAGE)) {
+            if (oldVolumeInfo.getImage() == null || oldVolumeInfo.getImage().equals(Volume.DEFAULT_IMAGE)) {
                 //if the volume has no image, create a new mapper
                 imageMapper = uploadImage(VOLUME_COVER_DIR, image);
-                volumeInDb.setImage(imageMapper.getURI());
+                oldVolumeInfo.setImage(imageMapper.getURI());
             } else {
                 //if the volume has an image, update the image
-                imageMapper = FileMapper.mapURI(volumeInDb.getImage());
+                imageMapper = FileMapper.mapURI(oldVolumeInfo.getImage());
                 imageMapper.uploadFile(image.getInputStream(), true);
             }
         }
-        VolumeRepository.getInstance().update(volumeInDb);
+        VolumeRepository.getInstance().update(oldVolumeInfo);
     }
 
     public static void updateChapterInfo(Chapter newChapterInfo) throws SQLException {
@@ -179,21 +226,35 @@ public class NovelManageService {
         if (newChapterInfo.getId() == 0) {
             throw new IllegalArgumentException("Chapter ID invalid");
         }
+
+        if (!ChapterChangeService.getInstance().canUpdateContent(newChapterInfo.getId())) {
+            throw new IllegalArgumentException("This chapter is not editable in current state");
+        }
+
         Chapter chapterInDb = ChapterRepository.getInstance().getById(newChapterInfo.getId());
         if (chapterInDb == null) {
             throw new IllegalArgumentException("Chapter not found");
         }
 
-        chapterInDb.setName(newChapterInfo.getName());
-        chapterInDb.setContent(newChapterInfo.getContent());
-        ChapterRepository.getInstance().update(chapterInDb);
+        if (chapterInDb.getApprovalStatus().equals(Chapter.APPROVE_STATUS_APPROVED)) {
+            updateChapterInfoAndCreateChange(chapterInDb, newChapterInfo);
+        } else {
+            updateChapterInfoOnly(chapterInDb, newChapterInfo);
+        }
+    }
+
+    private static void updateChapterInfoAndCreateChange(Chapter oldChapterInfo, Chapter newChapterInfo) throws SQLException {
+        ChapterChangeService.getInstance().createChange(oldChapterInfo, newChapterInfo);
+    }
+
+    private static void updateChapterInfoOnly(Chapter oldChapterInfo, Chapter newChapterInfo) throws SQLException {
+        oldChapterInfo.setName(newChapterInfo.getName());
+        oldChapterInfo.setContent(newChapterInfo.getContent());
+        ChapterRepository.getInstance().update(oldChapterInfo);
     }
 
     /**
-     * @param performer
-     * @param novelID
      * @return true if the user is the owner of the novel
-     * @throws SQLException
      */
     public static boolean checkNovelOwnership(User performer, int novelID) throws SQLException {
         if (performer == null) {
@@ -204,10 +265,7 @@ public class NovelManageService {
         }
 
         int novelOwnerId = NovelRepository.getInstance().getById(novelID).getOwnerID();
-        if (novelOwnerId != performer.getId()) {
-            return false;
-        }
-        return true;
+        return novelOwnerId == performer.getId();
     }
 
     private static boolean checkVolumeOwnership(User performer, int volumeID) throws SQLException {
@@ -219,10 +277,7 @@ public class NovelManageService {
         }
 
         int volumeOwnerId = VolumeRepository.getInstance().getById(volumeID).getNovelId();
-        if (volumeOwnerId != performer.getId()) {
-            return false;
-        }
-        return true;
+        return volumeOwnerId == performer.getId();
     }
 
     public static void uploadNewVolume(Volume newVolumeInfo, Part image) throws IOException, SQLException {
@@ -270,11 +325,7 @@ public class NovelManageService {
     /**
      * Check if upload novel is valid or not
      *
-     * @param novelInfo
-     * @param genres
-     * @param image
      * @return null if novel is valid, an error string if there is an error
-     * @throws IOException
      */
     public static String validateUploadNovel(Novel novelInfo, int[] genres, Part image) throws IOException {
         String novelName = novelInfo.getName();
@@ -307,7 +358,7 @@ public class NovelManageService {
         if (volumeName == null || volumeName.isEmpty()) {
             return "Tên volume không được để trống";
         }
-        if (image == null) {
+        if (image != null && image.getSize() > 0) {
             if (!FileUtil.isImage(image.getInputStream())) {
                 return "Ảnh bìa không hợp lệ";
             }
@@ -356,7 +407,7 @@ public class NovelManageService {
 
     private static void deleteNovel(Novel novelToDelete) throws SQLException {
         String imageURI = novelToDelete.getImage();
-        if (imageURI == Novel.DEFAULT_IMAGE) {
+        if (imageURI.equals(Novel.DEFAULT_IMAGE)) {
             imageURI = null;
         }
         //delete all belonging volumes
@@ -385,7 +436,7 @@ public class NovelManageService {
 
     private static void deleteVolume(Volume volumeToDelete) throws SQLException {
         String imageURI = volumeToDelete.getImage();
-        if (imageURI == Volume.DEFAULT_IMAGE) {
+        if (imageURI.equals(Volume.DEFAULT_IMAGE)) {
             imageURI = null;
         }
 
@@ -410,4 +461,5 @@ public class NovelManageService {
     private static void deleteChapter(Chapter chapterToDelete) throws SQLException {
         ChapterRepository.getInstance().delete(chapterToDelete);
     }
+
 }

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "chapter_changes")
-public class ChapterChange implements DatabaseObject {
+public class ChapterChange implements DatabaseObject, INovelContentChange {
     @Id
     @Column(name = "chapter_id", nullable = false)
     private int chapterId;

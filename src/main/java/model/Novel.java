@@ -2,20 +2,20 @@ package model;
 
 import core.DatabaseObject;
 import core.logging.BasicLogger;
-import model.intermediate.NovelGenre;
-import repository.*;
-import repository.intermediate.NovelGenreRepository;
+import repository.GenreRepository;
+import repository.NovelReportRepository;
+import repository.UserRepository;
+import repository.VolumeRepository;
 
 import javax.persistence.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "novels")
-public class Novel implements DatabaseObject {
+public class Novel implements DatabaseObject, INovelContent {
     public static final String STATUS_ON_GOING = "on going";
     public static final String STATUS_FINISHED = "finished";
     public static final String STATUS_PAUSED = "paused";
@@ -135,6 +135,7 @@ public class Novel implements DatabaseObject {
     public void setStatus(String status) {
         this.status = status;
     }
+
     public String getAuthorName() throws SQLException {
         return getOwner().getDisplayName();
     }
