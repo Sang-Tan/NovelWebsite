@@ -112,7 +112,7 @@ body a, a:hover {
     position: fixed;
     right: 30px;
 }
-.rd_sd-button_item {
+.button_item {
     border-bottom: 1px solid #ccc;
     display: block;
     font-size: 20px;

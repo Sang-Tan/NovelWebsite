@@ -1,4 +1,5 @@
 package service;
+
 import core.pagination.PageItem;
 import core.pagination.Paginator;
 
@@ -14,12 +15,11 @@ public class PagingService {
         params.add((paginator.getCurrentPage() - 1) * paginator.getPageSize());
         return sql;
     }
-    public static List<PageItem> getActivePageItems(String currentUrl, Paginator paginator) {
-        return getActivePageItems(currentUrl, DEFAULT_MAX_ACTIVE_PAGES, paginator);
+    public static List<PageItem> getActivePageItems( Paginator paginator) {
+        return getActivePageItems( DEFAULT_MAX_ACTIVE_PAGES, paginator);
     }
 
-    public static List<PageItem> getActivePageItems(String currentUrl, int maxActivePages, Paginator paginator) {
-        maxActivePages = maxActivePages;
+    public static List<PageItem> getActivePageItems( int maxActivePages, Paginator paginator) {
         List<PageItem> activePages = new LinkedList<PageItem>();
 
         // calculate start and end page
@@ -37,10 +37,10 @@ public class PagingService {
 
 
         if(startPage >= endPage) return null;
-        activePages.add(new PageItem(currentUrl + "&page=1", "Đầu", false, paginator.getCurrentPage() == 1));
+        activePages.add(new PageItem(1,"Đầu", false, paginator.getCurrentPage() == 1));
         for (int i = startPage; i <= endPage; i++)
-            activePages.add(new PageItem(currentUrl + "&page=" + i, Integer.toString(i), paginator.getCurrentPage() == i, false));
-        activePages.add(new PageItem(currentUrl + "&page=" + paginator.getMaxPage(), "Cuối", false ,paginator.getCurrentPage() == paginator.getMaxPage()));
+            activePages.add(new PageItem(i, Integer.toString(i), paginator.getCurrentPage() == i, false));
+        activePages.add(new PageItem(paginator.getMaxPage(), "Cuối", false ,paginator.getCurrentPage() == paginator.getMaxPage()));
         return activePages;
 
     }

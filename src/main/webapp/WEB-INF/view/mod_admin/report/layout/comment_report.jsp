@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--@elvariable id="commentReport" type="model.CommentReport"--%>
+<%--@elvariable id="commentReportList" type="java.util.List<model.CommentReport>"--%>
 <%--@elvariable id="comment" type="model.Comment"--%>
 <%--@elvariable id="reporter" type="model.User"--%>
 <style>
@@ -20,34 +21,37 @@
 </style>
 <div class="row">
     <div class="col-10 col-xl-9 thumb cmt-group">
-        <c:forEach var="commentReport" items="${commentReportList}">
-            <div class="rpt-group__item">
-                <a href="#report-modal" class="no-decor" data-toggle="modal" data-target="#report-modal"
-                   onclick="reportCommentForm(${commentReport.comment.id}, '${commentReport.comment.owner.displayName}',
-                           '${commentReport.comment.owner.avatar}', '${commentReport.comment.owner.id}', '${commentReport.comment.content}')">
-                    <div class="rpt-detail container-fluid"
-                         style="background-color: var(--dark-silver); border-left: 1rem solid var(--olive)">
-                        <div class="row">
-                            <div class="col-05"></div>
-
-                            <div class="col-115" style="border-left: 20px">
-                    <span class="title title--bold overflow-elipsis" style="color: black; white-space: nowrap;
+        <c:choose>
+            <c:when test="${commentReportList != null}">
+                <c:forEach var="commentReport" items="${commentReportList}">
+                    <div class="rpt-group__item">
+                        <a href="#report-modal" class="no-decor" data-toggle="modal" data-target="#report-modal"
+                           onclick="reportCommentForm(${commentReport.comment.id}, '${commentReport.comment.owner.displayName}',
+                                   '${commentReport.comment.owner.avatar}', '${commentReport.comment.owner.id}', '${commentReport.comment.content}')">
+                            <div class="rpt-detail container-fluid"
+                                 style="background-color: var(--dark-silver); border-left: 1rem solid var(--olive)">
+                                <div class="row">
+                                    <div class="col-05"></div>
+                                    <div class="col-115" style="border-left: 20px">
+                                        <span class="title title--bold overflow-elipsis" style="color: black; white-space: nowrap;
                      display: block; overflow: hidden; overflow-wrap: break-word; max-width: 550px">
-                            ${commentReport.comment.content}
-                    </span>
-                                <p class="overflow-elipsis" style=" color: black">
-                                    Người đăng bình luận: ${commentReport.comment.owner.displayName}
-                                </p>
+                                                ${commentReport.comment.content}
+                                        </span>
+                                        <p class="overflow-elipsis" style=" color: black">
+                                            Người đăng bình luận: ${commentReport.comment.owner.displayName}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
-                </a>
-            </div>
-            <br>
-            <c:if test="${commentReportList == null}">
+                    <br>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
                 <h3 class="text-center">Không có báo cáo</h3>
-            </c:if>
-        </c:forEach>
+            </c:otherwise>
+        </c:choose>
     </div>
 </div>
 <%@include file="/WEB-INF/view/layout/pagination_footer.jsp" %>
@@ -99,15 +103,11 @@
             </div>
             <input id="commentId" name="commentId" hidden>
             <div class="">
-                <button type="button" class="btn basic-btn--olive col-md-12" data-dismiss="modal"><i
-                        class="fas fa-check-circle"></i>
+                <button type="button" class="btn basic-btn--olive col-md-12" data-dismiss="modal">
+                    <i class="fas fa-check-circle"></i>
                 </button>
             </div>
         </div>
     </div>
 </div>
-
-<script src="/js/comment_report.js">
-
-
-</script>
+<script src="/js/comment_report.js"></script>
