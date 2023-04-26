@@ -1,7 +1,7 @@
 package core.pagination;
 
 public class Paginator {
-    private static final int DEFAULT_PAGE_SIZE = 24;
+    private static final int DEFAULT_PAGE_SIZE = 1;
     private int pageSize = DEFAULT_PAGE_SIZE;
 
     private int maxPage = 1;
