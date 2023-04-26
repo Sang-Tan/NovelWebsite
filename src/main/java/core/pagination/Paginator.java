@@ -23,7 +23,7 @@ public class Paginator {
 
         this.pageSize = pageSize;
         maxPage = (int) Math.ceil((double) numOfObjects / pageSize);
-        if (maxPage == 0) maxPage = 1;
+        if(maxPage == 0) maxPage = 1;
         if (page < 1) page = 1;
         if (page > maxPage) page = maxPage;
         currentPage = page;

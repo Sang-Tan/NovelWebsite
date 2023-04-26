@@ -3,6 +3,7 @@ package service.report;
 import core.pagination.Paginator;
 import model.CommentReport;
 import repository.CommentReportRepository;
+import core.pagination.Paginator;
 import service.PagingService;
 
 import java.sql.SQLException;

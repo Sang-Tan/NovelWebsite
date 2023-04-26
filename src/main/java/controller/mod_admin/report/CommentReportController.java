@@ -18,8 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -49,36 +47,13 @@ public class CommentReportController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if (action == null) action = "";
-
-        switch (action) {
-            case "report_comment":
-                try {
-                    postCommentReport(req, resp);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
-            case "checked":
-                try {
-                    checkCommentReport(req, resp);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
-        }
-    }
-
-    private void checkCommentReport(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
-        Integer commentId = Integer.parseInt(req.getParameter("commentId"));
-        List<CommentReport> reports = CommentReportRepository.getInstance().getAllReportContentByCommentId(commentId);
-        boolean check = false;
-        for (CommentReport report: reports){
-            if (report.getCheckTime() != null) {
-                check = true;
-                break;
+        else {
+            try {
+                postCommentReport(req, resp);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         }
-        if (!check) CommentReportRepository.getInstance().setCheckTime(commentId);
     }
 
     private void postCommentReport(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
@@ -94,8 +69,8 @@ public class CommentReportController extends HttpServlet {
     }
 
     private void showList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int page = Integer.parseInt(req.getParameter("page") == null ? "0" : req.getParameter("page"));
-        Paginator paginator = new Paginator();
+        int page = Integer.parseInt(req.getParameter("page") == null ? "1" : req.getParameter("page"));
+        Paginator paginator;
         try {
             req.setAttribute("commentReportList", CommentReportService.getInstance().getAllCommentReport(page));
             paginator = CommentReportService.getInstance().getPaginator();
@@ -104,13 +79,14 @@ public class CommentReportController extends HttpServlet {
             return;
         }
         req.setAttribute("selection", ReportSelection.COMMENT_REPORT);
-        String pagingUrl = "/mod/bao-cao-binh-luan" + req.getQueryString();
-        if (pagingUrl.contains("page=")) {
-            pagingUrl = pagingUrl.substring(0, pagingUrl.indexOf("&page="));
-        } else if (req.getQueryString() == null) {
-            pagingUrl = "/mod/bao-cao-binh-luan";
-        }
-        req.setAttribute("pageItems", PagingService.getActivePageItems(pagingUrl, paginator));
+
+//        String pagingUrl = "/mod/bao-cao-binh-luan" + req.getQueryString();
+//        if (pagingUrl.contains("page=")) {
+//            pagingUrl = pagingUrl.substring(0, pagingUrl.indexOf("&page="));
+//        } else if (req.getQueryString() == null){
+//            pagingUrl = "/mod/bao-cao-binh-luan";
+//        }
+        req.setAttribute("pageItems", PagingService.getActivePageItems(paginator));
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/view/mod_admin/report/main_report_page.jsp");
         try {
             dispatcher.forward(req, resp);
