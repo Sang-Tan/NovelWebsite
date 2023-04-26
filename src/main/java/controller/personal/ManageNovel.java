@@ -10,6 +10,7 @@ import model.intermediate.Restriction;
 import repository.GenreRepository;
 import service.RestrictionService;
 import service.upload.NovelManageService;
+import service.upload_change.NovelChangeService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -39,6 +40,7 @@ public class ManageNovel extends HttpServlet {
 
             List<String> warnings = new ArrayList<>();
 
+
             User owner = (User) req.getAttribute("user");
             int novelId = getNovelId(req);
             if (!NovelManageService.checkNovelOwnership(owner, novelId)) {
@@ -60,7 +62,7 @@ public class ManageNovel extends HttpServlet {
             } else {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             BasicLogger.getInstance().getLogger().warning(e.getMessage());
             return;
@@ -94,7 +96,7 @@ public class ManageNovel extends HttpServlet {
             } else {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             BasicLogger.getInstance().getLogger().warning(e.getMessage());
             return;
@@ -114,6 +116,17 @@ public class ManageNovel extends HttpServlet {
                 resp.sendError(404);
                 return;
             }
+
+            List<String> informations = (List<String>) req.getAttribute("informations");
+            if (informations == null) {
+                informations = new ArrayList<>();
+            }
+            if (NovelChangeService.getInstance().waitingForModeration(novelId)) {
+                informations.add("Truyện của bạn đang chờ được duyệt");
+                Boolean submitAllowed = false;
+                req.setAttribute("submitAllowed", submitAllowed);
+            }
+            req.setAttribute("informations", informations);
 
             req.setAttribute("genres", genres);
             req.setAttribute("novelGenreIds", novelGenreIds);
@@ -153,9 +166,13 @@ public class ManageNovel extends HttpServlet {
             genres[i] = Integer.parseInt(genresStringArray[i]);
         }
 
+        List<String> errors = new ArrayList<>();
         String error = NovelManageService.validateUploadNovel(novelUpdateInfo, genres, uploadedImage);
-        if (error != null) {
-            req.setAttribute("error", error);
+        if (error != null)
+            errors.add(error);
+
+        if (!error.isEmpty()) {
+            req.setAttribute("errors", errors);
             req.setAttribute("managingAction", ManageNovelAction.EDIT_NOVEL);
             doGet(req, resp);
             return;
@@ -194,9 +211,13 @@ public class ManageNovel extends HttpServlet {
         newVolume.setName(req.getParameter("volume_name"));
         Part uploadedImage = req.getPart("image");
 
+        List<String> errors = new ArrayList<>();
         String error = NovelManageService.validateUploadVolume(newVolume, uploadedImage);
         if (error != null) {
-            req.setAttribute("error", error);
+            errors.add(error);
+        }
+        if (!errors.isEmpty()) {
+            req.setAttribute("errors", errors);
             doGet(req, resp);
         }
 

@@ -9,6 +9,7 @@ import model.Volume;
 import model.intermediate.Restriction;
 import service.RestrictionService;
 import service.upload.NovelManageService;
+import service.upload_change.ChapterChangeService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,16 +39,14 @@ public class ManageChapter extends HttpServlet {
             }
 
             req.setAttribute("warnings", warnings);
-        } catch (SQLException e) {
-            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            BasicLogger.getInstance().getLogger().warning(e.getMessage());
-            return;
+
+
+            showChapterModificationPage(req, resp);
         } catch (Exception e) {
-            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            BasicLogger.getInstance().printStackTrace(e);
             return;
         }
-
-        showChapterModificationPage(req, resp);
     }
 
     @Override
@@ -98,7 +97,19 @@ public class ManageChapter extends HttpServlet {
         return Integer.parseInt(pathInfo.substring(1));
     }
 
-    private void showChapterModificationPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void showChapterModificationPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        List<String> informations = (List<String>) req.getAttribute("informations");
+        if (informations == null) {
+            informations = new ArrayList<>();
+        }
+
+        if (ChapterChangeService.getInstance().waitingForModeration(getChapterId(req))) {
+            informations.add("Tập truyện của bạn đang chờ duyệt, bạn không thể chỉnh sửa");
+            Boolean submitAllowed = false;
+            req.setAttribute("submitAllowed", submitAllowed);
+        }
+
+        req.setAttribute("informations", informations);
         req.setAttribute("managingAction", ManageNovelAction.EDIT_CHAPTER);
         req.getRequestDispatcher("/WEB-INF/view/personal/novel_manage.jsp").forward(req, resp);
     }
@@ -139,12 +150,7 @@ public class ManageChapter extends HttpServlet {
     }
 
     /**
-     * @param req
-     * @param resp
      * @return true if the user is the owner of the novel
-     * @throws ServletException
-     * @throws IOException
-     * @throws SQLException
      */
     private boolean checkValidOwner(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         int chapterId = getChapterId(req);
