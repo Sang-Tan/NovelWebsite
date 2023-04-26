@@ -120,7 +120,7 @@ public class SearchNovels extends HttpServlet {
             if (pagingUrl.contains("page=")) {
                 pagingUrl = pagingUrl.substring(0, pagingUrl.indexOf("&page="));
             }
-            request.setAttribute("pageItems", PagingService.getActivePageItems(pagingUrl, paginator));
+            request.setAttribute("pageItems", PagingService.getActivePageItems( paginator));
             request.getRequestDispatcher("/WEB-INF/view/search_novel.jsp").forward(request, response);
         } catch (Exception e) {
             response.setStatus(500);

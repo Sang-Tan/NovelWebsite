@@ -5,7 +5,10 @@ import core.logging.BasicLogger;
 import model.Chapter;
 import model.Novel;
 import model.User;
+import model.intermediate.ChapterMark;
 import repository.ChapterRepository;
+import repository.intermediate.ChapterMarkRepository;
+import service.BookmarkService;
 import service.ChapterService;
 import service.URLSlugification;
 
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @MultipartConfig
 @WebServlet(name = "ReadNovelServlet", value = "/doc-tieu-thuyet/*")
@@ -70,6 +74,8 @@ public class ReadChapter extends HttpServlet {
             request.setAttribute("reqChapter", chapter);
             request.setAttribute("nextChapter", nextChapter);
             request.setAttribute("previousChapter", previousChapter);
+            ChapterMark chapterMark = ChapterMarkRepository.getInstance().getChapterMark(Integer.valueOf(user.getId()), Integer.valueOf(chapter.getId()));
+            request.setAttribute("isBookMarkYet", chapterMark == null ? false : true);
 
 
             request.getRequestDispatcher("/WEB-INF/view/reading.jsp").forward(request, response);

@@ -8,13 +8,28 @@
         <ul class="d-flex justify-content-end">
             <%--@elvariable id="pageItems" type="java.util.HashSet<core.pagination.PageItem>"--%>
             <c:forEach items="${pageItems}" var="pageItem">
-                <li class="page-list__item <c:if
+                <li style="cursor: pointer;" class="page-list__item <c:if
                         test="${pageItem.active}"> active </c:if>
                         <c:if test="${pageItem.disabled}"> disabled</c:if>">
-                    <a href="${pageItem.url}" class="page-list__link ">${pageItem.text}</a>
+                    <a data-page="${pageItem.page}" class="page-list__link ">${pageItem.text}</a>
                 </li>
             </c:forEach>
         </ul>
     </nav>
 
 </div>
+<script>
+    function initPagination() {
+        const queryParams = new URLSearchParams(window.location.search);
+        const pageLinks = document.querySelectorAll('a[data-page]');
+        for (const pageLink of pageLinks) {
+            pageLink.addEventListener('click', function (event) {
+                event.preventDefault();
+                const page = pageLink.dataset.page;
+                queryParams.set('page', page);
+                window.location.search = queryParams.toString();
+            });
+        }
+    }
+    initPagination();
+</script>

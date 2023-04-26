@@ -69,8 +69,8 @@ public class CommentReportController extends HttpServlet {
     }
 
     private void showList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        int page = Integer.parseInt(req.getParameter("page") == null ? "0" : req.getParameter("page"));
-        Paginator paginator = new Paginator();
+        int page = Integer.parseInt(req.getParameter("page") == null ? "1" : req.getParameter("page"));
+        Paginator paginator;
         try {
             req.setAttribute("commentReportList", CommentReportService.getInstance().getAllCommentReport(page));
             paginator = CommentReportService.getInstance().getPaginator();
@@ -79,11 +79,14 @@ public class CommentReportController extends HttpServlet {
             return;
         }
         req.setAttribute("selection", ReportSelection.COMMENT_REPORT);
-        String pagingUrl = "/mod/bao-cao-binh-luan" + req.getQueryString();
-        if (pagingUrl.contains("page=")) {
-            pagingUrl = pagingUrl.substring(0, pagingUrl.indexOf("&page="));
-        }
-        req.setAttribute("pageItems", PagingService.getActivePageItems(pagingUrl, paginator));
+
+//        String pagingUrl = "/mod/bao-cao-binh-luan" + req.getQueryString();
+//        if (pagingUrl.contains("page=")) {
+//            pagingUrl = pagingUrl.substring(0, pagingUrl.indexOf("&page="));
+//        } else if (req.getQueryString() == null){
+//            pagingUrl = "/mod/bao-cao-binh-luan";
+//        }
+        req.setAttribute("pageItems", PagingService.getActivePageItems(paginator));
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/view/mod_admin/report/main_report_page.jsp");
         try {
             dispatcher.forward(req, resp);
