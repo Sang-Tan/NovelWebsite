@@ -15,12 +15,11 @@ public class PagingService {
         params.add((paginator.getCurrentPage() - 1) * paginator.getPageSize());
         return sql;
     }
-    public static List<PageItem> getActivePageItems(String currentUrl, Paginator paginator) {
-        return getActivePageItems(currentUrl, DEFAULT_MAX_ACTIVE_PAGES, paginator);
+    public static List<PageItem> getActivePageItems( Paginator paginator) {
+        return getActivePageItems( DEFAULT_MAX_ACTIVE_PAGES, paginator);
     }
 
-    public static List<PageItem> getActivePageItems(String currentUrl, int maxActivePages, Paginator paginator) {
-        maxActivePages = maxActivePages;
+    public static List<PageItem> getActivePageItems( int maxActivePages, Paginator paginator) {
         List<PageItem> activePages = new LinkedList<PageItem>();
 
         // calculate start and end page
