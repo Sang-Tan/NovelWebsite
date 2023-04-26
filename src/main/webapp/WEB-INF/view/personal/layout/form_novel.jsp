@@ -2,6 +2,7 @@
 <%--@elvariable id="genres" type="java.util.List<model.Genre>"--%>
 <%--@elvariable id="novelGenreIds" type="java.util.Collection<java.lang.Integer>"--%>
 <%--@elvariable id="Novel" type="model.Novel.class"--%>
+<%--@elvariable id="submitAllowed" type="java.lang.Boolean"--%>
 <%@page import="model.Novel" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -64,9 +65,12 @@
             </option>
         </select>
     </div>
-    <div class="d-flex justify-content-center">
-        <button type="submit" class="basic-btn basic-btn--olive">Xác nhận</button>
-    </div>
+
+    <c:if test="${submitAllowed == null || submitAllowed == true}">
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="basic-btn basic-btn--olive">Xác nhận</button>
+        </div>
+    </c:if>
 </form>
 
 <script src="/js/form.js"></script>
