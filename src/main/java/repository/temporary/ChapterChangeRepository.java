@@ -29,4 +29,10 @@ public class ChapterChangeRepository extends BaseRepository<ChapterChange> {
         chapterChange.setChapterId(chapterId);
         return getByPrimaryKey(chapterChange);
     }
+
+    public void deleteByChapterId(int id) throws SQLException {
+        ChapterChange chapterChange = new ChapterChange();
+        chapterChange.setChapterId(id);
+        delete(chapterChange);
+    }
 }

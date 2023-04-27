@@ -25,4 +25,10 @@ public class NovelChangeRepository extends BaseRepository<NovelChange> {
         novelChange.setNovelId(novelId);
         return getByPrimaryKey(novelChange);
     }
+
+    public void deleteByNovelId(int id) throws SQLException {
+        NovelChange novelChange = new NovelChange();
+        novelChange.setNovelId(id);
+        delete(novelChange);
+    }
 }

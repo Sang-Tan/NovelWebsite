@@ -29,4 +29,10 @@ public class VolumeChangeRepository extends BaseRepository<VolumeChange> {
         volumeChange.setVolumeId(volumeId);
         return getByPrimaryKey(volumeChange);
     }
+
+    public void deleteByVolumeId(int volumeId) throws SQLException {
+        VolumeChange volumeChange = new VolumeChange();
+        volumeChange.setVolumeId(volumeId);
+        delete(volumeChange);
+    }
 }
