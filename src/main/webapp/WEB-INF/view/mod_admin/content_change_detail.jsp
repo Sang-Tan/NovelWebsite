@@ -9,10 +9,10 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
 
 <%--@elvariable id="detailTitle" type="java.lang.String"--%>
 
-<%--@elvariable id="changeType" type="service.upload_change.ContentChangeType"--%>
+<%--@elvariable id="changeType" type="service.upload_change.metadata.ContentChangeType"--%>
 
-<%--@elvariable id="ContentChangeType" type="service.upload_change.ContentChangeType.class"--%>
-<%@page import="service.upload_change.ContentChangeType" %>
+<%--@elvariable id="ContentChangeType" type="service.upload_change.metadata.ContentChangeType.class"--%>
+<%@page import="service.upload_change.metadata.ContentChangeType" %>
 
 <%--@elvariable id="MediaType" type="core.media.MediaType.class"--%>
 <%@ page import="core.media.MediaType" %>
