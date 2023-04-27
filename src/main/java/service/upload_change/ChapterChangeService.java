@@ -4,6 +4,7 @@ import model.Chapter;
 import model.temporary.ChapterChange;
 import repository.ChapterRepository;
 import repository.temporary.ChapterChangeRepository;
+import service.upload_change.base.BaseChangeService;
 
 import java.sql.SQLException;
 
@@ -53,5 +54,41 @@ public class ChapterChangeService extends BaseChangeService<Chapter, ChapterChan
         if (chapterChange.getName() != null || chapterChange.getContent() != null) {
             ChapterChangeRepository.getInstance().insert(chapterChange);
         }
+    }
+
+    @Override
+    protected void mergeChange(int chapterId) throws SQLException {
+        Chapter chapter = ChapterRepository.getInstance().getById(chapterId);
+        ChapterChange chapterChange = ChapterChangeRepository.getInstance().getByChapterId(chapterId);
+
+        if (chapterChange.getName() != null) {
+            chapter.setName(chapterChange.getName());
+        }
+
+        if (chapterChange.getContent() != null) {
+            chapter.setContent(chapterChange.getContent());
+        }
+
+        ChapterRepository.getInstance().update(chapter);
+        ChapterChangeRepository.getInstance().delete(chapterChange);
+    }
+
+    @Override
+    protected void approveNewResource(int chapterId) throws SQLException {
+        Chapter chapter = ChapterRepository.getInstance().getById(chapterId);
+        chapter.setApprovalStatus(Chapter.APPROVE_STATUS_APPROVED);
+        ChapterRepository.getInstance().update(chapter);
+    }
+
+    @Override
+    protected void rejectAndDeleteChange(int chapterId) throws SQLException {
+        ChapterChangeRepository.getInstance().deleteByChapterId(chapterId);
+    }
+
+    @Override
+    protected void rejectNewResource(int chapterId) throws SQLException {
+        Chapter chapter = ChapterRepository.getInstance().getById(chapterId);
+        chapter.setApprovalStatus(Chapter.APPROVE_STATUS_REJECTED);
+        ChapterRepository.getInstance().update(chapter);
     }
 }

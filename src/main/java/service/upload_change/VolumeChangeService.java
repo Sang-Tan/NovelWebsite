@@ -4,7 +4,10 @@ import model.Volume;
 import model.temporary.VolumeChange;
 import repository.VolumeRepository;
 import repository.temporary.VolumeChangeRepository;
+import service.upload.FileMapper;
+import service.upload_change.base.BaseChangeService;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class VolumeChangeService extends BaseChangeService<Volume, VolumeChange> {
@@ -42,7 +45,7 @@ public class VolumeChangeService extends BaseChangeService<Volume, VolumeChange>
     public void createChange(Volume oldVolumeInfo, Volume newVolumeInfo) throws SQLException {
         VolumeChange volumeChange = new VolumeChange();
         volumeChange.setVolumeId(oldVolumeInfo.getId());
-        
+
         if (!oldVolumeInfo.getName().equals(newVolumeInfo.getName())) {
             volumeChange.setName(newVolumeInfo.getName());
         }
@@ -55,5 +58,44 @@ public class VolumeChangeService extends BaseChangeService<Volume, VolumeChange>
             VolumeChangeRepository.getInstance().insert(volumeChange);
         }
 
+    }
+
+    @Override
+    protected void mergeChange(int volumeId) throws SQLException, IOException {
+        Volume volume = VolumeRepository.getInstance().getById(volumeId);
+        VolumeChange volumeChange = VolumeChangeRepository.getInstance().getByVolumeId(volumeId);
+
+        if (volumeChange.getName() != null) {
+            volume.setName(volumeChange.getName());
+        }
+
+        if (volumeChange.getImage() != null) {
+            FileMapper oldImage = FileMapper.mapURI(volume.getImage());
+            FileMapper newImage = FileMapper.mapURI(volumeChange.getImage());
+            oldImage.copyFrom(newImage);
+            volume.setImage(oldImage.getURI());
+        }
+
+        VolumeRepository.getInstance().update(volume);
+        VolumeChangeRepository.getInstance().delete(volumeChange);
+    }
+
+    @Override
+    protected void approveNewResource(int volumeId) throws SQLException {
+        Volume volume = VolumeRepository.getInstance().getById(volumeId);
+        volume.setApprovalStatus(Volume.APPROVE_STATUS_APPROVED);
+        VolumeRepository.getInstance().update(volume);
+    }
+
+    @Override
+    protected void rejectAndDeleteChange(int volumeId) throws SQLException {
+        VolumeChangeRepository.getInstance().deleteByVolumeId(volumeId);
+    }
+
+    @Override
+    protected void rejectNewResource(int id) throws SQLException {
+        Volume volume = VolumeRepository.getInstance().getById(id);
+        volume.setApprovalStatus(Volume.APPROVE_STATUS_REJECTED);
+        VolumeRepository.getInstance().update(volume);
     }
 }

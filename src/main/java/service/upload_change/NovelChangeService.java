@@ -4,7 +4,10 @@ import model.Novel;
 import model.temporary.NovelChange;
 import repository.NovelRepository;
 import repository.temporary.NovelChangeRepository;
+import service.upload.FileMapper;
+import service.upload_change.base.BaseChangeService;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class NovelChangeService extends BaseChangeService<Novel, NovelChange> {
@@ -58,6 +61,50 @@ public class NovelChangeService extends BaseChangeService<Novel, NovelChange> {
             NovelChangeRepository.getInstance().insert(novelChange);
         }
 
+    }
+
+    @Override
+    protected void mergeChange(int novelId) throws SQLException, IOException {
+        NovelChange novelChange = NovelChangeRepository.getInstance().getByNovelId(novelId);
+        Novel novel = NovelRepository.getInstance().getById(novelId);
+
+        if (novelChange.getName() != null) {
+            novel.setName(novelChange.getName());
+        }
+
+        if (novelChange.getImage() != null) {
+            FileMapper oldImage = FileMapper.mapURI(novel.getImage());
+            FileMapper newImage = FileMapper.mapURI(novelChange.getImage());
+            oldImage.copyFrom(newImage);
+            newImage.delete();
+        }
+
+        if (novelChange.getSummary() != null) {
+            novel.setSummary(novelChange.getSummary());
+        }
+
+        NovelRepository.getInstance().update(novel);
+        NovelChangeRepository.getInstance().delete(novelChange);
+
+    }
+
+    @Override
+    protected void approveNewResource(int novelId) throws SQLException {
+        Novel novel = NovelRepository.getInstance().getById(novelId);
+        novel.setApprovalStatus(Novel.APPROVE_STATUS_APPROVED);
+        NovelRepository.getInstance().update(novel);
+    }
+
+    @Override
+    protected void rejectAndDeleteChange(int id) throws SQLException {
+        NovelChangeRepository.getInstance().deleteByNovelId(id);
+    }
+
+    @Override
+    protected void rejectNewResource(int id) throws SQLException {
+        Novel novel = NovelRepository.getInstance().getById(id);
+        novel.setApprovalStatus(Novel.APPROVE_STATUS_REJECTED);
+        NovelRepository.getInstance().update(novel);
     }
 
 }
