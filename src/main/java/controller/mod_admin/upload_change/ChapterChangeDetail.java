@@ -7,7 +7,7 @@ import model.Chapter;
 import model.temporary.ChapterChange;
 import repository.ChapterRepository;
 import service.upload_change.ChapterChangeService;
-import service.upload_change.ContentChangeType;
+import service.upload_change.metadata.ContentChangeType;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;

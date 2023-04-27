@@ -4,7 +4,7 @@ import core.Pair;
 import core.logging.BasicLogger;
 import core.media.MediaObject;
 import core.media.MediaType;
-import service.upload_change.ContentChangeType;
+import service.upload_change.metadata.ContentChangeType;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

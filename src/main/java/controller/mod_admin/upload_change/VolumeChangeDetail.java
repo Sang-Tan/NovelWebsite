@@ -6,7 +6,7 @@ import core.media.MediaType;
 import model.Volume;
 import model.temporary.VolumeChange;
 import repository.VolumeRepository;
-import service.upload_change.ContentChangeType;
+import service.upload_change.metadata.ContentChangeType;
 import service.upload_change.VolumeChangeService;
 
 import javax.servlet.annotation.WebServlet;

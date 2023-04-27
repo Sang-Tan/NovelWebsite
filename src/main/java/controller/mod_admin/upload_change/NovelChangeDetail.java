@@ -7,7 +7,7 @@ import core.media.MediaType;
 import model.Novel;
 import model.temporary.NovelChange;
 import repository.NovelRepository;
-import service.upload_change.ContentChangeType;
+import service.upload_change.metadata.ContentChangeType;
 import service.upload_change.NovelChangeService;
 
 import javax.servlet.annotation.WebServlet;

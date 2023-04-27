@@ -1,8 +1,10 @@
-package service.upload_change;
+package service.upload_change.base;
 
 import model.INovelContent;
 import model.temporary.INovelContentChange;
+import service.upload_change.metadata.ContentChangeType;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public abstract class BaseChangeService<T1 extends INovelContent, T2 extends INovelContentChange> {
@@ -63,4 +65,38 @@ public abstract class BaseChangeService<T1 extends INovelContent, T2 extends INo
         }
         return false;
     }
+
+    public void approveChange(int id) throws SQLException, IOException {
+        String approvalStatus = getApprovalStatus(id);
+        if (!waitingForModeration(id)) {
+            throw new RuntimeException("Cannot approve change in current state(not in moderation state)");
+        }
+
+        if (approvalStatus.equals(APPROVAL_STATUS_APPROVED)) {
+            mergeChange(id);
+        } else if (approvalStatus.equals(APPROVAL_STATUS_PENDING)) {
+            approveNewResource(id);
+        }
+    }
+
+    protected abstract void mergeChange(int id) throws SQLException, IOException;
+
+    protected abstract void approveNewResource(int id) throws SQLException;
+
+    public void rejectChange(int id) throws SQLException {
+        if (!waitingForModeration(id)) {
+            throw new RuntimeException("Cannot reject change in current state(not in moderation state)");
+        }
+        String approvalStatus = getApprovalStatus(id);
+
+        if (approvalStatus.equals(APPROVAL_STATUS_APPROVED)) {
+            rejectAndDeleteChange(id);
+        } else if (approvalStatus.equals(APPROVAL_STATUS_PENDING)) {
+            rejectNewResource(id);
+        }
+    }
+
+    protected abstract void rejectAndDeleteChange(int id) throws SQLException;
+
+    protected abstract void rejectNewResource(int id) throws SQLException;
 }
