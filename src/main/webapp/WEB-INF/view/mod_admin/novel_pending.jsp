@@ -1,13 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: ACER
-  Date: 08/04/2023
-  Time: 10:34 SA
-  To change this template use File | Settings | File Templates.
---%>
+
 <%--@elvariable id="StringUtils" type="core.StringUtils.class"--%>
 <%@ page import="service.URLSlugification" %>
+
+<%--@elvariable id="TimeConverter" type="core.string_process.TimeConverter.class"--%>
+<%@page import="core.string_process.TimeConverter" %>
+
 <%--@elvariable id="URLSlugification" type="service.URLSlugification.class"--%>
 <%--@elvariable id="chapter" type="model.Chapter"--%>
 <%--@elvariable id="novel" type="model.Novel"--%>
@@ -47,7 +45,7 @@
                                             <th>Ảnh bìa</th>
                                             <th>Tên truyện</th>
                                             <th>Tác giả</th>
-                                            <th>Thời gian đăng</th>
+                                            <th>Cập nhật lúc</th>
                                             <th>Hành động</th>
                                         </tr>
                                         <c:forEach var="novel" items="${novelList}">
@@ -56,9 +54,9 @@
                                                 </td>
                                                 <td>${novel.name}</td>
                                                 <td>${novel.owner.displayName}</td>
-                                                <td>${novel.createdTime}</td>
+                                                <td>${TimeConverter.convertToVietnameseTime(novel.updatedTime)}</td>
                                                 <td>
-                                                    <a href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}"
+                                                    <a href="/mod/thay-doi/tieu-thuyet/${novel.id}"
                                                        target="_blank">
                                                         <button class="basic-btn basic-btn--olive"
                                                                 style="background-color: dodgerblue; color: white">
@@ -92,7 +90,7 @@
                                         <th style="width: 20%">Tên chương</th>
                                         <th>Tên truyện</th>
                                         <th>Tác giả</th>
-                                        <th>Thời gian sửa</th>
+                                        <th>Cập nhật lúc</th>
                                         <th>Hành động</th>
                                     </tr>
                                     <c:forEach var="chapter" items="${chapterList}">
