@@ -87,7 +87,8 @@ public class ManageVolume extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
-            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            BasicLogger.getInstance().printStackTrace(e);
             return;
         }
     }

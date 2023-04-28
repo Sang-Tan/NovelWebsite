@@ -98,7 +98,7 @@ public class ManageNovel extends HttpServlet {
             }
         } catch (Exception e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            BasicLogger.getInstance().printStackTrace(e);
             return;
         }
     }
@@ -171,7 +171,7 @@ public class ManageNovel extends HttpServlet {
         if (error != null)
             errors.add(error);
 
-        if (!error.isEmpty()) {
+        if (!errors.isEmpty()) {
             req.setAttribute("errors", errors);
             req.setAttribute("managingAction", ManageNovelAction.EDIT_NOVEL);
             doGet(req, resp);

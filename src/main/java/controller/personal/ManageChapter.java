@@ -79,10 +79,10 @@ public class ManageChapter extends HttpServlet {
             }
         } catch (SQLException e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            BasicLogger.getInstance().printStackTrace(e);
             return;
         } catch (Exception e) {
-            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            BasicLogger.getInstance().printStackTrace(e);
             return;
         }
 
