@@ -146,7 +146,7 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
                 <div class="modal-body">
                     Xác nhận phê duyệt nội dung này?
                 </div>
-                <form method="get">
+                <form method="post">
                     <div class="modal-footer justify-content-center">
                         <button type="button" class="basic-btn basic-btn--gray" data-dismiss="modal">Đóng</button>
                         <button type="submit" class="basic-btn basic-btn--olive">Xác nhận</button>
