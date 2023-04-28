@@ -42,11 +42,16 @@ public abstract class BaseChangeController extends HttpServlet {
         String action = req.getParameter("action") == null ? "" : req.getParameter("action");
         try {
             switch (action) {
+
                 case "approve":
+                    //TODO: implement notification
+                    //TODO: implement change log
                     approveChange(req, resp);
                     break;
 
                 case "reject":
+                    //TODO: implement notification
+                    //TODO: implement change log
                     rejectChange(req, resp);
                     break;
 
@@ -58,6 +63,7 @@ public abstract class BaseChangeController extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             BasicLogger.getInstance().printStackTrace(e);
         }
+        resp.sendRedirect("/mod/duyet-truyen");
     }
 
     private void approveChange(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
