@@ -2,7 +2,8 @@
 <%--@elvariable id="reqChapter" type="model.Chapter"--%>
 <%--@elvariable id="submitAllowed" type="java.lang.Boolean"--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form method="post" class="containter-fluid ml-5 mr-5" enctype="application/x-www-form-urlencoded">
+<form method="post" class="containter-fluid ml-5 mr-5" enctype="application/x-www-form-urlencoded"
+      onkeydown="return event.key != 'Enter';">
     <div class="d-flex align-items-center mb-2">
         <label for="chapter_name" class="basic-label text-left required">Tiêu đề </label>
         <input class="input-text " style="flex-grow: 1" type="text" name="chapter_name" id="chapter_name"

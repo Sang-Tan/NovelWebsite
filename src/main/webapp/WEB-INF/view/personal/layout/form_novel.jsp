@@ -8,7 +8,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <form method="post" class="containter-fluid ml-5 mr-5" enctype="multipart/form-data"
-      onsubmit="event.preventDefault(); submitForm(event)">
+      onsubmit="event.preventDefault(); submitForm(event)" onkeydown="return event.key != 'Enter';">
     <div class="d-flex flex-column align-items-center mb-3">
         <div class="a6-ratio img-cover mb-2">
             <div class="img-wrapper border" id="image-preview"

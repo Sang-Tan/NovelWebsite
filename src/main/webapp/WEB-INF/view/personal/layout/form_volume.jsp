@@ -2,7 +2,8 @@
 <%--@elvariable id="reqVolume" type="model.Volume"--%>
 <%--@elvariable id="submitAllowed" type="java.lang.Boolean"--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form method="post" class="containter-fluid ml-5 mr-5" enctype="multipart/form-data">
+<form method="post" class="containter-fluid ml-5 mr-5" enctype="multipart/form-data"
+      onkeydown="return event.key != 'Enter';">
     <div class="d-flex flex-column align-items-center mb-3">
         <div class="a6-ratio img-cover mb-2">
             <div class="img-wrapper border" id="image-preview"
