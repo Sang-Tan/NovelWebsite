@@ -4,6 +4,7 @@ import model.Chapter;
 import model.Novel;
 import repository.ChapterRepository;
 import repository.NovelRepository;
+import repository.VolumeRepository;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -126,7 +127,8 @@ public class NovelPending extends HttpServlet {
     public void showList(HttpServletRequest req, HttpServletResponse resp) {
         try {
             req.setAttribute("novelList", NovelRepository.getInstance().getInModeratingNovelsQueue());
-            req.setAttribute("chapterList", ChapterRepository.getInstance().getAllPendingChapter(Chapter.APPROVE_STATUS_PENDING));
+            req.setAttribute("volumeList", VolumeRepository.getInstance().getInModeratingVolumeQueue());
+            req.setAttribute("chapterList", ChapterRepository.getInstance().getInModeratingChapterQueue());
         } catch (SQLException e) {
             e.printStackTrace();
         }

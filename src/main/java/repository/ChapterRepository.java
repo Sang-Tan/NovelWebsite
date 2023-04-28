@@ -151,4 +151,15 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(approvalStatus));
         return mapObjects(records);
     }
+
+    public List<Chapter> getInModeratingChapterQueue() throws SQLException {
+        String sql = "SELECT * FROM chapters " +
+                "WHERE (approval_status = 'pending') " +
+                "OR (approval_status = 'approved' AND " +
+                "EXISTS( SELECT chapter_id FROM chapter_changes " +
+                "WHERE chapter_id = chapters.id)) " +
+                "ORDER BY updated_at ASC";
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql);
+        return mapObjects(records);
+    }
 }
