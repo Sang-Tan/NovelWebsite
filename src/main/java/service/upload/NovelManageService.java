@@ -1,6 +1,7 @@
 package service.upload;
 
 import core.FileUtil;
+import core.logging.BasicLogger;
 import io.github.cdimascio.dotenv.Dotenv;
 import model.Chapter;
 import model.Novel;
@@ -416,7 +417,9 @@ public class NovelManageService {
 
     private static void deleteNovel(Novel novelToDelete) throws SQLException {
         String imageURI = novelToDelete.getImage();
-        if (imageURI.equals(Novel.DEFAULT_IMAGE)) {
+        if (imageURI == null) {
+            BasicLogger.getInstance().getLogger().warning(String.format("Novel %d has null url image", novelToDelete.getId()));
+        } else if (imageURI.equals(Novel.DEFAULT_IMAGE)) {
             imageURI = null;
         }
         //delete all belonging volumes
@@ -445,7 +448,9 @@ public class NovelManageService {
 
     private static void deleteVolume(Volume volumeToDelete) throws SQLException {
         String imageURI = volumeToDelete.getImage();
-        if (imageURI.equals(Volume.DEFAULT_IMAGE)) {
+        if (imageURI == null) {
+            BasicLogger.getInstance().getLogger().warning(String.format("Volume %d image url is null", volumeToDelete.getId()));
+        } else if (imageURI.equals(Volume.DEFAULT_IMAGE)) {
             imageURI = null;
         }
 
