@@ -4,6 +4,7 @@ import core.Pair;
 import core.logging.BasicLogger;
 import core.media.MediaObject;
 import core.media.MediaType;
+import service.upload_change.base.BaseChangeService;
 import service.upload_change.metadata.ContentChangeType;
 
 import javax.servlet.ServletException;
@@ -36,6 +37,41 @@ public abstract class BaseChangeController extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/view/mod_admin/content_change_detail.jsp").forward(req, resp);
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String action = req.getParameter("action") == null ? "" : req.getParameter("action");
+        try {
+            switch (action) {
+                case "approve":
+                    approveChange(req, resp);
+                    break;
+
+                case "reject":
+                    rejectChange(req, resp);
+                    break;
+
+                default:
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    break;
+            }
+        } catch (Exception e) {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            BasicLogger.getInstance().printStackTrace(e);
+        }
+    }
+
+    private void approveChange(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        BaseChangeService changeService = getChangeService();
+        int resourceId = getResourceId(req);
+        changeService.approveChange(resourceId);
+    }
+
+    private void rejectChange(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        BaseChangeService changeService = getChangeService();
+        int resourceId = getResourceId(req);
+        changeService.rejectChange(resourceId);
+    }
+
     protected Pair<String, MediaObject> makeNewContentPair(MediaType mediaType, String name, Object content) {
         return new Pair<>(name, new MediaObject(mediaType, content));
     }
@@ -65,4 +101,5 @@ public abstract class BaseChangeController extends HttpServlet {
 
     protected abstract ContentChangeType getChangeType(int resourceId) throws SQLException;
 
+    protected abstract BaseChangeService getChangeService();
 }
