@@ -125,7 +125,7 @@ public class NovelPending extends HttpServlet {
 
     public void showList(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            req.setAttribute("novelList", NovelRepository.getInstance().getAllPendingNovel(Novel.APPROVE_STATUS_PENDING));
+            req.setAttribute("novelList", NovelRepository.getInstance().getInModeratingNovelsQueue());
             req.setAttribute("chapterList", ChapterRepository.getInstance().getAllPendingChapter(Chapter.APPROVE_STATUS_PENDING));
         } catch (SQLException e) {
             e.printStackTrace();
