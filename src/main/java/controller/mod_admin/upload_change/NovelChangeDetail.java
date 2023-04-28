@@ -34,6 +34,7 @@ public class NovelChangeDetail extends BaseChangeController {
         } catch (SQLException e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             BasicLogger.getInstance().printStackTrace(e);
+            return;
         }
 
         super.doGet(req, resp);
