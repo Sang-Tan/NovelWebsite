@@ -6,6 +6,7 @@ import core.media.MediaType;
 import model.Volume;
 import model.temporary.VolumeChange;
 import repository.VolumeRepository;
+import service.upload_change.base.BaseChangeService;
 import service.upload_change.metadata.ContentChangeType;
 import service.upload_change.VolumeChangeService;
 
@@ -57,5 +58,10 @@ public class VolumeChangeDetail extends BaseChangeController {
     @Override
     protected ContentChangeType getChangeType(int resourceId) throws SQLException {
         return VolumeChangeService.getInstance().getChangeType(resourceId);
+    }
+
+    @Override
+    protected BaseChangeService getChangeService() {
+        return VolumeChangeService.getInstance();
     }
 }

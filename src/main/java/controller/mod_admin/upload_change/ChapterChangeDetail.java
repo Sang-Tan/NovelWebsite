@@ -7,6 +7,7 @@ import model.Chapter;
 import model.temporary.ChapterChange;
 import repository.ChapterRepository;
 import service.upload_change.ChapterChangeService;
+import service.upload_change.base.BaseChangeService;
 import service.upload_change.metadata.ContentChangeType;
 
 import javax.servlet.annotation.WebServlet;
@@ -57,5 +58,10 @@ public class ChapterChangeDetail extends BaseChangeController {
     @Override
     protected ContentChangeType getChangeType(int resourceId) throws SQLException {
         return ChapterChangeService.getInstance().getChangeType(resourceId);
+    }
+
+    @Override
+    protected BaseChangeService getChangeService() {
+        return ChapterChangeService.getInstance();
     }
 }
