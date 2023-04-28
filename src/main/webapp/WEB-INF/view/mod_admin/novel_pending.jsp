@@ -56,23 +56,12 @@
                                                 <td>${novel.owner.displayName}</td>
                                                 <td>${TimeConverter.convertToVietnameseTime(novel.updatedTime)}</td>
                                                 <td>
-                                                    <a href="/mod/thay-doi/tieu-thuyet/${novel.id}"
-                                                       target="_blank">
+                                                    <a href="/mod/thay-doi/tieu-thuyet/${novel.id}">
                                                         <button class="basic-btn basic-btn--olive"
                                                                 style="background-color: dodgerblue; color: white">
                                                             <i class="fas fa-external-link-alt"></i> Chi tiết
                                                         </button>
                                                     </a>
-                                                    <button class="basic-btn basic-btn--red"
-                                                            data-toggle="modal" data-target="#rejectNovelModal"
-                                                            onclick="showNovelForm(${novel.id}, '${novel.name}')">
-                                                        <i class="fas fa-times-circle"></i> Từ chối
-                                                    </button>
-                                                    <button class="basic-btn basic-btn--olive"
-                                                            data-toggle="modal" data-target="#approveNovelModal"
-                                                            onclick="showNovelForm(${novel.id}, '${novel.name}')">
-                                                        <i class="fas fa-check"></i> Duyệt
-                                                    </button>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -267,19 +256,5 @@
             targetPanels.children[targetIndex].classList.add('active');
         });
     });
-
-    function showChapterForm(id, name) {
-        document.getElementsByClassName("idChapter")[0].value = id;
-        document.getElementsByClassName("nameChapter")[0].innerText = name;
-        document.getElementsByClassName("idChapter")[1].value = id;
-        document.getElementsByClassName("nameChapter")[1].innerText = name;
-    }
-
-    function showNovelForm(id, name) {
-        document.getElementsByClassName("idNovel")[0].value = id;
-        document.getElementsByClassName("nameNovel")[0].innerText = name;
-        document.getElementsByClassName("idNovel")[1].value = id;
-        document.getElementsByClassName("nameNovel")[1].innerText = name;
-    }
 </script>
 </html>
