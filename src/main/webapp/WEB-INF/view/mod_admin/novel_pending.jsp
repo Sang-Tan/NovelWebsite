@@ -58,7 +58,8 @@
                                                 <td>${novel.owner.displayName}</td>
                                                 <td>${novel.createdTime}</td>
                                                 <td>
-                                                    <a href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}" target="_blank">
+                                                    <a href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}"
+                                                       target="_blank">
                                                         <button class="basic-btn basic-btn--olive"
                                                                 style="background-color: dodgerblue; color: white">
                                                             <i class="fas fa-external-link-alt"></i> Chi tiết
@@ -101,7 +102,7 @@
                                                     ${chapter.belongVolume.belongNovel.name}
                                             </td>
                                             <td>${chapter.belongVolume.belongNovel.owner.displayName}</td>
-                                            <td>${chapter.modifyTime}</td>
+                                            <td>${chapter.updatedTime}</td>
                                             <td>
                                                 <a href="/doc-tieu-thuyet/${chapter.belongVolume.belongNovel.id}-${URLSlugification.sluging(chapter.belongVolume.belongNovel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}"
                                                    target="_blank">

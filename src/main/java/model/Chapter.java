@@ -29,8 +29,8 @@ public class Chapter implements DatabaseObject, INovelContent {
     @Column(name = "content", nullable = true, length = -1)
     private String content;
 
-    @Column(name = "modify_time", nullable = false)
-    private Timestamp modifyTime;
+    @Column(name = "updated_at", nullable = false)
+    private Timestamp updatedTime;
 
     @Column(name = "approval_status", nullable = false)
     private String approvalStatus;
@@ -97,12 +97,12 @@ public class Chapter implements DatabaseObject, INovelContent {
         this.content = content;
     }
 
-    public Timestamp getModifyTime() {
-        return modifyTime;
+    public Timestamp getUpdatedTime() {
+        return updatedTime;
     }
 
-    public void setModifyTime(Timestamp modifyTime) {
-        this.modifyTime = modifyTime;
+    public void setUpdatedTime(Timestamp updatedTime) {
+        this.updatedTime = updatedTime;
     }
 
     public String getApprovalStatus() {

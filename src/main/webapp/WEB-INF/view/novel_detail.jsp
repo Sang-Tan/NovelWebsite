@@ -101,7 +101,7 @@
                                                 <a class="chapters__link"
                                                    href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">${StringUtils.truncate(chapter.name, 100)}</a>
                                             </div>
-                                            <span class="chapters__time">${TimeConverter.convertToddMMyyyy(chapter.modifyTime)}</span>
+                                            <span class="chapters__time">${TimeConverter.convertToddMMyyyy(chapter.updatedTime)}</span>
                                         </li>
                                     </c:forEach>
                                 </ul>

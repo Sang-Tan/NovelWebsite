@@ -7,6 +7,7 @@ import repository.NovelRepository;
 
 import javax.persistence.*;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
@@ -36,6 +37,9 @@ public class Volume implements DatabaseObject, INovelContent {
 
     @Column(name = "approval_status", nullable = false)
     private String approvalStatus;
+
+    @Column(name = "updated_at")
+    private Timestamp updatedTime;
 
     public int getId() {
         return id;
@@ -114,4 +118,13 @@ public class Volume implements DatabaseObject, INovelContent {
     public void setApprovalStatus(String approvalStatus) {
         this.approvalStatus = approvalStatus;
     }
+
+    public Timestamp getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Timestamp updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
 }

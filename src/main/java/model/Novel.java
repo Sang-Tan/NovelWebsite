@@ -45,6 +45,9 @@ public class Novel implements DatabaseObject, INovelContent {
     private String status;
     @Column(name = "created_at")
     private Timestamp createdTime;
+
+    @Column(name = "updated_at")
+    private Timestamp updatedTime;
     @OneToMany(mappedBy = "belongNovel")
     private List<Volume> volumes = null;
     @OneToMany
@@ -203,4 +206,13 @@ public class Novel implements DatabaseObject, INovelContent {
     public void setReports(List<NovelReport> reports) {
         this.reports = reports;
     }
+
+    public Timestamp getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Timestamp updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
 }
