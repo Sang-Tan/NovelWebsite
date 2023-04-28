@@ -1,5 +1,6 @@
 package service.upload_change.base;
 
+import core.logging.BasicLogger;
 import model.INovelContent;
 import model.temporary.INovelContentChange;
 import service.upload_change.metadata.ContentChangeType;
@@ -69,7 +70,8 @@ public abstract class BaseChangeService<T1 extends INovelContent, T2 extends INo
     public void approveChange(int id) throws SQLException, IOException {
         String approvalStatus = getApprovalStatus(id);
         if (!waitingForModeration(id)) {
-            throw new RuntimeException("Cannot approve change in current state(not in moderation state)");
+            BasicLogger.getInstance().getLogger().warning("Trying to approve change in current state is not allowed");
+            return;
         }
 
         if (approvalStatus.equals(APPROVAL_STATUS_APPROVED)) {
@@ -85,7 +87,8 @@ public abstract class BaseChangeService<T1 extends INovelContent, T2 extends INo
 
     public void rejectChange(int id) throws SQLException {
         if (!waitingForModeration(id)) {
-            throw new RuntimeException("Cannot reject change in current state(not in moderation state)");
+            BasicLogger.getInstance().getLogger().warning("Trying to reject change in current state is not allowed");
+            return;
         }
         String approvalStatus = getApprovalStatus(id);
 
