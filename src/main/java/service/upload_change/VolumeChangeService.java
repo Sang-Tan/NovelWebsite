@@ -73,11 +73,10 @@ public class VolumeChangeService extends BaseChangeService<Volume, VolumeChange>
             FileMapper oldImage = FileMapper.mapURI(volume.getImage());
             FileMapper newImage = FileMapper.mapURI(volumeChange.getImage());
             oldImage.copyFrom(newImage);
-            volume.setImage(oldImage.getURI());
         }
 
         VolumeRepository.getInstance().update(volume);
-        VolumeChangeRepository.getInstance().delete(volumeChange);
+        deleteVolumeChange(volumeChange);
     }
 
     @Override
@@ -89,7 +88,7 @@ public class VolumeChangeService extends BaseChangeService<Volume, VolumeChange>
 
     @Override
     protected void rejectAndDeleteChange(int volumeId) throws SQLException {
-        VolumeChangeRepository.getInstance().deleteByVolumeId(volumeId);
+        deleteVolumeChange(volumeId);
     }
 
     @Override
@@ -97,5 +96,20 @@ public class VolumeChangeService extends BaseChangeService<Volume, VolumeChange>
         Volume volume = VolumeRepository.getInstance().getById(id);
         volume.setApprovalStatus(Volume.APPROVE_STATUS_REJECTED);
         VolumeRepository.getInstance().update(volume);
+    }
+
+    protected void deleteVolumeChange(int id) throws SQLException {
+        VolumeChange volumeChange = VolumeChangeRepository.getInstance().getByVolumeId(id);
+        deleteVolumeChange(volumeChange);
+    }
+
+    protected void deleteVolumeChange(VolumeChange volumeChange) throws SQLException {
+        String imageURI = volumeChange.getImage();
+        if (imageURI != null) {
+            FileMapper image = FileMapper.mapURI(imageURI);
+            image.delete();
+        }
+
+        VolumeChangeRepository.getInstance().delete(volumeChange);
     }
 }

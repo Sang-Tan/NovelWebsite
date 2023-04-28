@@ -76,7 +76,6 @@ public class NovelChangeService extends BaseChangeService<Novel, NovelChange> {
             FileMapper oldImage = FileMapper.mapURI(novel.getImage());
             FileMapper newImage = FileMapper.mapURI(novelChange.getImage());
             oldImage.copyFrom(newImage);
-            newImage.delete();
         }
 
         if (novelChange.getSummary() != null) {
@@ -84,7 +83,7 @@ public class NovelChangeService extends BaseChangeService<Novel, NovelChange> {
         }
 
         NovelRepository.getInstance().update(novel);
-        NovelChangeRepository.getInstance().delete(novelChange);
+        deleteNovelChange(novelChange);
 
     }
 
@@ -97,7 +96,7 @@ public class NovelChangeService extends BaseChangeService<Novel, NovelChange> {
 
     @Override
     protected void rejectAndDeleteChange(int id) throws SQLException {
-        NovelChangeRepository.getInstance().deleteByNovelId(id);
+
     }
 
     @Override
@@ -105,6 +104,22 @@ public class NovelChangeService extends BaseChangeService<Novel, NovelChange> {
         Novel novel = NovelRepository.getInstance().getById(id);
         novel.setApprovalStatus(Novel.APPROVE_STATUS_REJECTED);
         NovelRepository.getInstance().update(novel);
+    }
+
+    protected void deleteNovelChange(int novelId) throws SQLException {
+        NovelChange novelChange = NovelChangeRepository.getInstance().getByNovelId(novelId);
+        deleteNovelChange(novelChange);
+    }
+
+    protected void deleteNovelChange(NovelChange novelChange) throws SQLException {
+        String imageURI = novelChange.getImage();
+        //delete image if exist
+        if (imageURI != null) {
+            FileMapper fileMapper = FileMapper.mapURI(imageURI);
+            fileMapper.delete();
+        }
+
+        NovelChangeRepository.getInstance().delete(novelChange);
     }
 
 }
