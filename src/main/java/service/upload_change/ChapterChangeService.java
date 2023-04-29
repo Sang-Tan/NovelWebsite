@@ -70,8 +70,6 @@ public class ChapterChangeService extends BaseChangeService<Chapter, ChapterChan
             chapter.setContent(chapterChange.getContent());
         }
 
-        chapter.setCreatedTime(new Timestamp(System.currentTimeMillis()));
-        
         ChapterRepository.getInstance().update(chapter);
         ChapterChangeRepository.getInstance().delete(chapterChange);
     }
@@ -80,6 +78,7 @@ public class ChapterChangeService extends BaseChangeService<Chapter, ChapterChan
     protected void approveNewResource(int chapterId) throws SQLException {
         Chapter chapter = ChapterRepository.getInstance().getById(chapterId);
         chapter.setApprovalStatus(Chapter.APPROVE_STATUS_APPROVED);
+        chapter.setCreatedTime(new Timestamp(System.currentTimeMillis()));
         ChapterRepository.getInstance().update(chapter);
     }
 
