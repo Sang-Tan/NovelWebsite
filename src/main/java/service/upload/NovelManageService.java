@@ -17,6 +17,7 @@ import service.upload_change.VolumeChangeService;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class NovelManageService {
@@ -124,6 +125,7 @@ public class NovelManageService {
             throw new IllegalArgumentException("Novel not found");
         }
 
+        novelInDb.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
         if (novelInDb.getApprovalStatus().equals(Novel.APPROVE_STATUS_APPROVED)) {
             updateNovelInfoAndCreateChange(novelInDb, newNovelInfo, genres, image);
         } else {
@@ -187,6 +189,7 @@ public class NovelManageService {
             throw new IllegalArgumentException("Volume not found");
         }
 
+        volumeInDb.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
         if (volumeInDb.getApprovalStatus().equals(Volume.APPROVE_STATUS_APPROVED)) {
             updateVolumeInfoAndCreateChange(volumeInDb, newVolumeInfo, image);
         } else {
@@ -205,6 +208,7 @@ public class NovelManageService {
         }
 
         VolumeChangeService.getInstance().createChange(oldVolumeInfo, newVolumeInfo);
+        VolumeRepository.getInstance().update(oldVolumeInfo);
     }
 
     private static void updateVolumeInfoOnly(Volume oldVolumeInfo, Volume newVolumeInfo, Part image) throws IOException, SQLException {
@@ -243,6 +247,7 @@ public class NovelManageService {
             throw new IllegalArgumentException("Chapter not found");
         }
 
+        chapterInDb.setUpdatedTime(new Timestamp(System.currentTimeMillis()));
         if (chapterInDb.getApprovalStatus().equals(Chapter.APPROVE_STATUS_APPROVED)) {
             updateChapterInfoAndCreateChange(chapterInDb, newChapterInfo);
         } else {
