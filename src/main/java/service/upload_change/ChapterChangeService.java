@@ -7,6 +7,7 @@ import repository.temporary.ChapterChangeRepository;
 import service.upload_change.base.BaseChangeService;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class ChapterChangeService extends BaseChangeService<Chapter, ChapterChange> {
     private static ChapterChangeService instance;
@@ -69,6 +70,8 @@ public class ChapterChangeService extends BaseChangeService<Chapter, ChapterChan
             chapter.setContent(chapterChange.getContent());
         }
 
+        chapter.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+        
         ChapterRepository.getInstance().update(chapter);
         ChapterChangeRepository.getInstance().delete(chapterChange);
     }
