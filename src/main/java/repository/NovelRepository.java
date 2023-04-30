@@ -42,6 +42,7 @@ public class NovelRepository extends BaseRepository<Novel> {
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
         return mapObjects(records);
     }
+
     public long countNovels(String condition, List<Object> params) throws SQLException {
         String sql = String.format("SELECT COUNT(id) FROM %s WHERE %s", getTableName(), condition);
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
@@ -106,8 +107,20 @@ public class NovelRepository extends BaseRepository<Novel> {
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(userID));
         return mapObjects(records);
     }
+
     public String generatePathComponent(int novelID) throws SQLException {
         Novel novel = getById(novelID);
-        return URLSlugification.sluging(novel.getId()+" "+novel.getName());
+        return URLSlugification.sluging(novel.getId() + " " + novel.getName());
+    }
+
+    public List<Novel> getInModeratingNovelsQueue() throws SQLException {
+        String sql = "SELECT * FROM novels " +
+                "WHERE (approval_status = 'pending') " +
+                "OR (approval_status = 'approved' AND " +
+                "EXISTS( SELECT novel_id FROM novel_changes " +
+                "WHERE novel_id = novels.id)) " +
+                "ORDER BY updated_at ASC";
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql);
+        return mapObjects(records);
     }
 }

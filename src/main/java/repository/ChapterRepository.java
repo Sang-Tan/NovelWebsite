@@ -136,7 +136,7 @@ public class ChapterRepository extends BaseRepository<Chapter> {
                 "(SELECT id FROM volumes " +
                 "WHERE novel_id = ? " +
                 "AND NOT order_index = 1) " +
-                "ORDER BY modify_time DESC " +
+                "ORDER BY create_at DESC " +
                 "LIMIT 1", getTableName());
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelId));
         for (SqlRecord record : records) {
@@ -149,6 +149,17 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         String sql = String.format("SELECT * FROM %s WHERE approval_status = ?", getTableName());
         sql += "ORDER BY modify_time DESC";
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(approvalStatus));
+        return mapObjects(records);
+    }
+
+    public List<Chapter> getInModeratingChapterQueue() throws SQLException {
+        String sql = "SELECT * FROM chapters " +
+                "WHERE (approval_status = 'pending') " +
+                "OR (approval_status = 'approved' AND " +
+                "EXISTS( SELECT chapter_id FROM chapter_changes " +
+                "WHERE chapter_id = chapters.id)) " +
+                "ORDER BY updated_at ASC";
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql);
         return mapObjects(records);
     }
 }

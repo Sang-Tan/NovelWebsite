@@ -1,0 +1,15 @@
+.inserted {
+    font-weight: bold;
+}
+
+.deleted {
+    opacity: 0.5;
+}
+
+.modified {
+    font-weight: bold;
+}
+
+.different {
+    font-weight: bold;
+}

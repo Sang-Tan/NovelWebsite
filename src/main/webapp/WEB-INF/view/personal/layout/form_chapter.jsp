@@ -1,13 +1,9 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--@elvariable id="reqChapter" type="model.Chapter"--%>
-<%--
-  Created by IntelliJ IDEA.
-  User: DELL
-  Date: 3/20/2023
-  Time: 8:14 AM
-  To change this template use File | Settings | File Templates.
---%>
+<%--@elvariable id="submitAllowed" type="java.lang.Boolean"--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<form method="post" class="containter-fluid ml-5 mr-5" enctype="application/x-www-form-urlencoded">
+<form method="post" class="containter-fluid ml-5 mr-5" enctype="application/x-www-form-urlencoded"
+      onkeydown="return event.key != 'Enter';">
     <div class="d-flex align-items-center mb-2">
         <label for="chapter_name" class="basic-label text-left required">Tiêu đề </label>
         <input class="input-text " style="flex-grow: 1" type="text" name="chapter_name" id="chapter_name"
@@ -20,7 +16,9 @@
         <textarea rows="10" class="input-text" style="flex-grow: 1" name="chapter_content" id="chapter_content"
                   placeholder="Nội dung" required>${reqChapter.content}</textarea>
     </div>
-    <div class="d-flex justify-content-center">
-        <button type="submit" class="basic-btn basic-btn--olive">Xác nhận</button>
-    </div>
+    <c:if test="${submitAllowed == null || submitAllowed == true}">
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="basic-btn basic-btn--olive">Xác nhận</button>
+        </div>
+    </c:if>
 </form>

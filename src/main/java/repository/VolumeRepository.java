@@ -4,7 +4,6 @@ import core.database.BaseRepository;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
 import core.logging.BasicLogger;
-import model.Chapter;
 import model.Volume;
 
 import java.sql.SQLException;
@@ -140,5 +139,16 @@ public class VolumeRepository extends BaseRepository<Volume> {
             return mapObject(record);
         }
         return null;
+    }
+
+    public List<Volume> getInModeratingVolumeQueue() throws SQLException {
+        String sql = "SELECT * FROM volumes " +
+                "WHERE (approval_status = 'pending') " +
+                "OR (approval_status = 'approved' AND " +
+                "EXISTS( SELECT volume_id FROM volume_changes " +
+                "WHERE volume_id = volumes.id)) " +
+                "ORDER BY updated_at ASC";
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql);
+        return mapObjects(records);
     }
 }

@@ -1,17 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: ACER
-  Date: 08/04/2023
-  Time: 10:34 SA
-  To change this template use File | Settings | File Templates.
---%>
+
 <%--@elvariable id="StringUtils" type="core.StringUtils.class"--%>
 <%@ page import="service.URLSlugification" %>
+
+<%--@elvariable id="TimeConverter" type="core.string_process.TimeConverter.class"--%>
+<%@page import="core.string_process.TimeConverter" %>
+
 <%--@elvariable id="URLSlugification" type="service.URLSlugification.class"--%>
-<%--@elvariable id="chapter" type="model.Chapter"--%>
-<%--@elvariable id="novel" type="model.Novel"--%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--@elvariable id="novelList" type="java.util.List<model.Novel>"--%>
+<%--@elvariable id="volumeList" type="java.util.List<model.Volume>"--%>
+<%--@elvariable id="chapterList" type="java.util.List<model.Chapter>"--%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Kiểm duyệt truyện</title>
@@ -32,12 +31,12 @@
                 <header class="mb-3 d-flex justify-content-between align-items-center">
                     <span class="title title--underline title--bold">Danh sách cần duyệt</span>
                 </header>
-
                 <div class="d-flex mb-3" style="flex-wrap: wrap">
                     <div class="tab-section col-12">
                         <ul class="tab-list">
                             <li class="tab active">Duyệt truyện</li>
-                            <li class="tab ">Duyệt chương</li>
+                            <li class="tab">Duyệt tập truyện</li>
+                            <li class="tab ">Duyệt chương truyện</li>
                         </ul>
                         <div class="tab-panels">
                             <div class="p-0 tab-panel active">
@@ -47,7 +46,7 @@
                                             <th>Ảnh bìa</th>
                                             <th>Tên truyện</th>
                                             <th>Tác giả</th>
-                                            <th>Thời gian đăng</th>
+                                            <th>Cập nhật lúc</th>
                                             <th>Hành động</th>
                                         </tr>
                                         <c:forEach var="novel" items="${novelList}">
@@ -56,28 +55,18 @@
                                                 </td>
                                                 <td>${novel.name}</td>
                                                 <td>${novel.owner.displayName}</td>
-                                                <td>${novel.createdTime}</td>
+                                                <td>${TimeConverter.convertToVietnameseTime(novel.updatedTime)}</td>
                                                 <td>
-                                                    <a href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}" target="_blank">
+                                                    <a href="/mod/thay-doi/tieu-thuyet/${novel.id}">
                                                         <button class="basic-btn basic-btn--olive"
                                                                 style="background-color: dodgerblue; color: white">
                                                             <i class="fas fa-external-link-alt"></i> Chi tiết
                                                         </button>
                                                     </a>
-                                                    <button class="basic-btn basic-btn--red"
-                                                            data-toggle="modal" data-target="#rejectNovelModal"
-                                                            onclick="showNovelForm(${novel.id}, '${novel.name}')">
-                                                        <i class="fas fa-times-circle"></i> Từ chối
-                                                    </button>
-                                                    <button class="basic-btn basic-btn--olive"
-                                                            data-toggle="modal" data-target="#approveNovelModal"
-                                                            onclick="showNovelForm(${novel.id}, '${novel.name}')">
-                                                        <i class="fas fa-check"></i> Duyệt
-                                                    </button>
                                                 </td>
                                             </tr>
                                         </c:forEach>
-                                        <c:if test="${novelList == null}">
+                                        <c:if test="${novelList == null || novelList.size() == 0}">
                                             <tr>
                                                 <td colspan="10" class="text-center">Không có truyện cần duyệt</td>
                                             </tr>
@@ -88,10 +77,44 @@
                             <div class="p-0 tab-panel ">
                                 <table class="table table-striped">
                                     <tr class="text-center">
-                                        <th style="width: 20%">Tên chương</th>
+                                        <th style="width: 20%">Tên tập truyện</th>
                                         <th>Tên truyện</th>
                                         <th>Tác giả</th>
-                                        <th>Thời gian sửa</th>
+                                        <th>Cập nhật lúc</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                    <c:forEach var="volume" items="${volumeList}">
+                                        <tr class="text-center">
+                                            <td style="overflow: hidden; text-overflow: ellipsis">${volume.name}</td>
+                                            <td style="overflow: hidden; text-overflow: ellipsis">
+                                                    ${volume.belongNovel.name}
+                                            </td>
+                                            <td>${volume.belongNovel.owner.displayName}</td>
+                                            <td>${TimeConverter.convertToVietnameseTime(volume.updatedTime)}</td>
+                                            <td>
+                                                <a href="/mod/thay-doi/tap-truyen/${volume.id}">
+                                                    <button class="basic-btn basic-btn--olive"
+                                                            style="background-color: dodgerblue; color: white">
+                                                        <i class="fas fa-external-link-alt"></i> Chi tiết
+                                                    </button>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    <c:if test="${volumeList == null || volumeList.size() == 0}">
+                                        <tr>
+                                            <td colspan="10" class="text-center">Không có tập cần duyệt</td>
+                                        </tr>
+                                    </c:if>
+                                </table>
+                            </div>
+                            <div class="p-0 tab-panel ">
+                                <table class="table table-striped">
+                                    <tr class="text-center">
+                                        <th style="width: 20%">Tên chương truyện</th>
+                                        <th>Tên truyện</th>
+                                        <th>Tác giả</th>
+                                        <th>Cập nhật lúc</th>
                                         <th>Hành động</th>
                                     </tr>
                                     <c:forEach var="chapter" items="${chapterList}">
@@ -101,29 +124,19 @@
                                                     ${chapter.belongVolume.belongNovel.name}
                                             </td>
                                             <td>${chapter.belongVolume.belongNovel.owner.displayName}</td>
-                                            <td>${chapter.modifyTime}</td>
+                                            <td>${TimeConverter.convertToVietnameseTime(chapter.updatedTime)}</td>
                                             <td>
-                                                <a href="/doc-tieu-thuyet/${chapter.belongVolume.belongNovel.id}-${URLSlugification.sluging(chapter.belongVolume.belongNovel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}"
+                                                <a href="/mod/thay-doi/chuong-truyen/${chapter.id}"
                                                    target="_blank">
                                                     <button class="basic-btn basic-btn--olive"
                                                             style="background-color: dodgerblue; color: white">
                                                         <i class="fas fa-external-link-alt"></i> Chi tiết
                                                     </button>
                                                 </a>
-                                                <button class="basic-btn basic-btn--red"
-                                                        data-toggle="modal" data-target="#rejectChapterModal"
-                                                        onclick="showChapterForm(${chapter.id}, '${chapter.name}')">
-                                                    <i class="fas fa-times-circle"></i> Từ chối
-                                                </button>
-                                                <button class="basic-btn basic-btn--olive"
-                                                        data-toggle="modal" data-target="#approveChapterModal"
-                                                        onclick="showChapterForm(${chapter.id}, '${chapter.name}')">
-                                                    <i class="fas fa-check"></i> Duyệt
-                                                </button>
                                             </td>
                                         </tr>
                                     </c:forEach>
-                                    <c:if test="${chapterList == null}">
+                                    <c:if test="${chapterList == null || chapterList.size() == 0}">
                                         <tr>
                                             <td colspan="10" class="text-center">Không có chương cần duyệt</td>
                                         </tr>
@@ -137,100 +150,6 @@
         </div>
     </div>
 </main>
-<!--Modal reject novel-->
-<div class="modal fade" id="rejectNovelModal" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title title title--bold" id="staticBackdropLabel2">Từ chối truyện</h5>
-                <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
-                   style="font-size: x-large"></i>
-            </div>
-            <div class="modal-body">
-                Bạn có muốn từ chối <span class="text-success nameNovel"></span><span> không?</span>
-            </div>
-            <form action="/mod/duyet-truyen" method="get">
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">Đóng</button>
-                    <button type="submit" class="basic-btn basic-btn--olive">OK</button>
-                    <input hidden name="action" value="reject" type="text">
-                    <input hidden name="idNovel" type="text" class="idNovel">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!--Modal approve novel-->
-<div class="modal fade" id="approveNovelModal" tabindex="-1" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title title title--bold" id="staticBackdropLabel3">Duyệt truyện</h5>
-                <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
-                   style="font-size: x-large"></i>
-            </div>
-            <div class="modal-body">
-                Bạn có muốn duyệt <span class="text-success nameNovel"></span><span> không?</span>
-            </div>
-            <form action="/mod/duyet-truyen" method="get">
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">Đóng</button>
-                    <button type="submit" class="basic-btn basic-btn--olive">OK</button>
-                    <input hidden name="action" value="reject" type="text">
-                    <input hidden name="idNovel" type="text" class="idNovel">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!--Modal reject chapter-->
-<div class="modal fade" id="rejectChapterModal" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title title title--bold" id="staticBackdropLabel">Từ chối chương</h5>
-                <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
-                   style="font-size: x-large"></i>
-            </div>
-            <div class="modal-body">
-                Bạn có muốn từ chối <span class="text-success nameChapter"></span><span> không?</span>
-            </div>
-            <form action="/mod/duyet-truyen" method="get">
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">Đóng</button>
-                    <button type="submit" class="basic-btn basic-btn--olive">OK</button>
-                    <input hidden name="action" value="reject" type="text">
-                    <input hidden name="idChapter" type="text" class="idChapter">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!--Modal approve chapter-->
-<div class="modal fade" id="approveChapterModal" tabindex="-1" aria-labelledby="staticBackdropLabel1"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title title title--bold" id="staticBackdropLabel1">Duyệt chương</h5>
-                <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
-                   style="font-size: x-large"></i>
-            </div>
-            <div class="modal-body">
-                Bạn có muốn duyệt <span class="text-success nameChapter"></span><span> không?</span>
-            </div>
-            <form action="/mod/duyet-truyen" method="get">
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">Đóng</button>
-                    <button type="submit" class="basic-btn basic-btn--olive">OK</button>
-                    <input hidden name="action" value="reject" type="text">
-                    <input hidden name="idChapter" type="text" class="idChapter">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-</body>
 <%@include file="/WEB-INF/view/layout/boostrap_js.jsp" %>
 <script>
     const tabs = document.querySelectorAll('.tab');
@@ -268,19 +187,5 @@
             targetPanels.children[targetIndex].classList.add('active');
         });
     });
-
-    function showChapterForm(id, name) {
-        document.getElementsByClassName("idChapter")[0].value = id;
-        document.getElementsByClassName("nameChapter")[0].innerText = name;
-        document.getElementsByClassName("idChapter")[1].value = id;
-        document.getElementsByClassName("nameChapter")[1].innerText = name;
-    }
-
-    function showNovelForm(id, name) {
-        document.getElementsByClassName("idNovel")[0].value = id;
-        document.getElementsByClassName("nameNovel")[0].innerText = name;
-        document.getElementsByClassName("idNovel")[1].value = id;
-        document.getElementsByClassName("nameNovel")[1].innerText = name;
-    }
 </script>
 </html>
