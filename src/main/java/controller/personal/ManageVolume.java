@@ -9,6 +9,7 @@ import model.Volume;
 import model.intermediate.Restriction;
 import service.RestrictionService;
 import service.upload.NovelManageService;
+import service.upload_change.VolumeChangeService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -40,21 +41,19 @@ public class ManageVolume extends HttpServlet {
             }
             req.setAttribute("warnings", warnings);
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+            String action = req.getParameter("action");
+            if (action == null || action.isEmpty()) {
+                showVolumeModificationPage(req, resp);
+            } else if (action.equals("add-chapter")) {
+                showAddChapterPage(req, resp);
+            } else {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }
         } catch (Exception e) {
-            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            BasicLogger.getInstance().printStackTrace(e);
             return;
-        }
-
-
-        String action = req.getParameter("action");
-        if (action == null || action.isEmpty()) {
-            showVolumeModificationPage(req, resp);
-        } else if (action.equals("add-chapter")) {
-            showAddChapterPage(req, resp);
-        } else {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -85,10 +84,9 @@ public class ManageVolume extends HttpServlet {
             } else {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         } catch (Exception e) {
-            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            BasicLogger.getInstance().printStackTrace(e);
             return;
         }
     }
@@ -131,7 +129,19 @@ public class ManageVolume extends HttpServlet {
         req.setAttribute("reqNovel", novel);
     }
 
-    private void showVolumeModificationPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void showVolumeModificationPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        List<String> informations = (List<String>) req.getAttribute("informations");
+        if (informations == null) {
+            informations = new ArrayList<>();
+        }
+
+        if (VolumeChangeService.getInstance().waitingForModeration(getVolumeId(req))) {
+            informations.add("Tập truyện của bạn đang chờ duyệt");
+            Boolean submitAllowed = false;
+            req.setAttribute("submitAllowed", submitAllowed);
+        }
+
+        req.setAttribute("informations", informations);
         req.setAttribute("managingAction", ManageNovelAction.EDIT_VOLUME);
         req.getRequestDispatcher("/WEB-INF/view/personal/novel_manage.jsp").forward(req, resp);
     }

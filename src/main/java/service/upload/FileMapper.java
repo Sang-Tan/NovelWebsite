@@ -149,4 +149,23 @@ public class FileMapper {
         return new File(filePath);
     }
 
+    public void copyFrom(FileMapper fileMapperToCopy) throws IOException {
+        File fileToCopy = fileMapperToCopy.getFile();
+        File fileToCopyTo = this.getFile();
+
+        InputStream inputStream = new FileInputStream(fileToCopy);
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+
+        FileOutputStream fileOutputStream = new FileOutputStream(fileToCopyTo);
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+
+        int byteRead;
+        while ((byteRead = bufferedInputStream.read()) != -1) {
+            bufferedOutputStream.write(byteRead);
+        }
+        bufferedOutputStream.flush();
+        bufferedOutputStream.close();
+        bufferedInputStream.close();
+    }
+
 }

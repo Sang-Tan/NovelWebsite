@@ -2,20 +2,20 @@ package model;
 
 import core.DatabaseObject;
 import core.logging.BasicLogger;
-import model.intermediate.NovelGenre;
-import repository.*;
-import repository.intermediate.NovelGenreRepository;
+import repository.GenreRepository;
+import repository.NovelReportRepository;
+import repository.UserRepository;
+import repository.VolumeRepository;
 
 import javax.persistence.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "novels")
-public class Novel implements DatabaseObject {
+public class Novel implements DatabaseObject, INovelContent {
     public static final String STATUS_ON_GOING = "on going";
     public static final String STATUS_FINISHED = "finished";
     public static final String STATUS_PAUSED = "paused";
@@ -45,6 +45,9 @@ public class Novel implements DatabaseObject {
     private String status;
     @Column(name = "created_at")
     private Timestamp createdTime;
+
+    @Column(name = "updated_at")
+    private Timestamp updatedTime;
     @OneToMany(mappedBy = "belongNovel")
     private List<Volume> volumes = null;
     @OneToMany
@@ -135,6 +138,7 @@ public class Novel implements DatabaseObject {
     public void setStatus(String status) {
         this.status = status;
     }
+
     public String getAuthorName() throws SQLException {
         return getOwner().getDisplayName();
     }
@@ -202,4 +206,13 @@ public class Novel implements DatabaseObject {
     public void setReports(List<NovelReport> reports) {
         this.reports = reports;
     }
+
+    public Timestamp getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Timestamp updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
 }

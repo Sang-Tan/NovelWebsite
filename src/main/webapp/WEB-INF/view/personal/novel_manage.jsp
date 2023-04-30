@@ -1,6 +1,7 @@
 <%--@elvariable id="managingAction" type="core.metadata.ManageNovelAction"--%>
-<%--@elvariable id="error" type="java.lang.String"--%>
+<%--@elvariable id="errors" type="java.util.List<java.lang.String>"--%>
 <%--@elvariable id="warnings" type="java.util.List<java.lang.String>"--%>
+<%--@elvariable id="informations" type="java.util.List<java.lang.String>"--%>
 
 <%--@elvariable id="ManageNovelAction" type="core.metadata.ManageNovelAction.class"--%>
 <%@ page import="core.metadata.ManageNovelAction" %>
@@ -16,16 +17,21 @@
 <body style="background-color: var(--silver)">
 <%@include file="layout/header.jsp" %>
 <div class="container mt-3">
+    <c:forEach items="${errors}" var="error">
+        <div class="alert alert-danger mb-3" role="alert">
+                ${error}
+        </div>
+    </c:forEach>
     <c:forEach items="${warnings}" var="warning">
         <div class="alert alert-warning mb-3" role="alert">
                 ${warning}
         </div>
     </c:forEach>
-    <c:if test="${error != null}">
-        <div class="alert alert-danger mb-3" role="alert">
-                ${error}
+    <c:forEach items="${informations}" var="information">
+        <div class="alert alert-info mb-3" role="alert">
+                ${information}
         </div>
-    </c:if>
+    </c:forEach>
     <div class="row">
         <div class="col-12 col-md-3">
             <div class="basic-section">
