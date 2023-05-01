@@ -5,6 +5,7 @@ CREATE TABLE chapters
     order_index     INT          NOT NULL,
     volume_id       INT          NOT NULL,
     content         TEXT                  DEFAULT NULL,
+    created_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
     approval_status VARCHAR(20)  NOT NULL DEFAULT 'pending',
     CHECK (approval_status IN ('pending', 'approved', 'rejected')),

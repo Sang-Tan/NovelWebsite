@@ -29,6 +29,9 @@ public class Chapter implements DatabaseObject, INovelContent {
     @Column(name = "content", nullable = true, length = -1)
     private String content;
 
+    @Column(name = "created_at")
+    private Timestamp createdTime;
+    
     @Column(name = "updated_at", nullable = false)
     private Timestamp updatedTime;
 
@@ -37,9 +40,6 @@ public class Chapter implements DatabaseObject, INovelContent {
 
     @Column(name = "volume_id", nullable = false)
     private int volumeId;
-
-//    @OneToMany(mappedBy = "chapter")
-//    private List<ChapterMark> ownershipChapterMarks;
 
     @ManyToOne
     @JoinColumn(name = "volume_id", referencedColumnName = "id", nullable = false)
@@ -111,5 +111,13 @@ public class Chapter implements DatabaseObject, INovelContent {
 
     public void setApprovalStatus(String approvalStatus) {
         this.approvalStatus = approvalStatus;
+    }
+
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Timestamp createdTime) {
+        this.createdTime = createdTime;
     }
 }

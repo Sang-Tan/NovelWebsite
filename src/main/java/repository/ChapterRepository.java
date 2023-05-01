@@ -136,7 +136,7 @@ public class ChapterRepository extends BaseRepository<Chapter> {
                 "(SELECT id FROM volumes " +
                 "WHERE novel_id = ? " +
                 "AND NOT order_index = 1) " +
-                "ORDER BY modify_time DESC " +
+                "ORDER BY create_at DESC " +
                 "LIMIT 1", getTableName());
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelId));
         for (SqlRecord record : records) {

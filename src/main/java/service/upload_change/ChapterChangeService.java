@@ -7,6 +7,7 @@ import repository.temporary.ChapterChangeRepository;
 import service.upload_change.base.BaseChangeService;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class ChapterChangeService extends BaseChangeService<Chapter, ChapterChange> {
     private static ChapterChangeService instance;
@@ -77,6 +78,7 @@ public class ChapterChangeService extends BaseChangeService<Chapter, ChapterChan
     protected void approveNewResource(int chapterId) throws SQLException {
         Chapter chapter = ChapterRepository.getInstance().getById(chapterId);
         chapter.setApprovalStatus(Chapter.APPROVE_STATUS_APPROVED);
+        chapter.setCreatedTime(new Timestamp(System.currentTimeMillis()));
         ChapterRepository.getInstance().update(chapter);
     }
 

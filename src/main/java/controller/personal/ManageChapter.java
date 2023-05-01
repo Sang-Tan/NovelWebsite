@@ -101,7 +101,7 @@ public class ManageChapter extends HttpServlet {
         }
 
         if (ChapterChangeService.getInstance().waitingForModeration(getChapterId(req))) {
-            informations.add("Tập truyện của bạn đang chờ duyệt, bạn không thể chỉnh sửa");
+            informations.add("Chương truyện của bạn đang chờ duyệt, bạn không thể chỉnh sửa");
             Boolean submitAllowed = false;
             req.setAttribute("submitAllowed", submitAllowed);
         }
