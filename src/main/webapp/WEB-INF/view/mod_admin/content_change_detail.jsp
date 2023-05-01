@@ -28,14 +28,38 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
 
 <%--@elvariable id="detailTitle" type="java.lang.String"--%>
 <c:choose>
+    <c:when test="${changeType.equals(ContentChangeType.NONE)}">
+        <%--do nothing--%>
+    </c:when>
     <c:when test="${novelRelatedContentType.equals(NovelRelatedContentType.NOVEL)}">
-        <c:set var="detailTitle" value="Chi tiết chỉnh sửa tiểu thuyết"></c:set>
+        <c:choose>
+            <c:when test="${changeType.equals(ContentChangeType.NEW)}">
+                <c:set var="detailTitle" value="Chi tiết thêm mới tiểu thuyết"></c:set>
+            </c:when>
+            <c:otherwise>
+                <c:set var="detailTitle" value="Chi tiết chỉnh sửa tiểu thuyết"></c:set>
+            </c:otherwise>
+        </c:choose>
     </c:when>
     <c:when test="${novelRelatedContentType.equals(NovelRelatedContentType.VOLUME)}">
-        <c:set var="detailTitle" value="Chi tiết chỉnh sửa tập"></c:set>
+        <c:choose>
+            <c:when test="${changeType.equals(ContentChangeType.NEW)}">
+                <c:set var="detailTitle" value="Chi tiết thêm mới tập"></c:set>
+            </c:when>
+            <c:otherwise>
+                <c:set var="detailTitle" value="Chi tiết chỉnh sửa tập"></c:set>
+            </c:otherwise>
+        </c:choose>
     </c:when>
     <c:when test="${novelRelatedContentType.equals(NovelRelatedContentType.CHAPTER)}">
-        <c:set var="detailTitle" value="Chi tiết chỉnh sửa chương"></c:set>
+        <c:choose>
+            <c:when test="${changeType.equals(ContentChangeType.NEW)}">
+                <c:set var="detailTitle" value="Chi tiết thêm mới chương"></c:set>
+            </c:when>
+            <c:otherwise>
+                <c:set var="detailTitle" value="Chi tiết chỉnh sửa chương"></c:set>
+            </c:otherwise>
+        </c:choose>
     </c:when>
 </c:choose>
 
