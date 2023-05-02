@@ -5,8 +5,11 @@ import core.logging.BasicLogger;
 import core.media.MediaObject;
 import core.media.MediaType;
 import model.Chapter;
+import model.User;
+import model.logging.ChapterApprovalLog;
 import model.temporary.ChapterChange;
 import repository.ChapterRepository;
+import service.logging.ChapterApprovalLoggingService;
 import service.upload_change.ChapterChangeService;
 import service.upload_change.base.BaseChangeService;
 import service.upload_change.metadata.ContentChangeType;
@@ -43,11 +46,10 @@ public class ChapterChangeDetail extends BaseChangeController {
     protected List<Pair<String, MediaObject>> getNewContents(int resourceId) throws SQLException {
         Chapter chapter = ChapterRepository.getInstance().getById(resourceId);
 
-        List<Pair<String, MediaObject>> newContents = List.of(
+        return List.of(
                 makeNewContentPair(MediaType.INLINE_TEXT, "Tên chương", chapter.getName()),
                 makeNewContentPair(MediaType.MULTILINE_TEXT, "Nội dung", chapter.getContent())
         );
-        return newContents;
     }
 
     @Override
@@ -83,5 +85,20 @@ public class ChapterChangeDetail extends BaseChangeController {
     @Override
     protected BaseChangeService getChangeService() {
         return ChapterChangeService.getInstance();
+    }
+
+    @Override
+    protected void addApproveLog(User moderator, int chapterId) throws SQLException {
+        //TODO: add approve log (I think this is not necessary)
+    }
+
+    @Override
+    protected void addRejectLog(User moderator, int resourceId, String reason) throws SQLException {
+        ChapterApprovalLog chapterApprovalLog = new ChapterApprovalLog();
+        chapterApprovalLog.setChapterId(resourceId);
+        chapterApprovalLog.setModeratorId(moderator.getId());
+        chapterApprovalLog.setContent(reason);
+
+        ChapterApprovalLoggingService.getInstance().saveLog(chapterApprovalLog);
     }
 }

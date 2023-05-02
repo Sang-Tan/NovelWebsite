@@ -4,9 +4,12 @@ import core.Pair;
 import core.logging.BasicLogger;
 import core.media.MediaObject;
 import core.media.MediaType;
+import model.User;
 import model.Volume;
+import model.logging.VolumeApprovalLog;
 import model.temporary.VolumeChange;
 import repository.VolumeRepository;
+import service.logging.VolumeApprovalLoggingService;
 import service.upload_change.VolumeChangeService;
 import service.upload_change.base.BaseChangeService;
 import service.upload_change.metadata.ContentChangeType;
@@ -43,11 +46,10 @@ public class VolumeChangeDetail extends BaseChangeController {
     protected List<Pair<String, MediaObject>> getNewContents(int resourceId) throws SQLException {
         Volume volume = VolumeRepository.getInstance().getById(resourceId);
 
-        List<Pair<String, MediaObject>> newContents = List.of(
+        return List.of(
                 makeNewContentPair(MediaType.INLINE_TEXT, "Tên tập truyện", volume.getName()),
                 makeNewContentPair(MediaType.IMAGE_URL, "Ảnh bìa", volume.getImage())
         );
-        return newContents;
     }
 
     @Override
@@ -83,5 +85,20 @@ public class VolumeChangeDetail extends BaseChangeController {
     @Override
     protected BaseChangeService getChangeService() {
         return VolumeChangeService.getInstance();
+    }
+
+    @Override
+    protected void addApproveLog(User moderator, int resourceId) throws SQLException {
+        //TODO: implement change log(I think it's not necessary)
+    }
+
+    @Override
+    protected void addRejectLog(User moderator, int resourceId, String reason) throws SQLException {
+        VolumeApprovalLog log = new VolumeApprovalLog();
+        log.setModeratorId(moderator.getId());
+        log.setVolumeId(resourceId);
+        log.setContent(reason);
+
+        VolumeApprovalLoggingService.getInstance().saveLog(log);
     }
 }
