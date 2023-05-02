@@ -17,6 +17,9 @@ public class VolumeApprovalLog implements IApprovalLog, DatabaseObject {
     @Column(name = "volume_id")
     private Integer volumeId;
     @Basic
+    @Column(name = "moderator_id")
+    private Integer moderatorId;
+    @Basic
     @Column(name = "content")
     private String content;
     @Basic
@@ -37,6 +40,14 @@ public class VolumeApprovalLog implements IApprovalLog, DatabaseObject {
 
     public void setVolumeId(Integer volumeId) {
         this.volumeId = volumeId;
+    }
+
+    public Integer getModeratorId() {
+        return moderatorId;
+    }
+
+    public void setModeratorId(Integer moderatorId) {
+        this.moderatorId = moderatorId;
     }
 
     public String getContent() {
@@ -60,11 +71,11 @@ public class VolumeApprovalLog implements IApprovalLog, DatabaseObject {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VolumeApprovalLog that = (VolumeApprovalLog) o;
-        return Objects.equals(id, that.id) && Objects.equals(volumeId, that.volumeId) && Objects.equals(content, that.content) && Objects.equals(createdTime, that.createdTime);
+        return Objects.equals(id, that.id) && Objects.equals(volumeId, that.volumeId) && Objects.equals(moderatorId, that.moderatorId) && Objects.equals(content, that.content) && Objects.equals(createdTime, that.createdTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, volumeId, content, createdTime);
+        return Objects.hash(id, volumeId, moderatorId, content, createdTime);
     }
 }
