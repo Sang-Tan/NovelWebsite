@@ -189,14 +189,14 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
                        style="font-size: x-large"></i>
                 </div>
                 <div class="modal-body">
-                    <div class="d-flex">
-                        <label class="basic-label mr-3" for="rejectReasonInp" style="min-width: unset;">Lý
-                            do:</label>
-                        <input class="input-text" id="rejectReasonInp" type="text"
-                               placeholder="Lý do không chấp nhận nội dung" style="flex:1;">
-                    </div>
                     <form method="post" class="mt-3">
-                        <div class="d-flex justify-content-center">
+                        <div class="d-flex">
+                            <label class="basic-label mr-3" for="rejectReasonInp" style="min-width: unset;">Lý
+                                do:</label>
+                            <input name="reason" class="input-text" id="rejectReasonInp" type="text"
+                                   placeholder="Lý do không chấp nhận nội dung" style="flex:1;" required>
+                        </div>
+                        <div class="d-flex justify-content-center mt-3">
                             <button type="button" class="basic-btn basic-btn--gray mr-2" data-dismiss="modal">Đóng
                             </button>
                             <button type="submit" class="basic-btn basic-btn--olive">Xác nhận</button>
