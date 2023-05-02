@@ -5,10 +5,8 @@ import core.metadata.ReportSelection;
 import core.pagination.Paginator;
 import model.NovelReport;
 import org.json.JSONArray;
-import repository.CommentReportRepository;
 import repository.NovelReportRepository;
 import service.PagingService;
-import service.report.CommentReportService;
 import service.report.NovelReportService;
 
 import javax.servlet.RequestDispatcher;
@@ -101,17 +99,14 @@ public class NovelReportController extends HttpServlet {
         writer.print(jsonArr);
     }
 
-    private void showList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void showList(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
         int page = Integer.parseInt(req.getParameter("page") == null ? "1" : req.getParameter("page"));
         Paginator paginator;
-        try {
-            req.setAttribute("novelReportList", NovelReportService.getInstance().getAllNovelReport(page));
-            System.out.println(NovelReportService.getInstance().getAllNovelReport(page));
-            paginator = NovelReportService.getInstance().getPaginator();
-        } catch (SQLException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
+
+        req.setAttribute("novelReportList", NovelReportService.getInstance().getAllNovelReport(page));
+        System.out.println(NovelReportService.getInstance().getAllNovelReport(page));
+        paginator = NovelReportService.getInstance().getPaginator();
+
         req.setAttribute("selection", ReportSelection.NOVEL_REPORT);
         req.setAttribute("pageItems", PagingService.getActivePageItems(paginator));
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/view/mod_admin/report/main_report_page.jsp");
