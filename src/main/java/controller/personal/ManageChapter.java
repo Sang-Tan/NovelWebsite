@@ -30,7 +30,7 @@ public class ManageChapter extends HttpServlet {
             setRequestAttributes(req, resp);
             User owner = (User) req.getAttribute("user");
             List<String> warnings = new ArrayList<>();
-            if (!checkValidOwner(req, resp)) {
+            if (!isOwnerValid(req, resp)) {
                 return;
             }
 
@@ -38,9 +38,7 @@ public class ManageChapter extends HttpServlet {
                 warnings.add("Bạn đang bị cấm đăng truyện nên không thể đăng cũng như chỉnh sửa truyện");
             }
 
-            req.setAttribute("warnings", warnings);
-
-
+            addMessages(req, "warnings", warnings);
             showChapterModificationPage(req, resp);
         } catch (Exception e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -56,7 +54,7 @@ public class ManageChapter extends HttpServlet {
 
             User owner = (User) req.getAttribute("user");
 
-            if (!checkValidOwner(req, resp)) {
+            if (!isOwnerValid(req, resp)) {
                 return;
             }
 
@@ -95,18 +93,16 @@ public class ManageChapter extends HttpServlet {
     }
 
     private void showChapterModificationPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-        List<String> informations = (List<String>) req.getAttribute("informations");
-        if (informations == null) {
-            informations = new ArrayList<>();
-        }
+        Chapter chapter = (Chapter) req.getAttribute("reqChapter");
 
         if (ChapterChangeService.getInstance().waitingForModeration(getChapterId(req))) {
-            informations.add("Chương truyện của bạn đang chờ duyệt, bạn không thể chỉnh sửa");
+            addMessages(req, "informations", List.of("Chương truyện của bạn đang chờ duyệt, bạn không thể chỉnh sửa"));
             Boolean submitAllowed = false;
             req.setAttribute("submitAllowed", submitAllowed);
+        } else if (chapter.getApprovalStatus().equals(Chapter.APPROVE_STATUS_REJECTED)) {
+            addMessages(req, "warnings", List.of("Chương truyện của bạn đã bị từ chối, hãy chỉnh sửa lại nội dung"));
         }
-
-        req.setAttribute("informations", informations);
+        
         req.setAttribute("managingAction", ManageNovelAction.EDIT_CHAPTER);
         req.getRequestDispatcher("/WEB-INF/view/personal/novel_manage.jsp").forward(req, resp);
     }
@@ -149,7 +145,7 @@ public class ManageChapter extends HttpServlet {
     /**
      * @return true if the user is the owner of the novel
      */
-    private boolean checkValidOwner(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+    private boolean isOwnerValid(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         int chapterId = getChapterId(req);
         Novel reqNovel = (Novel) req.getAttribute("reqNovel");
         User reqUser = (User) req.getAttribute("user");
@@ -165,5 +161,14 @@ public class ManageChapter extends HttpServlet {
         }
 
         return true;
+    }
+
+    private void addMessages(HttpServletRequest req, String msgListName, List<String> messages) {
+        List<String> msgList = ((List<String>) req.getAttribute(msgListName));
+        if (msgList == null) {
+            msgList = new ArrayList<>();
+            req.setAttribute(msgListName, msgList);
+        }
+        msgList.addAll(messages);
     }
 }

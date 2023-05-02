@@ -39,7 +39,7 @@ public class ManageVolume extends HttpServlet {
             if (RestrictionService.getUnexpiredRestriction(owner.getId(), Restriction.TYPE_NOVEL) != null) {
                 warnings.add("Bạn đang bị cấm đăng truyện nên không thể đăng cũng như chỉnh sửa truyện");
             }
-            req.setAttribute("warnings", warnings);
+            addMessages(req, "warnings", warnings);
 
 
             String action = req.getParameter("action");
@@ -130,18 +130,16 @@ public class ManageVolume extends HttpServlet {
     }
 
     private void showVolumeModificationPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-        List<String> informations = (List<String>) req.getAttribute("informations");
-        if (informations == null) {
-            informations = new ArrayList<>();
-        }
+        Volume volume = (Volume) req.getAttribute("reqVolume");
 
         if (VolumeChangeService.getInstance().waitingForModeration(getVolumeId(req))) {
-            informations.add("Tập truyện của bạn đang chờ duyệt");
+            addMessages(req, "informations", List.of("Tập truyện của bạn đang chờ duyệt"));
             Boolean submitAllowed = false;
             req.setAttribute("submitAllowed", submitAllowed);
+        } else if (volume.getApprovalStatus().equals(Volume.APPROVE_STATUS_REJECTED)) {
+            addMessages(req, "warnings", List.of("Tập truyện của bạn đã bị từ chối, vui lòng chỉnh sửa lại nội dung"));
         }
-
-        req.setAttribute("informations", informations);
+        
         req.setAttribute("managingAction", ManageNovelAction.EDIT_VOLUME);
         req.getRequestDispatcher("/WEB-INF/view/personal/novel_manage.jsp").forward(req, resp);
     }
@@ -182,5 +180,14 @@ public class ManageVolume extends HttpServlet {
         NovelManageService.uploadNewChapter(newChapterInfo);
 
         resp.sendRedirect("/ca-nhan/tap-truyen/" + volumeId);
+    }
+
+    private void addMessages(HttpServletRequest req, String msgListName, List<String> messages) {
+        List<String> msgList = ((List<String>) req.getAttribute(msgListName));
+        if (msgList == null) {
+            msgList = new ArrayList<>();
+            req.setAttribute(msgListName, msgList);
+        }
+        msgList.addAll(messages);
     }
 }

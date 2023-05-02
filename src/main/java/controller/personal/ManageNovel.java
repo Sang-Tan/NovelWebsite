@@ -38,9 +38,6 @@ public class ManageNovel extends HttpServlet {
         try {
             setRequestAttributes(req, resp);
 
-            List<String> warnings = new ArrayList<>();
-
-
             User owner = (User) req.getAttribute("user");
             int novelId = getNovelId(req);
             if (!NovelManageService.checkNovelOwnership(owner, novelId)) {
@@ -48,10 +45,8 @@ public class ManageNovel extends HttpServlet {
                 return;
             }
             if (RestrictionService.getUnexpiredRestriction(owner.getId(), Restriction.TYPE_NOVEL) != null) {
-                warnings.add("Bạn đang bị cấm đăng truyện nên không thể đăng cũng như chỉnh sửa truyện");
+                addMessages(req, "warnings", List.of("Bạn đang bị cấm đăng truyện nên không thể đăng cũng như chỉnh sửa truyện"));
             }
-
-            req.setAttribute("warnings", warnings);
 
             String action = req.getParameter("action");
 
@@ -117,16 +112,13 @@ public class ManageNovel extends HttpServlet {
                 return;
             }
 
-            List<String> informations = (List<String>) req.getAttribute("informations");
-            if (informations == null) {
-                informations = new ArrayList<>();
-            }
             if (NovelChangeService.getInstance().waitingForModeration(novelId)) {
-                informations.add("Truyện của bạn đang chờ được duyệt");
+                addMessages(req, "informations", List.of("Truyện của bạn đang chờ được duyệt"));
                 Boolean submitAllowed = false;
                 req.setAttribute("submitAllowed", submitAllowed);
+            } else if (novel.getApprovalStatus().equals(Novel.APPROVE_STATUS_REJECTED)) {
+                addMessages(req, "warnings", List.of("Truyện của bạn đã bị từ chối, vui lòng chỉnh sửa lại nội dung"));
             }
-            req.setAttribute("informations", informations);
 
             req.setAttribute("genres", genres);
             req.setAttribute("novelGenreIds", novelGenreIds);
@@ -172,7 +164,7 @@ public class ManageNovel extends HttpServlet {
             errors.add(error);
 
         if (!errors.isEmpty()) {
-            req.setAttribute("errors", errors);
+            addMessages(req, "errors", errors);
             req.setAttribute("managingAction", ManageNovelAction.EDIT_NOVEL);
             doGet(req, resp);
             return;
@@ -217,7 +209,7 @@ public class ManageNovel extends HttpServlet {
             errors.add(error);
         }
         if (!errors.isEmpty()) {
-            req.setAttribute("errors", errors);
+            addMessages(req, "errors", errors);
             doGet(req, resp);
         }
 
@@ -233,5 +225,14 @@ public class ManageNovel extends HttpServlet {
     private void setRequestAttributes(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         Novel novel = NovelManageService.getNovelByID(getNovelId(req));
         req.setAttribute("reqNovel", novel);
+    }
+
+    private void addMessages(HttpServletRequest req, String msgListName, List<String> messages) {
+        List<String> msgList = ((List<String>) req.getAttribute(msgListName));
+        if (msgList == null) {
+            msgList = new ArrayList<>();
+            req.setAttribute(msgListName, msgList);
+        }
+        msgList.addAll(messages);
     }
 }
