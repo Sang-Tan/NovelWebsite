@@ -29,7 +29,7 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
 <%--@elvariable id="detailTitle" type="java.lang.String"--%>
 <c:choose>
     <c:when test="${changeType.equals(ContentChangeType.NONE)}">
-        <%--do nothing--%>
+        <c:set var="detailTitle" value="Không có thay đổi nào"></c:set>
     </c:when>
     <c:when test="${novelRelatedContentType.equals(NovelRelatedContentType.NOVEL)}">
         <c:choose>
@@ -75,11 +75,11 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
 <div class="container mt-3">
     <c:choose>
         <c:when test="${changeType.equals(ContentChangeType.NONE)}">
-            <h3 class="text-center">Không có thay đổi nào</h3>
+            <h3 class="text-center">${detailTitle}</h3>
         </c:when>
         <c:otherwise>
             <header>
-                <span class="title">${detailTitle}</span>
+                <span class="title title--underline">${detailTitle}</span>
             </header>
             <table class="table table-bordered mt-3">
                 <thead>
@@ -146,12 +146,12 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
             <div class="mt-3 d-flex justify-content-center">
                 <button class="basic-btn basic-btn--red mr-3"
                         data-toggle="modal" data-target="#rejectModal"
-                        onclick="showNovelForm(${novel.id}, '${novel.name}')">
+                        onclick="showNovelForm(${reqNovel.id}, '${reqNovel.name}')">
                     <i class="fas fa-times-circle"></i> Từ chối
                 </button>
                 <button class="basic-btn basic-btn--olive"
                         data-toggle="modal" data-target="#approveModal"
-                        onclick="showNovelForm(${novel.id}, '${novel.name}')">
+                        onclick="showNovelForm(${reqNovel.id}, '${reqNovel.name}')">
                     <i class="fas fa-check"></i> Phê duyệt
                 </button>
             </div>
@@ -192,7 +192,7 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
                 </div>
                 <div class="modal-body">
                     <div class="d-flex">
-                        <label class="basic-label" for="rejectReasonInp" class="mr-3" style="min-width: unset;">Lý
+                        <label class="basic-label mr-3" for="rejectReasonInp" style="min-width: unset;">Lý
                             do:</label>
                         <input class="input-text" id="rejectReasonInp" type="text"
                                placeholder="Lý do không chấp nhận nội dung" style="flex:1;">
