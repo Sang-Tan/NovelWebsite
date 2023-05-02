@@ -3,6 +3,7 @@ package repository;
 import core.database.BaseRepository;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
+import model.Novel;
 import model.NovelReport;
 
 import java.sql.SQLException;
@@ -21,13 +22,6 @@ public class NovelReportRepository extends BaseRepository<NovelReport> {
     @Override
     protected NovelReport createEmpty() {
         return new NovelReport();
-    }
-
-    public List<NovelReport> getAllNovelReport(String condition, List<Object> params) throws SQLException {
-        String sql = String.format("SELECT DISTINCT novel_id FROM %s GROUP BY novel_id ORDER BY max(report_time) DESC LIMIT ? OFFSET ?", getTableName());
-        List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
-        System.out.println(mapObjects(records));
-        return mapObjects(records);
     }
 
     public List<NovelReport> getAllReportContentByNovelId(int novelId) throws SQLException {

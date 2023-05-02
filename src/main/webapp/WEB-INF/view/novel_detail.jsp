@@ -128,7 +128,7 @@
                 <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
                    style="font-size: x-large"></i>
             </div>
-            <form action="/mod/bao-cao-truyen?action=report_novel"
+            <form action="/bao-cao-truyen?action=report_novel"
                   method="post" id="reportNovelForm">
                 <div class="modal-body">
                     <b>Lý do</b>

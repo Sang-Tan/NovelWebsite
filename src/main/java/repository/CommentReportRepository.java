@@ -3,6 +3,7 @@ package repository;
 import core.database.BaseRepository;
 import core.database.MySQLdb;
 import core.database.SqlRecord;
+import model.Comment;
 import model.CommentReport;
 
 import java.sql.SQLException;
@@ -21,13 +22,6 @@ public class CommentReportRepository extends BaseRepository<CommentReport> {
     @Override
     protected CommentReport createEmpty() {
         return new CommentReport();
-    }
-
-    public List<CommentReport> getAllCommentReport(String condition, List<Object> params) throws SQLException {
-        String sql = String.format("SELECT comment_id FROM %s GROUP BY comment_id ORDER BY max(report_time) LIMIT ? OFFSET ?", getTableName());
-//        sql += "";
-        List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
-        return mapObjects(records);
     }
 
     public List<CommentReport> getAllReportContentByCommentId(int commentId) throws SQLException {

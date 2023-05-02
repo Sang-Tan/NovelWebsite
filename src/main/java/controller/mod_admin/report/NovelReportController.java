@@ -47,39 +47,18 @@ public class NovelReportController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if (action == null) action = "";
-        switch (action) {
-            case "report_novel":
-                try {
-                    postNovelReport(req, resp);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
-            case "checked":
-                try {
-                    setCheckTime(req, resp);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-                break;
+        if (action.equals("checked")) {
+            try {
+                setCheckTime(req, resp);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     private void setCheckTime(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
         int novelId = Integer.parseInt(req.getParameter("novelId"));
         NovelReportRepository.getInstance().setCheckTime(novelId);
-    }
-
-    private void postNovelReport(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
-        int novelId = Integer.parseInt(req.getParameter("novelId"));
-        int reportId = Integer.parseInt(req.getParameter("userId"));
-        String reason = req.getParameter("reason");
-        NovelReport novelReport = new NovelReport();
-        novelReport.setNovelId(novelId);
-        novelReport.setReporterId(reportId);
-        novelReport.setReason(reason);
-
-        NovelReportRepository.getInstance().insert(novelReport);
     }
 
     private void getReportsInNovel(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {

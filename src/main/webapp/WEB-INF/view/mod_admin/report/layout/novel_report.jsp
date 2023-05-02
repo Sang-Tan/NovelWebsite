@@ -8,8 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--@elvariable id="reporter" type="model.User"--%>
 <%--@elvariable id="novel" type="model.Novel"--%>
-<%--@elvariable id="novelReport" type="model.NovelReport"--%>
-<%--@elvariable id="novelReportList" type="java.util.List<model.NovelReport>"--%>
+<%--@elvariable id="novelReport" type="model.Novel"--%>
+<%--@elvariable id="novelReportList" type="java.util.List<model.Novel>"--%>
 <style>
     .col-05 {
         width: 4.17%;
@@ -26,19 +26,19 @@
                 <c:forEach var="novelReport" items="${novelReportList}">
                     <div class="rpt-group__item">
                         <a href="" class="no-decor" data-toggle="modal" data-target="#report-modal"
-                           onclick="reportNovelForm(${novelReport.novel.id}, '${novelReport.novel.owner.displayName}',
-                                   '${novelReport.novel.owner.avatar}', ${novelReport.novel.owner.id},
-                                   '${novelReport.novel.name}', '${novelReport.novel.image}', '${novelReport.novel.summary}')">
+                           onclick="reportNovelForm(${novelReport.id}, '${novelReport.owner.displayName}',
+                                   '${novelReport.owner.avatar}', ${novelReport.owner.id},
+                                   '${novelReport.name}', '${novelReport.image}', '${novelReport.summary}')">
                             <div class="rpt-detail" style="background-color: var(--dark-silver); border-left: 1rem solid var(--olive)">
                                 <div class="row">
                                     <div class="col-05"></div>
                                     <div class="col-115" style="border-left: 20px">
                                         <span class="title title--bold overflow-elipsis" style="color: black; white-space: nowrap;
                                             display: block; overflow: hidden; overflow-wrap: break-word; max-width: 550px">
-                                                ${novelReport.novel.name}
+                                                ${novelReport.name}
                                         </span>
                                         <p class="overflow-elipsis" style="color: black">
-                                            Người đăng truyện: ${novelReport.novel.owner.displayName}
+                                            Người đăng truyện: ${novelReport.owner.displayName}
                                         </p>
                                     </div>
                                 </div>

@@ -45,7 +45,7 @@
                    style="font-size: x-large"></i>
             </div>
             <form
-                    action="/mod/bao-cao-binh-luan?action=report_comment"
+                    action="/bao-cao-binh-luan?action=report_comment"
                     method="post" id="reportCommentForm">
                 <div class="modal-body">
                     <b>Lý do</b>

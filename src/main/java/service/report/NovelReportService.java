@@ -1,8 +1,10 @@
 package service.report;
 
 import core.pagination.Paginator;
+import model.Novel;
 import model.NovelReport;
 import repository.NovelReportRepository;
+import repository.NovelRepository;
 import service.PagingService;
 
 import java.sql.SQLException;
@@ -32,12 +34,12 @@ public class NovelReportService {
         return paginator;
     }
 
-    public List<NovelReport> getAllNovelReport(int page) throws SQLException {
+    public List<Novel> getAllNovelReport(int page) throws SQLException {
         List<Object> params = new ArrayList<>();
         List<String> conditionsSQL = new ArrayList<>();
         sql = conditionsSQL.size() > 0 ? String.join(" AND ", conditionsSQL) : "1=1";
         paginator = new Paginator(NovelReportRepository.getInstance().countNovelReports(sql, params), page, 4);
         sql += " " + PagingService.generatePaginationCondition(params, paginator);
-        return NovelReportRepository.getInstance().getAllNovelReport(sql, params);
+        return NovelRepository.getInstance().getAllNovelReport(sql, params);
     }
 }
