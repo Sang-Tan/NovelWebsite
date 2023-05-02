@@ -7,7 +7,7 @@ public class TimeConverter {
         long now = System.currentTimeMillis();
         long diff = now - timeInMilis;
         if (diff < 1000) {
-            return "hiện tại";
+            return "Mới đây";
         } else if (diff < 60 * 1000) {
             return diff / 1000 + " giây trước";
         } else if (diff < 60 * 60 * 1000) {
