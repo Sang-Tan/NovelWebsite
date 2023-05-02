@@ -1,12 +1,14 @@
 package model.logging;
 
+import core.DatabaseObject;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 @Table(name = "chapter_approval_logs")
-public class ChapterApprovalLog implements IApprovalLog {
+public class ChapterApprovalLog implements IApprovalLog, DatabaseObject {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
