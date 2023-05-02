@@ -25,7 +25,7 @@ public class ChapterApprovalLogRepository extends BaseRepository<ChapterApproval
 
     @Override
     protected ChapterApprovalLog createEmpty() {
-        return null;
+        return new ChapterApprovalLog();
     }
 
     public List<ChapterApprovalLog> getOrderedLogsByChapterId(Integer chapterId, boolean ascendingCreatedTime) throws SQLException {

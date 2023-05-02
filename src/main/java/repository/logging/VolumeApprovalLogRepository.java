@@ -25,7 +25,7 @@ public class VolumeApprovalLogRepository extends BaseRepository<VolumeApprovalLo
 
     @Override
     protected VolumeApprovalLog createEmpty() {
-        return null;
+        return new VolumeApprovalLog();
     }
 
     public List<VolumeApprovalLog> getOrderedLogsByVolumeId(Integer volumeId, boolean ascendingCreatedTime) throws SQLException {
