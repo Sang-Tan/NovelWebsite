@@ -49,32 +49,6 @@
                         <%@include file="layout/novel_report.jsp" %>
                     </c:when>
                 </c:choose>
-
-                <%--                <nav class="mt-1">--%>
-                <%--                    <ul class="d-flex justify-content-end">--%>
-                <%--                        <li class="page-list__item">--%>
-                <%--                            <a href="#" class="page-list__link">Đầu</a>--%>
-                <%--                        </li>--%>
-                <%--                        <li class="page-list__item">--%>
-                <%--                            <a href="#" class="page-list__link">1</a>--%>
-                <%--                        </li>--%>
-                <%--                        <li class="page-list__item active">--%>
-                <%--                            <a href="#" class="page-list__link">2</a>--%>
-                <%--                        </li>--%>
-                <%--                        <li class="page-list__item">--%>
-                <%--                            <a href="#" class="page-list__link">3</a>--%>
-                <%--                        </li>--%>
-                <%--                        <li class="page-list__item">--%>
-                <%--                            <a href="#" class="page-list__link">4</a>--%>
-                <%--                        </li>--%>
-                <%--                        <li class="page-list__item">--%>
-                <%--                            <a href="#" class="page-list__link">5</a>--%>
-                <%--                        </li>--%>
-                <%--                        <li class="page-list__item">--%>
-                <%--                            <a href="#" class="page-list__link">Cuối</a>--%>
-                <%--                        </li>--%>
-                <%--                    </ul>--%>
-                <%--                </nav>--%>
             </div>
             <div class="col col-lg-3">
                 <table class="table table-hover mb-0 basic-section">

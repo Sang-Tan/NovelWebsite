@@ -63,11 +63,8 @@
                             class="basic-btn basic-btn--olive"
                             data-toggle="modal"
                             data-target="#confirmModal">
-                        <%-- onclick="confirmForm()" --%>
                         OK
                     </button>
-                    <%-- <input hidden name="action"
-                        value="report_comment" type="text">--%>
                     <input name="commentId" hidden
                            id="commentId" type="text">
                     <input name="userId" hidden id="userId"
@@ -94,27 +91,13 @@
             </div>
 
             <div class="modal-footer justify-content-center">
-                <button type="button"
-                        class="basic-btn basic-btn--red"
-                        data-dismiss="modal">Đóng
+                <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">
+                    Đóng
                 </button>
-                <button type="button"
-                        class="basic-btn basic-btn--olive" id="send"
-                        onclick="submitCommentReport()"
-                        data-dismiss="modal">
+                <button type="button" class="basic-btn basic-btn--olive" id="send" onclick="submitCommentReport()" data-dismiss="modal">
                     OK
                 </button>
-                <%-- <input hidden name="action"
-                    value="report_comment" type="text">--%>
-                <%-- <input hidden name="commentId"
-                    id="comment_id" type="text">--%>
-
-                <%-- <input name="userId" id="user_id"
-                    type="text">--%>
-                <%-- <input name="reasonReport"
-                    id="reasonReport" type="text">--%>
             </div>
-
         </div>
     </div>
 </div>

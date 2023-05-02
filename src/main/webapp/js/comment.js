@@ -202,19 +202,6 @@ function submitCommentReport() {
     document.getElementById("reason").value = "";
     $('#reportCommentModal').hide();
     $('.modal-backdrop').remove();
-    // e.preventDefault();
-    // $.ajax({
-    //     url: $('reportCommentForm').attr('action'),
-    //     type: "POST",
-    //     data: {
-    //         "commentId=": $("input[name='commentId']").val(),
-    //         "userId=": $("input[name='userId']").val(),
-    //     }
-    //
-    // });
-    // $(document).ready(function (){
-    //     setInterval("$('#send').click();",8000);
-    // })
 }
 
 assignPostRootCommentForm();

@@ -34,7 +34,7 @@
                                     <div class="col-05"></div>
                                     <div class="col-115" style="border-left: 20px">
                                         <span class="title title--bold overflow-elipsis" style="color: black; white-space: nowrap;
-                     display: block; overflow: hidden; overflow-wrap: break-word; max-width: 550px">
+                                            display: block; overflow: hidden; overflow-wrap: break-word; max-width: 550px">
                                                 ${commentReport.comment.content}
                                         </span>
                                         <p class="overflow-elipsis" style=" color: black">

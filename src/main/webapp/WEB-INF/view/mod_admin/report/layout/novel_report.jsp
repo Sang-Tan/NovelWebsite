@@ -9,37 +9,52 @@
 <%--@elvariable id="reporter" type="model.User"--%>
 <%--@elvariable id="novel" type="model.Novel"--%>
 <%--@elvariable id="novelReport" type="model.NovelReport"--%>
+<%--@elvariable id="novelReportList" type="java.util.List<model.NovelReport>"--%>
+<style>
+    .col-05 {
+        width: 4.17%;
+    }
+
+    .col-115 {
+
+    }
+</style>
 <div class="row">
     <div class="col-10 col-xl-9 thumb cmt-group">
-        <c:forEach var="novelReport" items="${novelReportList}">
-            <div class="rpt-group__item">
-                <a href="#report-modal" class="no-decor" data-toggle="modal" data-target="#report-modal">
-                    <div class="rpt-detail"
-                         style="background-color: var(--dark-silver)">
-                        <div class="row">
-                            <div class="col-05">
-                                <button class="btn basic-btn--olive h-100"></button>
+        <c:choose>
+            <c:when test="${novelReportList != null}">
+                <c:forEach var="novelReport" items="${novelReportList}">
+                    <div class="rpt-group__item">
+                        <a href="#report-modal" class="no-decor" data-toggle="modal" data-target="#report-modal"
+                           onclick="reportNovelForm(${novelReport.novel.id}, '${novelReport.novel.owner.displayName}',
+                                   '${novelReport.novel.owner.avatar}', ${novelReport.novel.owner.id}, '${novelReport.novel.name}')">
+                            <div class="rpt-detail" style="background-color: var(--dark-silver); border-left: 1rem solid var(--olive)">
+                                <div class="row">
+                                    <div class="col-05"></div>
+                                    <div class="col-115">
+                                        <span class="title title--bold overflow-elipsis" style="color: black; white-space: nowrap;
+                                            display: block; overflow: hidden; overflow-wrap: break-word; max-width: 550px">
+                                                ${novelReport.novel.name}
+                                        </span>
+                                        <p class="overflow-elipsis" style="color: black">
+                                            Người đăng truyện: ${novelReport.novel.owner.displayName}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-115">
-                    <span class="title title--bold" style="margin-left: 20px; color: black">
-                            ${novelReport.novel.name}
-                    </span>
-                                <p style="margin-left: 20px; color: black">
-                                    Người gửi: ${novelReport.reporter.displayName}
-                                </p>
-                            </div>
-                        </div>
+                        </a>
                     </div>
-                </a>
-            </div>
-            <br>
-        </c:forEach>
-        <c:if test="${novelReportList == null}">
-            <h3 class="text-center">Không có báo cáo</h3>
-        </c:if>
+                    <br>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <h3 class="text-center">Không có báo cáo</h3>
+            </c:otherwise>
+        </c:choose>
     </div>
 </div>
 <%@include file="/WEB-INF/view/layout/pagination_footer.jsp" %>
+
 
 <!--Modal report-->
 <div class="modal fade" id="report-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -50,19 +65,27 @@
                 <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
                    style="font-size: x-large"></i>
             </div>
-            <div class="modal-body">
+            <div class="modal-body">0
+
                 <div class="container-fluid">
                     <div class="row">
-                        <p id="showNovelDetail" class="ms-auto col-md-12">Chuyển sinh sang thế giới khác và tôi bị
-                            gọi là...</p>
+                        <a href="" id="linkNovel" target="_blank" class="ms-auto col-md-12 title title--small" style="text-underline: none; color: white">
+                            <p id="novelName" style="font-weight: bold; text-underline: none; color: black">
+                                Chuyển sinh sang thế giới khác và tôi bị gọi là...
+                            </p>
+                        </a>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <img id="showAvatarDetail" src="/images/default-avatar.jpg" alt="avatar"
-                                 class="navbar__avatar">
-                            <p id="showUsernameDetail" class="d-inline-block ml-2 mt-auto mb-auto"
-                               style="font-weight: bold">Username</p>
+                            <a href="" id="ownerId1" style="text-underline: none; color: white">
+                                <img id="ownerAvatar1" src="/images/default-avatar.jpg" alt="avatar"
+                                     class="navbar__avatar" style="text-underline: none; color: black">
+                                <p id="ownerName1" class="d-inline-block ml-2 mt-auto mb-auto"
+                                   style="font-weight: bold; text-underline: none; color: black">
+                                    Username
+                                </p>
+                            </a>
                         </div>
                     </div>
                     <hr>
@@ -72,7 +95,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12 ms-auto" id="showReasonDetail">
+                        <div class="col-md-12 ms-auto" id="reasons1">
                             <p>Lý do báo cáo Lý do báo cáo Lý do báo cáo Lý do báo cáo Lý do báo cáo
                                 Lý do báo cáo Lý do báo cáo Lý do báo cáo Lý do báo cáo Lý do báo cáo
                             </p>
@@ -82,8 +105,15 @@
                 </div>
             </div>
             <div class="">
-                <button type="button" class="btn basic-btn--olive col-md-12" data-dismiss="modal">Đóng</button>
+                <form action="/mod/bao-cao-truyen?action=checked" style="margin-block-end: 0">
+                    <input id="novelId" name="novelId" hidden>
+                    <button type="button" class="btn basic-btn--olive col-md-12" data-dismiss="modal"
+                            onclick="novelReportChecked()">
+                        <i class="fas fa-check-circle"></i> Đã đọc
+                    </button>
+                </form>
             </div>
         </div>
     </div>
 </div>
+<script src="/js/novel_report.js"></script>

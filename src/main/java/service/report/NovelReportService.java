@@ -1,25 +1,25 @@
 package service.report;
 
 import core.pagination.Paginator;
-import model.CommentReport;
-import repository.CommentReportRepository;
+import model.NovelReport;
+import repository.NovelReportRepository;
 import service.PagingService;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommentReportService {
-    private static CommentReportService instance;
+public class NovelReportService {
+    private static NovelReportService instance;
     private String sql;
     private Paginator paginator;
 
-    private CommentReportService() {
-    }
+    private NovelReportService(){
 
-    public static CommentReportService getInstance() {
+    }
+    public static NovelReportService getInstance() {
         if (instance == null) {
-            instance = new CommentReportService();
+            instance = new NovelReportService();
         }
         return instance;
     }
@@ -32,12 +32,12 @@ public class CommentReportService {
         return paginator;
     }
 
-    public List<CommentReport> getAllCommentReport(int page) throws SQLException {
+    public List<NovelReport> getAllNovelReport(int page) throws SQLException {
         List<Object> params = new ArrayList<>();
         List<String> conditionsSQL = new ArrayList<>();
         sql = conditionsSQL.size() > 0 ? String.join(" AND ", conditionsSQL) : "1=1";
-        paginator = new Paginator(CommentReportRepository.getInstance().countCommentReports(sql, params), page, 4);
+        paginator = new Paginator(NovelReportRepository.getInstance().countNovelReports(sql, params), page, 4);
         sql += " " + PagingService.generatePaginationCondition(params, paginator);
-        return CommentReportRepository.getInstance().getAllCommentReport(sql, params);
+        return NovelReportRepository.getInstance().getAllNovelReport(sql, params);
     }
 }

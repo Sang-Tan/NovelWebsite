@@ -47,12 +47,14 @@ public class CommentReportController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if (action == null) action = "";
-        else {
-            try {
-                postCommentReport(req, resp);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        switch (action) {
+            case "report_comment":
+                try {
+                    postCommentReport(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
         }
     }
 
@@ -79,13 +81,6 @@ public class CommentReportController extends HttpServlet {
             return;
         }
         req.setAttribute("selection", ReportSelection.COMMENT_REPORT);
-
-//        String pagingUrl = "/mod/bao-cao-binh-luan" + req.getQueryString();
-//        if (pagingUrl.contains("page=")) {
-//            pagingUrl = pagingUrl.substring(0, pagingUrl.indexOf("&page="));
-//        } else if (req.getQueryString() == null){
-//            pagingUrl = "/mod/bao-cao-binh-luan";
-//        }
         req.setAttribute("pageItems", PagingService.getActivePageItems(paginator));
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/view/mod_admin/report/main_report_page.jsp");
         try {
