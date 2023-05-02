@@ -145,13 +145,11 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
             </table>
             <div class="mt-3 d-flex justify-content-center">
                 <button class="basic-btn basic-btn--red mr-3"
-                        data-toggle="modal" data-target="#rejectModal"
-                        onclick="showNovelForm(${reqNovel.id}, '${reqNovel.name}')">
+                        data-toggle="modal" data-target="#rejectModal">
                     <i class="fas fa-times-circle"></i> Từ chối
                 </button>
                 <button class="basic-btn basic-btn--olive"
-                        data-toggle="modal" data-target="#approveModal"
-                        onclick="showNovelForm(${reqNovel.id}, '${reqNovel.name}')">
+                        data-toggle="modal" data-target="#approveModal">
                     <i class="fas fa-check"></i> Phê duyệt
                 </button>
             </div>
