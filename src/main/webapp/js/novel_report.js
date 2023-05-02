@@ -13,7 +13,7 @@
         });
     return res;
 }
-async function reportNovelForm(novelId, ownerName, ownerAvatar, ownerId, novelName) {
+async function reportNovelForm(novelId, ownerName, ownerAvatar, ownerId, novelName, image, summary) {
     let linkNovel = document.getElementById("linkNovel");
     linkNovel.href = "/truyen/" + novelId;
     document.getElementById("novelId").value = novelId;
@@ -22,6 +22,8 @@ async function reportNovelForm(novelId, ownerName, ownerAvatar, ownerId, novelNa
     let link = document.getElementById("ownerId1");
     link.href = "/thanh-vien/" + ownerId;
     document.getElementById("novelName").innerText = novelName;
+    document.getElementById("image").src = image;
+    document.getElementById("summary").innerText = summary;
     const reasonDiv = document.getElementById("reasons1");
     reasonDiv.innerHTML = null;
 

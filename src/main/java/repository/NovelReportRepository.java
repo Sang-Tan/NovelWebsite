@@ -24,8 +24,9 @@ public class NovelReportRepository extends BaseRepository<NovelReport> {
     }
 
     public List<NovelReport> getAllNovelReport(String condition, List<Object> params) throws SQLException {
-        String sql = String.format("SELECT * FROM %s GROUP BY novel_id ORDER BY max(report_time) DESC LIMIT ? OFFSET ?", getTableName());
+        String sql = String.format("SELECT DISTINCT novel_id FROM %s GROUP BY novel_id ORDER BY max(report_time) DESC LIMIT ? OFFSET ?", getTableName());
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
+        System.out.println(mapObjects(records));
         return mapObjects(records);
     }
 
@@ -47,6 +48,5 @@ public class NovelReportRepository extends BaseRepository<NovelReport> {
     public void setCheckTime(int novelId) throws SQLException {
         String sql = String.format("UPDATE %s SET check_time = CURRENT_TIMESTAMP WHERE novel_id = ?", getTableName());
         MySQLdb.getInstance().execute(sql, List.of(novelId));
-
     }
 }

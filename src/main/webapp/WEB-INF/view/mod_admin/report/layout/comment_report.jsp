@@ -25,7 +25,7 @@
             <c:when test="${commentReportList != null}">
                 <c:forEach var="commentReport" items="${commentReportList}">
                     <div class="rpt-group__item">
-                        <a href="#report-modal" class="no-decor" data-toggle="modal" data-target="#report-modal"
+                        <a href="" class="no-decor" data-toggle="modal" data-target="#report-modal"
                            onclick="reportCommentForm(${commentReport.comment.id}, '${commentReport.comment.owner.displayName}',
                                    '${commentReport.comment.owner.avatar}', '${commentReport.comment.owner.id}', '${commentReport.comment.content}')">
                             <div class="rpt-detail container-fluid"
@@ -69,7 +69,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="" id="ownerId" style="text-underline: none; color: white">
+                            <a href="" target="_blank" id="ownerId" style="text-underline: none; color: white">
                                 <img id="ownerAvatar" src="/images/default-avatar.jpg" alt="avatar"
                                      class="navbar__avatar" style="text-underline: none; color: black">
                                 <p id="ownerName" class="d-inline-block ml-2 mt-auto mb-auto"

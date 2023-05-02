@@ -1,4 +1,4 @@
-//["Bao cao 1", "Bao cao 2"]
+﻿//["Bao cao 1", "Bao cao 2"]
 async function getReportsInComment(commentId) {
     let res = await fetch(`/mod/bao-cao-binh-luan?type=comment_report&comment-id=${commentId}`)
         .then(response => {

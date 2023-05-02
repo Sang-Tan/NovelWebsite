@@ -54,8 +54,20 @@ public class CommentReportController extends HttpServlet {
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-
+                break;
+            case "checked":
+                try {
+                    setCheckTime(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
         }
+    }
+
+    private void setCheckTime(HttpServletRequest req, HttpServletResponse resp) throws SQLException{
+        int commentId = Integer.parseInt(req.getParameter("commentId"));
+        CommentReportRepository.getInstance().setCheckTime(commentId);
     }
 
     private void postCommentReport(HttpServletRequest req, HttpServletResponse resp) throws SQLException {

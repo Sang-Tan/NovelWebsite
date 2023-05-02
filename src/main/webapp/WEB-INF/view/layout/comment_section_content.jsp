@@ -80,8 +80,9 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title title title--bold" id="">Bạn
-                    chắc chứ?</h5>
+                <h5 class="modal-title title title--bold" id="">
+                    Bạn chắc chứ?
+                </h5>
                 <i class="fas fa-compress-arrows-alt top-right-btn"
                    data-dismiss="modal" aria-label="Close"
                    style="font-size: x-large"></i>
@@ -94,7 +95,8 @@
                 <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">
                     Đóng
                 </button>
-                <button type="button" class="basic-btn basic-btn--olive" id="send" onclick="submitCommentReport()" data-dismiss="modal">
+                <button type="button" class="basic-btn basic-btn--olive" id="send" onclick="submitCommentReport()"
+                        data-dismiss="modal">
                     OK
                 </button>
             </div>

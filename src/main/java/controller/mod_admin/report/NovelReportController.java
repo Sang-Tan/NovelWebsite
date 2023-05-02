@@ -5,6 +5,7 @@ import core.metadata.ReportSelection;
 import core.pagination.Paginator;
 import model.NovelReport;
 import org.json.JSONArray;
+import repository.CommentReportRepository;
 import repository.NovelReportRepository;
 import service.PagingService;
 import service.report.CommentReportService;
@@ -55,8 +56,20 @@ public class NovelReportController extends HttpServlet {
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-
+                break;
+            case "checked":
+                try {
+                    setCheckTime(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
         }
+    }
+
+    private void setCheckTime(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+        int novelId = Integer.parseInt(req.getParameter("novelId"));
+        NovelReportRepository.getInstance().setCheckTime(novelId);
     }
 
     private void postNovelReport(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
@@ -93,6 +106,7 @@ public class NovelReportController extends HttpServlet {
         Paginator paginator;
         try {
             req.setAttribute("novelReportList", NovelReportService.getInstance().getAllNovelReport(page));
+            System.out.println(NovelReportService.getInstance().getAllNovelReport(page));
             paginator = NovelReportService.getInstance().getPaginator();
         } catch (SQLException e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);

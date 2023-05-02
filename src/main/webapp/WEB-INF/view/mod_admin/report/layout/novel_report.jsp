@@ -25,13 +25,14 @@
             <c:when test="${novelReportList != null}">
                 <c:forEach var="novelReport" items="${novelReportList}">
                     <div class="rpt-group__item">
-                        <a href="#report-modal" class="no-decor" data-toggle="modal" data-target="#report-modal"
+                        <a href="" class="no-decor" data-toggle="modal" data-target="#report-modal"
                            onclick="reportNovelForm(${novelReport.novel.id}, '${novelReport.novel.owner.displayName}',
-                                   '${novelReport.novel.owner.avatar}', ${novelReport.novel.owner.id}, '${novelReport.novel.name}')">
+                                   '${novelReport.novel.owner.avatar}', ${novelReport.novel.owner.id},
+                                   '${novelReport.novel.name}', '${novelReport.novel.image}', '${novelReport.novel.summary}')">
                             <div class="rpt-detail" style="background-color: var(--dark-silver); border-left: 1rem solid var(--olive)">
                                 <div class="row">
                                     <div class="col-05"></div>
-                                    <div class="col-115">
+                                    <div class="col-115" style="border-left: 20px">
                                         <span class="title title--bold overflow-elipsis" style="color: black; white-space: nowrap;
                                             display: block; overflow: hidden; overflow-wrap: break-word; max-width: 550px">
                                                 ${novelReport.novel.name}
@@ -65,20 +66,21 @@
                 <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
                    style="font-size: x-large"></i>
             </div>
-            <div class="modal-body">0
-
+            <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <a href="" id="linkNovel" target="_blank" class="ms-auto col-md-12 title title--small" style="text-underline: none; color: white">
+                        <a href="" id="linkNovel" target="_blank" class="ms-auto col-md-12 title title--small text-center"
+                           style="text-underline: none; color: white">
                             <p id="novelName" style="font-weight: bold; text-underline: none; color: black">
                                 Chuyển sinh sang thế giới khác và tôi bị gọi là...
                             </p>
+                            <img src="" id="image"  style="height: 200px;" alt="Bìa truyện">
                         </a>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="" id="ownerId1" style="text-underline: none; color: white">
+                            <a href="" target="_blank" id="ownerId1" style="text-underline: none; color: white">
                                 <img id="ownerAvatar1" src="/images/default-avatar.jpg" alt="avatar"
                                      class="navbar__avatar" style="text-underline: none; color: black">
                                 <p id="ownerName1" class="d-inline-block ml-2 mt-auto mb-auto"
@@ -88,12 +90,21 @@
                             </a>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="title title--small" style="font-weight: bold; text-underline: none; color: black">Tóm tắt</p>
+                            <p id="summary" style="overflow-wrap: break-word">Chi tiết tóm tắt truyện</p>
+                        </div>
+                    </div>
+
                     <hr>
                     <div class="row">
                         <div class="title title--bold col-md-12">
                             <p style="text-align: center">Chi tiết báo cáo</p>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-md-12 ms-auto" id="reasons1">
                             <p>Lý do báo cáo Lý do báo cáo Lý do báo cáo Lý do báo cáo Lý do báo cáo
@@ -101,7 +112,6 @@
                             </p>
                         </div>
                     </div>
-
                 </div>
             </div>
             <div class="">
