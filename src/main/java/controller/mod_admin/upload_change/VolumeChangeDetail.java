@@ -7,6 +7,7 @@ import core.media.MediaType;
 import model.User;
 import model.Volume;
 import model.logging.VolumeApprovalLog;
+import model.logging.info.VolumeApprovalLogInfo;
 import model.temporary.VolumeChange;
 import repository.VolumeRepository;
 import service.logging.VolumeApprovalLoggingService;
@@ -33,6 +34,13 @@ public class VolumeChangeDetail extends BaseChangeController {
             Volume reqVolume = VolumeRepository.getInstance().getById(getResourceId(req));
             req.setAttribute("reqVolume", reqVolume);
             req.setAttribute("novelRelatedContentType", NovelRelatedContentType.VOLUME);
+
+            List<VolumeApprovalLog> volumeApprovalLogs = VolumeApprovalLoggingService.getInstance().getLogsByResourceId(reqVolume.getId());
+            List<VolumeApprovalLogInfo> logInfos = new ArrayList<>();
+            for (VolumeApprovalLog volumeApprovalLog : volumeApprovalLogs) {
+                logInfos.add(new VolumeApprovalLogInfo(volumeApprovalLog));
+            }
+            req.setAttribute("approvalLogInfoList", logInfos);
         } catch (SQLException e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             BasicLogger.getInstance().printStackTrace(e);

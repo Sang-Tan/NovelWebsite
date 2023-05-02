@@ -7,6 +7,7 @@ import core.media.MediaType;
 import model.Chapter;
 import model.User;
 import model.logging.ChapterApprovalLog;
+import model.logging.info.ChapterApprovalLogInfo;
 import model.temporary.ChapterChange;
 import repository.ChapterRepository;
 import service.logging.ChapterApprovalLoggingService;
@@ -33,6 +34,13 @@ public class ChapterChangeDetail extends BaseChangeController {
             Chapter reqChapter = ChapterRepository.getInstance().getById(getResourceId(req));
             req.setAttribute("reqChapter", reqChapter);
             req.setAttribute("novelRelatedContentType", NovelRelatedContentType.CHAPTER);
+
+            List<ChapterApprovalLog> chapterApprovalLogs = ChapterApprovalLoggingService.getInstance().getLogsByResourceId(reqChapter.getId());
+            List<ChapterApprovalLogInfo> logInfos = new ArrayList<>();
+            for (ChapterApprovalLog chapterApprovalLog : chapterApprovalLogs) {
+                logInfos.add(new ChapterApprovalLogInfo(chapterApprovalLog));
+            }
+            req.setAttribute("approvalLogInfoList", logInfos);
         } catch (SQLException e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             BasicLogger.getInstance().printStackTrace(e);

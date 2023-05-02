@@ -8,6 +8,7 @@ import core.media.MediaType;
 import model.Novel;
 import model.User;
 import model.logging.NovelApprovalLog;
+import model.logging.info.NovelApprovalLogInfo;
 import model.temporary.NovelChange;
 import repository.NovelRepository;
 import service.logging.NovelApprovalLoggingService;
@@ -34,6 +35,13 @@ public class NovelChangeDetail extends BaseChangeController {
             Novel reqNovel = NovelRepository.getInstance().getById(getResourceId(req));
             req.setAttribute("reqNovel", reqNovel);
             req.setAttribute("novelRelatedContentType", NovelRelatedContentType.NOVEL);
+
+            List<NovelApprovalLog> logs = NovelApprovalLoggingService.getInstance().getLogsByResourceId(reqNovel.getId());
+            List<NovelApprovalLogInfo> logInfos = new ArrayList<>();
+            for (NovelApprovalLog log : logs) {
+                logInfos.add(new NovelApprovalLogInfo(log));
+            }
+            req.setAttribute("approvalLogInfoList", logInfos);
         } catch (SQLException e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             BasicLogger.getInstance().printStackTrace(e);
