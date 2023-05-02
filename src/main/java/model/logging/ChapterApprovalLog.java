@@ -16,9 +16,6 @@ public class ChapterApprovalLog implements IApprovalLog {
     @Column(name = "chapter_id")
     private Integer chapterId;
     @Basic
-    @Column(name = "moderator_id")
-    private Integer moderatorId;
-    @Basic
     @Column(name = "content")
     private String content;
     @Basic
@@ -39,14 +36,6 @@ public class ChapterApprovalLog implements IApprovalLog {
 
     public void setChapterId(Integer chapterId) {
         this.chapterId = chapterId;
-    }
-
-    public Integer getModeratorId() {
-        return moderatorId;
-    }
-
-    public void setModeratorId(Integer moderatorId) {
-        this.moderatorId = moderatorId;
     }
 
     public String getContent() {
@@ -70,11 +59,11 @@ public class ChapterApprovalLog implements IApprovalLog {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChapterApprovalLog that = (ChapterApprovalLog) o;
-        return Objects.equals(id, that.id) && Objects.equals(chapterId, that.chapterId) && Objects.equals(moderatorId, that.moderatorId) && Objects.equals(content, that.content) && Objects.equals(createdTime, that.createdTime);
+        return Objects.equals(id, that.id) && Objects.equals(chapterId, that.chapterId) && Objects.equals(content, that.content) && Objects.equals(createdTime, that.createdTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, chapterId, moderatorId, content, createdTime);
+        return Objects.hash(id, chapterId, content, createdTime);
     }
 }

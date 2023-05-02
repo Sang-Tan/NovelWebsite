@@ -94,23 +94,11 @@ ALTER TABLE novel_approval_logs
     ADD CONSTRAINT FK_NovelApprovalLog_Novel FOREIGN KEY (novel_id)
         REFERENCES novels (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE novel_approval_logs
-    ADD CONSTRAINT FK_NovelApprovalLog_Moderator FOREIGN KEY (moderator_id)
-        REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE;
-
 ALTER TABLE volume_approval_logs
     ADD CONSTRAINT FK_VolumeApprovalLog_Volume FOREIGN KEY (volume_id)
         REFERENCES volumes (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE volume_approval_logs
-    ADD CONSTRAINT FK_VolumeApprovalLog_Moderator FOREIGN KEY (moderator_id)
-        REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE;
-
 ALTER TABLE chapter_approval_logs
     ADD CONSTRAINT FK_ChapterApprovalLog_Chapter FOREIGN KEY (chapter_id)
         REFERENCES chapters (id) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE chapter_approval_logs
-    ADD CONSTRAINT FK_ChapterApprovalLog_Moderator FOREIGN KEY (moderator_id)
-        REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
