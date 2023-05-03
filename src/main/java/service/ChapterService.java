@@ -28,6 +28,9 @@ public class ChapterService {
                     previousChapter = ChapterRepository.getInstance().getPreviousChapter(previousChapter.getId());
                     if (previousChapter == null) break;
                 }
+            if(previousChapter.getName().equals("Virtual")){
+                return null;
+            }
             return previousChapter;
         }
         catch (SQLException e){
