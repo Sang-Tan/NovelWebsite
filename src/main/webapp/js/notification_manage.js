@@ -6,7 +6,6 @@
 deleteNotification = notificationIds => {
 
     if (notificationIds.length === 0) {
-        alert('Không có thông báo nào để xóa!');
         alert('Không có thông báo nào để đánh dấu đã xem!');
         return;
     }
