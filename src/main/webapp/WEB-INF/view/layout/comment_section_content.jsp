@@ -56,7 +56,7 @@
 
                 <div class="modal-footer justify-content-center">
                     <button type="button"
-                            class="basic-btn basic-btn--red"
+                            class="basic-btn basic-btn--gray"
                             data-dismiss="modal">Đóng
                     </button>
                     <button type="button"
@@ -81,7 +81,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title title title--bold" id="">
-                    Bạn chắc chứ?
+                    Xác nhận báo cáo
                 </h5>
                 <i class="fas fa-compress-arrows-alt top-right-btn"
                    data-dismiss="modal" aria-label="Close"
@@ -92,7 +92,7 @@
             </div>
 
             <div class="modal-footer justify-content-center">
-                <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">
+                <button type="button" class="basic-btn basic-btn--gray" data-dismiss="modal">
                     Đóng
                 </button>
                 <button type="button" class="basic-btn basic-btn--olive" id="send" onclick="submitCommentReport()"
