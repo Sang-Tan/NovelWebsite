@@ -64,6 +64,7 @@ function submitNovelReport() {
                 if (status === "success") {
                     Swal.fire({
                         title: 'Báo cáo thành công!',
+                        text: 'Cảm ơn bạn đã báo cáo UwU',
                         confirmButtonColor: '#3d9970',
                         icon: 'success'
                     });

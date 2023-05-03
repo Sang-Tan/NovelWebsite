@@ -49,7 +49,7 @@ public class PostNovelReport extends HttpServlet {
         String reason = req.getParameter("reason");
 
         if (reason == null || reason.isEmpty()) {
-            JSONObject errorJSON = getResponseJSON("error", "Phải ghi rõ lý do báo cáo");
+            JSONObject errorJSON = getResponseJSON("error", "Vui lòng nhập lý do báo cáo");
             Writer writer = resp.getWriter();
             writer.write(errorJSON.toString());
             return;
