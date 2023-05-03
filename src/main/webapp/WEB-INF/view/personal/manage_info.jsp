@@ -14,7 +14,7 @@
     <title>Thông tin cá nhân</title>
     <%@include file="/WEB-INF/view/layout/basic_stylesheet.jsp" %>
 </head>
-<body>
+<body style="background-color: var(--silver)">
 <%@include file="layout/header.jsp" %>
 <div class="container mt-5">
     <div class="row">
