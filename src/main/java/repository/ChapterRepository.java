@@ -5,6 +5,7 @@ import core.database.MySQLdb;
 import core.database.SqlRecord;
 import core.logging.BasicLogger;
 import model.Chapter;
+import model.Novel;
 import model.Volume;
 
 import java.sql.SQLException;
@@ -83,6 +84,11 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         BasicLogger.getInstance().getLogger().
                 warning(String.format("Virtual chapter not found for novel id %d", novelId));
         return null;
+    }
+    public boolean isVirtualChapter(Chapter chapter) throws SQLException {
+        Novel novelOfChapter = VolumeRepository.getInstance().getById(chapter.getVolumeId()).getBelongNovel();
+        Chapter virtualChapter = getVirtualChapter(novelOfChapter.getId());
+        return virtualChapter.getId() == chapter.getId();
     }
 
     public Chapter getPreviousChapter(int chapterID) throws SQLException {

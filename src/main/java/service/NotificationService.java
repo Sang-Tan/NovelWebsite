@@ -3,16 +3,13 @@ package service;
 import model.Notification;
 import repository.NotificationRepository;
 
-import java.security.Timestamp;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class NotificationService {
     /**
-     *
      * @param userId
      * @param content
      * @param link
@@ -33,23 +30,18 @@ public class NotificationService {
     }
 
     /**
-     *
      * @param userId
      * @param notificationsId HashSet of notification id need to be removed
      * @return error message or null if success
      */
 
-    public static String removeNotification(Integer userId, HashSet<Integer> notificationsId) {
+    public static String removeNotification(Integer userId, HashSet<Integer> notificationsId) throws SQLException {
         if (notificationsId == null || notificationsId.isEmpty()) {
             throw new IllegalArgumentException("notificationsId is null or empty");
         }
-        for(Integer notificationId : notificationsId) {
+        for (Integer notificationId : notificationsId) {
             Notification notification = null;
-            try {
-                notification = NotificationRepository.getInstance().getById(notificationId);
-            } catch (SQLException e) {
-                return "Lỗi Cơ sở dữ liệu";
-            }
+            notification = NotificationRepository.getInstance().getById(notificationId);
             if (notification == null) {
                 return "Thông báo không tồn tại";
             }
@@ -57,13 +49,28 @@ public class NotificationService {
                 return "Thông báo không thuộc về bạn";
             }
         }
-        for(Integer notificationId : notificationsId) {
-            try {
-                NotificationRepository.getInstance().deleteById(notificationId);
-            } catch (SQLException e) {
-                return "Lỗi Cơ sở dữ liệu";
-            }
+        for (Integer notificationId : notificationsId) {
+            NotificationRepository.getInstance().deleteById(notificationId);
         }
         return null;
+    }
+
+    /**
+     * Extract a list of interger from a string of interger separated by comma
+     *
+     * @param notificationIDString string to extract interger
+     * @return list of interger
+     */
+
+    public static HashSet<Integer> extractNotificationId(String notificationIDString) {
+
+        HashSet<Integer> notificationIDList = null;
+        String regex = "^[0-9,]+$";
+        if (!(notificationIDString == null) && !notificationIDString.isEmpty() && notificationIDString.matches(regex)) {
+            String[] arrGenresIDString = notificationIDString.split(",");
+            // convert string array to hashset
+            notificationIDList = Arrays.stream(arrGenresIDString).map(Integer::parseInt).collect(Collectors.toCollection(HashSet::new));
+        }
+        return notificationIDList;
     }
 }
