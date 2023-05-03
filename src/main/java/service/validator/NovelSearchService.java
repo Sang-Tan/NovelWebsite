@@ -1,5 +1,6 @@
 package service.validator;
 
+import core.StringUtils;
 import model.Novel;
 import repository.NovelRepository;
 import core.pagination.Paginator;
@@ -7,7 +8,6 @@ import service.PagingService;
 
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class NovelSearchService {
     private static final String DEFAULT_SORT_ATTRIBUTE = "name";
@@ -84,21 +84,8 @@ public class NovelSearchService {
         params.add(status);
         return sql;
     }
-
-    public static HashSet<Integer> extractGenresIDs(String genresIDString) {
-
-        HashSet<Integer> genresIDList = null;
-        String regex = "^[0-9,]+$";
-        if (!(genresIDString == null) && !genresIDString.isEmpty() && genresIDString.matches(regex)) {
-            String[] arrGenresIDString = genresIDString.split(",");
-            // convert string array to hashset
-            genresIDList = Arrays.stream(arrGenresIDString).map(Integer::parseInt).collect(Collectors.toCollection(HashSet::new));
-        }
-        return genresIDList;
-    }
-
     private String generateGenresIDCondition(String genresIdString, List<Object> params) {
-        HashSet<Integer> genresId = extractGenresIDs(genresIdString);
+        HashSet<Integer> genresId = StringUtils.extractInt(genresIdString);
         String sql = "";
         if (genresIdString == null || genresIdString.isEmpty()) {
             return sql;

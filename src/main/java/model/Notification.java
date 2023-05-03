@@ -1,10 +1,13 @@
 package model;
 
+import core.DatabaseObject;
+
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "notifications", schema = "novelweb")
-public class Notification {
+public class Notification implements DatabaseObject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -17,6 +20,9 @@ public class Notification {
     @Column(name = "link", nullable = false)
     private String link;
 
+    @Column(name = "time_push_notif", nullable = false)
+    private Timestamp timePushNotif;
+
     public Notification() {
     }
 
@@ -25,6 +31,7 @@ public class Notification {
         this.userId = userId;
         this.content = content;
         this.link = link;
+
     }
 
     public int getId() {
@@ -57,5 +64,11 @@ public class Notification {
 
     public void setLink(String link) {
         this.link = link;
+    }
+    public Timestamp getTimePushNotif() {
+        return timePushNotif;
+    }
+    public void setTimePushNotif(Timestamp timePushNotif) {
+        this.timePushNotif = timePushNotif;
     }
 }
