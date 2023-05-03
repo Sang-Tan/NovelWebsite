@@ -118,7 +118,7 @@
     </div>
 </main>
 <!-- Bootstrap -->
-<%@ include file="layout/boostrap_js.jsp" %>
+<%@ include file="layout/basic_js.jsp" %>
 
 <script>
     const tabs = document.querySelectorAll('.tab');
