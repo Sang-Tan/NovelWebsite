@@ -55,7 +55,7 @@ public class SearchNovels extends HttpServlet {
                 paginator = NovelSearchService.getInstance().getPaginator();
             } catch (SQLException e) {
                 response.setStatus(500);
-                BasicLogger.getInstance().getLogger().warning(e.getMessage());
+                e.printStackTrace();
             }
             // set input data to request attribute
             request.setAttribute("partialNovelName", partialNovelName);
@@ -79,7 +79,7 @@ public class SearchNovels extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/view/search_novel.jsp").forward(request, response);
         } catch (Exception e) {
             response.setStatus(500);
-            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            e.printStackTrace();
         }
 
     }
