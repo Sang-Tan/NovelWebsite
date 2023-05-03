@@ -80,27 +80,35 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
 <div class="container mt-3">
     <div>
         <header>
-            <span class="title title--underline">Lịch sử kiểm duyệt</span>
+            <div class="d-flex align-items-center">
+                <span class="title title--underline">Lịch sử kiểm duyệt</span>
+                <a role="button" href="#historyCollapse" data-toggle="collapse"
+                   class="theme-link">
+                    <i class="fas fa-chevron-down "></i>
+                </a>
+            </div>
         </header>
-        <table class="table table-bordered mt-3">
-            <thead>
-            <tr>
-                <th>Kiểm duyệt viên</th>
-                <th>Nội dung</th>
-                <th>Thời gian</th>
-            </tr>
-            </thead>
-            <tbody class="paragraph-spacing-1">
-            <c:forEach items="${approvalLogInfoList}" var="approvalLogInfo">
-            <tr>
-                <td>
-                    <a href="/thanh-vien/${approvalLogInfo.moderator.id}">${approvalLogInfo.moderator.displayName} </a>
-                </td>
-                <td>${approvalLogInfo.content}</td>
-                <td>${TimeConverter.convertToVietnameseTime(approvalLogInfo.createdTime)}</td>
-            </tr>
-            </c:forEach>
-        </table>
+        <div class="collapse mt-1" id="historyCollapse">
+            <table class="table table-bordered table-striped table-sm mb-0">
+                <thead class="thead-light">
+                <tr>
+                    <th>Kiểm duyệt viên</th>
+                    <th>Nội dung</th>
+                    <th>Thời gian</th>
+                </tr>
+                </thead>
+                <tbody class="paragraph-spacing-1">
+                <c:forEach items="${approvalLogInfoList}" var="approvalLogInfo">
+                <tr>
+                    <td>
+                        <a href="/thanh-vien/${approvalLogInfo.moderator.id}">${approvalLogInfo.moderator.displayName} </a>
+                    </td>
+                    <td>${approvalLogInfo.content}</td>
+                    <td>${TimeConverter.convertToVietnameseTime(approvalLogInfo.createdTime)}</td>
+                </tr>
+                </c:forEach>
+            </table>
+        </div>
     </div>
     <div class="mt-3">
         <c:choose>
@@ -112,7 +120,7 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
                     <span class="title title--underline">${detailTitle}</span>
                 </header>
                 <table class="table table-bordered mt-3">
-                    <thead>
+                    <thead class="thead-light">
                     <tr>
                         <c:choose>
                             <c:when test="${changeType.equals(ContentChangeType.NEW)}">
