@@ -3,6 +3,7 @@
 <%--@elvariable id="reqChapter" type="model.Chapter"--%>
 <%--@elvariable id="previousChapter" type="model.Chapter"--%>
 <%--@elvariable id="nextChapter" type="model.Chapter"--%>
+<%--@elvariable id="isBookMarkYet" type="boolean"--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="core.StringUtils" %>
 <%--@elvariable id="StringUtils" type="core.StringUtils.class"--%>
@@ -26,84 +27,112 @@
 <body style="background-color: var(--silver);">
 
 <jsp:include page="layout/header_main.jsp"></jsp:include>
-<section id="side_icon" class="d-flex flex-column align-items-center none force-block-l">
-    <c:choose>
-        <c:when test="${previousChapter == null}">
-            <a class="button_item disabled" href="#">
-                <i class="fas fa-backward"></i>
-            </a>
-        </c:when>
-        <c:otherwise>
-            <a class="button_item"
-               href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${previousChapter.id}-${URLSlugification.sluging(previousChapter.name)}">
-                <i class="fas fa-backward"></i>
-            </a>
-        </c:otherwise>
-    </c:choose>
+<section class="toolbar" id="toolbar">
+    <div class="toolbar__slide-btn" onclick="toggleToolbar()">
+        <div class="toolbar__slide-icon"><i class="fas fa-angle-left"></i></div>
+    </div>
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <div class="toolbar__item-box">
+            <c:choose>
+                <c:when test="${previousChapter == null}">
+                    <span class="toolbar__item disabled">
+                        <i class="fas fa-backward"></i>
+                    </span>
+                </c:when>
+                <c:otherwise>
+                    <a class="toolbar__item"
+                       href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${previousChapter.id}-${URLSlugification.sluging(previousChapter.name)}">
+                        <i class="fas fa-backward"></i>
+                    </a>
+                </c:otherwise>
+            </c:choose>
+        </div>
 
-    <a class="button_item" href="/truyen/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}">
-        <i class="fas fa-home"></i>
-    </a>
-    <%--@elvariable id="user" type="model.User"--%>
+        <div class="toolbar__item-box">
+            <a class="toolbar__item" href="/truyen/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}">
+                <i class="fas fa-home"></i>
+            </a>
+        </div>
+        <%--@elvariable id="user" type="model.User"--%>
 
-    <c:if test="${user != null}">
-        <a id="add-bookmark" onclick="addBookMark()" data-chapter-id="${reqChapter.id}"
-           class="button_item" ${isBookMarkYet ? "hidden" : ""}>
-            <i class="fas fa-bookmark"></i>
-        </a>
-        <a id="delete-bookmark" onclick="deleteBookmark()" data-chapter-id="${reqChapter.id}"
-           class="button_item" ${isBookMarkYet ? "" : "hidden"}>
-            <i class="far fa-bookmark"></i>
-        </a>
-    </c:if>
-    <a class="button_item" onclick="switchChaptersMode()"><i class="fas fa-info"></i></a>
-    <c:choose>
-        <c:when test="${nextChapter == null}">
-            <a class="disabled button_item">
-                <i class="fas fa-forward"></i>
+        <c:if test="${user != null}">
+            <div id="add-bookmark" data-chapter-id="${reqChapter.id}"
+                 class="toolbar__item-box" ${isBookMarkYet ? "hidden" : ""}>
+                <a href="#" onclick="addBookMark()"
+                   class="toolbar__item" }>
+                    <i class="fas fa-bookmark"></i>
+                </a>
+            </div>
+            <div id="delete-bookmark" data-chapter-id="${reqChapter.id}"
+                 class="toolbar__item-box" ${isBookMarkYet ? "" : "hidden"}>
+                <a href="#" onclick="deleteBookmark()"
+                   class="toolbar__item">
+                    <i class="far fa-bookmark"></i>
+                </a>
+            </div>
+        </c:if>
+        <div class="toolbar__item-box">
+            <a class="toolbar__item" href="#" onclick="toggleNavSidebar()">
+                <i class="fas fa-info"></i>
             </a>
-        </c:when>
-        <c:otherwise>
-            <a class="button_item"
-               href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${nextChapter.id}-${URLSlugification.sluging(nextChapter.name)}">
-                <i class="fas fa-forward"></i>
-            </a>
-        </c:otherwise>
-    </c:choose>
+        </div>
+        <div class="toolbar__item-box">
+            <c:choose>
+                <c:when test="${nextChapter == null}">
+                    <span class="disabled toolbar__item">
+                        <i class="fas fa-forward"></i>
+                    </span>
+                </c:when>
+                <c:otherwise>
+                    <a class="toolbar__item"
+                       href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${nextChapter.id}-${URLSlugification.sluging(nextChapter.name)}">
+                        <i class="fas fa-forward"></i>
+                    </a>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
 </section>
-<section class="sidebar rdtoggle" id="chapters" aria-labelledby="...">
-    <main class="rdtoggle_body">
-        <header class="rd_sidebar-header clear">
-            <a class="img" href="/truyen/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}"
-               style="background: url('${reqNovel.image}') no-repeat"></a>
-            <div class="rd_sidebar-name">
-                <h5>
-                    <a href="/truyen/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}">${StringUtils.truncate(reqNovel.name, 35)}</a>
-                </h5>
-                <small><i class="fas fa-pen"></i>${StringUtils.truncate(reqNovel.authorName, 15)}</small>
+<section class="nav-sidebar" id="navigation-sidebar" aria-labelledby="...">
+    <main>
+        <header class="nav-sidebar__header fluid-container">
+            <div class="row">
+                <div class="col-4">
+                    <div class="a6-ratio">
+                        <a href="/truyen/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}">
+                            <div class="img-wrapper" style="background-image: url('${reqNovel.image}')"></div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col pl-0">
+                    <h5>
+                        <a class="nav-sidebar__novel-name"
+                           href="/truyen/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}">${StringUtils.truncate(reqNovel.name, 35)}</a>
+                    </h5>
+                </div>
             </div>
         </header>
-        <ul id="chap_list" class="unstyled">
+        <ul id="chap_list" class="nav-sidebar__list pl-0">
             <c:forEach items="${reqNovel.volumes}" var="volume">
                 <c:if test="${VolumeService.getFirstApprovedChapter(volume.id) != null}">
                     <c:choose>
                         <c:when test="${volume.id == reqChapter.volumeId}">
-                            <li class="current"><a
-                                    href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${VolumeService.getFirstApprovedChapter(volume.id).id}-${URLSlugification.sluging(VolumeService.getFirstApprovedChapter(volume.id).name)}">${StringUtils.truncate(volume.name, 120)}</a>
+                            <li class="nav-sidebar__item current">
+                                <a href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${VolumeService.getFirstApprovedChapter(volume.id).id}-${URLSlugification.sluging(VolumeService.getFirstApprovedChapter(volume.id).name)}">${StringUtils.truncate(volume.name, 120)}</a>
                             </li>
-                            <ul class="sub-chap_list unstyled">
+                            <ul class="nav-sidebar__list">
                                 <c:forEach items="${volume.chapters}" var="chapter">
                                     <c:if test="${chapter.approvalStatus.equals(Chapter.APPROVE_STATUS_APPROVED)}">
                                         <c:choose>
                                             <c:when test="${chapter.id == reqChapter.id}">
-                                                <li class="current">
+                                                <li class="nav-sidebar__item current">
                                                     <a href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">
                                                             ${StringUtils.truncate(chapter.name, 50)}
                                                     </a>
                                                 </li>
                                             </c:when>
                                             <c:otherwise>
-                                                <li class="">
+                                                <li class="nav-sidebar__item">
                                                     <a href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">
                                                             ${StringUtils.truncate(chapter.name, 50)}
                                                     </a>
@@ -116,7 +145,7 @@
                             </ul>
                         </c:when>
                         <c:otherwise>
-                            <li class=""><a
+                            <li class="nav-sidebar__item"><a
                                     href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${volume.chapters[0].id}-${URLSlugification.sluging(volume.chapters[0].name)}">${StringUtils.truncate(volume.name, 50)}</a>
                             </li>
                         </c:otherwise>
@@ -132,7 +161,7 @@
             <h2 class="text-center">${reqChapter.belongVolume.name}</h2>
             <h4 class="text-center">${reqChapter.name}</h4>
         </div>
-        <main class="chapter-content">
+        <main class="reading-part">
             ${HTMLParser.wrapEachLineWithTag(reqChapter.content,"p")}
         </main>
         <div class="d-flex justify-content-between mb-3">
@@ -151,8 +180,7 @@
                 </c:otherwise>
             </c:choose>
             <a class="basic-btn basic-btn--olive" style="min-width: 25%; color: white"
-               onclick="switchChaptersMode()">Danh
-                sách</a>
+               onclick="toggleNavSidebar()">Danh sách</a>
             <c:choose>
                 <c:when test="${nextChapter == null}">
                     <a class="basic-btn disabled basic-btn--olive" style="min-width: 25%;">
@@ -171,13 +199,14 @@
     </div>
 
     <script>
-        function switchChaptersMode() {
-            var chapters = document.querySelector("#chapters");
-            if (chapters.classList.contains("on")) {
-                chapters.classList.remove("on");
-            } else {
-                chapters.classList.add("on");
-            }
+        function toggleNavSidebar() {
+            const navSidebar = document.querySelector("#navigation-sidebar");
+            navSidebar.classList.toggle("show");
+        }
+
+        function toggleToolbar() {
+            const toolbar = document.getElementById("toolbar");
+            toolbar.classList.toggle("show");
         }
     </script>
 

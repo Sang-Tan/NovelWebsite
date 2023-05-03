@@ -1,11 +1,11 @@
-function addBookMark() {
-    const addBookmarkBtn = document.getElementById("add-bookmark");
-    const deleteBookmarkBtn = document.getElementById("delete-bookmark");
+﻿function addBookMark() {
+    const addBookmarkBox = document.getElementById("add-bookmark");
+    const deleteBookmarkBox = document.getElementById("delete-bookmark");
 
     const request = new XMLHttpRequest();
     request.open('POST', '/danh-dau', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
-    request.onprogress = function(event) {
+    request.onprogress = function (event) {
 
         if (request.status >= 400) {
             alert('Có lỗi xảy ra, vui lòng thử lại sau!');
@@ -13,13 +13,13 @@ function addBookMark() {
         }
         const response = JSON.parse(request.responseText);
         if (response.status === 'success') {
-            addBookmarkBtn.hidden = true;
-            deleteBookmarkBtn.hidden = false;
+            addBookmarkBox.hidden = true;
+            deleteBookmarkBox.hidden = false;
         } else if (response.status === 'error') {
             alert(response.message);
         }
     }
-     request.send(`id=${addBookmarkBtn.dataset.chapterId}&action=add-bookmark`);
+    request.send(`id=${addBookmarkBox.dataset.chapterId}&action=add-bookmark`);
 }
 
 function deleteBookmark() {
