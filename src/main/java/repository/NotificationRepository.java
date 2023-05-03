@@ -5,6 +5,7 @@ import core.database.MySQLdb;
 import core.database.SqlRecord;
 import core.pagination.Paginator;
 import model.Notification;
+import model.User;
 import service.PagingService;
 
 import java.sql.SQLException;
@@ -22,11 +23,10 @@ public class NotificationRepository extends BaseRepository<Notification> {
         return instance;
     }
 
-    public static List<Notification> getNotificationsByPage(int page) throws SQLException {
+    public static List<Notification> getNotificationsByPage(User user) throws SQLException {
         List<Object> params = new ArrayList<>();
-        String conditionsSQL = "ORDER BY time_push_notif DESC ";
-        Paginator paginator = new Paginator(getInstance().countNotifications(), page);
-        conditionsSQL += PagingService.generatePaginationCondition(params, paginator);
+        String conditionsSQL = "user_id = ? ORDER BY time_push_notif DESC ";
+        params.add(user.getId());
         return getInstance().getByConditionString(conditionsSQL, params);
     }
 
@@ -45,29 +45,15 @@ public class NotificationRepository extends BaseRepository<Notification> {
     }
 
     public List<Notification> getByConditionString(String condition, List<Object> params) throws SQLException {
-        String sql = String.format("SELECT * FROM %s %s", getTableName(), condition);
+        String sql = String.format("SELECT * FROM %s WHERE %s", getTableName(), condition);
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
         return mapObjects(records);
     }
-    public long countNotifications() throws SQLException {
 
-        List<Object> params = new ArrayList<>();
-        String sql = String.format("SELECT COUNT(id) FROM %s ", getTableName());
-        List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
-        for (SqlRecord record : records) {
-            return (long) record.get("COUNT(id)");
-        }
-        return 0;
+
+
+    public void deleteById(Integer notificationId) throws SQLException {
+        String sql = String.format("DELETE FROM %s WHERE id = ?", getTableName());
+        MySQLdb.getInstance().execute(sql, List.of(notificationId));
     }
-
-
-
-
-    public Collection<Notification> getNovelsByOwnerID(int ownerID) throws SQLException {
-        String sql = String.format("SELECT * FROM %s WHERE owner = ?", getTableName());
-        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(ownerID));
-        return mapObjects(records);
-    }
-
-
 }

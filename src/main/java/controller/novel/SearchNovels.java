@@ -1,5 +1,6 @@
 package controller.novel;
 
+import core.StringUtils;
 import core.logging.BasicLogger;
 import model.Genre;
 import model.Novel;
@@ -16,12 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @MultipartConfig
 @WebServlet(name = "SearchNovelsServlet", value = "/tim-kiem-truyen")
@@ -67,7 +63,7 @@ public class SearchNovels extends HttpServlet {
             request.setAttribute("author", author);
             request.setAttribute("status", status);
             request.setAttribute("sort", sort);
-            request.setAttribute("genresIDList", NovelSearchService.extractGenresIDs(genresIDString));
+            request.setAttribute("genresIDList", StringUtils.extractInt(genresIDString));
             request.setAttribute("novelsSearched", novelsSearched);
             request.setAttribute("paginator", paginator);
 

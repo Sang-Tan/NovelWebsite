@@ -26,12 +26,11 @@ public class Notification implements DatabaseObject {
     public Notification() {
     }
 
-    public Notification(int id, int userId, String content, String link, Timestamp timePushNotif) {
+    public Notification(int id, int userId, String content, String link) {
         this.id = id;
         this.userId = userId;
         this.content = content;
         this.link = link;
-        this.timePushNotif = timePushNotif;
 
     }
 
