@@ -80,7 +80,7 @@
 </div>
 
 <%-- boostrap script --%>
-<%@include file="/WEB-INF/view/layout/boostrap_js.jsp" %>
+<%@include file="/WEB-INF/view/layout/basic_js.jsp" %>
 
 <script charset="UTF-8" src="/js/form.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/js/novel_manage.js"></script>

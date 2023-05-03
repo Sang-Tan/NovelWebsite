@@ -248,7 +248,7 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
     </div>
 
 </div>
-<jsp:include page="/WEB-INF/view/layout/boostrap_js.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/layout/basic_js.jsp"></jsp:include>
 <script src="/js/content_detail.js"></script>
 </body>
 </html>

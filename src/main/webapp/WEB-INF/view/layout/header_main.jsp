@@ -14,15 +14,8 @@
                 </a>
             </li>
             <li class="navbar__list-item">
-                <a href="#" class="navbar__link navbar__list-text">Danh sách</a>
-            </li>
-            <li class="navbar__list-item">
-                <a href="#" class="navbar__link navbar__list-text">Siuuuu</a>
-            </li>
-            <li class="navbar__list-item">
-                <div style="display: inline-block">
-                    <a href="#" class="navbar__link navbar__list-text">Giới thiệu</a>
-                </div>
+                <a href="/tim-kiem-truyen" class="navbar__link navbar__list-text">Tìm
+                    truyện</a>
             </li>
         </ul>
         <ul class="navbar__list">
@@ -243,6 +236,6 @@
     function redirectToSearch(event) {
         event.preventDefault();
         const novelName = document.getElementById('novelName').value;
-        location.assign("/tim-kiem-truyen?novel="+ novelName);
+        location.assign("/tim-kiem-truyen?novel=" + novelName);
     }
 </script>

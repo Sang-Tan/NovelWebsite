@@ -196,7 +196,7 @@
             </div>
         </div>
     </div>
-    <%@include file="layout/boostrap_js.jsp" %>
+    <%@include file="layout/basic_js.jsp" %>
     <script src="/js/restriction.js"></script>
 </body>
 </html>

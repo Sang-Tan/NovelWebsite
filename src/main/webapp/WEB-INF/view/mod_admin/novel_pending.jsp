@@ -149,7 +149,7 @@
         </div>
     </div>
 </main>
-<%@include file="/WEB-INF/view/layout/boostrap_js.jsp" %>
+<%@include file="/WEB-INF/view/layout/basic_js.jsp" %>
 <script>
     const tabs = document.querySelectorAll('.tab');
 

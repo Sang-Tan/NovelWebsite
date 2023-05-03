@@ -31,7 +31,7 @@
         </form>
     </div>
 </div>
-<%@include file="/WEB-INF/view/layout/boostrap_js.jsp" %>
+<%@include file="/WEB-INF/view/layout/basic_js.jsp" %>
 <c:choose>
     <c:when test="${not empty errorMessage}">
         <script>

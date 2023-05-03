@@ -47,10 +47,12 @@
     <%--@elvariable id="user" type="model.User"--%>
 
     <c:if test="${user != null}">
-        <a id="add-bookmark" onclick="addBookMark()" data-chapter-id="${reqChapter.id}" class="button_item" ${isBookMarkYet ? "hidden" : ""}>
+        <a id="add-bookmark" onclick="addBookMark()" data-chapter-id="${reqChapter.id}"
+           class="button_item" ${isBookMarkYet ? "hidden" : ""}>
             <i class="fas fa-bookmark"></i>
         </a>
-        <a id="delete-bookmark" onclick="deleteBookmark()" data-chapter-id="${reqChapter.id}" class="button_item" ${isBookMarkYet ? "" : "hidden"}>
+        <a id="delete-bookmark" onclick="deleteBookmark()" data-chapter-id="${reqChapter.id}"
+           class="button_item" ${isBookMarkYet ? "" : "hidden"}>
             <i class="far fa-bookmark"></i>
         </a>
     </c:if>
@@ -179,7 +181,7 @@
         }
     </script>
 
-    <%@ include file="layout/boostrap_js.jsp" %>
+    <%@ include file="layout/basic_js.jsp" %>
     <script src="/js/bookmark_manage.js"></script>
 
 </body>

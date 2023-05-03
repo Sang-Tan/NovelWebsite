@@ -74,6 +74,6 @@
         </div>
     </div>
 </div>
-<%@include file="/WEB-INF/view/layout/boostrap_js.jsp" %>
+<%@include file="/WEB-INF/view/layout/basic_js.jsp" %>
 </body>
 </html>

@@ -129,7 +129,7 @@
     </div>
 </main>
 </body>
-<%@include file="/WEB-INF/view/layout/boostrap_js.jsp" %>
+<%@include file="/WEB-INF/view/layout/basic_js.jsp" %>
 <script>
     function showDeleteForm(id, name) {
         document.getElementById("idDelete").value = id;
