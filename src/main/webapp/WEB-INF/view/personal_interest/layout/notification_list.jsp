@@ -39,4 +39,4 @@
 </c:forEach>
 
 <script src="/js/personal_interest.js"></script>
-<script src="/js/notification_handler.js"></script>
+<script src="/js/notification_manage.js"></script>

@@ -1,8 +1,13 @@
-
+/**
+ *
+ *
+ * @param notificationIds : array of notification id need to delete
+ */
 deleteNotification = notificationIds => {
 
     if (notificationIds.length === 0) {
         alert('Không có thông báo nào để xóa!');
+        alert('Không có thông báo nào để đánh dấu đã xem!');
         return;
     }
 
@@ -27,8 +32,9 @@ deleteNotification = notificationIds => {
     request.send(`notificationsId=${notificationIds.join(',')}&action=delete-notification`)
 }
 deleteThisNotification = element =>{
-    const notificationId = element.dataset.notificationId;
-    deleteNotification([notificationId]);
+    const notificationIds = [];
+    notificationIds.push(element.dataset.notificationId);
+    deleteNotification(notificationIds);
 }
 deleteAllNotification = () => {
     const seenBtns = document.querySelectorAll('[data-action="seen"]');
