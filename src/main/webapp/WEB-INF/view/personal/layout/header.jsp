@@ -21,7 +21,11 @@
                 <a href="/ca-nhan/truyen-da-dang" class="navbar__link navbar__list-text">Truyện đã đăng</a>
             </li>
             <li class="navbar__list-item">
-                <a href="/ca-nhan/thong-tin" class="navbar__link navbar__list-text">Thông tin cá nhân</a>
+                <a href="/ca-nhan/thong-tin" class="navbar__link navbar__list-text">Sửa thông tin cá nhân</a>
+            </li>
+            <li class="navbar__list-item">
+                <a href="${pageContext.request.contextPath}/ca-nhan/doi-mat-khau"
+                   class="navbar__link navbar__list-text">Đổi mật khẩu</a>
             </li>
         </ul>
     </div>

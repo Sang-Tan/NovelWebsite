@@ -126,8 +126,7 @@
                                             <td>${chapter.belongVolume.belongNovel.owner.displayName}</td>
                                             <td>${TimeConverter.convertToVietnameseTime(chapter.updatedTime)}</td>
                                             <td>
-                                                <a href="/mod/thay-doi/chuong-truyen/${chapter.id}"
-                                                   target="_blank">
+                                                <a href="/mod/thay-doi/chuong-truyen/${chapter.id}">
                                                     <button class="basic-btn basic-btn--olive"
                                                             style="background-color: dodgerblue; color: white">
                                                         <i class="fas fa-external-link-alt"></i> Chi tiết

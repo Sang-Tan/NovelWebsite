@@ -39,7 +39,7 @@ public class ReadingListController extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/view/personal_interest/main_page.jsp").forward(req, resp);
         } catch (SQLException e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            BasicLogger.getInstance().printStackTrace(e);
         }
     }
 
@@ -61,7 +61,7 @@ public class ReadingListController extends HttpServlet {
             }
         } catch (Exception e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            BasicLogger.getInstance().printStackTrace(e);
         }
     }
 

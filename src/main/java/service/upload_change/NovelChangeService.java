@@ -96,7 +96,7 @@ public class NovelChangeService extends BaseChangeService<Novel, NovelChange> {
 
     @Override
     protected void rejectAndDeleteChange(int id) throws SQLException {
-
+        deleteNovelChange(id);
     }
 
     @Override

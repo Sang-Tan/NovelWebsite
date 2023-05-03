@@ -6,8 +6,12 @@ import core.logging.BasicLogger;
 import core.media.MediaObject;
 import core.media.MediaType;
 import model.Novel;
+import model.User;
+import model.logging.NovelApprovalLog;
+import model.logging.info.NovelApprovalLogInfo;
 import model.temporary.NovelChange;
 import repository.NovelRepository;
+import service.logging.NovelApprovalLoggingService;
 import service.upload_change.NovelChangeService;
 import service.upload_change.base.BaseChangeService;
 import service.upload_change.metadata.ContentChangeType;
@@ -31,6 +35,13 @@ public class NovelChangeDetail extends BaseChangeController {
             Novel reqNovel = NovelRepository.getInstance().getById(getResourceId(req));
             req.setAttribute("reqNovel", reqNovel);
             req.setAttribute("novelRelatedContentType", NovelRelatedContentType.NOVEL);
+
+            List<NovelApprovalLog> logs = NovelApprovalLoggingService.getInstance().getLogsByResourceId(reqNovel.getId());
+            List<NovelApprovalLogInfo> logInfos = new ArrayList<>();
+            for (NovelApprovalLog log : logs) {
+                logInfos.add(new NovelApprovalLogInfo(log));
+            }
+            req.setAttribute("approvalLogInfoList", logInfos);
         } catch (SQLException e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             BasicLogger.getInstance().printStackTrace(e);
@@ -88,6 +99,21 @@ public class NovelChangeDetail extends BaseChangeController {
     @Override
     protected BaseChangeService getChangeService() {
         return NovelChangeService.getInstance();
+    }
+
+    @Override
+    protected void addApproveLog(User moderator, int resourceId) throws SQLException {
+        //TODO: add approve log (I don't think we need this)
+    }
+
+    @Override
+    protected void addRejectLog(User moderator, int resourceId, String reason) throws SQLException {
+        NovelApprovalLog log = new NovelApprovalLog();
+        log.setNovelId(resourceId);
+        log.setModeratorId(moderator.getId());
+        log.setContent(reason);
+
+        NovelApprovalLoggingService.getInstance().saveLog(log);
     }
 
 }
