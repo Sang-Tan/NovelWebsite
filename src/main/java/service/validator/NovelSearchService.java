@@ -1,10 +1,10 @@
 package service.validator;
 
-import core.StringUtils;
 import model.Novel;
 import repository.NovelRepository;
 import core.pagination.Paginator;
 import service.PagingService;
+import service.SearchNovelService;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -85,7 +85,7 @@ public class NovelSearchService {
         return sql;
     }
     private String generateGenresIDCondition(String genresIdString, List<Object> params) {
-        HashSet<Integer> genresId = StringUtils.extractInt(genresIdString);
+        HashSet<Integer> genresId = SearchNovelService.extractGenresId(genresIdString);
         String sql = "";
         if (genresIdString == null || genresIdString.isEmpty()) {
             return sql;
