@@ -1,27 +1,27 @@
 package service.report;
 
 import core.pagination.Paginator;
-import model.Comment;
-import model.CommentReport;
-import repository.CommentReportRepository;
-import repository.CommentRepository;
+import model.Novel;
+import model.NovelReport;
+import repository.NovelReportRepository;
+import repository.NovelRepository;
 import service.PagingService;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommentReportService {
-    private static CommentReportService instance;
+public class NovelReportService {
+    private static NovelReportService instance;
     private String sql;
     private Paginator paginator;
 
-    private CommentReportService() {
-    }
+    private NovelReportService(){
 
-    public static CommentReportService getInstance() {
+    }
+    public static NovelReportService getInstance() {
         if (instance == null) {
-            instance = new CommentReportService();
+            instance = new NovelReportService();
         }
         return instance;
     }
@@ -34,12 +34,12 @@ public class CommentReportService {
         return paginator;
     }
 
-    public List<Comment> getAllCommentReport(int page) throws SQLException {
+    public List<Novel> getAllNovelReport(int page) throws SQLException {
         List<Object> params = new ArrayList<>();
         List<String> conditionsSQL = new ArrayList<>();
         sql = conditionsSQL.size() > 0 ? String.join(" AND ", conditionsSQL) : "1=1";
-        paginator = new Paginator(CommentReportRepository.getInstance().countCommentReports(sql, params), page, 4);
+        paginator = new Paginator(NovelReportRepository.getInstance().countNovelReports(sql, params), page, 4);
         sql += " " + PagingService.generatePaginationCondition(params, paginator);
-        return CommentRepository.getInstance().getAllCommentReport(sql, params);
+        return NovelRepository.getInstance().getAllNovelReport(sql, params);
     }
 }

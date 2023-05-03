@@ -6,8 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--@elvariable id="commentReport" type="model.CommentReport"--%>
-<%--@elvariable id="commentReportList" type="java.util.List<model.CommentReport>"--%>
+<%--@elvariable id="commentReport" type="model.Comment"--%>
+<%--@elvariable id="commentReportList" type="java.util.List<model.Comment>"--%>
 <%--@elvariable id="comment" type="model.Comment"--%>
 <%--@elvariable id="reporter" type="model.User"--%>
 <style>
@@ -25,20 +25,20 @@
             <c:when test="${commentReportList != null}">
                 <c:forEach var="commentReport" items="${commentReportList}">
                     <div class="rpt-group__item">
-                        <a href="#report-modal" class="no-decor" data-toggle="modal" data-target="#report-modal"
-                           onclick="reportCommentForm(${commentReport.comment.id}, '${commentReport.comment.owner.displayName}',
-                                   '${commentReport.comment.owner.avatar}', '${commentReport.comment.owner.id}', '${commentReport.comment.content}')">
+                        <a href="" class="no-decor" data-toggle="modal" data-target="#report-modal"
+                           onclick="reportCommentForm(${commentReport.id}, '${commentReport.owner.displayName}',
+                                   '${commentReport.owner.avatar}', '${commentReport.owner.id}', '${commentReport.content}')">
                             <div class="rpt-detail container-fluid"
                                  style="background-color: var(--dark-silver); border-left: 1rem solid var(--olive)">
                                 <div class="row">
                                     <div class="col-05"></div>
                                     <div class="col-115" style="border-left: 20px">
                                         <span class="title title--bold overflow-elipsis" style="color: black; white-space: nowrap;
-                     display: block; overflow: hidden; overflow-wrap: break-word; max-width: 550px">
-                                                ${commentReport.comment.content}
+                                            display: block; overflow: hidden; overflow-wrap: break-word; max-width: 550px">
+                                                ${commentReport.content}
                                         </span>
                                         <p class="overflow-elipsis" style=" color: black">
-                                            Người đăng bình luận: ${commentReport.comment.owner.displayName}
+                                            Người đăng bình luận: ${commentReport.owner.displayName}
                                         </p>
                                     </div>
                                 </div>
@@ -69,7 +69,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="" id="ownerId" style="text-underline: none; color: white">
+                            <a href="" target="_blank" id="ownerId" style="text-underline: none; color: white">
                                 <img id="ownerAvatar" src="/images/default-avatar.jpg" alt="avatar"
                                      class="navbar__avatar" style="text-underline: none; color: black">
                                 <p id="ownerName" class="d-inline-block ml-2 mt-auto mb-auto"
@@ -101,11 +101,14 @@
 
                 </div>
             </div>
-            <input id="commentId" name="commentId" hidden>
             <div class="">
-                <button type="button" class="btn basic-btn--olive col-md-12" data-dismiss="modal">
-                    <i class="fas fa-check-circle"></i>
-                </button>
+                <form action="/mod/bao-cao-binh-luan?action=checked" style="margin-block-end: 0">
+                    <input id="commentId" name="commentId" hidden>
+                    <button type="button" class="btn basic-btn--olive col-md-12" data-dismiss="modal"
+                        onclick="commentReportChecked()">
+                        <i class="fas fa-check-circle"></i> Đã đọc
+                    </button>
+                </form>
             </div>
         </div>
     </div>

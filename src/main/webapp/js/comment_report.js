@@ -1,4 +1,4 @@
-//["Bao cao 1", "Bao cao 2"]
+﻿//["Bao cao 1", "Bao cao 2"]
 async function getReportsInComment(commentId) {
     let res = await fetch(`/mod/bao-cao-binh-luan?type=comment_report&comment-id=${commentId}`)
         .then(response => {
@@ -33,5 +33,17 @@ async function reportCommentForm(commentId, ownerName, ownerAvatar, ownerId, com
             reasonDiv.appendChild(node);
             reasonDiv.appendChild(document.createElement("hr"));
         });
+    });
+}
+
+function commentReportChecked(){
+    let commentId = document.getElementById("commentId").value;
+    fetch(`/mod/bao-cao-binh-luan?action=checked&commentId=${commentId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    }).then(response => {
+        console.log(response);
     });
 }

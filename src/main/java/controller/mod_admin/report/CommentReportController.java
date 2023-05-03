@@ -47,27 +47,20 @@ public class CommentReportController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if (action == null) action = "";
-        else {
+        if (action.equals("checked")) {
             try {
-                postCommentReport(req, resp);
+                setCheckTime(req, resp);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
+
     }
 
-    private void postCommentReport(HttpServletRequest req, HttpServletResponse resp) throws SQLException {
+    private void setCheckTime(HttpServletRequest req, HttpServletResponse resp) throws SQLException{
         int commentId = Integer.parseInt(req.getParameter("commentId"));
-        int reportId = Integer.parseInt(req.getParameter("userId"));
-        String reason = req.getParameter("reason");
-        CommentReport commentReport = new CommentReport();
-        commentReport.setCommentId(commentId);
-        commentReport.setReporterId(reportId);
-        commentReport.setReason(reason);
-
-        CommentReportRepository.getInstance().insert(commentReport);
+        CommentReportRepository.getInstance().setCheckTime(commentId);
     }
-
     private void showList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         int page = Integer.parseInt(req.getParameter("page") == null ? "1" : req.getParameter("page"));
         Paginator paginator;
@@ -79,13 +72,6 @@ public class CommentReportController extends HttpServlet {
             return;
         }
         req.setAttribute("selection", ReportSelection.COMMENT_REPORT);
-
-//        String pagingUrl = "/mod/bao-cao-binh-luan" + req.getQueryString();
-//        if (pagingUrl.contains("page=")) {
-//            pagingUrl = pagingUrl.substring(0, pagingUrl.indexOf("&page="));
-//        } else if (req.getQueryString() == null){
-//            pagingUrl = "/mod/bao-cao-binh-luan";
-//        }
         req.setAttribute("pageItems", PagingService.getActivePageItems(paginator));
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/view/mod_admin/report/main_report_page.jsp");
         try {

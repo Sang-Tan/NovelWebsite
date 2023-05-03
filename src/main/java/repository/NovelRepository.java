@@ -123,4 +123,10 @@ public class NovelRepository extends BaseRepository<Novel> {
         List<SqlRecord> records = MySQLdb.getInstance().select(sql);
         return mapObjects(records);
     }
+
+    public List<Novel> getAllNovelReport(String condition, List<Object> params) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE id IN (SELECT novel_id FROM novel_report GROUP BY novel_id ORDER BY min(report_time)) LIMIT ? OFFSET ?", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
+        return mapObjects(records);
+    }
 }
