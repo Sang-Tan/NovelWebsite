@@ -83,4 +83,11 @@ public class CommentRepository extends BaseRepository<Comment> {
         }
         return 0;
     }
+
+    public List<Comment> getAllCommentReport(String condition, List<Object> params) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE id IN (SELECT comment_id FROM comment_report GROUP BY comment_id ORDER BY min(report_time)) LIMIT ? OFFSET ?", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
+        return mapObjects(records);
+    }
+
 }

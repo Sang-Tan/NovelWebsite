@@ -129,7 +129,7 @@ public class NovelSearchService {
 
         sql = conditionsSQL.size() > 0 ? String.join(" AND ", conditionsSQL) : "1=1";
         sql += " AND approval_status = 'approved'";
-        paginator = new Paginator(NovelRepository.getInstance().countNovels(sql, params), page);
+        paginator = new Paginator(NovelRepository.getInstance().countNovels(sql, params), page, 24);
         // order
         sql += " " + generateSortCondition(sortAttribute);
         sql += " " + PagingService.generatePaginationCondition(params, paginator);
