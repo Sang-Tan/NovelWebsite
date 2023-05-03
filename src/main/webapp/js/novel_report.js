@@ -13,6 +13,7 @@
         });
     return res;
 }
+
 async function reportNovelForm(novelId, ownerName, ownerAvatar, ownerId, novelName, image, summary) {
     let linkNovel = document.getElementById("linkNovel");
     linkNovel.href = "/truyen/" + novelId;
@@ -38,12 +39,12 @@ async function reportNovelForm(novelId, ownerName, ownerAvatar, ownerId, novelNa
     });
 }
 
-function showReportNovelForm(novelId, userId){
+function showReportNovelForm(novelId, userId) {
     document.getElementById("novelId").value = novelId;
     document.getElementById("userId1").value = userId;
 }
 
-function submitNovelReport(){
+function submitNovelReport() {
     const form = document.getElementById('reportNovelForm');
     const formData = new FormData(form);
     let parameters = [];
@@ -57,19 +58,41 @@ function submitNovelReport(){
             "Content-Type": "application/x-www-form-urlencoded"
         }
     }).then(response => {
-        console.log(response);
-    });
-    Swal.fire({
-            title: 'Bạn đã báo cáo!',
-            confirmButtonColor: '#3d9970'
+        if (response.ok) {
+            response.json().then(data => {
+                const status = data.status;
+                if (status === "success") {
+                    Swal.fire({
+                        title: 'Báo cáo thành công!',
+                        confirmButtonColor: '#3d9970',
+                        icon: 'success'
+                    });
+                    novelReportChecked();
+                } else if (status === "error") {
+                    const errorMsg = data.message;
+                    Swal.fire({
+                        title: 'Có lỗi xảy ra',
+                        text: errorMsg,
+                        confirmButtonColor: '#3d9970',
+                        icon: 'error'
+                    });
+                }
+
+            });
+            document.getElementById("reason").value = "";
+        } else {
+            Swal.fire({
+                title: 'Đã có lỗi xảy ra!',
+                confirmButtonColor: '#3d9970',
+                icon: 'error'
+            });
         }
-    )
-    document.getElementById("reason").value = "";
+    });
     $('#reportNovelModal').hide();
     $('.modal-backdrop').remove();
 }
 
-function novelReportChecked(){
+function novelReportChecked() {
     let novelId = document.getElementById("novelId").value;
     fetch(`/mod/bao-cao-truyen?action=checked&novelId=${novelId}`, {
         method: "POST",

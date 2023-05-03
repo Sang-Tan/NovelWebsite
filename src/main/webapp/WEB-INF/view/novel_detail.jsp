@@ -136,7 +136,7 @@
                 </div>
 
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">
+                    <button type="button" class="basic-btn basic-btn--gray" data-dismiss="modal">
                         Đóng
                     </button>
                     <button type="button" class="basic-btn basic-btn--olive" data-toggle="modal"
@@ -168,7 +168,7 @@
             </div>
 
             <div class="modal-footer justify-content-center">
-                <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">
+                <button type="button" class="basic-btn basic-btn--gray" data-dismiss="modal">
                     Đóng
                 </button>
                 <button type="button" class="basic-btn basic-btn--olive" id="send" onclick="submitNovelReport()"

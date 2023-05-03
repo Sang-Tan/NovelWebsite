@@ -129,4 +129,10 @@ public class NovelRepository extends BaseRepository<Novel> {
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
         return mapObjects(records);
     }
+
+    public boolean isReportExist(int novelID, int reporterId) throws SQLException {
+        String sql = String.format("SELECT * FROM novel_report WHERE novel_id = ? AND reporter_id = ?");
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelID, reporterId));
+        return records.size() > 0;
+    }
 }
