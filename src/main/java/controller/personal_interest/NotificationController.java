@@ -8,7 +8,6 @@ import model.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 import repository.NotificationRepository;
-import service.BookmarkService;
 import service.NotificationService;
 
 import javax.servlet.ServletException;
@@ -21,7 +20,7 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.List;
 
-import static core.StringUtils.extractInt;
+import static service.NotificationService.extractNotificationId;
 
 @WebServlet("/thong-bao")
 public class NotificationController extends HttpServlet {
@@ -65,7 +64,7 @@ public class NotificationController extends HttpServlet {
                 addNotification(req, resp, userInRequest.getId(), content, link);
             } else if (action.equals("delete-notification")) {
                 String notificationsIdStr = req.getParameter("notificationsId");
-                HashSet<Integer> notificationsId = extractInt(notificationsIdStr);
+                HashSet<Integer> notificationsId = extractNotificationId(notificationsIdStr);
                 removeNotification(req, resp, userInRequest.getId(), notificationsId);
             } else {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);

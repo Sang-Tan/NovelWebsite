@@ -1,12 +1,12 @@
 package controller.novel;
 
-import core.StringUtils;
 import core.logging.BasicLogger;
 import model.Genre;
 import model.Novel;
 import repository.GenreRepository;
 import core.pagination.Paginator;
 import service.PagingService;
+import service.SearchNovelService;
 import service.validator.NovelSearchService;
 
 import javax.servlet.ServletException;
@@ -63,7 +63,7 @@ public class SearchNovels extends HttpServlet {
             request.setAttribute("author", author);
             request.setAttribute("status", status);
             request.setAttribute("sort", sort);
-            request.setAttribute("genresIDList", StringUtils.extractInt(genresIDString));
+            request.setAttribute("genresIDList", SearchNovelService.extractGenresId(genresIDString));
             request.setAttribute("novelsSearched", novelsSearched);
             request.setAttribute("paginator", paginator);
 
