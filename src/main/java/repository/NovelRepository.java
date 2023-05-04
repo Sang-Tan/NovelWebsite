@@ -101,6 +101,18 @@ public class NovelRepository extends BaseRepository<Novel> {
         return null;
     }
 
+    public Novel getByChapterID(int chapterID) throws SQLException {
+        String sql = String.format("SELECT * FROM %s " +
+                "WHERE id = (SELECT novel_id " +
+                "FROM volumes WHERE id = " +
+                "(SELECT volume_id FROM chapters WHERE id = ?))", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(chapterID));
+        for (SqlRecord record : records) {
+            return mapObject(record);
+        }
+        return null;
+    }
+
     public Collection<Novel> getFavoriteNovelsByUserID(int userID) throws SQLException {
         String sql = String.format("SELECT * FROM %s " +
                 "WHERE id IN (SELECT novel_id FROM novel_favourite WHERE user_id = ?)", getTableName());

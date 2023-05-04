@@ -46,13 +46,10 @@ public abstract class BaseChangeController extends HttpServlet {
             switch (action) {
 
                 case "approve":
-                    //TODO: implement notification
                     approveChange(req, resp);
                     break;
 
                 case "reject":
-                    //TODO: implement notification
-                    //TODO: implement change log
                     rejectChange(req, resp);
                     break;
 
@@ -77,6 +74,7 @@ public abstract class BaseChangeController extends HttpServlet {
 
         User moderator = (User) req.getAttribute("user");
         addApproveLog(moderator, resourceId);
+        addApproveNotification(resourceId);
     }
 
     private void rejectChange(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
@@ -92,6 +90,7 @@ public abstract class BaseChangeController extends HttpServlet {
 
         User moderator = (User) req.getAttribute("user");
         addRejectLog(moderator, resourceId, reason);
+        addRejectNotification(resourceId, reason);
     }
 
     protected Pair<String, MediaObject> makeNewContentPair(MediaType mediaType, String name, Object content) {
@@ -128,4 +127,8 @@ public abstract class BaseChangeController extends HttpServlet {
     protected abstract void addApproveLog(User moderator, int resourceId) throws SQLException;
 
     protected abstract void addRejectLog(User moderator, int resourceId, String reason) throws SQLException;
+
+    protected abstract void addApproveNotification(int resourceId) throws SQLException;
+
+    protected abstract void addRejectNotification(int resourceId, String reason) throws SQLException;
 }

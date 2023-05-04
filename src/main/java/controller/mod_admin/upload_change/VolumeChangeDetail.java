@@ -4,12 +4,15 @@ import core.Pair;
 import core.logging.BasicLogger;
 import core.media.MediaObject;
 import core.media.MediaType;
+import model.Novel;
 import model.User;
 import model.Volume;
 import model.logging.VolumeApprovalLog;
 import model.logging.info.VolumeApprovalLogInfo;
 import model.temporary.VolumeChange;
+import repository.NovelRepository;
 import repository.VolumeRepository;
+import service.NotificationService;
 import service.logging.VolumeApprovalLoggingService;
 import service.upload_change.VolumeChangeService;
 import service.upload_change.base.BaseChangeService;
@@ -108,5 +111,26 @@ public class VolumeChangeDetail extends BaseChangeController {
         log.setContent(reason);
 
         VolumeApprovalLoggingService.getInstance().saveLog(log);
+    }
+
+    @Override
+    protected void addApproveNotification(int volumeId) throws SQLException {
+        Novel novel = NovelRepository.getInstance().getByVolumeID(volumeId);
+        Volume volume = VolumeRepository.getInstance().getById(volumeId);
+
+        String content = String.format("Chúc mừng, tập truyện \"%s\" của bạn đã được duyệt!", volume.getName());
+        String link = String.format("/ca-nhan/tap-truyen/%d", volumeId);
+        NotificationService.addNotification(novel.getOwnerID(), content, link);
+
+    }
+
+    @Override
+    protected void addRejectNotification(int volumeId, String reason) throws SQLException {
+        Novel novel = NovelRepository.getInstance().getByVolumeID(volumeId);
+        Volume volume = VolumeRepository.getInstance().getById(volumeId);
+
+        String content = String.format("Tập truyện \"%s\" của bạn đã bị từ chối, lý do : %s", volume.getName(), reason);
+        String link = String.format("/ca-nhan/tap-truyen/%d", volumeId);
+        NotificationService.addNotification(novel.getOwnerID(), content, link);
     }
 }
