@@ -1,14 +1,28 @@
 /**
  *
  *
- * @param notificationIds : array of notification id need to delete
+ * @param seenBtns : array of button contain notification id need to delete
  */
-deleteNotification = notificationIds => {
-
-    if (notificationIds.length === 0) {
+deleteNotification = seenBtns => {
+    if (seenBtns.length === 0) {
         alert('Không có thông báo nào để đánh dấu đã xem!');
         return;
     }
+
+    const notificationIds = [];
+    if (seenBtns instanceof NodeList) {
+        for (var seenBtn of seenBtns) {
+            notificationIds.push(seenBtn.dataset.notificationId);
+        }
+    }
+    else {
+        notificationIds.push(seenBtns.dataset.notificationId);
+    }
+
+
+
+
+
 
     const request = new XMLHttpRequest();
     request.open('POST', '/thong-bao', true);
@@ -20,9 +34,13 @@ deleteNotification = notificationIds => {
         }
         const response = JSON.parse(request.responseText);
         if (response.status === 'success') {
-            for(var notificationId of notificationIds){
-                const notification = document.querySelector(`[data-notification-id="${notificationId}"]`);
-                notification.parentElement.remove();
+            if (seenBtns instanceof NodeList) {
+                for (var seenBtn of seenBtns) {
+                    seenBtn.parentElement.remove();
+                }
+            }
+            else {
+                seenBtns.parentElement.remove();
             }
         } else if (response.status === 'error') {
             alert(response.message);
@@ -30,16 +48,7 @@ deleteNotification = notificationIds => {
     };
     request.send(`notificationsId=${notificationIds.join(',')}&action=delete-notification`)
 }
-deleteThisNotification = element =>{
-    const notificationIds = [];
-    notificationIds.push(element.dataset.notificationId);
-    deleteNotification(notificationIds);
-}
 deleteAllNotification = () => {
     const seenBtns = document.querySelectorAll('[data-action="seen"]');
-    const notificationIds = [];
-    for(var seenBtn of seenBtns){
-        notificationIds.push(seenBtn.dataset.notificationId);
-    }
-    deleteNotification(notificationIds);
+    deleteNotification(seenBtns);
 }

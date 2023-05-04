@@ -44,8 +44,8 @@
                     </c:otherwise>
                 </c:choose>
                 <a class="seen-btn" data-notification-id="${notification.id}" data-action="seen"
-                   onclick="deleteThisNotification(this)"
-                   style="float: right;  color: black" href="">
+                   onclick="deleteNotification(this)"
+                   style="float: right;  color: black">
                     <p>Đánh dấu đã xem</p>
                 </a>
             </article>
