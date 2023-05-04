@@ -18,7 +18,7 @@
     <title>Tìm kiếm</title>
     <%@ include file="layout/basic_stylesheet.jsp" %>
     <link rel="stylesheet" href="/css/search_novel.css">
-
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
 </head>
 <body style="background-color: var(--silver);">
 <jsp:include page="layout/header_main.jsp"></jsp:include>
