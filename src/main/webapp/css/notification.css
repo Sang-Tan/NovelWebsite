@@ -1,0 +1,5 @@
+.noti-item a, .noti-item a:hover {
+    color: black;
+    text-decoration: none;
+    user-select: none;
+}
