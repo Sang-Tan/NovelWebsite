@@ -94,7 +94,7 @@ public class VolumeChangeDetail extends BaseChangeController {
     }
 
     @Override
-    protected BaseChangeService getChangeService() {
+    protected BaseChangeService<Volume, VolumeChange> getChangeService() {
         return VolumeChangeService.getInstance();
     }
 

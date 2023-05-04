@@ -97,7 +97,7 @@ public class ChapterChangeDetail extends BaseChangeController {
     }
 
     @Override
-    protected BaseChangeService getChangeService() {
+    protected BaseChangeService<Chapter, ChapterChange> getChangeService() {
         return ChapterChangeService.getInstance();
     }
 

@@ -98,7 +98,7 @@ public class NovelChangeDetail extends BaseChangeController {
     }
 
     @Override
-    protected BaseChangeService getChangeService() {
+    protected BaseChangeService<Novel, NovelChange> getChangeService() {
         return NovelChangeService.getInstance();
     }
 
