@@ -22,6 +22,7 @@
         </c:choose>
     </title>
     <%@include file="/WEB-INF/view/layout/basic_stylesheet.jsp" %>
+    <link rel="stylesheet" type="text/css" href="/css/notification.css">
 </head>
 <body style="background-color: var(--silver)">
 <%@include file="/WEB-INF/view/layout/header_main.jsp" %>

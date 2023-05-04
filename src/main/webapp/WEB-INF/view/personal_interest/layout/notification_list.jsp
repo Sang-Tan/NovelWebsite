@@ -5,14 +5,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@page import="core.string_process.TimeConverter" %>
 <%--@elvariable id="TimeConverter" type="core.string_process.TimeConverter.class"--%>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Chapter name</title>
-    <%@ include file="../../layout/basic_stylesheet.jsp" %>
-    <link rel="stylesheet" type="text/css" href="/css/notification.css">
-</head>
 
 <body style="background-color: var(--silver);">
 <div class="col">
