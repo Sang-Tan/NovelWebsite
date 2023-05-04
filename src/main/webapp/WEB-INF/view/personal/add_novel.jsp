@@ -11,6 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Thêm truyện</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
     <%@include file="/WEB-INF/view/layout/basic_stylesheet.jsp" %>
 </head>
 <body style="background-color: var(--silver)">

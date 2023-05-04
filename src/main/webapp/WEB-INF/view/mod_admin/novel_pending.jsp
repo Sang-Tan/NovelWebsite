@@ -17,6 +17,7 @@
     <%@include file="/WEB-INF/view/layout/basic_stylesheet.jsp" %>
     <link rel="stylesheet" href="/css/novel_detail.css">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
           integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="

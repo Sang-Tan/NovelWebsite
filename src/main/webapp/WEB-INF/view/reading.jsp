@@ -18,7 +18,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Chapter name</title>
+    <title>Đọc ${reqNovel.name} - Chương ${reqChapter.name}</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
     <%@ include file="layout/basic_stylesheet.jsp" %>
     <link rel="stylesheet" type="text/css" href="/css/reading.css">
 </head>

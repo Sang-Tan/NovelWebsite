@@ -5,8 +5,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Landing page ss</title>
+    <title>Trang chủ</title>
     <%@ include file="layout/basic_stylesheet.jsp" %>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
 </head>
 
 <body>
