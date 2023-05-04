@@ -209,7 +209,7 @@
             toolbar.classList.toggle("show");
         }
     </script>
-
+    <%@include file="layout/comment_section.jsp" %>
     <%@ include file="layout/basic_js.jsp" %>
     <script src="/js/bookmark_manage.js"></script>
 
