@@ -11,6 +11,7 @@ import model.logging.NovelApprovalLog;
 import model.logging.info.NovelApprovalLogInfo;
 import model.temporary.NovelChange;
 import repository.NovelRepository;
+import service.NotificationService;
 import service.logging.NovelApprovalLoggingService;
 import service.upload_change.NovelChangeService;
 import service.upload_change.base.BaseChangeService;
@@ -114,6 +115,25 @@ public class NovelChangeDetail extends BaseChangeController {
         log.setContent(reason);
 
         NovelApprovalLoggingService.getInstance().saveLog(log);
+    }
+
+    @Override
+    protected void addApproveNotification(int novelId) throws SQLException {
+        Novel novel = NovelRepository.getInstance().getById(novelId);
+
+        String content = String.format("Chúc mừng, tiểu thuyết \"%s\" của bạn đã được duyệt!", novel.getName());
+        String link = String.format("/ca-nhan/tieu-thuyet/%d", novelId);
+        NotificationService.addNotification(novel.getOwnerID(), content, link);
+
+    }
+
+    @Override
+    protected void addRejectNotification(int novelId, String reason) throws SQLException {
+        Novel novel = NovelRepository.getInstance().getById(novelId);
+
+        String content = String.format("Tiểu thuyết \"%s\" của bạn đã bị từ chối, lý do : %s", novel.getName(), reason);
+        String link = "/ca-nhan/tieu-thuyet/" + novelId;
+        NotificationService.addNotification(novel.getOwnerID(), content, link);
     }
 
 }
