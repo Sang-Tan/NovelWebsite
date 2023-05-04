@@ -51,13 +51,20 @@
                         </a>
                         <div class="dropdown-menu">
                             <a href="/theo-doi" class="dropdown-item">
-                                <i class="fas fa-heart mr-1"></i><span>Truyện yêu thích</span>
+                                <i class="fas fa-heart navbar__dropdown-icon"></i><span>Truyện yêu thích</span>
                             </a>
                             <a href="/danh-dau" class="dropdown-item">
-                                <i class="fas fa-bookmark mr-1"></i>Đánh dấu
+                                <i class="fas fa-bookmark mr-1 navbar__dropdown-icon"></i>Đánh dấu
                             </a>
-                            <a href="/ca-nhan" class="dropdown-item">Cá nhân</a>
-                            <a href="/logout" class="dropdown-item">Đăng xuất</a>
+                            <a href="/thong-bao" class="dropdown-item">
+                                <i class="fas fa-bell navbar__dropdown-icon"></i><span>Thông báo</span>
+                            </a>
+                            <a href="/ca-nhan" class="dropdown-item">
+                                <i class="fas fa-user navbar__dropdown-icon"></i><span>Cá nhân</span>
+                            </a>
+                            <a href="/logout" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt navbar__dropdown-icon"></i><span>Đăng xuất</span>
+                            </a>
                         </div>
                     </li>
                 </c:otherwise>
