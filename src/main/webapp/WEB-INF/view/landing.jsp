@@ -1,5 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--@elvariable id="latestUpdateNovels" type="java.util.List<model.Novel>"--%>
+
+<%@page import="service.URLSlugification" %>
+<%--@elvariable id="URLSlugification" type="service.URLSlugification"--%>
+<%@page import="core.StringUtils" %>
+<%--@elvariable id="StringUtils" type="core.StringUtils"--%>
 <!DOCTYPE html>
 <html>
 
@@ -7,7 +13,7 @@
     <meta charset="UTF-8">
     <title>Trang chủ</title>
     <%@ include file="layout/basic_stylesheet.jsp" %>
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon"/>
 </head>
 
 <body>
@@ -20,47 +26,25 @@
         <div class="row">
             <div class="col-12 col-lg-9">
                 <header class="mb-3">
-                    <span class="title title--underline title--bold">Mới update</span>
+                    <span class="title title--underline title--bold">Mới cập nhật</span>
                 </header>
                 <div class="row">
-                    <div class="col-4 col-xl-3 thumb">
-                        <a href="/testui/novel_detail" class="no-decor">
-                            <div class="thumb__wrapper">
-                                <div class="thumb__img-panel shadow a6-ratio">
-                                    <div class="img-wrapper img-wrapper--shadow"
-                                         style="background-image: url('https://images.fpt.shop/unsafe/filters:quality(90)/fptshop.com.vn/uploads/images/tin-tuc/152650/Originals/Hu%20Tao.jpg');">
+
+                    <c:forEach items="${latestUpdateNovels}" var="novel">
+                        <div class="col-4 col-xl-3 thumb">
+                            <a href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}" class="no-decor">
+                                <div class="thumb__wrapper">
+                                    <div class="thumb__img-panel shadow a6-ratio">
+                                        <div class="img-wrapper img-wrapper--shadow"
+                                             style="background-image: url('${novel.image}');">
+                                        </div>
                                     </div>
+                                    <p class="thumb__caption">${StringUtils.truncate(novel.name, 30)}</p>
                                 </div>
-                                <p class="thumb__caption">Hu Tao saves my life</p>
-                            </div>
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                    </c:forEach>
                 </div>
-                <nav class="mt-1">
-                    <ul class="d-flex justify-content-end">
-                        <li class="page-list__item">
-                            <a href="#" class="page-list__link">Đầu</a>
-                        </li>
-                        <li class="page-list__item">
-                            <a href="#" class="page-list__link">1</a>
-                        </li>
-                        <li class="page-list__item active">
-                            <a href="#" class="page-list__link">2</a>
-                        </li>
-                        <li class="page-list__item">
-                            <a href="#" class="page-list__link">3</a>
-                        </li>
-                        <li class="page-list__item">
-                            <a href="#" class="page-list__link">4</a>
-                        </li>
-                        <li class="page-list__item">
-                            <a href="#" class="page-list__link">5</a>
-                        </li>
-                        <li class="page-list__item">
-                            <a href="#" class="page-list__link">Cuối</a>
-                        </li>
-                    </ul>
-                </nav>
             </div>
             <div class="col col-lg-3">
                 <header class="title-section mb-2">
@@ -157,6 +141,7 @@
             targetPanels.children[targetIndex].classList.add('active');
         });
     });
+
 </script>
 </body>
 

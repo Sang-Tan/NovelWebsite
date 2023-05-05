@@ -16,6 +16,7 @@ public class NovelSearchService {
     private List<Object> params;
     private Paginator paginator;
 
+
     public static NovelSearchService getInstance() {
         if (instance == null) {
             instance = new NovelSearchService();
@@ -30,6 +31,10 @@ public class NovelSearchService {
         this.sql = sql;
         this.params = params;
         this.paginator = paginator;
+    }
+
+    public List<Novel> getLatestUpdateNovels(int pageSize) throws SQLException {
+        return searchApprovedNovels("", "", "", "", "update_time","DESC", 1, pageSize);
     }
 
     public String getSql() {
@@ -49,7 +54,7 @@ public class NovelSearchService {
      * @param params will be added by value
      * @return SQL condition string
      */
-    private String generateNovelNameCondition(String name, List<Object> params) {
+    private static String generateNovelNameCondition(String name, List<Object> params) {
         String sql = "";
         if (name == null || name.isEmpty()) {
             return sql;
@@ -64,7 +69,7 @@ public class NovelSearchService {
      * @param params     will be added by value
      * @return SQL condition string
      */
-    private String generateAuthorCondition(String authorName, List<Object> params) {
+    private static String generateAuthorCondition(String authorName, List<Object> params) {
         String sql = "";
         if (authorName == null || authorName.isEmpty()) {
             return sql;
@@ -72,9 +77,10 @@ public class NovelSearchService {
         sql += "owner IN (SELECT id FROM users WHERE MATCH(display_name) AGAINST(? IN NATURAL LANGUAGE MODE))";
         params.add(authorName);
         return sql;
+
     }
 
-    private String generateStatusCondition(String status, List<Object> params) {
+    private static String generateStatusCondition(String status, List<Object> params) {
         String sql = "";
         List<String> validStatus = List.of(Novel.STATUS_ON_GOING, Novel.STATUS_FINISHED, Novel.STATUS_PAUSED);
         if (status == null || status.isEmpty() || status.equals("all") || !validStatus.contains(status)) {
@@ -84,7 +90,8 @@ public class NovelSearchService {
         params.add(status);
         return sql;
     }
-    private String generateGenresIDCondition(String genresIdString, List<Object> params) {
+
+    private static String generateGenresIDCondition(String genresIdString, List<Object> params) {
         HashSet<Integer> genresId = SearchNovelService.extractGenresId(genresIdString);
         String sql = "";
         if (genresIdString == null || genresIdString.isEmpty()) {
@@ -96,13 +103,33 @@ public class NovelSearchService {
         sql += "))";
         params.addAll(genresId);
         return sql;
+
     }
 
-    private String generateSortCondition(String sortAttribute) {
+    /**
+     *
+     * @param attribute in SortAttribute enum is valid
+     * @param order include ASC and DESC else will be set to ASC
+     * @return SQL condition string
+     */
+    private static String generateSortCondition(String attribute, String order) {
         String sql = "";
-        if (sortAttribute == null || sortAttribute.isEmpty() || sortAttribute.equals("name")) {
-            sql += "ORDER BY " + DEFAULT_SORT_ATTRIBUTE + " ASC";
+        if (attribute == null || attribute.isEmpty())
+            return sql;
+        if (order == null || order.isEmpty() || !order.equals("DESC"))
+            order = "ASC";
+        switch (attribute) {
+            case "name":
+                sql += "ORDER BY name " + order;
+                break;
+            case "update_time":
+                sql += "ORDER BY updated_at " + order;
+                break;
+            default:
+                sql += "ORDER BY " + DEFAULT_SORT_ATTRIBUTE + " ASC";
+                break;
         }
+
         return sql;
     }
 
@@ -112,12 +139,13 @@ public class NovelSearchService {
      * @param authorName     name of author
      * @param status         status of novel
      * @param genresIdString genres id of novel in string
-     * @param sortAttribute  sort attribute (name novels ...
+     * @param sortAttribute  sort attribute (name, update_time)
+     * @param sortOrder      sort order (ASC, DESC)
      * @param page           page number
      * @return
      * @throws SQLException
      */
-    public List<Novel> searchApprovedNovels(String name, String authorName, String status, String genresIdString, String sortAttribute, int page) throws SQLException {
+    public List<Novel> searchApprovedNovels(String name, String authorName, String status, String genresIdString, String sortAttribute, String sortOrder, int page, int pageSize) throws SQLException {
         List<Object> params = new ArrayList<>();
         List<String> conditionsSQL = new ArrayList<>();
 
@@ -129,9 +157,9 @@ public class NovelSearchService {
 
         sql = conditionsSQL.size() > 0 ? String.join(" AND ", conditionsSQL) : "1=1";
         sql += " AND approval_status = 'approved'";
-        paginator = new Paginator(NovelRepository.getInstance().countNovels(sql, params), page, 24);
+        paginator = new Paginator(NovelRepository.getInstance().countNovels(sql, params), page, pageSize);
         // order
-        sql += " " + generateSortCondition(sortAttribute);
+        sql += " " + generateSortCondition(sortAttribute, sortOrder);
         sql += " " + PagingService.generatePaginationCondition(params, paginator);
         return NovelRepository.getInstance().getByConditionString(sql, params);
     }
