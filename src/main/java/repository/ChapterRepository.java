@@ -85,7 +85,11 @@ public class ChapterRepository extends BaseRepository<Chapter> {
                 warning(String.format("Virtual chapter not found for novel id %d", novelId));
         return null;
     }
+
     public boolean isVirtualChapter(Chapter chapter) throws SQLException {
+        if(chapter == null){
+            return false;
+        }
         Novel novelOfChapter = VolumeRepository.getInstance().getById(chapter.getVolumeId()).getBelongNovel();
         Chapter virtualChapter = getVirtualChapter(novelOfChapter.getId());
         return virtualChapter.getId() == chapter.getId();
@@ -109,8 +113,17 @@ public class ChapterRepository extends BaseRepository<Chapter> {
         }
         // in case previous chapter is in previous volume
         Volume previousVolume = VolumeRepository.getInstance().getPreviousVolume(volumeId);
-        if (previousVolume == null) return null;
-        return previousVolume.getChapters().get(previousVolume.getChapters().size() - 1);
+        while (previousVolume != null) {
+
+            if(previousVolume.getChapters().size() == 0){
+                previousVolume = VolumeRepository.getInstance().getPreviousVolume(previousVolume.getId());
+                continue;
+            }
+            return previousVolume.getChapters().get(previousVolume.getChapters().size() - 1);
+        }
+        return null;
+
+
     }
 
     public Chapter getNextChapter(int chapterID) throws SQLException {
