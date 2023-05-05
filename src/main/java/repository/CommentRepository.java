@@ -95,9 +95,10 @@ public class CommentRepository extends BaseRepository<Comment> {
                 "FROM %s " +
                 "WHERE chapter_id = ? " +
                 "AND parent_id IS NULL " +
-                "AND time_comment > (SELECT time_comment " +
+                "AND id != ? " +
+                "AND time_comment >= (SELECT time_comment " +
                 "FROM %s WHERE id = ?)", getTableName(), getTableName());
-        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(chapterId, commentId));
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(chapterId, commentId, commentId));
         for (SqlRecord record : records) {
             return Integer.parseInt(record.get("count").toString());
         }
