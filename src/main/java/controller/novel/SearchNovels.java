@@ -51,7 +51,7 @@ public class SearchNovels extends HttpServlet {
 //            UserValidator.hashPassword("123456");
             List<Novel> novelsSearched = null;
             try {
-                novelsSearched = NovelSearchService.getInstance().searchApprovedNovels(partialNovelName, author, status, genresIDString, sort, page);
+                novelsSearched = NovelSearchService.getInstance().searchApprovedNovels(partialNovelName, author, status, genresIDString, sort, "ACS",page, 24);
                 paginator = NovelSearchService.getInstance().getPaginator();
             } catch (SQLException e) {
                 response.setStatus(500);
