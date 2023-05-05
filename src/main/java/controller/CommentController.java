@@ -27,6 +27,7 @@ public class CommentController extends HttpServlet {
                 case "in_chapter" -> getCommentsInChapter(req, resp);
                 case "by_id" -> getCommentsById(req, resp);
                 case "count_in_chapter" -> getCommentCountInChapter(req, resp);
+                case "comment_offset" -> getCommentOffsetOfRoot(req, resp);
                 default -> resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
         } catch (SQLException | JSONException e) {
@@ -162,5 +163,18 @@ public class CommentController extends HttpServlet {
         CommentService.postReplyComment(commentInfo);
 
         resp.setStatus(HttpServletResponse.SC_CREATED);
+    }
+
+    private void getCommentOffsetOfRoot(HttpServletRequest req, HttpServletResponse resp) throws IOException, SQLException {
+        int commentId;
+        try {
+            commentId = Integer.parseInt(req.getParameter("comment-id"));
+            int rootCommentId = CommentService.getRootCommentId(commentId);
+            int offset = CommentService.getCommentOffset(commentId);
+            resp.getWriter().write(String.valueOf(offset));
+        } catch (NumberFormatException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
     }
 }

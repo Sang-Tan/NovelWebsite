@@ -1,7 +1,9 @@
 package service;
 
+import model.Chapter;
 import model.Comment;
 import org.json.JSONException;
+import repository.ChapterRepository;
 import repository.CommentRepository;
 
 import java.sql.SQLException;
@@ -66,9 +68,8 @@ public class CommentService {
      *
      * @param commentId id of a comment in database
      * @return root comment id
-     * @throws SQLException
      */
-    private static int getRootCommentId(int commentId) throws SQLException {
+    public static int getRootCommentId(int commentId) throws SQLException {
         Comment comment = CommentRepository.getInstance().getById(commentId);
         if (comment == null) {
             throw new IllegalArgumentException("commentId doesn't exist");
@@ -78,5 +79,11 @@ public class CommentService {
         } else {
             return getRootCommentId(comment.getParentId());
         }
+    }
+
+    public static int getCommentOffset(int commentId) throws SQLException {
+        Comment comment = CommentRepository.getInstance().getById(commentId);
+        Chapter chapter = ChapterRepository.getInstance().getById(comment.getChapterId());
+        return CommentRepository.getInstance().getCommentOffsetInChapter(commentId, chapter.getId());
     }
 }

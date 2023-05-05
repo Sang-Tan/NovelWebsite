@@ -14,7 +14,7 @@
 <html>
 <head>
     <title>${userInWall.displayName}</title>
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon"/>
     <%@include file="layout/basic_stylesheet.jsp" %>
     <link href="/css/user_wall.css" rel="stylesheet">
 </head>
@@ -65,7 +65,7 @@
                     </div>
                 </div>
             </div>
-            <c:if test="${user != null && user.role.equals(User.ROLE_MODERATOR)}">
+            <c:if test="${user != null && user.role.equals(User.ROLE_MODERATOR) && userInWall.role.equals(User.ROLE_MEMBER)}">
                 <%--@elvariable id="commentRestriction" type="model.intermediate.Restriction"--%>
                 <c:set var="commentRestriction"
                        value="${RestrictionService.getUnexpiredRestriction(user.id,Restriction.TYPE_COMMENT)}"/>
@@ -95,10 +95,12 @@
                             </div>
                         </c:otherwise>
                     </c:choose>
+
                     <c:choose>
                         <c:when test="${novelRestriction == null}">
                             <button id="add-restriction-novel-btn" data-restriction="novel"
-                                    data-user-id="${user.id}" data-toggle="modal" data-target="#add-restriction-modal"
+                                    data-user-id="${user.id}" data-toggle="modal"
+                                    data-target="#add-restriction-modal"
                                     class="basic-btn basic-btn--red mb-3">
                                 Cấm đăng truyện
                             </button>
@@ -112,6 +114,7 @@
                             </button>
                         </c:otherwise>
                     </c:choose>
+
                 </div>
                 <%--Add restriction modal--%>
                 <div class="modal" tabindex="-1" role="dialog" id="add-restriction-modal" aria-labelledby="...">

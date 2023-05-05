@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%--@elvariable id="reqComment" type="model.Comment"--%>
 <%--@elvariable id="postCommentAllowed" type="boolean"--%>
 <%--@elvariable id="deactivateCommentAllowed" type="boolean"--%>
 
@@ -14,7 +13,7 @@
 
 <c:set var="isDeactivated" value="${reqComment.deactiveBy != null}"/>
 
-<div class="cmt-group__item">
+<div class="cmt-group__item" id="novel-comment-${reqComment.id}">
     <div class="cmt-group__avatar"
          style="background-image: url('${reqComment.owner.avatar}');">
     </div>

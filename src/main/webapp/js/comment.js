@@ -122,14 +122,15 @@ function assignReplyCommentButtons() {
 
 function reloadComments() {
     const commentSection = document.getElementById('comment-section-contents');
-    const offset = commentSection.dataset.offset;
-    const limit = commentSection.dataset.limit;
-    const chapterId = commentSection.getAttribute('data-chapter-id');
+    const offset = Number.parseInt(commentSection.dataset.offset);
+    const limit = Number.parseInt(commentSection.dataset.limit);
+    const chapterId = Number.parseInt(commentSection.getAttribute('data-chapter-id'));
     loadRootComments(offset, limit, chapterId).then(resolved => {
             commentSection.innerHTML = resolved;
             assignReplyCommentButtons();
+
             const previousCommentsBtn = document.getElementById('previous-comments-button');
-            if (offset == 0) {
+            if (offset === 0) {
                 previousCommentsBtn.classList.add("inactive");
             } else {
                 previousCommentsBtn.classList.remove("inactive");
@@ -251,8 +252,54 @@ function submitDeactivateComment(commentId) {
             });
         }
     });
-
 }
+
+/**
+ * @param fragmentId {string}
+ */
+function goToFragment(fragmentId) {
+    const element = document.getElementById(fragmentId);
+    if (element) {
+        element.scrollIntoView();
+    }
+}
+
+/**
+ * @param commentId {number}
+ * @return {Promise<number>}
+ */
+async function getCommentOffset(commentId) {
+    const requestUrl = `/comments?type=comment_offset&comment-id=${commentId}`;
+    return fetch(requestUrl)
+        .then(async response => {
+            if (response.ok) {
+                return parseInt(await response.text());
+            } else {
+                throw new Error("Something went wrong while fetching comment offset");
+            }
+        });
+}
+
+function detectCommentParamOnLoad() {
+    const cmtParam = new URLSearchParams(window.location.search).get('novel-comment');
+    if (!cmtParam) {
+        return;
+    }
+    const commentId = parseInt(cmtParam);
+    getCommentOffset(commentId).then(offset => {
+        const commentSection = document.getElementById('comment-section-contents');
+        commentSection.dataset.offset = offset.toString();
+        reloadComments();
+    });
+
+    setTimeout(() => {
+        goToFragment(`novel-comment-${commentId}`);
+    }, 400);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    detectCommentParamOnLoad();
+});
 
 assignPostRootCommentForm();
 assignNextCommentsButton();

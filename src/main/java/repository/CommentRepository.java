@@ -90,4 +90,18 @@ public class CommentRepository extends BaseRepository<Comment> {
         return mapObjects(records);
     }
 
+    public int getCommentOffsetInChapter(int commentId, int chapterId) throws SQLException {
+        String sql = String.format("SELECT COUNT(id) as count " +
+                "FROM %s " +
+                "WHERE chapter_id = ? " +
+                "AND parent_id IS NULL " +
+                "AND time_comment > (SELECT time_comment " +
+                "FROM %s WHERE id = ?)", getTableName(), getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(chapterId, commentId));
+        for (SqlRecord record : records) {
+            return Integer.parseInt(record.get("count").toString());
+        }
+
+        return 0;
+    }
 }
