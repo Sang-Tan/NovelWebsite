@@ -12,12 +12,18 @@
 <%--@elvariable id="Restriction" type="model.Restriction.class" --%>
 <%@page import="model.intermediate.Restriction" %>
 
+<%--@elvariable id="User" type="model.User.class" --%>
+<%@page import="model.User" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%--@elvariable id="postCommentAllowed" type="boolean" --%>
 <c:set var="postCommentAllowed" value="${(user != null) &&
        (RestrictionService.getUnexpiredRestriction(user.id, Restriction.TYPE_COMMENT) == null)}" scope="request"/>
+
+<c:set var="deactivateCommentAllowed" value="${(user != null) &&
+       user.role.equals(User.ROLE_MODERATOR)}" scope="request"/>
 
 <c:forEach items="${reqRootComments}" var="rootComment">
     <div class="cmt-group">
@@ -80,7 +86,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title title title--bold" id="">
+                <h5 class="modal-title title title--bold">
                     Xác nhận báo cáo
                 </h5>
                 <i class="fas fa-compress-arrows-alt top-right-btn"
@@ -103,6 +109,36 @@
         </div>
     </div>
 </div>
-<script>
 
-</script>
+<c:if test="${deactivateCommentAllowed}">
+    <%--Deactivate comment modal--%>
+    <div class="modal fade" id="deactivateCommentModal" tabindex="-1"
+         aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title title title--bold">
+                        Xác nhận ẩn bình luận
+                    </h5>
+                    <i class="fas fa-compress-arrows-alt top-right-btn"
+                       data-dismiss="modal" aria-label="Close"
+                       style="font-size: x-large"></i>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Bạn có muốn ẩn bình luận này không?</p>
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="basic-btn basic-btn--gray" data-dismiss="modal">
+                        Đóng
+                    </button>
+                    <button type="button" id="deactivate-cmt-submit" class="basic-btn basic-btn--olive"
+                            onclick="submitCommentReport()"
+                            data-dismiss="modal">
+                        Xác nhận
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</c:if>

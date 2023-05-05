@@ -218,6 +218,42 @@ function submitCommentReport() {
     $('.modal-backdrop').remove();
 }
 
+function showDeactivateCommentForm(commentId) {
+    const deactivateCmtSubmitBtn = document.getElementById('deactivate-cmt-submit');
+    deactivateCmtSubmitBtn.onclick = () => {
+        submitDeactivateComment(commentId);
+    };
+}
+
+function submitDeactivateComment(commentId) {
+    const requestUrl = '/mod/moderate-comment';
+    const bodyData = `action=deactivate&comment-id=${commentId}`
+    fetch(requestUrl, {
+        method: "POST",
+        body: bodyData,
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    }).then(response => {
+        if (response.ok) {
+            Swal.fire({
+                title: 'Đã ẩn bình luận!',
+                icon: 'success'
+            }).then(() => {
+                reloadComments();
+            });
+
+        } else {
+            Swal.fire({
+                title: 'Có lỗi xảy ra!',
+                icon: 'error',
+                text: 'Lỗi không xác định'
+            });
+        }
+    });
+
+}
+
 assignPostRootCommentForm();
 assignNextCommentsButton();
 assignPreviousCommentsButton();

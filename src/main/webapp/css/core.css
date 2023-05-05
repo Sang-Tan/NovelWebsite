@@ -21,6 +21,17 @@
     --silver: #f6f7f8;
     --white: #ffffff;
     --theme-color: var(--purple);
+
+    --member-bg-col: var(--olive);
+    --member-txt-col: var(--white);
+
+    --moderator-bg-col: var(--navy);
+    --moderator-txt-col: var(--white);
+
+    --admin-bg-col: var(--maroon);
+    --admin-txt-col: var(--white);
+
+
     --open-sans: 'Open Sans', sans-serif;
 }
 

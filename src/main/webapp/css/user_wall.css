@@ -5,16 +5,16 @@
 }
 
 .role-box--member {
-    background-color: var(--olive);
-    color: var(--white);
+    background-color: var(--member-bg-col);
+    color: var(--member-txt-col);
 }
 
 .role-box--moderator {
-    background-color: var(--navy);
-    color: var(--white);
+    background-color: var(--moderator-bg-col);
+    color: var(--moderator-txt-col);
 }
 
 .role-box--admin {
-    background-color: var(--maroon);
-    color: var(--white);
+    background-color: var(--admin-bg-col);
+    color: var(--admin-txt-col);
 }
