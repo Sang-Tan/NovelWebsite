@@ -47,14 +47,27 @@ public class CommentReportController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if (action == null) action = "";
-        if (action.equals("checked")) {
-            try {
-                setCheckTime(req, resp);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        switch (action) {
+            case "checked":
+                try {
+                    setCheckTime(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+            case "delete":
+                try {
+                    deleteCommentReport(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
         }
+    }
 
+    private void deleteCommentReport(HttpServletRequest req, HttpServletResponse resp) throws SQLException{
+        int commentId = Integer.parseInt(req.getParameter("commentId"));
+        CommentReportRepository.getInstance().deleteReport(commentId);
     }
 
     private void setCheckTime(HttpServletRequest req, HttpServletResponse resp) throws SQLException{

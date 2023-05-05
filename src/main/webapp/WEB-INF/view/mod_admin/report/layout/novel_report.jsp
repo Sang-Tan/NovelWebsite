@@ -27,8 +27,7 @@
                     <div class="rpt-group__item">
                         <a href="" class="no-decor" data-toggle="modal" data-target="#report-modal"
                            onclick="reportNovelForm(${novelReport.id}, '${novelReport.owner.displayName}',
-                                   '${novelReport.owner.avatar}', ${novelReport.owner.id},
-                                   '${novelReport.name}', '${novelReport.image}', '${novelReport.summary}')">
+                                   '${novelReport.owner.avatar}', ${novelReport.owner.id},'${novelReport.name}')">
                             <div class="rpt-detail" style="background-color: var(--dark-silver); border-left: 1rem solid var(--olive)">
                                 <div class="row">
                                     <div class="col-05"></div>
@@ -69,14 +68,15 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <a href="" id="linkNovel" target="_blank" class="ms-auto col-md-12 title title--small text-center"
+                        <a href="" id="linkNovel" target="_blank" class="ms-auto col-md-12"
                            style="text-underline: none; color: white">
-                            <p id="novelName" style="font-weight: bold; text-underline: none; color: black">
+                            <span id="novelName" style="text-underline: none; color: black">
                                 Chuyển sinh sang thế giới khác và tôi bị gọi là...
-                            </p>
-                            <img src="" id="image"  style="height: 200px;" alt="Bìa truyện">
+                            </span>
+                            <i class="fas fa-external-link-alt" style="color: black"></i>
                         </a>
                     </div>
+                    <hr>
 
                     <div class="row">
                         <div class="col-md-12">
@@ -84,17 +84,10 @@
                                 <img id="ownerAvatar1" src="/images/default-avatar.jpg" alt="avatar"
                                      class="navbar__avatar" style="text-underline: none; color: black">
                                 <p id="ownerName1" class="d-inline-block ml-2 mt-auto mb-auto"
-                                   style="font-weight: bold; text-underline: none; color: black">
+                                   style="text-underline: none; color: black">
                                     Username
                                 </p>
                             </a>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <p class="title title--small" style="font-weight: bold; text-underline: none; color: black">Tóm tắt</p>
-                            <p id="summary" style="overflow-wrap: break-word">Chi tiết tóm tắt truyện</p>
                         </div>
                     </div>
 
@@ -115,13 +108,14 @@
                 </div>
             </div>
             <div class="">
-                <form action="/mod/bao-cao-truyen?action=checked" style="margin-block-end: 0">
+                <form action="/mod/bao-cao-truyen?action=delete" style="margin-block-end: 0">
                     <input id="novelId" name="novelId" hidden>
                     <button type="button" class="btn basic-btn--olive col-md-12" data-dismiss="modal"
-                            onclick="novelReportChecked()">
+                            onclick="deleteNovelReport()">
                         <i class="fas fa-check-circle"></i> Đã đọc
                     </button>
                 </form>
+
             </div>
         </div>
     </div>

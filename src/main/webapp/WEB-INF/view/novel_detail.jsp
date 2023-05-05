@@ -15,10 +15,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Novel</title>
+    <title>${novel.name}</title>
 
     <%@ include file="layout/basic_stylesheet.jsp" %>
     <link rel="stylesheet" href="/css/novel_detail.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
 </head>
 
 <body style="background-color: var(--silver);">
