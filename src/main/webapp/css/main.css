@@ -589,6 +589,22 @@ a.cmt-detail__name:hover {
     cursor: pointer;
 }
 
+.cmt-role-box {
+    border-radius: 0.5rem;
+    display: inline-block;
+    padding: 0px 5px;
+}
+
+.cmt-role-box--mod {
+    background-color: var(--moderator-bg-col);
+    color: var(--moderator-txt-col);
+}
+
+.cmt-role-box--admin {
+    background-color: var(--admin-bg-col);
+    color: var(--admin-txt-col);
+}
+
 /*==================TreeView======================*/
 .tree-list {
     margin-bottom: 1rem;
