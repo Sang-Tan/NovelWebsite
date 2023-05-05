@@ -12,6 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Chỉnh sửa</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
     <%@include file="/WEB-INF/view/layout/basic_stylesheet.jsp" %>
 </head>
 <body style="background-color: var(--silver)">
@@ -111,7 +112,7 @@
     </div>
 </div>
 
-<%@ include file="/WEB-INF/view/layout/boostrap_js.jsp" %>
+<%@ include file="/WEB-INF/view/layout/basic_js.jsp" %>
 <script src="/js/init.js"></script>
 <script>
     const deleteModal = document.getElementById('deleteModal');

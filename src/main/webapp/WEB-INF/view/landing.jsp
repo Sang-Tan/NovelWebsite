@@ -5,8 +5,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Landing page ss</title>
+    <title>Trang chủ</title>
     <%@ include file="layout/basic_stylesheet.jsp" %>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
 </head>
 
 <body>
@@ -118,7 +119,7 @@
     </div>
 </main>
 <!-- Bootstrap -->
-<%@ include file="layout/boostrap_js.jsp" %>
+<%@ include file="layout/basic_js.jsp" %>
 
 <script>
     const tabs = document.querySelectorAll('.tab');

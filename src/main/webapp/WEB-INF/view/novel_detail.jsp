@@ -15,10 +15,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Novel</title>
+    <title>${novel.name}</title>
 
     <%@ include file="layout/basic_stylesheet.jsp" %>
     <link rel="stylesheet" href="/css/novel_detail.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
 </head>
 
 <body style="background-color: var(--silver);">
@@ -136,7 +137,7 @@
                 </div>
 
                 <div class="modal-footer justify-content-center">
-                    <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">
+                    <button type="button" class="basic-btn basic-btn--gray" data-dismiss="modal">
                         Đóng
                     </button>
                     <button type="button" class="basic-btn basic-btn--olive" data-toggle="modal"
@@ -168,10 +169,11 @@
             </div>
 
             <div class="modal-footer justify-content-center">
-                <button type="button" class="basic-btn basic-btn--red" data-dismiss="modal">
+                <button type="button" class="basic-btn basic-btn--gray" data-dismiss="modal">
                     Đóng
                 </button>
-                <button type="button" class="basic-btn basic-btn--olive" id="send" onclick="submitNovelReport()" data-dismiss="modal">
+                <button type="button" class="basic-btn basic-btn--olive" id="send" onclick="submitNovelReport()"
+                        data-dismiss="modal">
                     OK
                 </button>
             </div>
@@ -179,7 +181,7 @@
     </div>
 </div>
 <!-- Bootstrap -->
-<%@ include file="layout/boostrap_js.jsp" %>
+<%@ include file="layout/basic_js.jsp" %>
 
 <script src="/js/personal_interest.js"></script>
 <script src="/js/novel_report.js"></script>

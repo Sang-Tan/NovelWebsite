@@ -81,7 +81,7 @@ public class ReadChapter extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/view/reading.jsp").forward(request, response);
         } catch (Exception e) {
             response.setStatus(500);
-            BasicLogger.getInstance().getLogger().warning(e.getMessage());
+            e.printStackTrace();
 
         }
     }

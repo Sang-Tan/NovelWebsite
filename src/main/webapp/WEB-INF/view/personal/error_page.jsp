@@ -4,6 +4,7 @@
 <head>
     <title>Lỗi</title>
     <%@include file="/WEB-INF/view/layout/basic_stylesheet.jsp" %>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
 </head>
 <body>
 <%@include file="layout/header.jsp" %>

@@ -47,6 +47,8 @@ async function reportNovelForm(novelId, ownerName, ownerAvatar, ownerId, novelNa
     let link = document.getElementById("ownerId1");
     link.href = "/thanh-vien/" + ownerId;
     document.getElementById("novelName").innerText = novelName;
+    document.getElementById("image").src = image;
+    document.getElementById("summary").innerText = summary;
     const reasonDiv = document.getElementById("reasons1");
     reasonDiv.innerHTML = null;
 
@@ -81,14 +83,37 @@ function submitNovelReport() {
             "Content-Type": "application/x-www-form-urlencoded"
         }
     }).then(response => {
-        console.log(response);
-    });
-    Swal.fire({
-            title: 'Bạn đã báo cáo!',
-            confirmButtonColor: '#3d9970'
+        if (response.ok) {
+            response.json().then(data => {
+                const status = data.status;
+                if (status === "success") {
+                    Swal.fire({
+                        title: 'Báo cáo thành công!',
+                        text: 'Cảm ơn bạn đã báo cáo UwU',
+                        confirmButtonColor: '#3d9970',
+                        icon: 'success'
+                    });
+                    novelReportChecked();
+                } else if (status === "error") {
+                    const errorMsg = data.message;
+                    Swal.fire({
+                        title: 'Có lỗi xảy ra',
+                        text: errorMsg,
+                        confirmButtonColor: '#3d9970',
+                        icon: 'error'
+                    });
+                }
+
+            });
+            document.getElementById("reason").value = "";
+        } else {
+            Swal.fire({
+                title: 'Đã có lỗi xảy ra!',
+                confirmButtonColor: '#3d9970',
+                icon: 'error'
+            });
         }
-    )
-    document.getElementById("reason").value = "";
+    });
     $('#reportNovelModal').hide();
     $('.modal-backdrop').remove();
 }

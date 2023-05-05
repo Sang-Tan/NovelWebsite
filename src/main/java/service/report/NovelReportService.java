@@ -16,9 +16,10 @@ public class NovelReportService {
     private String sql;
     private Paginator paginator;
 
-    private NovelReportService(){
+    private NovelReportService() {
 
     }
+
     public static NovelReportService getInstance() {
         if (instance == null) {
             instance = new NovelReportService();
@@ -41,5 +42,9 @@ public class NovelReportService {
         paginator = new Paginator(NovelReportRepository.getInstance().countNovelReports(sql, params), page, 4);
         sql += " " + PagingService.generatePaginationCondition(params, paginator);
         return NovelRepository.getInstance().getAllNovelReport(sql, params);
+    }
+
+    public static boolean isReported(int novelId, int reporterId) throws SQLException {
+        return NovelRepository.getInstance().isReportExist(novelId, reporterId);
     }
 }

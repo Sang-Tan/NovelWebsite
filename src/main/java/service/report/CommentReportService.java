@@ -42,4 +42,8 @@ public class CommentReportService {
         sql += " " + PagingService.generatePaginationCondition(params, paginator);
         return CommentRepository.getInstance().getAllCommentReport(sql, params);
     }
+
+    public boolean isReportExist(int commentId, int reporterId) throws SQLException {
+        return CommentReportRepository.getInstance().isReportExist(commentId, reporterId);
+    }
 }

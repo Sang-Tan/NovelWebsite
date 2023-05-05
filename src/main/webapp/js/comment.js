@@ -183,13 +183,36 @@ function submitCommentReport() {
             "Content-Type": "application/x-www-form-urlencoded"
         }
     }).then(response => {
-        console.log(response);
-    });
-    Swal.fire({
-            title: 'Bạn đã báo cáo!',
-            confirmButtonColor: '#3d9970'
+        if (response.ok) {
+            response.json().then(data => {
+                const status = data.status;
+                if (status === "success") {
+                    Swal.fire({
+                            title: 'Báo cáo thành công!',
+                            text: 'Cảm ơn bạn đã báo cáo UwU',
+                            icon: 'success',
+                            confirmButtonColor: '#3d9970'
+                        }
+                    )
+                } else {
+                    const message = data.message;
+                    Swal.fire({
+                            title: 'Đã xảy ra lỗi!',
+                            text: message,
+                            icon: 'error',
+                            confirmButtonColor: '#3d9970'
+                        }
+                    );
+                }
+            });
+        } else {
+            Swal.fire({
+                title: 'Có lỗi xảy ra!',
+                icon: 'error'
+            });
         }
-    )
+    });
+
     document.getElementById("reason").value = "";
     $('#reportCommentModal').hide();
     $('.modal-backdrop').remove();

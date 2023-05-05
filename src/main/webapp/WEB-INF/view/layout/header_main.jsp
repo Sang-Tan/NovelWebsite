@@ -14,15 +14,8 @@
                 </a>
             </li>
             <li class="navbar__list-item">
-                <a href="#" class="navbar__link navbar__list-text">Danh sách</a>
-            </li>
-            <li class="navbar__list-item">
-                <a href="#" class="navbar__link navbar__list-text">Siuuuu</a>
-            </li>
-            <li class="navbar__list-item">
-                <div style="display: inline-block">
-                    <a href="#" class="navbar__link navbar__list-text">Giới thiệu</a>
-                </div>
+                <a href="/tim-kiem-truyen" class="navbar__link navbar__list-text">Tìm
+                    truyện</a>
             </li>
         </ul>
         <ul class="navbar__list">
@@ -58,13 +51,20 @@
                         </a>
                         <div class="dropdown-menu">
                             <a href="/theo-doi" class="dropdown-item">
-                                <i class="fas fa-heart mr-1"></i><span>Truyện yêu thích</span>
+                                <i class="fas fa-heart navbar__dropdown-icon"></i><span>Truyện yêu thích</span>
                             </a>
                             <a href="/danh-dau" class="dropdown-item">
-                                <i class="fas fa-bookmark mr-1"></i>Đánh dấu
+                                <i class="fas fa-bookmark mr-1 navbar__dropdown-icon"></i>Đánh dấu
                             </a>
-                            <a href="/ca-nhan" class="dropdown-item">Cá nhân</a>
-                            <a href="/logout" class="dropdown-item">Đăng xuất</a>
+                            <a href="/thong-bao" class="dropdown-item">
+                                <i class="fas fa-bell navbar__dropdown-icon"></i><span>Thông báo</span>
+                            </a>
+                            <a href="/ca-nhan" class="dropdown-item">
+                                <i class="fas fa-user navbar__dropdown-icon"></i><span>Cá nhân</span>
+                            </a>
+                            <a href="/logout" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt navbar__dropdown-icon"></i><span>Đăng xuất</span>
+                            </a>
                         </div>
                     </li>
                 </c:otherwise>
@@ -157,92 +157,4 @@
     </div>
 </div>
 
-<script>
-    function registerSubmit() {
-        const form = event.target;
-        const request = new XMLHttpRequest();
-        request.open("POST", "/register");
-
-        request.onload = () => {
-            if (request.status === 404) {
-                alert("Đăng ký thất bại");
-                return;
-            }
-
-            const data = JSON.parse(request.responseText);
-
-            if (data.status === "success") {
-                alert("Đăng ký thành công");
-                window.location.reload();
-            } else {
-                showFormError(form, data);
-            }
-        }
-        const formData = new FormData(form);
-        request.send(formData);
-    }
-
-    function loginSubmit() {
-        const form = event.target;
-        const request = new XMLHttpRequest();
-        request.open("POST", "/login");
-
-        request.onload = () => {
-            if (request.status === 404) {
-                alert("Đăng nhập thất bại");
-                return;
-            }
-
-            const data = JSON.parse(request.responseText);
-            if (data.status === "success") {
-                alert("Đăng nhập thành công");
-                window.location.reload();
-            } else {
-                showFormError(form, data);
-            }
-        }
-
-        const formData = new FormData(form);
-        request.send(formData);
-    }
-
-    function showFormError(form, errorData) {
-        const errors = errorData.errors;
-        Object.entries(errors).forEach(([key, value]) => {
-            const invalidInput = form.elements[key];
-            const errorText = getErrorTextElement(invalidInput);
-
-            invalidInput.classList.add("error");
-            showErrorText(errorText, value);
-
-//add event listener to remove error class
-            invalidInput.addEventListener("focus", () => {
-                invalidInput.classList.remove("error");
-                hideErrorText(errorText);
-            });
-        });
-    }
-
-    function getErrorTextElement(inputElement) {
-        return inputElement.parentNode.querySelector(".error-text");
-    }
-
-    function showErrorText(errorTextElement, text) {
-        if (errorTextElement) {
-            errorTextElement.classList.remove("hidden");
-            errorTextElement.innerText = text;
-        }
-    }
-
-    function hideErrorText(errorTextElement) {
-        if (errorTextElement) {
-            errorTextElement.classList.add("hidden");
-        }
-    }
-
-    function redirectToSearch(event) {
-        event.preventDefault();
-        const novelName = document.getElementById('novelName').value;
-        location.assign("/tim-kiem-truyen?novel="+ novelName);
-    }
-</script>
+<script src="/js/header_main.js"></script>

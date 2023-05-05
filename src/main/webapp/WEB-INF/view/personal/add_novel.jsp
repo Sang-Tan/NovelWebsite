@@ -11,9 +11,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Thêm truyện</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
     <%@include file="/WEB-INF/view/layout/basic_stylesheet.jsp" %>
 </head>
-<body>
+<body style="background-color: var(--silver)">
 <%@include file="layout/header.jsp" %>
 
 <div class="container mt-3">
@@ -80,7 +81,7 @@
 </div>
 
 <%-- boostrap script --%>
-<%@include file="/WEB-INF/view/layout/boostrap_js.jsp" %>
+<%@include file="/WEB-INF/view/layout/basic_js.jsp" %>
 
 <script charset="UTF-8" src="/js/form.js"></script>
 <script type="text/javascript" charset="UTF-8" src="/js/novel_manage.js"></script>

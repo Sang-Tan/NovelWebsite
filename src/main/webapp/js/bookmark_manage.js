@@ -42,6 +42,5 @@ function deleteBookmark() {
             alert(response.message);
         }
     }
-    var x = `id=${deleteBookmarkBtn.dataset.chapterId}&action=remove-bookmark`;
     request.send(`id=${deleteBookmarkBtn.dataset.chapterId}&action=remove-bookmark`);
 }

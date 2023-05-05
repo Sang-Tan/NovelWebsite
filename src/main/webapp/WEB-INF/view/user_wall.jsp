@@ -14,6 +14,7 @@
 <html>
 <head>
     <title>${userInWall.displayName}</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
     <%@include file="layout/basic_stylesheet.jsp" %>
     <link href="/css/user_wall.css" rel="stylesheet">
 </head>
@@ -196,7 +197,7 @@
             </div>
         </div>
     </div>
-    <%@include file="layout/boostrap_js.jsp" %>
+    <%@include file="layout/basic_js.jsp" %>
     <script src="/js/restriction.js"></script>
 </body>
 </html>

@@ -4,6 +4,8 @@ import core.Pair;
 import core.logging.BasicLogger;
 import core.media.MediaObject;
 import core.media.MediaType;
+import model.User;
+import service.logging.ApprovalLoggingService;
 import service.upload_change.base.BaseChangeService;
 import service.upload_change.metadata.ContentChangeType;
 
@@ -44,14 +46,10 @@ public abstract class BaseChangeController extends HttpServlet {
             switch (action) {
 
                 case "approve":
-                    //TODO: implement notification
-                    //TODO: implement change log
                     approveChange(req, resp);
                     break;
 
                 case "reject":
-                    //TODO: implement notification
-                    //TODO: implement change log
                     rejectChange(req, resp);
                     break;
 
@@ -63,19 +61,36 @@ public abstract class BaseChangeController extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             BasicLogger.getInstance().printStackTrace(e);
         }
-        resp.sendRedirect("/mod/duyet-truyen");
+        if (resp.getStatus() == HttpServletResponse.SC_OK) {
+            resp.sendRedirect("/mod/duyet-truyen");
+        }
+
     }
 
     private void approveChange(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
         BaseChangeService changeService = getChangeService();
         int resourceId = getResourceId(req);
         changeService.approveChange(resourceId);
+
+        User moderator = (User) req.getAttribute("user");
+        addApproveLog(moderator, resourceId);
+        addApproveNotification(resourceId);
     }
 
     private void rejectChange(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        String reason = req.getParameter("reason");
+        if (reason == null || reason.isEmpty()) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
         BaseChangeService changeService = getChangeService();
         int resourceId = getResourceId(req);
         changeService.rejectChange(resourceId);
+
+        User moderator = (User) req.getAttribute("user");
+        addRejectLog(moderator, resourceId, reason);
+        addRejectNotification(resourceId, reason);
     }
 
     protected Pair<String, MediaObject> makeNewContentPair(MediaType mediaType, String name, Object content) {
@@ -108,4 +123,12 @@ public abstract class BaseChangeController extends HttpServlet {
     protected abstract ContentChangeType getChangeType(int resourceId) throws SQLException;
 
     protected abstract BaseChangeService getChangeService();
+
+    protected abstract void addApproveLog(User moderator, int resourceId) throws SQLException;
+
+    protected abstract void addRejectLog(User moderator, int resourceId, String reason) throws SQLException;
+
+    protected abstract void addApproveNotification(int resourceId) throws SQLException;
+
+    protected abstract void addRejectNotification(int resourceId, String reason) throws SQLException;
 }

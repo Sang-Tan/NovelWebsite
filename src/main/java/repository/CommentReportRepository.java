@@ -48,4 +48,10 @@ public class CommentReportRepository extends BaseRepository<CommentReport> {
         String sql = String.format("DELETE FROM %s WHERE comment_id = ?", getTableName());
         MySQLdb.getInstance().execute(sql, List.of(commentId));
     }
+
+    public boolean isReportExist(int commentId, int reporterId) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE comment_id = ? AND reporter_id = ?", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(commentId, reporterId));
+        return records.size() > 0;
+    }
 }

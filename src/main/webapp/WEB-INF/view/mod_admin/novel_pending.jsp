@@ -17,6 +17,7 @@
     <%@include file="/WEB-INF/view/layout/basic_stylesheet.jsp" %>
     <link rel="stylesheet" href="/css/novel_detail.css">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
           integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
@@ -126,8 +127,7 @@
                                             <td>${chapter.belongVolume.belongNovel.owner.displayName}</td>
                                             <td>${TimeConverter.convertToVietnameseTime(chapter.updatedTime)}</td>
                                             <td>
-                                                <a href="/mod/thay-doi/chuong-truyen/${chapter.id}"
-                                                   target="_blank">
+                                                <a href="/mod/thay-doi/chuong-truyen/${chapter.id}">
                                                     <button class="basic-btn basic-btn--olive"
                                                             style="background-color: dodgerblue; color: white">
                                                         <i class="fas fa-external-link-alt"></i> Chi tiết
@@ -150,7 +150,7 @@
         </div>
     </div>
 </main>
-<%@include file="/WEB-INF/view/layout/boostrap_js.jsp" %>
+<%@include file="/WEB-INF/view/layout/basic_js.jsp" %>
 <script>
     const tabs = document.querySelectorAll('.tab');
 

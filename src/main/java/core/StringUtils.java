@@ -82,4 +82,5 @@ public class StringUtils {
     {
         return str.replaceAll("^-+$", "-").replaceAll("^-", "").replaceAll("-$", "");
     }
+
 }

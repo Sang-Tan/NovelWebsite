@@ -18,7 +18,7 @@
     <title>Tìm kiếm</title>
     <%@ include file="layout/basic_stylesheet.jsp" %>
     <link rel="stylesheet" href="/css/search_novel.css">
-
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
 </head>
 <body style="background-color: var(--silver);">
 <jsp:include page="layout/header_main.jsp"></jsp:include>
@@ -102,7 +102,8 @@
                 <div class="row">
                     <c:forEach items="${novelsSearched}" var="novelSearched">
                         <div class="col-4 col-md-2 thumb">
-                            <a href="/truyen/${novelSearched.id}-${URLSlugification.sluging(novelSearched.name)}" class="no-decor">
+                            <a href="/truyen/${novelSearched.id}-${URLSlugification.sluging(novelSearched.name)}"
+                               class="no-decor">
                                 <div class="thumb__wrapper">
                                     <div class="thumb__img-panel shadow a6-ratio">
                                         <div class="img-wrapper"
@@ -130,7 +131,7 @@
 </div>
 
 <%--Boostrap script--%>
-<%@ include file="layout/boostrap_js.jsp" %>
+<%@ include file="layout/basic_js.jsp" %>
 <script src="/js/search_novel.js"></script>
 </body>
 </html>

@@ -4,9 +4,16 @@ import core.Pair;
 import core.logging.BasicLogger;
 import core.media.MediaObject;
 import core.media.MediaType;
+import model.Novel;
+import model.User;
 import model.Volume;
+import model.logging.VolumeApprovalLog;
+import model.logging.info.VolumeApprovalLogInfo;
 import model.temporary.VolumeChange;
+import repository.NovelRepository;
 import repository.VolumeRepository;
+import service.NotificationService;
+import service.logging.VolumeApprovalLoggingService;
 import service.upload_change.VolumeChangeService;
 import service.upload_change.base.BaseChangeService;
 import service.upload_change.metadata.ContentChangeType;
@@ -30,6 +37,13 @@ public class VolumeChangeDetail extends BaseChangeController {
             Volume reqVolume = VolumeRepository.getInstance().getById(getResourceId(req));
             req.setAttribute("reqVolume", reqVolume);
             req.setAttribute("novelRelatedContentType", NovelRelatedContentType.VOLUME);
+
+            List<VolumeApprovalLog> volumeApprovalLogs = VolumeApprovalLoggingService.getInstance().getLogsByResourceId(reqVolume.getId());
+            List<VolumeApprovalLogInfo> logInfos = new ArrayList<>();
+            for (VolumeApprovalLog volumeApprovalLog : volumeApprovalLogs) {
+                logInfos.add(new VolumeApprovalLogInfo(volumeApprovalLog));
+            }
+            req.setAttribute("approvalLogInfoList", logInfos);
         } catch (SQLException e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             BasicLogger.getInstance().printStackTrace(e);
@@ -43,11 +57,10 @@ public class VolumeChangeDetail extends BaseChangeController {
     protected List<Pair<String, MediaObject>> getNewContents(int resourceId) throws SQLException {
         Volume volume = VolumeRepository.getInstance().getById(resourceId);
 
-        List<Pair<String, MediaObject>> newContents = List.of(
+        return List.of(
                 makeNewContentPair(MediaType.INLINE_TEXT, "Tên tập truyện", volume.getName()),
                 makeNewContentPair(MediaType.IMAGE_URL, "Ảnh bìa", volume.getImage())
         );
-        return newContents;
     }
 
     @Override
@@ -81,7 +94,43 @@ public class VolumeChangeDetail extends BaseChangeController {
     }
 
     @Override
-    protected BaseChangeService getChangeService() {
+    protected BaseChangeService<Volume, VolumeChange> getChangeService() {
         return VolumeChangeService.getInstance();
+    }
+
+    @Override
+    protected void addApproveLog(User moderator, int resourceId) throws SQLException {
+        //TODO: implement change log(I think it's not necessary)
+    }
+
+    @Override
+    protected void addRejectLog(User moderator, int resourceId, String reason) throws SQLException {
+        VolumeApprovalLog log = new VolumeApprovalLog();
+        log.setModeratorId(moderator.getId());
+        log.setVolumeId(resourceId);
+        log.setContent(reason);
+
+        VolumeApprovalLoggingService.getInstance().saveLog(log);
+    }
+
+    @Override
+    protected void addApproveNotification(int volumeId) throws SQLException {
+        Novel novel = NovelRepository.getInstance().getByVolumeID(volumeId);
+        Volume volume = VolumeRepository.getInstance().getById(volumeId);
+
+        String content = String.format("Chúc mừng, tập truyện \"%s\" của bạn đã được duyệt!", volume.getName());
+        String link = String.format("/ca-nhan/tap-truyen/%d", volumeId);
+        NotificationService.addNotification(novel.getOwnerID(), content, link);
+
+    }
+
+    @Override
+    protected void addRejectNotification(int volumeId, String reason) throws SQLException {
+        Novel novel = NovelRepository.getInstance().getByVolumeID(volumeId);
+        Volume volume = VolumeRepository.getInstance().getById(volumeId);
+
+        String content = String.format("Tập truyện \"%s\" của bạn đã bị từ chối, lý do : %s", volume.getName(), reason);
+        String link = String.format("/ca-nhan/tap-truyen/%d", volumeId);
+        NotificationService.addNotification(novel.getOwnerID(), content, link);
     }
 }

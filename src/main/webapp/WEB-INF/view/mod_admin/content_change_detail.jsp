@@ -17,6 +17,8 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
 
 <%--@elvariable id="reqChapter" type="model.Chapter"--%>
 
+<%--@elvariable id="approvalLogInfoList" type="java.util.List<model.logging.info.IApprovalLogInfo>"--%>
+
 <%--@elvariable id="ContentChangeType" type="service.upload_change.metadata.ContentChangeType.class"--%>
 <%@page import="service.upload_change.metadata.ContentChangeType" %>
 
@@ -26,16 +28,43 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
 <%--@elvariable id="NovelRelatedContentType" type="service.upload_change.metadata.NovelRelatedContentType.class"--%>
 <%@page import="service.upload_change.metadata.NovelRelatedContentType" %>
 
+<%--@elvariable id="TimeConverter" type="core.string_process.TimeConverter.class"--%>
+<%@page import="core.string_process.TimeConverter" %>
+
 <%--@elvariable id="detailTitle" type="java.lang.String"--%>
 <c:choose>
+    <c:when test="${changeType.equals(ContentChangeType.NONE)}">
+        <c:set var="detailTitle" value="Không có thay đổi nào"></c:set>
+    </c:when>
     <c:when test="${novelRelatedContentType.equals(NovelRelatedContentType.NOVEL)}">
-        <c:set var="detailTitle" value="Chi tiết chỉnh sửa tiểu thuyết"></c:set>
+        <c:choose>
+            <c:when test="${changeType.equals(ContentChangeType.NEW)}">
+                <c:set var="detailTitle" value="Chi tiết thêm mới tiểu thuyết"></c:set>
+            </c:when>
+            <c:otherwise>
+                <c:set var="detailTitle" value="Chi tiết chỉnh sửa tiểu thuyết"></c:set>
+            </c:otherwise>
+        </c:choose>
     </c:when>
     <c:when test="${novelRelatedContentType.equals(NovelRelatedContentType.VOLUME)}">
-        <c:set var="detailTitle" value="Chi tiết chỉnh sửa tập"></c:set>
+        <c:choose>
+            <c:when test="${changeType.equals(ContentChangeType.NEW)}">
+                <c:set var="detailTitle" value="Chi tiết thêm mới tập"></c:set>
+            </c:when>
+            <c:otherwise>
+                <c:set var="detailTitle" value="Chi tiết chỉnh sửa tập"></c:set>
+            </c:otherwise>
+        </c:choose>
     </c:when>
     <c:when test="${novelRelatedContentType.equals(NovelRelatedContentType.CHAPTER)}">
-        <c:set var="detailTitle" value="Chi tiết chỉnh sửa chương"></c:set>
+        <c:choose>
+            <c:when test="${changeType.equals(ContentChangeType.NEW)}">
+                <c:set var="detailTitle" value="Chi tiết thêm mới chương"></c:set>
+            </c:when>
+            <c:otherwise>
+                <c:set var="detailTitle" value="Chi tiết chỉnh sửa chương"></c:set>
+            </c:otherwise>
+        </c:choose>
     </c:when>
 </c:choose>
 
@@ -49,90 +78,121 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
 <body>
 <jsp:include page="/WEB-INF/view/layout/header_mod.jsp"></jsp:include>
 <div class="container mt-3">
-    <c:choose>
-        <c:when test="${changeType.equals(ContentChangeType.NONE)}">
-            <h3 class="text-center">Không có thay đổi nào</h3>
-        </c:when>
-        <c:otherwise>
-            <header>
-                <span class="title">${detailTitle}</span>
-            </header>
-            <table class="table table-bordered mt-3">
-                <thead>
+    <div>
+        <header>
+            <div class="d-flex align-items-center">
+                <span class="title title--underline">Lịch sử kiểm duyệt</span>
+                <a role="button" href="#historyCollapse" data-toggle="collapse"
+                   class="theme-link">
+                    <i class="fas fa-chevron-down "></i>
+                </a>
+            </div>
+        </header>
+        <div class="collapse mt-1" id="historyCollapse">
+            <table class="table table-bordered table-striped table-sm mb-0">
+                <thead class="thead-light">
                 <tr>
-                    <c:choose>
-                        <c:when test="${changeType.equals(ContentChangeType.NEW)}">
-                            <th>Tên</th>
-                            <th>Nội dung</th>
-                        </c:when>
-                        <c:when test="${changeType.equals(ContentChangeType.UPDATE)}">
-                            <th>Tên</th>
-                            <th>Cũ</th>
-                            <th>Mới</th>
-                        </c:when>
-                    </c:choose>
+                    <th>Kiểm duyệt viên</th>
+                    <th>Nội dung</th>
+                    <th>Thời gian</th>
                 </tr>
                 </thead>
                 <tbody class="paragraph-spacing-1">
-                <c:choose>
-                    <c:when test="${changeType.equals(ContentChangeType.NEW)}">
-                        <c:forEach items="${newContents}" var="newContent">
-                            <tr>
-                                <th>${newContent.key}</th>
-                                <c:set var="mediaItem" value="${newContent.value}"/>
-                                <td>
-                                    <%@include file="media_item.jsp" %>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </c:when>
-                    <c:when test="${changeType.equals(ContentChangeType.UPDATE)}">
-                        <c:forEach items="${changedContents}" var="changedContent">
-                            <tr>
-                                <th>${changedContent.key}</th>
-                                <c:choose>
-                                    <c:when test="${changedContent.value.get(0).type.equals(MediaType.MULTILINE_TEXT)}">
-                                        <c:set var="mediaItem" value="${changedContent.value.get(0)}"/>
-                                        <td id="oldMultiline">
-                                            <%@include file="media_item.jsp" %>
-                                        </td>
-                                        <c:set var="mediaItem" value="${changedContent.value.get(1)}"/>
-                                        <td id="newMultiline">
-                                            <%@include file="media_item.jsp" %>
-                                        </td>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <c:set var="mediaItem" value="${changedContent.value.get(0)}"/>
-                                        <td>
-                                            <%@include file="media_item.jsp" %>
-                                        </td>
-                                        <c:set var="mediaItem" value="${changedContent.value.get(1)}"/>
-                                        <td>
-                                            <%@include file="media_item.jsp" %>
-                                        </td>
-                                    </c:otherwise>
-                                </c:choose>
-
-                            </tr>
-                        </c:forEach>
-                    </c:when>
-                </c:choose>
-                </tbody>
+                <c:forEach items="${approvalLogInfoList}" var="approvalLogInfo">
+                <tr>
+                    <td>
+                        <a href="/thanh-vien/${approvalLogInfo.moderator.id}">${approvalLogInfo.moderator.displayName} </a>
+                    </td>
+                    <td>${approvalLogInfo.content}</td>
+                    <td>${TimeConverter.convertToVietnameseTime(approvalLogInfo.createdTime)}</td>
+                </tr>
+                </c:forEach>
             </table>
-            <div class="mt-3 d-flex justify-content-center">
-                <button class="basic-btn basic-btn--red mr-3"
-                        data-toggle="modal" data-target="#rejectModal"
-                        onclick="showNovelForm(${novel.id}, '${novel.name}')">
-                    <i class="fas fa-times-circle"></i> Từ chối
-                </button>
-                <button class="basic-btn basic-btn--olive"
-                        data-toggle="modal" data-target="#approveModal"
-                        onclick="showNovelForm(${novel.id}, '${novel.name}')">
-                    <i class="fas fa-check"></i> Phê duyệt
-                </button>
-            </div>
-        </c:otherwise>
-    </c:choose>
+        </div>
+    </div>
+    <div class="mt-3">
+        <c:choose>
+            <c:when test="${changeType.equals(ContentChangeType.NONE)}">
+                <h3 class="text-center">${detailTitle}</h3>
+            </c:when>
+            <c:otherwise>
+                <header>
+                    <span class="title title--underline">${detailTitle}</span>
+                </header>
+                <table class="table table-bordered mt-3">
+                    <thead class="thead-light">
+                    <tr>
+                        <c:choose>
+                            <c:when test="${changeType.equals(ContentChangeType.NEW)}">
+                                <th>Tên</th>
+                                <th>Nội dung</th>
+                            </c:when>
+                            <c:when test="${changeType.equals(ContentChangeType.UPDATE)}">
+                                <th>Tên</th>
+                                <th>Cũ</th>
+                                <th>Mới</th>
+                            </c:when>
+                        </c:choose>
+                    </tr>
+                    </thead>
+                    <tbody class="paragraph-spacing-1">
+                    <c:choose>
+                        <c:when test="${changeType.equals(ContentChangeType.NEW)}">
+                            <c:forEach items="${newContents}" var="newContent">
+                                <tr>
+                                    <th>${newContent.key}</th>
+                                    <c:set var="mediaItem" value="${newContent.value}"/>
+                                    <td>
+                                        <%@include file="media_item.jsp" %>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </c:when>
+                        <c:when test="${changeType.equals(ContentChangeType.UPDATE)}">
+                            <c:forEach items="${changedContents}" var="changedContent">
+                                <tr>
+                                    <th>${changedContent.key}</th>
+                                    <c:choose>
+                                        <c:when test="${changedContent.value.get(0).type.equals(MediaType.MULTILINE_TEXT)}">
+                                            <c:set var="mediaItem" value="${changedContent.value.get(0)}"/>
+                                            <td id="oldMultiline">
+                                                <%@include file="media_item.jsp" %>
+                                            </td>
+                                            <c:set var="mediaItem" value="${changedContent.value.get(1)}"/>
+                                            <td id="newMultiline">
+                                                <%@include file="media_item.jsp" %>
+                                            </td>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:set var="mediaItem" value="${changedContent.value.get(0)}"/>
+                                            <td>
+                                                <%@include file="media_item.jsp" %>
+                                            </td>
+                                            <c:set var="mediaItem" value="${changedContent.value.get(1)}"/>
+                                            <td>
+                                                <%@include file="media_item.jsp" %>
+                                            </td>
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                </tr>
+                            </c:forEach>
+                        </c:when>
+                    </c:choose>
+                    </tbody>
+                </table>
+                <div class="mt-3 d-flex justify-content-center">
+                    <button class="basic-btn basic-btn--red mr-3"
+                            data-toggle="modal" data-target="#rejectModal">
+                        <i class="fas fa-times-circle"></i> Từ chối
+                    </button>
+                    <button class="basic-btn basic-btn--olive"
+                            data-toggle="modal" data-target="#approveModal">
+                        <i class="fas fa-check"></i> Phê duyệt
+                    </button>
+                </div>
+            </c:otherwise>
+        </c:choose></div>
     <!--Approve modal-->
     <div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="staticBackdropLabel3"
          aria-hidden="true">
@@ -167,14 +227,14 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
                        style="font-size: x-large"></i>
                 </div>
                 <div class="modal-body">
-                    <div class="d-flex">
-                        <label class="basic-label" for="rejectReasonInp" class="mr-3" style="min-width: unset;">Lý
-                            do:</label>
-                        <input class="input-text" id="rejectReasonInp" type="text"
-                               placeholder="Lý do không chấp nhận nội dung" style="flex:1;">
-                    </div>
                     <form method="post" class="mt-3">
-                        <div class="d-flex justify-content-center">
+                        <div class="d-flex">
+                            <label class="basic-label mr-3" for="rejectReasonInp" style="min-width: unset;">Lý
+                                do:</label>
+                            <input name="reason" class="input-text" id="rejectReasonInp" type="text"
+                                   placeholder="Lý do không chấp nhận nội dung" style="flex:1;" required>
+                        </div>
+                        <div class="d-flex justify-content-center mt-3">
                             <button type="button" class="basic-btn basic-btn--gray mr-2" data-dismiss="modal">Đóng
                             </button>
                             <button type="submit" class="basic-btn basic-btn--olive">Xác nhận</button>
@@ -188,7 +248,7 @@ type="java.util.List<core.Pair<java.lang.String,java.util.List<core.media.MediaO
     </div>
 
 </div>
-<jsp:include page="/WEB-INF/view/layout/boostrap_js.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/view/layout/basic_js.jsp"></jsp:include>
 <script src="/js/content_detail.js"></script>
 </body>
 </html>

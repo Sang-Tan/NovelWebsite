@@ -12,6 +12,7 @@
     <title>Quản lý thể loại</title>
     <%@include file="/WEB-INF/view/layout/basic_stylesheet.jsp" %>
     <link rel="stylesheet" href="/css/novel_detail.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
     <style>
         .genre-item:hover {
             color: #3d9970;
@@ -129,7 +130,7 @@
     </div>
 </main>
 </body>
-<%@include file="/WEB-INF/view/layout/boostrap_js.jsp" %>
+<%@include file="/WEB-INF/view/layout/basic_js.jsp" %>
 <script>
     function showDeleteForm(id, name) {
         document.getElementById("idDelete").value = id;

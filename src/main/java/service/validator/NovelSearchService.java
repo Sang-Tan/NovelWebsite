@@ -4,10 +4,10 @@ import model.Novel;
 import repository.NovelRepository;
 import core.pagination.Paginator;
 import service.PagingService;
+import service.SearchNovelService;
 
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class NovelSearchService {
     private static final String DEFAULT_SORT_ATTRIBUTE = "name";
@@ -15,15 +15,18 @@ public class NovelSearchService {
     private String sql;
     private List<Object> params;
     private Paginator paginator;
+
     public static NovelSearchService getInstance() {
         if (instance == null) {
             instance = new NovelSearchService();
         }
         return instance;
     }
+
     private NovelSearchService() {
     }
-    public NovelSearchService( String sql, List<Object> params, Paginator paginator) {
+
+    public NovelSearchService(String sql, List<Object> params, Paginator paginator) {
         this.sql = sql;
         this.params = params;
         this.paginator = paginator;
@@ -32,9 +35,11 @@ public class NovelSearchService {
     public String getSql() {
         return sql;
     }
+
     public List<Object> getParams() {
         return params;
     }
+
     public Paginator getPaginator() {
         return paginator;
     }
@@ -49,14 +54,14 @@ public class NovelSearchService {
         if (name == null || name.isEmpty()) {
             return sql;
         }
-        sql += "name LIKE ?";
-        params.add("%" + name + "%");
+        sql += "MATCH(name) AGAINST(? IN NATURAL LANGUAGE MODE)";
+        params.add(name);
         return sql;
     }
 
     /**
      * @param authorName author name
-     * @param params will be added by value
+     * @param params     will be added by value
      * @return SQL condition string
      */
     private String generateAuthorCondition(String authorName, List<Object> params) {
@@ -64,8 +69,8 @@ public class NovelSearchService {
         if (authorName == null || authorName.isEmpty()) {
             return sql;
         }
-        sql += "owner IN (SELECT id FROM users WHERE display_name LIKE ?)";
-        params.add("%" + authorName + "%");
+        sql += "owner IN (SELECT id FROM users WHERE MATCH(display_name) AGAINST(? IN NATURAL LANGUAGE MODE))";
+        params.add(authorName);
         return sql;
     }
 
@@ -79,19 +84,8 @@ public class NovelSearchService {
         params.add(status);
         return sql;
     }
-    public static HashSet<Integer> extractGenresIDs(String genresIDString)  {
-
-        HashSet<Integer> genresIDList = null;
-        String regex = "^[0-9,]+$";
-        if (!(genresIDString == null ) && !genresIDString.isEmpty() && genresIDString.matches(regex) ) {
-            String[] arrGenresIDString = genresIDString.split(",");
-            // convert string array to hashset
-            genresIDList = Arrays.stream(arrGenresIDString).map(Integer::parseInt).collect(Collectors.toCollection(HashSet::new));
-        }
-        return genresIDList;
-    }
     private String generateGenresIDCondition(String genresIdString, List<Object> params) {
-        HashSet<Integer> genresId = extractGenresIDs(genresIdString);
+        HashSet<Integer> genresId = SearchNovelService.extractGenresId(genresIdString);
         String sql = "";
         if (genresIdString == null || genresIdString.isEmpty()) {
             return sql;
@@ -103,9 +97,10 @@ public class NovelSearchService {
         params.addAll(genresId);
         return sql;
     }
+
     private String generateSortCondition(String sortAttribute) {
         String sql = "";
-        if (sortAttribute == null || sortAttribute.isEmpty() || sortAttribute.equals("name")){
+        if (sortAttribute == null || sortAttribute.isEmpty() || sortAttribute.equals("name")) {
             sql += "ORDER BY " + DEFAULT_SORT_ATTRIBUTE + " ASC";
         }
         return sql;
@@ -113,13 +108,12 @@ public class NovelSearchService {
 
 
     /**
-     *
-     * @param name name of novel
-     * @param authorName name of author
-     * @param status status of novel
+     * @param name           name of novel
+     * @param authorName     name of author
+     * @param status         status of novel
      * @param genresIdString genres id of novel in string
-     * @param sortAttribute sort attribute (name novels ...
-     * @param page page number
+     * @param sortAttribute  sort attribute (name novels ...
+     * @param page           page number
      * @return
      * @throws SQLException
      */
@@ -133,7 +127,7 @@ public class NovelSearchService {
         conditionsSQL.add(generateGenresIDCondition(genresIdString, params));
         conditionsSQL.removeIf(String::isEmpty);
 
-        sql = conditionsSQL.size() > 0 ? String.join(" AND ", conditionsSQL): "1=1";
+        sql = conditionsSQL.size() > 0 ? String.join(" AND ", conditionsSQL) : "1=1";
         sql += " AND approval_status = 'approved'";
         paginator = new Paginator(NovelRepository.getInstance().countNovels(sql, params), page, 24);
         // order

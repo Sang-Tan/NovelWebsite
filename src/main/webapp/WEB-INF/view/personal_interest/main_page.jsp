@@ -22,6 +22,8 @@
         </c:choose>
     </title>
     <%@include file="/WEB-INF/view/layout/basic_stylesheet.jsp" %>
+    <link rel="stylesheet" type="text/css" href="/css/notification.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
 </head>
 <body style="background-color: var(--silver)">
 <%@include file="/WEB-INF/view/layout/header_main.jsp" %>
@@ -49,6 +51,12 @@
                                href="/danh-dau">Bookmark</a>
                         </td>
                     </tr>
+                    <tr>
+                        <td class="p-0">
+                            <a class="theme-link link-fill p-3 ${interest.equals(PersonalInterest.NOTIFICATION) ? "left-highlight": ""}"
+                               href="/thong-bao">Thông báo</a>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -62,12 +70,12 @@
                     <%@include file="layout/bookmark_list.jsp" %>
                 </c:when>
                 <c:when test="${interest.equals(PersonalInterest.NOTIFICATION)}">
-                    <h3>Thông báo</h3>
+                    <%@include file="layout/notification_list.jsp" %>
                 </c:when>
             </c:choose>
         </div>
     </div>
 </div>
-<%@include file="/WEB-INF/view/layout/boostrap_js.jsp" %>
+<%@include file="/WEB-INF/view/layout/basic_js.jsp" %>
 </body>
 </html>

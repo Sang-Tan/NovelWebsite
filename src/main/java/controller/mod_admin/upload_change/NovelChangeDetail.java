@@ -6,8 +6,13 @@ import core.logging.BasicLogger;
 import core.media.MediaObject;
 import core.media.MediaType;
 import model.Novel;
+import model.User;
+import model.logging.NovelApprovalLog;
+import model.logging.info.NovelApprovalLogInfo;
 import model.temporary.NovelChange;
 import repository.NovelRepository;
+import service.NotificationService;
+import service.logging.NovelApprovalLoggingService;
 import service.upload_change.NovelChangeService;
 import service.upload_change.base.BaseChangeService;
 import service.upload_change.metadata.ContentChangeType;
@@ -31,6 +36,13 @@ public class NovelChangeDetail extends BaseChangeController {
             Novel reqNovel = NovelRepository.getInstance().getById(getResourceId(req));
             req.setAttribute("reqNovel", reqNovel);
             req.setAttribute("novelRelatedContentType", NovelRelatedContentType.NOVEL);
+
+            List<NovelApprovalLog> logs = NovelApprovalLoggingService.getInstance().getLogsByResourceId(reqNovel.getId());
+            List<NovelApprovalLogInfo> logInfos = new ArrayList<>();
+            for (NovelApprovalLog log : logs) {
+                logInfos.add(new NovelApprovalLogInfo(log));
+            }
+            req.setAttribute("approvalLogInfoList", logInfos);
         } catch (SQLException e) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             BasicLogger.getInstance().printStackTrace(e);
@@ -86,8 +98,42 @@ public class NovelChangeDetail extends BaseChangeController {
     }
 
     @Override
-    protected BaseChangeService getChangeService() {
+    protected BaseChangeService<Novel, NovelChange> getChangeService() {
         return NovelChangeService.getInstance();
+    }
+
+    @Override
+    protected void addApproveLog(User moderator, int resourceId) throws SQLException {
+        //TODO: add approve log (I don't think we need this)
+    }
+
+    @Override
+    protected void addRejectLog(User moderator, int resourceId, String reason) throws SQLException {
+        NovelApprovalLog log = new NovelApprovalLog();
+        log.setNovelId(resourceId);
+        log.setModeratorId(moderator.getId());
+        log.setContent(reason);
+
+        NovelApprovalLoggingService.getInstance().saveLog(log);
+    }
+
+    @Override
+    protected void addApproveNotification(int novelId) throws SQLException {
+        Novel novel = NovelRepository.getInstance().getById(novelId);
+
+        String content = String.format("Chúc mừng, tiểu thuyết \"%s\" của bạn đã được duyệt!", novel.getName());
+        String link = String.format("/ca-nhan/tieu-thuyet/%d", novelId);
+        NotificationService.addNotification(novel.getOwnerID(), content, link);
+
+    }
+
+    @Override
+    protected void addRejectNotification(int novelId, String reason) throws SQLException {
+        Novel novel = NovelRepository.getInstance().getById(novelId);
+
+        String content = String.format("Tiểu thuyết \"%s\" của bạn đã bị từ chối, lý do : %s", novel.getName(), reason);
+        String link = "/ca-nhan/tieu-thuyet/" + novelId;
+        NotificationService.addNotification(novel.getOwnerID(), content, link);
     }
 
 }
