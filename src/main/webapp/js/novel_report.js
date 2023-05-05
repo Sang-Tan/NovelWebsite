@@ -38,6 +38,7 @@ function deleteNovelReport() {
         location.reload();
     });
 }
+
 async function reportNovelForm(novelId, ownerName, ownerAvatar, ownerId, novelName) {
     let linkNovel = document.getElementById("linkNovel");
     linkNovel.href = "/truyen/" + novelId;
@@ -89,7 +90,7 @@ function submitNovelReport() {
                 if (status === "success") {
                     Swal.fire({
                         title: 'Báo cáo thành công!',
-                        text: 'Cảm ơn bạn đã báo cáo UwU',
+                        text: 'Cảm ơn bạn đã báo cáo',
                         confirmButtonColor: '#3d9970',
                         icon: 'success'
                     });
