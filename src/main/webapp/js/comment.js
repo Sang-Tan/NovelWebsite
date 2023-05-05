@@ -189,7 +189,7 @@ function submitCommentReport() {
                 if (status === "success") {
                     Swal.fire({
                             title: 'Báo cáo thành công!',
-                            text: 'Cảm ơn bạn đã báo cáo UwU',
+                            text: 'Cảm ơn bạn đã báo cáo',
                             icon: 'success',
                             confirmButtonColor: '#3d9970'
                         }
