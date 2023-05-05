@@ -26,7 +26,7 @@
                 <c:choose>
                     <c:when test="${notification.link != null}">
                         <a class="noti-url noti-info" href="${notification.link}">
-                            <p class="noti-content" style="width: 700px">
+                            <p class="noti-content" style="width: 700px; overflow: auto">
                                     ${notification.content}
                             </p>
                             <time class="time-ago block" style="display: inline">
@@ -35,7 +35,7 @@
                         </a>
                     </c:when>
                     <c:otherwise>
-                        <p class="noti-content" style="width: 700px; color: black">
+                        <p class="noti-content" style="width: 700px; overflow: auto">
                                 ${notification.content}
                         </p>
                         <time class="time-ago block" style="display: inline; color: black">
