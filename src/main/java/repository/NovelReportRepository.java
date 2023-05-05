@@ -43,4 +43,9 @@ public class NovelReportRepository extends BaseRepository<NovelReport> {
         String sql = String.format("UPDATE %s SET check_time = CURRENT_TIMESTAMP WHERE novel_id = ?", getTableName());
         MySQLdb.getInstance().execute(sql, List.of(novelId));
     }
+
+    public void deleteReport(int novelId) throws SQLException {
+        String sql = String.format("DELETE FROM %s WHERE novel_id = ?", getTableName());
+        MySQLdb.getInstance().execute(sql, List.of(novelId));
+    }
 }

@@ -5,16 +5,22 @@ import core.logging.BasicLogger;
 import core.media.MediaObject;
 import core.media.MediaType;
 import model.Chapter;
+import model.Novel;
 import model.User;
+import model.Volume;
 import model.logging.ChapterApprovalLog;
 import model.logging.info.ChapterApprovalLogInfo;
 import model.temporary.ChapterChange;
 import repository.ChapterRepository;
+import repository.NovelRepository;
+import repository.UserRepository;
+import service.NotificationService;
 import service.logging.ChapterApprovalLoggingService;
 import service.upload_change.ChapterChangeService;
 import service.upload_change.base.BaseChangeService;
 import service.upload_change.metadata.ContentChangeType;
 import service.upload_change.metadata.NovelRelatedContentType;
+import service.validator.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -91,7 +97,7 @@ public class ChapterChangeDetail extends BaseChangeController {
     }
 
     @Override
-    protected BaseChangeService getChangeService() {
+    protected BaseChangeService<Chapter, ChapterChange> getChangeService() {
         return ChapterChangeService.getInstance();
     }
 
@@ -108,5 +114,25 @@ public class ChapterChangeDetail extends BaseChangeController {
         chapterApprovalLog.setContent(reason);
 
         ChapterApprovalLoggingService.getInstance().saveLog(chapterApprovalLog);
+    }
+
+    @Override
+    protected void addApproveNotification(int chapterId) throws SQLException {
+        Novel novel = NovelRepository.getInstance().getByChapterID(chapterId);
+        Chapter chapter = ChapterRepository.getInstance().getById(chapterId);
+
+        String content = String.format("Chúc mừng, chương truyện \"%s\" của bạn vừa được duyệt!", chapter.getName());
+        String link = String.format("/ca-nhan/chuong-truyen/%d", chapterId);
+        NotificationService.addNotification(novel.getOwnerID(), content, link);
+    }
+
+    @Override
+    protected void addRejectNotification(int chapterId, String reason) throws SQLException {
+        Novel novel = NovelRepository.getInstance().getByChapterID(chapterId);
+        Chapter chapter = ChapterRepository.getInstance().getById(chapterId);
+
+        String content = String.format("Chương truyện \"%s\" của bạn đã bị từ chối, lý do : %s", chapter.getName(), reason);
+        String link = String.format("/ca-nhan/chuong-truyen/%d", chapterId);
+        NotificationService.addNotification(novel.getOwnerID(), content, link);
     }
 }

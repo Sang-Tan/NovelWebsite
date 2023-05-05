@@ -1,7 +1,7 @@
-/**
+﻿/**
  *
  *
- * @param seenBtns : array of button contain notification id need to delete
+ * @param seenBtns : Element[] of button contain notification id need to delete
  */
 deleteNotification = seenBtns => {
     if (seenBtns.length === 0) {
@@ -10,18 +10,10 @@ deleteNotification = seenBtns => {
     }
 
     const notificationIds = [];
-    if (seenBtns instanceof NodeList) {
-        for (var seenBtn of seenBtns) {
-            notificationIds.push(seenBtn.dataset.notificationId);
-        }
+
+    for (let seenBtn of seenBtns) {
+        notificationIds.push(seenBtn.dataset.notificationId);
     }
-    else {
-        notificationIds.push(seenBtns.dataset.notificationId);
-    }
-
-
-
-
 
 
     const request = new XMLHttpRequest();
@@ -34,13 +26,13 @@ deleteNotification = seenBtns => {
         }
         const response = JSON.parse(request.responseText);
         if (response.status === 'success') {
-            if (seenBtns instanceof NodeList) {
-                for (var seenBtn of seenBtns) {
-                    seenBtn.parentElement.remove();
-                }
-            }
-            else {
-                seenBtns.parentElement.remove();
+
+            for (var seenBtn of seenBtns) {
+                const notifItem = seenBtn.closest('.notif-item');
+                notifItem.classList.add('deleted');
+                setTimeout(() => {
+                    notifItem.remove();
+                }, 300);
             }
         } else if (response.status === 'error') {
             alert(response.message);
@@ -50,5 +42,6 @@ deleteNotification = seenBtns => {
 }
 deleteAllNotification = () => {
     const seenBtns = document.querySelectorAll('[data-action="seen"]');
-    deleteNotification(seenBtns);
+    const seenBtnsElements = Array.from(seenBtns);
+    deleteNotification(seenBtnsElements);
 }

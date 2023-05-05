@@ -47,13 +47,29 @@ public class NovelReportController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         if (action == null) action = "";
-        if (action.equals("checked")) {
-            try {
-                setCheckTime(req, resp);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        switch (action) {
+            case "checked":
+                try {
+                    setCheckTime(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
+            case "delete":
+                try {
+                    deleteNovelReport(req, resp);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
         }
+    }
+
+    private void deleteNovelReport(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        int novelId = Integer.parseInt(req.getParameter("novelId"));
+        NovelReportRepository.getInstance().deleteReport(novelId);
+//        showList(req, resp);
+        resp.sendRedirect("/WEB-INF/view/mod_admin/report/main_report_page.jsp");
     }
 
     private void setCheckTime(HttpServletRequest req, HttpServletResponse resp) throws SQLException {

@@ -211,6 +211,7 @@ public class ManageNovel extends HttpServlet {
         if (!errors.isEmpty()) {
             addMessages(req, "errors", errors);
             doGet(req, resp);
+            return;
         }
 
         try {

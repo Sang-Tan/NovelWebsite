@@ -1,23 +1,22 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: DELL
-  Date: 3/17/2023
-  Time: 2:49 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%--@elvariable id="error" type="java.lang.String"--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Thêm truyện</title>
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon"/>
     <%@include file="/WEB-INF/view/layout/basic_stylesheet.jsp" %>
 </head>
 <body style="background-color: var(--silver)">
 <%@include file="layout/header.jsp" %>
 
 <div class="container mt-3">
+    <c:if test="${error != null}">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                ${error}
+        </div>
+    </c:if>
     <div class="basic-section">
         <div class="basic-section__header ">
             <h4>Thêm truyện</h4>

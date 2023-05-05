@@ -42,7 +42,11 @@ public class CommentReportRepository extends BaseRepository<CommentReport> {
     public void setCheckTime(int commentId) throws SQLException {
         String sql = String.format("UPDATE %s SET check_time = CURRENT_TIMESTAMP WHERE comment_id = ?", getTableName());
         MySQLdb.getInstance().execute(sql, List.of(commentId));
+    }
 
+    public void deleteReport(int commentId) throws SQLException {
+        String sql = String.format("DELETE FROM %s WHERE comment_id = ?", getTableName());
+        MySQLdb.getInstance().execute(sql, List.of(commentId));
     }
 
     public boolean isReportExist(int commentId, int reporterId) throws SQLException {

@@ -34,10 +34,10 @@ async function reportCommentForm(commentId, ownerName, ownerAvatar, ownerId, com
             reasonDiv.appendChild(document.createElement("hr"));
         });
     });
+    commentReportChecked(commentId);
 }
 
-function commentReportChecked(){
-    let commentId = document.getElementById("commentId").value;
+function commentReportChecked(commentId){
     fetch(`/mod/bao-cao-binh-luan?action=checked&commentId=${commentId}`, {
         method: "POST",
         headers: {
@@ -45,5 +45,18 @@ function commentReportChecked(){
         }
     }).then(response => {
         console.log(response);
+    });
+}
+
+function deleteCommentReport() {
+    let commentId = document.getElementById("commentId").value;
+    fetch(`/mod/bao-cao-binh-luan?action=delete&commentId=${commentId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    }).then(response => {
+        console.log(response);
+        location.reload();
     });
 }
