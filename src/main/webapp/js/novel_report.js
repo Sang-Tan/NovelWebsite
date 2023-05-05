@@ -14,7 +14,31 @@
     return res;
 }
 
-async function reportNovelForm(novelId, ownerName, ownerAvatar, ownerId, novelName, image, summary) {
+function novelReportChecked(novelId) {
+    // let novelId = document.getElementById("novelId").value;
+    fetch(`/mod/bao-cao-truyen?action=checked&novelId=${novelId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    }).then(response => {
+        console.log(response);
+    });
+}
+
+function deleteNovelReport() {
+    let novelId = document.getElementById("novelId").value;
+    fetch(`/mod/bao-cao-truyen?action=delete&novelId=${novelId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    }).then(response => {
+        console.log(response);
+        location.reload();
+    });
+}
+async function reportNovelForm(novelId, ownerName, ownerAvatar, ownerId, novelName) {
     let linkNovel = document.getElementById("linkNovel");
     linkNovel.href = "/truyen/" + novelId;
     document.getElementById("novelId").value = novelId;
@@ -37,6 +61,7 @@ async function reportNovelForm(novelId, ownerName, ownerAvatar, ownerId, novelNa
             reasonDiv.appendChild(document.createElement("hr"));
         });
     });
+    novelReportChecked(novelId);
 }
 
 function showReportNovelForm(novelId, userId) {
@@ -91,16 +116,4 @@ function submitNovelReport() {
     });
     $('#reportNovelModal').hide();
     $('.modal-backdrop').remove();
-}
-
-function novelReportChecked() {
-    let novelId = document.getElementById("novelId").value;
-    fetch(`/mod/bao-cao-truyen?action=checked&novelId=${novelId}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-    }).then(response => {
-        console.log(response);
-    });
 }
