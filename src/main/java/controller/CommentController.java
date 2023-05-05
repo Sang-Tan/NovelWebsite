@@ -169,7 +169,6 @@ public class CommentController extends HttpServlet {
         int commentId;
         try {
             commentId = Integer.parseInt(req.getParameter("comment-id"));
-            int rootCommentId = CommentService.getRootCommentId(commentId);
             int offset = CommentService.getCommentOffset(commentId);
             resp.getWriter().write(String.valueOf(offset));
         } catch (NumberFormatException e) {

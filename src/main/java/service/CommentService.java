@@ -82,8 +82,8 @@ public class CommentService {
     }
 
     public static int getCommentOffset(int commentId) throws SQLException {
-        Comment comment = CommentRepository.getInstance().getById(commentId);
-        Chapter chapter = ChapterRepository.getInstance().getById(comment.getChapterId());
-        return CommentRepository.getInstance().getCommentOffsetInChapter(commentId, chapter.getId());
+        int rootCommentId = getRootCommentId(commentId);
+        Comment rootComment = CommentRepository.getInstance().getById(rootCommentId);
+        return CommentRepository.getInstance().getCommentOffsetInChapter(rootComment);
     }
 }

@@ -6,6 +6,7 @@ import core.database.SqlRecord;
 import model.Comment;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class CommentRepository extends BaseRepository<Comment> {
@@ -90,15 +91,20 @@ public class CommentRepository extends BaseRepository<Comment> {
         return mapObjects(records);
     }
 
-    public int getCommentOffsetInChapter(int commentId, int chapterId) throws SQLException {
+    public int getCommentOffsetInChapter(Comment rootComment) throws SQLException {
+        Timestamp commentTime = rootComment.getCommentTime();
+        int commentId = rootComment.getId();
+        int chapterId = rootComment.getChapterId();
+
         String sql = String.format("SELECT COUNT(id) as count " +
                 "FROM %s " +
                 "WHERE chapter_id = ? " +
                 "AND parent_id IS NULL " +
                 "AND id != ? " +
-                "AND time_comment >= (SELECT time_comment " +
-                "FROM %s WHERE id = ?)", getTableName(), getTableName());
-        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(chapterId, commentId, commentId));
+                "AND (time_comment > ? " +
+                "OR (time_comment = ? AND id < ?))", getTableName());
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql,
+                List.of(chapterId, commentId, commentTime, commentTime, commentId));
         for (SqlRecord record : records) {
             return Integer.parseInt(record.get("count").toString());
         }
