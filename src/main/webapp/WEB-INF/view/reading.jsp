@@ -115,11 +115,13 @@
         </header>
         <ul id="chap_list" class="nav-sidebar__list pl-0">
             <c:forEach items="${reqNovel.volumes}" var="volume">
-                <c:if test="${VolumeService.getFirstApprovedChapter(volume.id) != null}">
+                <c:set var="firstChapterId" value="${VolumeService.getFirstApprovedChapter(volume.id).id}"/>
+                <c:if test="${firstChapterId != null}">
                     <c:choose>
                         <c:when test="${volume.id == reqChapter.volumeId}">
-                            <li class="nav-sidebar__item current">
-                                <a href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${VolumeService.getFirstApprovedChapter(volume.id).id}-${URLSlugification.sluging(VolumeService.getFirstApprovedChapter(volume.id).name)}">${StringUtils.truncate(volume.name, 120)}</a>
+                            <li class="nav-sidebar__item current"><a
+                                    data-chapter-id="${firstChapterId}"
+                                    href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${firstChapterId}-${URLSlugification.sluging(VolumeService.getFirstApprovedChapter(volume.id).name)}">${StringUtils.truncate(volume.name, 120)}</a>
                             </li>
                             <ul class="nav-sidebar__list">
                                 <c:forEach items="${volume.chapters}" var="chapter">
@@ -127,14 +129,16 @@
                                         <c:choose>
                                             <c:when test="${chapter.id == reqChapter.id}">
                                                 <li class="nav-sidebar__item current">
-                                                    <a href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">
+                                                    <a data-chapter-id="${chapter.id}"
+                                                            href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">
                                                             ${StringUtils.truncate(chapter.name, 50)}
                                                     </a>
                                                 </li>
                                             </c:when>
                                             <c:otherwise>
                                                 <li class="nav-sidebar__item">
-                                                    <a href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">
+                                                    <a data-chapter-id="${chapter.id}"
+                                                            href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">
                                                             ${StringUtils.truncate(chapter.name, 50)}
                                                     </a>
                                                 </li>
@@ -147,6 +151,7 @@
                         </c:when>
                         <c:otherwise>
                             <li class="nav-sidebar__item"><a
+                                    data-chapter-id="${firstChapterId}"
                                     href="/doc-tieu-thuyet/${reqNovel.id}-${URLSlugification.sluging(reqNovel.name)}/${volume.chapters[0].id}-${URLSlugification.sluging(volume.chapters[0].name)}">${StringUtils.truncate(volume.name, 50)}</a>
                             </li>
                         </c:otherwise>
