@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "novel_report", schema = "novelweb")
+@Table(name = "novel_report")
 public class NovelReport implements DatabaseObject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
