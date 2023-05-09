@@ -28,11 +28,21 @@ public class ReadChapter extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String pathInfo = request.getPathInfo();
+            if(pathInfo.split("/").length < 3){
+                response.setStatus(404);
+                request.getRequestDispatcher("/WEB-INF/view/notfound.jsp").forward(request, response);
+                return;
+            }
             String novelPathComponent = pathInfo.split("/")[1];
             String chapterPathComponent = pathInfo.split("/")[2];
             int chapterID = StringUtils.extractFirstInt(chapterPathComponent);
 
             Chapter chapter = ChapterRepository.getInstance().getById(chapterID);
+            if(chapter == null){
+                response.setStatus(404);
+                request.getRequestDispatcher("/WEB-INF/view/notfound.jsp").forward(request, response);
+                return;
+            }
             Novel novel = chapter.getBelongVolume().getBelongNovel();
 
             String chapterUri = chapterID + "-" + URLSlugification.sluging(chapter.getName());
@@ -40,9 +50,8 @@ public class ReadChapter extends HttpServlet {
             if (chapterID == -1) {
                 response.setStatus(404);// not found
                 return;
-            } else if (!novelUri.equals(novelPathComponent) || !chapterUri.equals(chapterPathComponent)) {
-                String param = request.getQueryString();
-                response.sendRedirect(String.format("../%s/%s%s", novelUri, chapterUri, param == null ? "" : "?" + param));
+            } else if (!novelUri.equals(novelPathComponent) || !chapterUri.equals(chapterPathComponent) || pathInfo.split("/").length != 3) {
+                response.sendRedirect(String.format("/doc-tieu-thuyet/%s/%s", novelUri, chapterUri));
                 return;
             }
             User user = (User) request.getAttribute("user");

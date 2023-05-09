@@ -19,8 +19,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Chương ${reqChapter.name}</title>
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <title>${reqChapter.name}</title>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
     <%@ include file="layout/basic_stylesheet.jsp" %>
     <link rel="stylesheet" type="text/css" href="/css/reading.css">
 </head>
@@ -36,7 +36,7 @@
         <div class="toolbar__item-box">
             <c:choose>
                 <c:when test="${previousChapter == null}">
-                    <span class="toolbar__item disabled">
+                    <span class="toolbar__item disabled" >
                         <i class="fas fa-backward"></i>
                     </span>
                 </c:when>
