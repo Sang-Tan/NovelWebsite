@@ -44,3 +44,5 @@ function deleteBookmark() {
     }
     request.send(`id=${deleteBookmarkBtn.dataset.chapterId}&action=remove-bookmark`);
 }
+
+

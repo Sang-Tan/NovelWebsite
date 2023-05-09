@@ -23,7 +23,7 @@
                 <a class="dropdown-item" href="#">Sắp xếp tập</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" data-toggle="modal" data-target="#deleteModal"
-                   onclick="deleteNovel(${reqNovel.id},'${reqNovel.name}')">Xoá truyện</a>
+                   onclick="modDeleteNovel(${reqNovel.id},'${reqNovel.name}')">Xoá truyện</a>
             </div>
         </div>
         <c:if test="${reqNovel.volumes.size() > 0}">

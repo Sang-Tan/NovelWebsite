@@ -605,6 +605,10 @@ a.cmt-detail__name:hover {
     color: var(--admin-txt-col);
 }
 
+.no-transition {
+    transition: none !important;
+}
+
 /*==================TreeView======================*/
 .tree-list {
     margin-bottom: 1rem;
