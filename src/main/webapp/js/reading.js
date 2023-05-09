@@ -32,24 +32,26 @@ function setToolbarShowStatus(isShow) {
 }
 
 function reserveToolbarState() {
-
     const toolbar = document.getElementById('toolbar');
     if (!toolbar) {
         return;
     }
-    toolbar.classList.add('no-transition');
     const isShow = getToolbarShowStatus();
+    toolbar.classList.add('no-transition');
     if (isShow) {
         toolbar.classList.add('show');
     } else {
         toolbar.classList.remove('show');
     }
+    setTimeout(() => {
+        toolbar.classList.remove('no-transition');
+        toolbar.style.opacity = '1';
+    }, 5);
 }
 
 
 window.onload = function () {
     const body = document.querySelector('body');
-    body.style.display = 'none';
     reserveToolbarState();
-    body.style.display = 'block';
+
 };

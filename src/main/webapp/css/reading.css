@@ -15,7 +15,7 @@
     border-radius: 0.2rem;
     transform: translate(100%, -50%);
     padding: 0.6rem;
-    transition: transform 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
 .toolbar.show {
@@ -36,7 +36,6 @@
 }
 
 .toolbar__slide-icon {
-    transition: transform 0.3s ease-in-out;
     transform: rotateZ(0deg);
 }
 

@@ -28,7 +28,7 @@
 <body style="background-color: var(--silver);">
 
 <jsp:include page="layout/header_main.jsp"></jsp:include>
-<section class="toolbar show" id="toolbar">
+<section class="toolbar show" id="toolbar" style="opacity: 0">
     <div class="toolbar__slide-btn" onclick="toggleToolbar()">
         <div class="toolbar__slide-icon"><i class="fas fa-angle-left"></i></div>
     </div>
