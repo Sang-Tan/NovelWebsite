@@ -13,7 +13,7 @@
 
 <c:set var="isDeactivated" value="${reqComment.deactiveBy != null}"/>
 
-<div class="cmt-group__item" id="novel-comment-${reqComment.id}">
+<div class="cmt-group__item" id="comment-id-${reqComment.id}">
     <div class="cmt-group__avatar"
          style="background-image: url('${reqComment.owner.avatar}');">
     </div>

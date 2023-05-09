@@ -28,7 +28,8 @@
                         <a href="" class="no-decor" data-toggle="modal" data-target="#report-modal"
                            onclick="reportNovelForm(${novelReport.id}, '${novelReport.owner.displayName}',
                                    '${novelReport.owner.avatar}', ${novelReport.owner.id},'${novelReport.name}')">
-                            <div class="rpt-detail" style="background-color: var(--dark-silver); border-left: 1rem solid var(--olive)">
+                            <div class="rpt-detail"
+                                 style="background-color: var(--dark-silver); border-left: 1rem solid var(--olive)">
                                 <div class="row">
                                     <div class="col-05"></div>
                                     <div class="col-115" style="border-left: 20px">
@@ -59,58 +60,45 @@
 <!--Modal report-->
 <div class="modal fade" id="report-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="col-md-12 modal-title title title--bold" id="exampleModalLabel">Báo cáo</h5>
+        <div class="modal-content" style="border-radius: 1rem; overflow: hidden">
+            <div class="modal-body pl-4 pr-4">
+                <h5 class="modal-title title title--bold" id="exampleModalLabel">
+                    Báo cáo tiểu thuyết
+                    <a href="" id="linkNovel" target="_blank" class="ms-auto"
+                       style="text-underline: none; color: white">
+                        <i class="fas fa-external-link-alt" style="color: black;"></i>
+                    </a>
+                </h5>
                 <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
                    style="font-size: x-large"></i>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row">
-                        <a href="" id="linkNovel" target="_blank" class="ms-auto col-md-12"
-                           style="text-underline: none; color: white">
-                            <span id="novelName" style="text-underline: none; color: black">
-                                Chuyển sinh sang thế giới khác và tôi bị gọi là...
-                            </span>
-                            <i class="fas fa-external-link-alt" style="color: black"></i>
-                        </a>
+                <div class="mt-4">
+                    <p id="novelName" style="text-underline: none; color: black"></p>
+                    <a href="" target="_blank" id="ownerId1" style="text-underline: none; color: white">
+                        <img id="ownerAvatar1" src="/images/default-avatar.jpg" alt="avatar"
+                             class="navbar__avatar" style="text-underline: none; color: black">
+                        <p id="ownerName1" class="d-inline-block ml-2 mt-auto mb-auto"
+                           style="text-underline: none; color: black">
+                            Username
+                        </p>
+                    </a>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="title title--bold col-md-12">
+                        <p style="text-align: center">Chi tiết báo cáo</p>
                     </div>
-                    <hr>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <a href="" target="_blank" id="ownerId1" style="text-underline: none; color: white">
-                                <img id="ownerAvatar1" src="/images/default-avatar.jpg" alt="avatar"
-                                     class="navbar__avatar" style="text-underline: none; color: black">
-                                <p id="ownerName1" class="d-inline-block ml-2 mt-auto mb-auto"
-                                   style="text-underline: none; color: black">
-                                    Username
-                                </p>
-                            </a>
-                        </div>
-                    </div>
-
-                    <hr>
-                    <div class="row">
-                        <div class="title title--bold col-md-12">
-                            <p style="text-align: center">Chi tiết báo cáo</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12 ms-auto" id="reasons1">
-                            <p>Lý do báo cáo Lý do báo cáo Lý do báo cáo Lý do báo cáo Lý do báo cáo
-                                Lý do báo cáo Lý do báo cáo Lý do báo cáo Lý do báo cáo Lý do báo cáo
-                            </p>
-                        </div>
-                    </div>
+                </div>
+                <div class="ms-auto" id="reasons1">
+                    <p>Lý do báo cáo Lý do báo cáo Lý do báo cáo Lý do báo cáo Lý do báo cáo
+                        Lý do báo cáo Lý do báo cáo Lý do báo cáo Lý do báo cáo Lý do báo cáo
+                    </p>
                 </div>
             </div>
             <div class="">
                 <form action="/mod/bao-cao-truyen?action=delete" style="margin-block-end: 0">
                     <input id="novelId" name="novelId" hidden>
-                    <button type="button" class="btn basic-btn--olive col-md-12" data-dismiss="modal"
+                    <button type="button" class="basic-btn basic-btn--flat basic-btn--olive col-md-12"
+                            data-dismiss="modal" style="height: 2.5rem;"
                             onclick="deleteNovelReport()">
                         <i class="fas fa-check-circle"></i> Đã đọc
                     </button>

@@ -19,9 +19,10 @@ async function reportCommentForm(commentId, ownerName, ownerAvatar, ownerId, com
     document.getElementById("commentId").value = commentId;
     document.getElementById("ownerName").innerText = ownerName;
     document.getElementById("ownerAvatar").src = ownerAvatar;
+    document.getElementById("linkComment").href = `/comments?type=redirect&comment-id=${commentId}`;
     let link = document.getElementById("ownerId");
     link.href = "/thanh-vien/" + ownerId;
-    document.getElementById("commentContent").innerText = commentContent;
+    document.getElementById("commentContent").innerHTML = commentContent;
     const reasonDiv = document.getElementById("reasons");
     reasonDiv.innerHTML = null;
 
@@ -31,13 +32,12 @@ async function reportCommentForm(commentId, ownerName, ownerAvatar, ownerId, com
             const node = document.createElement("p");
             node.innerText = value;
             reasonDiv.appendChild(node);
-            reasonDiv.appendChild(document.createElement("hr"));
         });
     });
     commentReportChecked(commentId);
 }
 
-function commentReportChecked(commentId){
+function commentReportChecked(commentId) {
     fetch(`/mod/bao-cao-binh-luan?action=checked&commentId=${commentId}`, {
         method: "POST",
         headers: {

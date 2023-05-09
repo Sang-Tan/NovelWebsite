@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Create and return a hidden input with the value of the selected checkboxes as a comma separated string
  * @param form form to get checkboxes from
  * @param dataName data attribute name to search. Example : if dataName = "genre" then attribute name will be "data-genre"
@@ -50,4 +50,35 @@ function bindImagePreview(input, preview) {
     });
 }
 
+/**
+ * @param form {HTMLFormElement}
+ * @returns {Promise<any>}
+ */
+async function submitFormAjax(form) {
+    const formData = new FormData(form);
+    const enctype = form.enctype;
+    let reqBody;
+    if (enctype === "multipart/form-data") {
+        reqBody = formData;
+    } else if (enctype === "application/x-www-form-urlencoded") {
+        let dataList = [];
+        for (let pair of formData.entries()) {
+            dataList.push(`${pair[0]}=${pair[1]}`);
+        }
+        reqBody = dataList.join("&");
+    }
+    return fetch(form.action, {
+        method: form.method,
+        body: reqBody,
+        headers: {
+            'Content-Type': form.enctype
+        }
+    }).then(function (response) {
+        if (response.ok) {
+            return response.json();
+        } else {
+            return Promise.reject();
+        }
+    });
+}
 

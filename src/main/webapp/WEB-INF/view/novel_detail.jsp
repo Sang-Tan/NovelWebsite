@@ -4,12 +4,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--@elvariable id="novel" type="model.Novel"--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="core.StringUtils" %>
+
 <%--@elvariable id="StringUtils" type="core.StringUtils.class"--%>
-<%@ page import="service.URLSlugification" %>
+<%@ page import="core.StringUtils" %>
+
 <%--@elvariable id="URLSlugification" type="service.URLSlugification.class"--%>
-<%@ page import="core.string_process.TimeConverter" %>
+<%@ page import="service.URLSlugification" %>
+
 <%--@elvariable id="TimeConverter" type="core.string_process.TimeConverter.class"--%>
+<%@ page import="core.string_process.TimeConverter" %>
+
+<%--@elvariable id="user" type="model.User"--%>
+<%@page import="model.User" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +26,7 @@
 
     <%@ include file="layout/basic_stylesheet.jsp" %>
     <link rel="stylesheet" href="/css/novel_detail.css">
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon"/>
 </head>
 
 <body style="background-color: var(--silver);">
@@ -116,8 +123,50 @@
             </section>
             <%@include file="layout/comment_section.jsp" %>
         </div>
+        <div class="col">
+            <c:if test="${user.role.equals(User.ROLE_MODERATOR)}">
+                <div class="d-flex justify-content-center">
+                    <button class="basic-btn basic-btn--red" data-toggle="modal" data-target="#deleteNovelModal">
+                        Xóa tiểu thuyết
+                    </button>
+                </div>
+            </c:if>
+        </div>
     </div>
 </div>
+
+<%--Delete novel modal--%>
+<c:if test="${user.role.equals(User.ROLE_MODERATOR)}">
+    <div class="modal fade" id="deleteNovelModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title title title--bold">Xóa tiểu thuyết</h5>
+                    <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
+                       style="font-size: x-large"></i>
+                </div>
+                <form action="/mod/xoa-tieu-thuyet" enctype="application/x-www-form-urlencoded"
+                      method="post" id="deleteNovelForm" onsubmit="modDeleteNovel(this,event)">
+                    <div class="modal-body">
+                        <label for="deleteNovelReasonTxt">Lý do xóa</label>
+                        <input type="text" id="deleteNovelReasonTxt" name="reason" class="col-12"
+                               style="padding: 5px"/>
+                    </div>
+
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="basic-btn basic-btn--gray" data-dismiss="modal">
+                            Đóng
+                        </button>
+                        <button type="submit" class="basic-btn basic-btn--olive">
+                            OK
+                        </button>
+                        <input name="novel-id" type="hidden" value="${novel.id}">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</c:if>
 
 <!--Novel report modal-->
 <div class="modal fade" id="reportNovelModal" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
@@ -185,5 +234,7 @@
 
 <script src="/js/personal_interest.js"></script>
 <script src="/js/novel_report.js"></script>
+<script src="/js/form.js"></script>
+<script src="/js/novel_mod_deletion.js"></script>
 </body>
 </html>
