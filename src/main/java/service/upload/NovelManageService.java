@@ -481,4 +481,7 @@ public class NovelManageService {
         ChapterRepository.getInstance().delete(chapterToDelete);
     }
 
+    public static boolean isVirtualChapter(Chapter chapter) throws SQLException {
+        return ChapterRepository.getInstance().isVirtualChapter(chapter);
+    }
 }

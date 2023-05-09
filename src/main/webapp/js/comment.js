@@ -261,6 +261,7 @@ function goToFragment(fragmentId) {
     const element = document.getElementById(fragmentId);
     if (element) {
         element.scrollIntoView();
+        element.classList.add('highlight');
     }
 }
 
@@ -281,7 +282,7 @@ async function getCommentOffset(commentId) {
 }
 
 function detectCommentParamOnLoad() {
-    const cmtParam = new URLSearchParams(window.location.search).get('novel-comment');
+    const cmtParam = new URLSearchParams(window.location.search).get('comment-id');
     if (!cmtParam) {
         return;
     }
@@ -290,11 +291,13 @@ function detectCommentParamOnLoad() {
         const commentSection = document.getElementById('comment-section-contents');
         commentSection.dataset.offset = offset.toString();
         reloadComments();
+
+        setTimeout(() => {
+            goToFragment(`comment-id-${commentId}`);
+        }, 400);
     });
 
-    setTimeout(() => {
-        goToFragment(`novel-comment-${commentId}`);
-    }, 400);
+
 }
 
 document.addEventListener("DOMContentLoaded", function () {

@@ -1,12 +1,19 @@
 package controller;
 
 import core.logging.BasicLogger;
+import model.Chapter;
 import model.Comment;
+import model.Novel;
 import model.User;
 import model.intermediate.Restriction;
 import org.json.JSONException;
+import repository.ChapterRepository;
+import repository.CommentRepository;
+import repository.NovelRepository;
+import service.ChapterService;
 import service.CommentService;
 import service.RestrictionService;
+import service.upload.NovelManageService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,6 +35,7 @@ public class CommentController extends HttpServlet {
                 case "by_id" -> getCommentsById(req, resp);
                 case "count_in_chapter" -> getCommentCountInChapter(req, resp);
                 case "comment_offset" -> getCommentOffsetOfRoot(req, resp);
+                case "redirect" -> redirectToComment(req, resp);
                 default -> resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
         } catch (SQLException | JSONException e) {
@@ -177,4 +185,30 @@ public class CommentController extends HttpServlet {
             return;
         }
     }
+
+    private void redirectToComment(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        try {
+            int commentId = Integer.parseInt(req.getParameter("comment-id"));
+            Comment comment = CommentRepository.getInstance().getById(commentId);
+
+            if (comment == null) {
+                resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
+            Chapter chapter = ChapterRepository.getInstance().getById(comment.getChapterId());
+            Novel novel = NovelRepository.getInstance().getByChapterID(chapter.getId());
+
+            if (NovelManageService.isVirtualChapter(chapter)) {
+                resp.sendRedirect(String.format("/truyen/%d?comment-id=%d", novel.getId(), commentId));
+            } else {
+                resp.sendRedirect(String.format("/doc-tieu-thuyet/%d/%d?comment-id=%d", novel.getId(), chapter.getId(), commentId));
+            }
+        } catch (NumberFormatException e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+    }
+
 }

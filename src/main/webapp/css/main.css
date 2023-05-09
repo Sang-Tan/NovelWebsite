@@ -128,6 +128,10 @@ a.black:hover {
     opacity: 0.4;
 }
 
+.paragraph-spacing-0 p {
+    margin-bottom: 0;
+}
+
 .paragraph-spacing-1 p {
     margin-bottom: 1rem;
 }
@@ -192,6 +196,11 @@ a.basic-btn {
 
 .basic-btn--round {
     border-radius: 2rem;
+}
+
+.basic-btn--flat {
+    box-shadow: none;
+    border-radius: 0;
 }
 
 .basic-btn--green {
@@ -520,6 +529,10 @@ a.basic-btn--primary:hover {
 .cmt-group__item > .cmt-form {
     margin-left: 4rem;
     margin-top: 1rem;
+}
+
+.cmt-group__item.highlight {
+    box-shadow: 0 0 0.2rem 0.1rem var(--red);
 }
 
 .cmt-group__avatar {
