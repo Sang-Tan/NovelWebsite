@@ -16,7 +16,8 @@
                         </div>
                     </div>
                     <div style="flex-grow: 1">
-                        <a href="#" class="theme-link w-600 ml-2">${novelChapterPair.key.name}</a>
+                        <a href="/truyen/${novelChapterPair.key.id}"
+                           class="theme-link w-600 ml-2">${novelChapterPair.key.name}</a>
                         <a role="button" href="#collapse${novelChapterPair.key.id}" data-toggle="collapse"
                            class="float-right theme-link">
                             <i class="fas fa-chevron-down "></i>
@@ -28,7 +29,8 @@
                         <c:forEach items="${novelChapterPair.value}" var="chapter">
                             <tr>
                                 <td>
-                                    <a href="#" class="theme-link">${chapter.name}</a>
+                                    <a href="/doc-tieu-thuyet/${novelChapterPair.key.id}/${chapter.id}"
+                                       class="theme-link">${chapter.name}</a>
                                 </td>
                             </tr>
                         </c:forEach>
