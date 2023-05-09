@@ -29,18 +29,30 @@ public class OverviewNovel extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+
             User user = (User) request.getAttribute("user");
             String pathInfo = request.getPathInfo();
+            if (pathInfo.split("/").length < 2) {
+                response.setStatus(404);
+                request.getRequestDispatcher("/WEB-INF/view/notfound.jsp").forward(request, response);
+                return;
+            }
             String novelPathComponent = pathInfo.split("/")[1];
             int novelId = StringUtils.extractFirstInt(novelPathComponent);
             Novel novel = NovelRepository.getInstance().getById(novelId);
+
+            if(novel == null){
+                response.setStatus(404);
+                request.getRequestDispatcher("/WEB-INF/view/notfound.jsp").forward(request, response);
+                return;
+            }
 
             String novelUri = novelId + "-" + URLSlugification.sluging(novel.getName());
             if (novelId == -1) {
                 response.setStatus(404);
                 return;
-            } else if (!novelUri.equals(novelPathComponent)) {
-                response.sendRedirect(novelUri);
+            } else if (!novelUri.equals(novelPathComponent) || pathInfo.split("/").length != 2) {
+                response.sendRedirect("/truyen/"+novelUri);
                 return;
             }
 
