@@ -32,7 +32,6 @@ async function reportCommentForm(commentId, ownerName, ownerAvatar, ownerId, com
             const node = document.createElement("p");
             node.innerText = value;
             reasonDiv.appendChild(node);
-            reasonDiv.appendChild(document.createElement("hr"));
         });
     });
     commentReportChecked(commentId);
