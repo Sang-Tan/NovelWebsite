@@ -40,7 +40,8 @@ public class OverviewNovel extends HttpServlet {
                 response.setStatus(404);
                 return;
             } else if (!novelUri.equals(novelPathComponent)) {
-                response.sendRedirect(novelUri);
+                String param = request.getQueryString();
+                response.sendRedirect(novelUri + (param == null ? "" : "?" + param));
                 return;
             }
 

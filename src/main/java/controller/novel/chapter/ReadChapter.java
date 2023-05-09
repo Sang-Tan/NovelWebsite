@@ -41,7 +41,8 @@ public class ReadChapter extends HttpServlet {
                 response.setStatus(404);// not found
                 return;
             } else if (!novelUri.equals(novelPathComponent) || !chapterUri.equals(chapterPathComponent)) {
-                response.sendRedirect(String.format("../%s/%s", novelUri, chapterUri));
+                String param = request.getQueryString();
+                response.sendRedirect(String.format("../%s/%s%s", novelUri, chapterUri, param == null ? "" : "?" + param));
                 return;
             }
             User user = (User) request.getAttribute("user");
