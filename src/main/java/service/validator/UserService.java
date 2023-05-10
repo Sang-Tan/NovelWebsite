@@ -1,6 +1,7 @@
 package service.validator;
 
 import model.User;
+import repository.TokenRepository;
 import repository.UserRepository;
 
 import java.sql.SQLException;
@@ -43,6 +44,8 @@ public class UserService {
 
         user.setPassword(getHashedPassword(newPassword));
         UserRepository.getInstance().update(user);
+
+        TokenRepository.getInstance().deleteAllTokensOfUser(user.getId());
         return null;
     }
 
