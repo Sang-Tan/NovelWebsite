@@ -116,11 +116,14 @@ public class NovelSearchService {
         String sql = "";
         if (attribute == null || attribute.isEmpty())
             return sql;
-        if (order == null || order.isEmpty() || !order.equals("DESC"))
-            order = "ASC";
+        if (order == null || order.isEmpty() || !order.equals("desc"))
+            order = "asc";
         switch (attribute) {
             case "name":
                 sql += "ORDER BY name " + order;
+                break;
+            case "view":
+                sql += "ORDER BY view_count " + order;
                 break;
             default:
                 sql += "ORDER BY " + DEFAULT_SORT_ATTRIBUTE + " ASC";

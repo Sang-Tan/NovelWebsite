@@ -1,3 +1,15 @@
+changeValueOrder();
+function changeValueOrder(){
+    const orderInput = document.getElementById("order");
+    const sortSelect = document.getElementById("sort");
+    var sortValue = sortSelect.options[sortSelect.selectedIndex].value;
+    if (sortValue === "name") {
+        orderInput.value = "asc";
+    }
+    if (sortValue === "view") {
+        orderInput.value = "desc";
+    }
+}
 function submitForm() {
 
     const form = document.getElementById("search-form");

@@ -20,13 +20,13 @@ public class HomeController extends HttpServlet {
         List<Novel> latestUpdateNovels = null;
         List<Novel> topViewRecentWeekNovels = null;
         List<Novel> topViewRecentMonthNovels = null;
-        List<Novel> topViewAllTimeNovels = null;
+        List<Novel> topViewRecentDayNovels = null;
 
         try {
              latestUpdateNovels = NovelSearchService.getInstance().getLatestUpdateNovels(12);
              topViewRecentWeekNovels = ViewService.getInstance().getTopViewRecentWeekNovels(4);
              topViewRecentMonthNovels = ViewService.getInstance().getTopViewRecentMonthNovels(4);
-             topViewAllTimeNovels = ViewService.getInstance().getTopViewAllTimeNovels(4);
+             topViewRecentDayNovels = ViewService.getInstance().getTopViewRecentDayNovels(4);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -34,7 +34,7 @@ public class HomeController extends HttpServlet {
         request.setAttribute("latestUpdateNovels", latestUpdateNovels);
         request.setAttribute("topViewRecentWeekNovels", topViewRecentWeekNovels);
         request.setAttribute("topViewRecentMonthNovels", topViewRecentMonthNovels);
-        request.setAttribute("topViewAllTimeNovels", topViewAllTimeNovels);
+        request.setAttribute("topViewRecentDayNovels", topViewRecentDayNovels);
 
         showHomePage(request, response);
     }
