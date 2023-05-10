@@ -55,3 +55,13 @@ window.onload = function () {
     reserveToolbarState();
 
 };
+
+const readingTime = 2000; // 60000 miliseconds = 1 minute
+function finishReading() {
+    const chapterId = document.getElementById('readingScript').dataset.chapterId;
+    const request = new XMLHttpRequest();
+    request.open('POST', '/view-novel', true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+    request.send(`action=viewed&novelId=${chapterId}`);
+}
+setTimeout(finishReading, readingTime);

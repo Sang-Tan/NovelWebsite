@@ -100,6 +100,12 @@ public class NovelRepository extends BaseRepository<Novel> {
         }
         return null;
     }
+    public List<Novel> getByListIDNovel(List<Object> novelIds) throws SQLException {
+        String prepareConditionSql = "id in (" + "?, ".repeat(novelIds.size() );
+        prepareConditionSql = prepareConditionSql.substring(0, prepareConditionSql.length() - 2) + ")";
+
+        return getByConditionString(prepareConditionSql, novelIds);
+    }
 
     public Novel getByChapterID(int chapterID) throws SQLException {
         String sql = String.format("SELECT * FROM %s " +
