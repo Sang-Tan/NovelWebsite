@@ -11,3 +11,6 @@ build/
 *.class
 
 .env
+
+#ignore runtime folder
+runtime/

@@ -1,0 +1,126 @@
+.popup-form {
+    width: 30%;
+    min-width: 400px;
+    border-radius: 0.75rem;
+    border: 1px solid var(--light-gray);
+    background-color: var(--white);
+    box-shadow: 0 0.3rem 0.2rem 0rem rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+}
+
+.rounded-form {
+    border-radius: 0.75rem;
+    background-color: var(--white);
+    box-shadow: 0 0.3rem 0.2rem 0rem rgba(0, 0, 0, 0.2);
+}
+
+.input-text {
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--gray);
+    border-radius: 0.2rem;
+    min-height: 2.5rem;
+    padding-left: 0.5rem;
+}
+
+.input-text:focus {
+    outline: none;
+    box-shadow: 0 0 0.3rem 0rem var(--theme-color);
+}
+
+.top-right-btn {
+    position: absolute;
+    top: 1.2rem;
+    right: 1rem;
+    border-radius: 0.2rem 0 0 0;
+    cursor: pointer;
+}
+
+.checkbox-list {
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    align-items: center;
+}
+
+.checkbox-holder {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+}
+
+.checkbox-holder + .checkbox-holder {
+    margin-left: 1rem;
+}
+
+input.checkbox1 {
+    width: 1rem;
+    height: 1rem;
+    margin: 0 0.5rem 0 0;
+}
+
+label.basic-label {
+    min-width: 7rem;
+    box-sizing: border-box;
+    text-align: right;
+    margin-right: 0.25rem;
+    user-select: none;
+}
+
+label.basic-label.required::after {
+    content: " *";
+    color: var(--red);
+}
+
+textarea.basic-textarea {
+    display: block;
+    width: 100%;
+}
+
+textarea.basic-textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0.3rem 0rem var(--theme-color);
+}
+
+.error-text {
+    color: var(--red);
+    font-size: 0.8rem;
+}
+
+.error-text.hidden {
+    display: none !important;
+}
+
+input[type="text"].error,
+input[type="password"].error,
+input[type="email"].error,
+input[type="number"].error {
+    box-shadow: 0 0 0.3rem 0rem var(--red) !important;
+}
+
+.basic-tooltip {
+    position: relative;
+}
+
+.basic-tooltip .tooltip-text {
+    visibility: hidden;
+    min-width: 100px;
+    background-color: var(--black);
+    color: var(--white);
+    text-align: center;
+    border-radius: 0.2rem;
+    padding: 0.25rem 0.5rem;
+    position: absolute;
+    z-index: 1;
+    bottom: 50%;
+    right: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.basic-tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 0.5;
+}
