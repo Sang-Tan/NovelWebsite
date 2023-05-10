@@ -9,6 +9,7 @@ CREATE TABLE novels
     status          VARCHAR(20)  NOT NULL,
     created_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at      TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    view_count          INT         DEFAULT 0                   NOT NULL,
     CHECK (approval_status IN ('pending', 'approved', 'rejected')),
     CHECK (status IN ('on going', 'paused', 'finished')),
     FULLTEXT INDEX (name)
