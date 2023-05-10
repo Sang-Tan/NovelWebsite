@@ -33,9 +33,7 @@ public class ViewInNovelController extends HttpServlet {
 
     public void viewChapter(Integer novelId,HttpServletRequest request, HttpServletResponse response) throws IOException, JSONException {
         try {
-            synchronized (this) {
-                ViewService.getInstance().addViewToMap(novelId, 1);
-            }
+            ViewService.getInstance().addViewToMap(novelId, 1);
             response.getWriter().write(getSuccessJsonString());
         }
         catch (Exception e) {
