@@ -24,10 +24,12 @@ public class ViewService {
     Map<Integer, Integer>  ChapterViewInThread= new HashMap<Integer, Integer>();
 
     public static ViewService getInstance(){
-        if(instance == null){
-            instance = new ViewService();
+        synchronized (ViewService.class){
+            if(instance == null){
+                instance = new ViewService();
+            }
+            return instance;
         }
-        return instance;
     }
     public ViewService(){
         exec = Executors.newSingleThreadScheduledExecutor();
