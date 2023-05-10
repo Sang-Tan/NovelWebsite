@@ -112,7 +112,7 @@ public class NovelSearchService {
      * @param order include ASC and DESC else will be set to ASC
      * @return SQL condition string
      */
-    private static String generateSortCondition(String attribute, String order) {
+    private static String generateSortCondition(String attribute, String order, List<Object> params) {
         String sql = "";
         if (attribute == null || attribute.isEmpty())
             return sql;
@@ -121,9 +121,6 @@ public class NovelSearchService {
         switch (attribute) {
             case "name":
                 sql += "ORDER BY name " + order;
-                break;
-            case "update_time":
-                sql += "ORDER BY updated_at " + order;
                 break;
             default:
                 sql += "ORDER BY " + DEFAULT_SORT_ATTRIBUTE + " ASC";
@@ -159,7 +156,7 @@ public class NovelSearchService {
         sql += " AND approval_status = 'approved'";
         paginator = new Paginator(NovelRepository.getInstance().countNovels(sql, params), page, pageSize);
         // order
-        sql += " " + generateSortCondition(sortAttribute, sortOrder);
+        sql += " " + generateSortCondition(sortAttribute, sortOrder, params);
         sql += " " + PagingService.generatePaginationCondition(params, paginator);
         return NovelRepository.getInstance().getByConditionString(sql, params);
     }
