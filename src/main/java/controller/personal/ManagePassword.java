@@ -23,10 +23,11 @@ public class ManagePassword extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String oldPassword = req.getParameter("old-password");
         String newPassword = req.getParameter("new-password");
+        String confirmPassword = req.getParameter("confirm-password");
         User user = (User) req.getAttribute("user");
 
         try {
-            String errorMessage = UserService.changePassword(user, oldPassword, newPassword);
+            String errorMessage = UserService.changePassword(user, oldPassword, newPassword, confirmPassword);
             if (errorMessage != null) {
                 req.setAttribute("errorMessage", errorMessage);
             } else {

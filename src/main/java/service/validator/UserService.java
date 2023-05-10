@@ -36,8 +36,8 @@ public class UserService {
     /**
      * @return error message, null if no error
      */
-    public static String changePassword(User user, String oldPassword, String newPassword) throws SQLException {
-        String errorMessage = validatePasswordChange(user, oldPassword, newPassword);
+    public static String changePassword(User user, String oldPassword, String newPassword, String confirmPassword) throws SQLException {
+        String errorMessage = validatePasswordChange(user, oldPassword, newPassword, confirmPassword);
         if (errorMessage != null) {
             return errorMessage;
         }
@@ -52,7 +52,7 @@ public class UserService {
     /**
      * @return error message, null if no error
      */
-    private static String validatePasswordChange(User user, String oldPassword, String newPassword) throws SQLException {
+    private static String validatePasswordChange(User user, String oldPassword, String newPassword, String confirmPassword) throws SQLException {
         if (oldPassword == null || newPassword == null) {
             return "Vui lòng nhập đầy đủ thông tin";
         }
@@ -68,6 +68,10 @@ public class UserService {
 
         if (!UserValidator.isValidPassword(newPassword)) {
             return "Mật khẩu mới không hợp lệ";
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            return "Mật khẩu mới nhập lại không khớp";
         }
 
         return null;

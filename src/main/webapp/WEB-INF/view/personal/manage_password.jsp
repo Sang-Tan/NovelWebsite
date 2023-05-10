@@ -15,15 +15,23 @@
         <div class="basic-section__header">
             <h3 class="basic-section__title">Đổi mật khẩu</h3>
         </div>
+        <p>Mật khẩu mới phải có ít nhất 6 kí tự bao gồm số, chữ hoa, chữ thường</p>
         <form method="post" class="containter-fluid ml-5 mr-5" enctype="application/x-www-form-urlencoded">
             <div class=" d-flex align-items-center mb-2">
-                <label for="old-password" class="basic-label required">Mật khẩu cũ</label>
+                <label for="old-password" class="basic-label required" style="width: 12rem;">Mật khẩu cũ</label>
                 <input class="input-text" style="flex-grow: 1" type="password" name="old-password" id="old-password"
                        required>
             </div>
             <div class=" d-flex align-items-center mb-2">
-                <label for="new-password" class="basic-label required">Mật khẩu mới</label>
+                <label for="new-password" class="basic-label required" style="width: 12rem;">Mật khẩu mới</label>
                 <input class="input-text" style="flex-grow: 1" type="password" name="new-password" id="new-password"
+                       required>
+            </div>
+            <div class=" d-flex align-items-center mb-2">
+                <label for="new-password" class="basic-label required" style="width: 12rem;">Nhập lại mật khẩu
+                    mới</label>
+                <input class="input-text" style="flex-grow: 1" type="password" name="confirm-password"
+                       id="confirm-password"
                        required>
             </div>
             <div class="d-flex justify-content-center">
