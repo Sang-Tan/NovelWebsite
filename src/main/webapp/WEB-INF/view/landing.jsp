@@ -1,7 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--@elvariable id="latestUpdateNovels" type="java.util.List<model.Novel>"--%>
-
+<%--@elvariable id="topViewRecentWeekNovels" type="java.util.List<model.Novel>"--%>
+<%--@elvariable id="topViewRecentMonthNovels" type="java.util.List<model.Novel>"--%>
+<%--@elvariable id="topViewAllTimeNovels" type="java.util.List<model.Novel>"--%>
 <%@page import="service.URLSlugification" %>
 <%--@elvariable id="URLSlugification" type="service.URLSlugification"--%>
 <%@page import="core.StringUtils" %>
@@ -58,43 +60,37 @@
                     </ul>
                     <div class="tab-panels">
                         <ul class="p-0 tab-panel active">
-                            <li class="ranking__item">
-                                <span class="ranking__bullet">1</span>
-                                <a href="#" class="theme-link w-500">Chuyển sinh đến dị giới, mọi người gọi
-                                    tôi là
-                                    CMMB nhưng tôi nhặt được thánh kiếm mạnh nhất </a>
-                            </li>
-                            <li class="ranking__item">
-                                <span class="ranking__bullet">2</span>
-                                <a href="#" class="theme-link w-500">Hình như thê tử của ta muốn được nuông
-                                    chiều</a>
-                            </li>
-                            <li class="ranking__item">
-                                <span class="ranking__bullet">3</span>
-                                <a href="#" class="theme-link w-500">Ta phải chiến đấu chống lại quỷ tộc</a>
-                            </li>
-                            <li class="ranking__item">
-                                <span class="ranking__bullet">4</span>
-                                <a href="#" class="theme-link w-500">Thần Võ Đại Sư</a>
-                            </li>
+                            <c:set var="index" value="1"/>
+                            <c:forEach items="${topViewAllTimeNovels}" var="novel">
+                                <li class="ranking__item">
+                                    <span class="ranking__bullet">${index}</span>
+                                    <a href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}"
+                                       class="theme-link w-500">${novel.name}</a>
+                                </li>
+                                <c:set var="index" value="${index + 1}"/>
+                            </c:forEach>
                         </ul>
                         <ul class="p-0 tab-panel">
-                            <li class="ranking__item">
-                                <span class="ranking__bullet">1</span>
-                                <a href="#" class="theme-link w-500">Người vợ đoản mệnh của anh</a>
-                            </li>
-                            <li class="ranking__item">
-                                <span class="ranking__bullet">2</span>
-                                <a href="#" class="theme-link w-500">Chuyển sinh thành chó</a>
-                            </li>
-                            <li class="ranking__item">
-                                <span class="ranking__bullet">3</span>
-                                <a href="#" class="theme-link w-500">Chuyển sinh thành bồn cầu</a>
-                            </li>
-                            <li class="ranking__item">
-                                <span class="ranking__bullet">4</span>
-                                <a href="#" class="theme-link w-500">Chuyển sinh thành CMMB</a>
-                            </li>
+                            <c:set var="index" value="1"/>
+                            <c:forEach items="${topViewRecentMonthNovels}" var="novel">
+                                <li class="ranking__item">
+                                    <span class="ranking__bullet">${index}</span>
+                                    <a href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}"
+                                       class="theme-link w-500">${novel.name}</a>
+                                </li>
+                                <c:set var="index" value="${index + 1}"/>
+                            </c:forEach>
+                        </ul>
+                        <ul class="p-0 tab-panel">
+                            <c:set var="index" value="1"/>
+                            <c:forEach items="${topViewRecentWeekNovels}" var="novel">
+                                <li class="ranking__item">
+                                    <span class="ranking__bullet">${index}</span>
+                                    <a href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}"
+                                       class="theme-link w-500">${novel.name}</a>
+                                </li>
+                                <c:set var="index" value="${index + 1}"/>
+                            </c:forEach>
                         </ul>
                     </div>
                 </div>
