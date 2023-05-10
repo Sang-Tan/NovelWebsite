@@ -3,7 +3,7 @@
 <%--@elvariable id="latestUpdateNovels" type="java.util.List<model.Novel>"--%>
 <%--@elvariable id="topViewRecentWeekNovels" type="java.util.List<model.Novel>"--%>
 <%--@elvariable id="topViewRecentMonthNovels" type="java.util.List<model.Novel>"--%>
-<%--@elvariable id="topViewAllTimeNovels" type="java.util.List<model.Novel>"--%>
+<%--@elvariable id="topViewRecentDayNovels" type="java.util.List<model.Novel>"--%>
 <%@page import="service.URLSlugification" %>
 <%--@elvariable id="URLSlugification" type="service.URLSlugification"--%>
 <%@page import="core.StringUtils" %>
@@ -54,25 +54,15 @@
                 </header>
                 <div class="tab-section">
                     <ul class="tab-list">
-                        <li class="tab active">Top all</li>
-                        <li class="tab ">Top tháng</li>
+                        <li class="tab active">Top ngày</li>
                         <li class="tab">Top tuần</li>
+                        <li class="tab ">Top tháng</li>
+
                     </ul>
                     <div class="tab-panels">
                         <ul class="p-0 tab-panel active">
                             <c:set var="index" value="1"/>
-                            <c:forEach items="${topViewAllTimeNovels}" var="novel">
-                                <li class="ranking__item">
-                                    <span class="ranking__bullet">${index}</span>
-                                    <a href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}"
-                                       class="theme-link w-500">${novel.name}</a>
-                                </li>
-                                <c:set var="index" value="${index + 1}"/>
-                            </c:forEach>
-                        </ul>
-                        <ul class="p-0 tab-panel">
-                            <c:set var="index" value="1"/>
-                            <c:forEach items="${topViewRecentMonthNovels}" var="novel">
+                            <c:forEach items="${topViewRecentDayNovels}" var="novel">
                                 <li class="ranking__item">
                                     <span class="ranking__bullet">${index}</span>
                                     <a href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}"
@@ -92,6 +82,18 @@
                                 <c:set var="index" value="${index + 1}"/>
                             </c:forEach>
                         </ul>
+                        <ul class="p-0 tab-panel">
+                            <c:set var="index" value="1"/>
+                            <c:forEach items="${topViewRecentMonthNovels}" var="novel">
+                                <li class="ranking__item">
+                                    <span class="ranking__bullet">${index}</span>
+                                    <a href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}"
+                                       class="theme-link w-500">${novel.name}</a>
+                                </li>
+                                <c:set var="index" value="${index + 1}"/>
+                            </c:forEach>
+                        </ul>
+
                     </div>
                 </div>
             </div>

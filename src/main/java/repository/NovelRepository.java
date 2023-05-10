@@ -103,7 +103,9 @@ public class NovelRepository extends BaseRepository<Novel> {
     public List<Novel> getByListIDNovel(List<Object> novelIds) throws SQLException {
         String prepareConditionSql = "id in (" + "?, ".repeat(novelIds.size() );
         prepareConditionSql = prepareConditionSql.substring(0, prepareConditionSql.length() - 2) + ")";
-
+        prepareConditionSql += " ORDER BY FIELD(id, " + "?, ".repeat(novelIds.size() );
+        prepareConditionSql = prepareConditionSql.substring(0, prepareConditionSql.length() - 2) + ")";
+        novelIds.addAll(novelIds);
         return getByConditionString(prepareConditionSql, novelIds);
     }
 
@@ -152,5 +154,13 @@ public class NovelRepository extends BaseRepository<Novel> {
         String sql = String.format("SELECT * FROM novel_report WHERE novel_id = ? AND reporter_id = ?");
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelID, reporterId));
         return records.size() > 0;
+    }
+
+    public void addViewCount(int novelId, int viewCount) throws SQLException {
+        Novel novel = getById(novelId);
+        if(novel == null) return;
+
+        String sql = String.format("UPDATE %s SET view_count = view_count + ? WHERE id = ?", getTableName());
+        MySQLdb.getInstance().execute(sql, List.of(viewCount, novelId));
     }
 }

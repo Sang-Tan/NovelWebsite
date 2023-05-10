@@ -21,7 +21,7 @@ public class ViewInNovelRepository extends BaseRepository<ViewInNovel> {
         return instance;
     }
     public void addViewCount(int novelId, Date date, int viewCount) throws SQLException {
-        ViewInNovel viewInNovel = getInDateChapterViewCount(novelId, date);
+        ViewInNovel viewInNovel = getInDateViewInNovel(novelId, date);
         if(viewInNovel == null)
         {
             viewInNovel = createEmpty();
@@ -36,12 +36,17 @@ public class ViewInNovelRepository extends BaseRepository<ViewInNovel> {
         Date currentDate = new Date(System.currentTimeMillis());
         MySQLdb.getInstance().execute(sql, List.of(viewCount, novelId, currentDate));
     }
-    public ViewInNovel getInDateChapterViewCount(int novelId, Date date) throws SQLException {
+    public ViewInNovel getInDateViewInNovel(int novelId, Date date) throws SQLException {
         String sql = String.format("SELECT * FROM %s WHERE novel_id = ? and date_view = ?", getTableName());
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelId, date));
         for (SqlRecord record : records) {
             return mapObject(record);
         }
+        return null;
+    }
+    public ViewInNovel deleteExpiredViewInNovel(int expiredDays) throws SQLException {
+        String sql = String.format("DELETE FROM %s WHERE date_view < DATE_SUB(CURDATE(), INTERVAL ? DAY)", getTableName());
+        MySQLdb.getInstance().execute(sql, List.of(expiredDays));
         return null;
     }
 
@@ -57,7 +62,7 @@ public class ViewInNovelRepository extends BaseRepository<ViewInNovel> {
         if (NovelRepository.getInstance().getById(novelId) == null) {
             throw new SQLException(String.format("novel id %d not found", novelId));
         }
-        if(ViewInNovelRepository.getInstance().getInDateChapterViewCount(object.getNovelId(), object.getDateView()) != null)
+        if(ViewInNovelRepository.getInstance().getInDateViewInNovel(object.getNovelId(), object.getDateView()) != null)
         {
             throw new SQLException(String.format("record has novelId %d in date %s in view_in_novel table already exist", novelId, object.getDateView().toString()));
         }
