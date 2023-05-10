@@ -62,7 +62,7 @@
                                 <p class="mb-1"><b>Tác giả:</b> ${novel.authorName}</p>
                                 <c:set var="status" value="${novel.status}"/>
                                 <p class="mb-1"><b>Tình trạng:</b> ${statusMap.get(status)}</p>
-                                <p class="mb-1"><b>Lượt xem:</b> 100.000</p>
+                                <p class="mb-1"><b>Lượt xem:</b> ${novel.viewCount}</p>
                                 <c:if test="${user != null}">
                                     <button data-action="unfollow" data-id="${novel.id}"
                                             class="basic-btn basic-btn--red ${isFavourite ? "" : "hidden"}">
