@@ -5,7 +5,7 @@
 <html>
 <head>
     <title>Đổi mật khẩu</title>
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon"/>
     <%@include file="/WEB-INF/view/layout/basic_stylesheet.jsp" %>
 </head>
 <body style="background-color: var(--silver)">
@@ -47,9 +47,11 @@
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Thành công',
+                title: 'Đổi mật khẩu thành công, vui lòng đăng nhập lại',
                 text: '${successMessage}',
-            })
+            }).then(() => {
+                window.location.href = '/';
+            });
         </script>
     </c:when>
 </c:choose>
