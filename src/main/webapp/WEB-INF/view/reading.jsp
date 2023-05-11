@@ -207,7 +207,7 @@
 
     <%@include file="layout/comment_section.jsp" %>
     <%@ include file="layout/basic_js.jsp" %>
-    <script src="/js/reading.js"></script>
+    <script id="readingScript" src="/js/reading.js" data-novel-id="${reqNovel.id}" ></script>
     <script src="/js/bookmark_manage.js"></script>
 </body>
 
