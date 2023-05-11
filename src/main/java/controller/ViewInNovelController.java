@@ -20,9 +20,10 @@ public class ViewInNovelController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try {
             if(request.getParameter("action").equals("viewed")) {
-                Integer chapterId = Integer.parseInt(request.getParameter("novelId"));
+                Integer chapterId = Integer.parseInt(request.getParameter("chapterId"));
+                String ipAddress = request.getParameter("ipAddress");
                 synchronized (this) {
-                    viewChapter(chapterId, request, response);
+                    viewChapter(chapterId, ipAddress, request, response);
                 }
             }
         } catch (Exception e) {
@@ -31,9 +32,9 @@ public class ViewInNovelController extends HttpServlet {
         }
     }
 
-    public void viewChapter(Integer novelId,HttpServletRequest request, HttpServletResponse response) throws IOException, JSONException {
+    public void viewChapter(Integer chapterId, String ipAddress,HttpServletRequest request, HttpServletResponse response) throws IOException, JSONException {
         try {
-            ViewService.getInstance().addViewToCache(novelId, 1);
+            ViewService.getInstance().addViewToCache(chapterId,ipAddress, 1);
             response.getWriter().write(getSuccessJsonString());
         }
         catch (Exception e) {

@@ -20,7 +20,7 @@
 <head>
     <meta charset="UTF-8">
     <title>${reqChapter.name}</title>
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon"/>
     <%@ include file="layout/basic_stylesheet.jsp" %>
     <link rel="stylesheet" type="text/css" href="/css/reading.css">
 </head>
@@ -36,7 +36,7 @@
         <div class="toolbar__item-box">
             <c:choose>
                 <c:when test="${previousChapter == null}">
-                    <span class="toolbar__item disabled" >
+                    <span class="toolbar__item disabled">
                         <i class="fas fa-backward"></i>
                     </span>
                 </c:when>
@@ -203,12 +203,15 @@
             </c:choose>
         </div>
     </div>
+</div>
 
 
-    <%@include file="layout/comment_section.jsp" %>
-    <%@ include file="layout/basic_js.jsp" %>
-    <script id="readingScript" src="/js/reading.js" data-novel-id="${reqNovel.id}" ></script>
-    <script src="/js/bookmark_manage.js"></script>
+<%@include file="layout/comment_section.jsp" %>
+<%@ include file="layout/basic_js.jsp" %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script id="readingScript" src="/js/reading.js" data-chapter-id="${reqChapter.id}"></script>
+<script src="/js/bookmark_manage.js"></script>
+
 </body>
 
 
