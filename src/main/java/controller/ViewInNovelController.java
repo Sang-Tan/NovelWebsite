@@ -21,7 +21,7 @@ public class ViewInNovelController extends HttpServlet {
         try {
             if(request.getParameter("action").equals("viewed")) {
                 Integer chapterId = Integer.parseInt(request.getParameter("chapterId"));
-                String ipAddress = request.getParameter("ipAddress");
+                String ipAddress = request.getRemoteAddr();
                 synchronized (this) {
                     viewChapter(chapterId, ipAddress, request, response);
                 }

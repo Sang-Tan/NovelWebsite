@@ -55,10 +55,6 @@ window.onload = function () {
     reserveToolbarState();
 
 };
-var ipAddress;
-$.getJSON("https://api.ipify.org?format=json", function(data) {
-    ipAddress = data.ip;
-});
 
 const readingTime = 180000; // 60000 miliseconds = 1 minute
 function finishReading() {
@@ -66,6 +62,6 @@ function finishReading() {
     const request = new XMLHttpRequest();
     request.open('POST', '/view-novel', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
-    request.send(`action=viewed&chapterId=${chapterId}&ipAddress=${ipAddress}`);
+    request.send(`action=viewed&chapterId=${chapterId}`);
 }
 setTimeout(finishReading, readingTime);
