@@ -38,7 +38,7 @@ public class NovelRepository extends BaseRepository<Novel> {
     }
 
     public List<Novel> getByConditionString(String condition, List<Object> params) throws SQLException {
-        String sql = String.format("SELECT * FROM %s WHERE %s", getTableName(), condition);
+        String sql = String.format("SELECT * FROM %s AS novel1 WHERE %s", getTableName(), condition);
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
         return mapObjects(records);
     }
@@ -99,14 +99,6 @@ public class NovelRepository extends BaseRepository<Novel> {
             return mapObject(record);
         }
         return null;
-    }
-    public List<Novel> getByListIDNovel(List<Object> novelIds) throws SQLException {
-        String prepareConditionSql = "id in (" + "?, ".repeat(novelIds.size() );
-        prepareConditionSql = prepareConditionSql.substring(0, prepareConditionSql.length() - 2) + ")";
-        prepareConditionSql += " ORDER BY FIELD(id, " + "?, ".repeat(novelIds.size() );
-        prepareConditionSql = prepareConditionSql.substring(0, prepareConditionSql.length() - 2) + ")";
-        novelIds.addAll(novelIds);
-        return getByConditionString(prepareConditionSql, novelIds);
     }
 
     public Novel getByChapterID(int chapterID) throws SQLException {

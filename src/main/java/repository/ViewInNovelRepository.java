@@ -69,19 +69,23 @@ public class ViewInNovelRepository extends BaseRepository<ViewInNovel> {
 
         return super.insert(object);
     }
-    public List<Object> getTopViewNovelIds(int numOfNovels, Date startDay, Date endDate) throws SQLException {
+    public List<Integer> getTopViewNovelIds(int numOfNovels, Date startDay, Date endDate) throws SQLException {
         String sql = String.format("SELECT novel_id FROM %s WHERE date_view >= ? and date_view <= ? GROUP BY novel_id ORDER BY SUM(view_count) DESC LIMIT ?", getTableName());
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(startDay, endDate, numOfNovels));
 
-        List<Object> novelIds = new ArrayList<>();
+        List<Integer> novelIds = new ArrayList<>();
         for (SqlRecord record : records) {
-            novelIds.add( record.get("novel_id"));
+            novelIds.add((Integer) record.get("novel_id"));
         }
         return novelIds;
     }
     public List<Novel> getTopViewNovels(int numOfNovels, Date startDay, Date endDate) throws SQLException {
-        List<Object> novelIds = getTopViewNovelIds(numOfNovels, startDay, endDate);
-        return NovelRepository.getInstance().getByListIDNovel(novelIds);
+        List<Integer> novelIds = getTopViewNovelIds(numOfNovels, startDay, endDate);
+        List<Novel> novels = new ArrayList<>();
+        for (Integer novelId : novelIds) {
+            novels.add(NovelRepository.getInstance().getById(novelId));
+        }
+        return novels;
     }
 
 }

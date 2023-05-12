@@ -4,11 +4,13 @@ function changeValueOrder(){
     const sortSelect = document.getElementById("sort");
     var sortValue = sortSelect.options[sortSelect.selectedIndex].value;
     if (sortValue === "name") {
-        orderInput.value = "asc";
+        orderInput.value = "ASC";
     }
     if (sortValue === "view") {
-        orderInput.value = "desc";
+        orderInput.value = "DESC";
     }
+    if (sortValue === "update_time")
+        orderInput.value = "DESC";
 }
 function submitForm() {
 
