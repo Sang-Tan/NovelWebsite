@@ -34,7 +34,7 @@ public class NovelSearchService {
     }
 
     public List<Novel> getLatestUpdateNovels(int pageSize) throws SQLException {
-        return searchApprovedNovels("", "", "", "", "update_time","DESC", 1, pageSize);
+        return searchApprovedNovels("", "", "", "", "update_time", "DESC", 1, pageSize);
     }
 
     public String getSql() {
@@ -107,17 +107,20 @@ public class NovelSearchService {
     }
 
     /**
-     *
      * @param attribute in SortAttribute enum is valid
-     * @param order include ASC and DESC else will be set to ASC
+     * @param order     include ASC and DESC else will be set to ASC
      * @return SQL condition string
      */
     private static String generateSortCondition(String attribute, String order, List<Object> params) {
         String sql = "";
         if (attribute == null || attribute.isEmpty())
-            return sql;
-        if (order == null || order.isEmpty() || !order.equals("desc"))
-            order = "asc";
+            attribute = DEFAULT_SORT_ATTRIBUTE;
+        if(order == null || order.isEmpty())
+            order = "ASC";
+
+        if (!order.equals("DESC"))
+            order = "ASC";
+
         switch (attribute) {
             case "name":
                 sql += "ORDER BY name " + order;
@@ -125,8 +128,13 @@ public class NovelSearchService {
             case "view":
                 sql += "ORDER BY view_count " + order;
                 break;
-            default:
-                sql += "ORDER BY " + DEFAULT_SORT_ATTRIBUTE + " ASC";
+            case "update_time":
+                sql += " ORDER BY (\n" +
+                        "SELECT MAX(ct.created_at) FROM novels AS nv \n" +
+                        "JOIN  volumes AS vl ON nv.id = vl.novel_id \n" +
+                        "JOIN chapters AS ct ON vl.id = ct.volume_id\n" +
+                        "WHERE novel1.id = nv.id\n" +
+                        "GROUP BY nv.id )" + order;
                 break;
         }
 

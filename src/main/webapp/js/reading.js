@@ -56,12 +56,12 @@ window.onload = function () {
 
 };
 
-const readingTime = 2000; // 60000 miliseconds = 1 minute
+const readingTime = 180000; // 60000 miliseconds = 1 minute
 function finishReading() {
-    const novelId = document.getElementById('readingScript').dataset.novelId;
+    const chapterId = document.getElementById('readingScript').dataset.chapterId;
     const request = new XMLHttpRequest();
     request.open('POST', '/view-novel', true);
     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
-    request.send(`action=viewed&novelId=${novelId}`);
+    request.send(`action=viewed&chapterId=${chapterId}`);
 }
 setTimeout(finishReading, readingTime);

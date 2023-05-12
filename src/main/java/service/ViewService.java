@@ -11,34 +11,34 @@ import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 public class ViewService {
     public static ViewService instance = null;
-    // schedule tasks to run at a specified time or with a specified delay, use for running periodic tasks
-    private static ScheduledExecutorService exec;
     // time period to update view count in database
-    private static final int PERIOD_SECONDS_TO_UPDATE_DB = 30;
+    private static final int PERIOD_SECONDS_TO_UPDATE_DB = 60; // 1 minute
     // time delay to start update view count in database
     private static final int EXPIRED_DAYS = 30;
-    private static final int INITIAL_SECOND_DELAY_TO_UPDATE_DB = 30;
+
     // time period to collect garbage records in view_in_novel table which have date_view < current_date - expired day
-    private static final int PERIOD_SECONDS_TO_DELETE_EXPIRED_RECORD = 60 * 60 * 24;// 1 day
+    private static final int PERIOD_SECONDS_TO_DELETE_EXPIRED_RECORD = 60*60*24;// 1 day
     // map cache to store view count of each novel
-    volatile Map<Integer, Integer> novelViewCache = new HashMap<Integer, Integer>();
+    private final Map<Integer, Set<String>> chapterViewCache;
 
     public static ViewService getInstance() {
         if (instance == null)
-            synchronized (ViewService.class)
-            {
+            synchronized (ViewService.class) {
                 instance = new ViewService();
             }
         return instance;
     }
 
     private ViewService() {
-        exec = Executors.newScheduledThreadPool(2);
+        chapterViewCache = new HashMap<>();
+        // schedule tasks to run at a specified time or with a specified delay, use for running periodic tasks
+        ScheduledExecutorService exec = Executors.newScheduledThreadPool(2);
         exec.scheduleAtFixedRate(() -> {
             try {
                 updateDb();
@@ -46,10 +46,9 @@ public class ViewService {
                 e.printStackTrace();
             }
 
-        }, INITIAL_SECOND_DELAY_TO_UPDATE_DB, PERIOD_SECONDS_TO_UPDATE_DB, java.util.concurrent.TimeUnit.SECONDS);
+        }, PERIOD_SECONDS_TO_UPDATE_DB, PERIOD_SECONDS_TO_UPDATE_DB, java.util.concurrent.TimeUnit.SECONDS);
         exec.scheduleAtFixedRate(() -> {
             try {
-
                 ViewInNovelRepository.getInstance().deleteExpiredViewInNovel(EXPIRED_DAYS);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -62,13 +61,13 @@ public class ViewService {
     /**
      * Add amount of view chapter to ChapterViewInThread map which store view count of each chapter
      *
-     * @param novelId
+     * @param chapterId
      */
-    public synchronized void addViewToCache(int novelId, int viewCount) {
-        if (novelViewCache.containsKey(novelId)) {
-            novelViewCache.put(novelId, novelViewCache.get(novelId) + viewCount);
+    public synchronized void addViewToCache(int chapterId,String sessionId, int viewCount) {
+        if (chapterViewCache.containsKey(chapterId)) {
+            chapterViewCache.get(chapterId).add(sessionId);
         } else {
-            novelViewCache.put(novelId, viewCount);
+            chapterViewCache.put(chapterId, Set.of(sessionId));
         }
     }
 
@@ -77,14 +76,16 @@ public class ViewService {
      * Call this function when thread is end
      */
     synchronized private void updateDb() throws SQLException {
-        for (Map.Entry<Integer, Integer> entry : novelViewCache.entrySet()) {
-            int novelId = entry.getKey();
-            int viewCount = entry.getValue();
+        for (Map.Entry<Integer, Set<String>> entry : chapterViewCache.entrySet()) {
+            int chapterId = entry.getKey();
+            int viewCount = entry.getValue().size();
             Date currentDate = Date.valueOf(LocalDate.now());
-            ViewInNovelRepository.getInstance().addViewCount(novelId, currentDate, viewCount);
-            NovelRepository.getInstance().addViewCount(novelId, viewCount);
+
+            int belongingNovelId = NovelRepository.getInstance().getByChapterID(chapterId).getId();
+            ViewInNovelRepository.getInstance().addViewCount(belongingNovelId, currentDate, viewCount);
+            NovelRepository.getInstance().addViewCount(belongingNovelId, viewCount);
         }
-        novelViewCache.clear();
+        chapterViewCache.clear();
     }
 
     private List<Novel> getTopViewNovels(int numOfNovels, Date startDay, Date endDate) throws SQLException {

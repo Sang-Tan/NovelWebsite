@@ -75,6 +75,9 @@
                         <option value="view" <% if ("view".equals(request.getParameter("sort"))) { %> selected <% }  %>>
                             Lượt xem
                         </option>
+                        <option value="update_time" <% if ("update_time".equals(request.getParameter("sort"))) { %> selected <% }  %>>
+                            Thời gian cập nhật
+                        </option>
                     </select>
                     <input hidden="hidden" name="order" id="order">
                 </div>
