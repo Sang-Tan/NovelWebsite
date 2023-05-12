@@ -96,13 +96,9 @@ public class Volume implements DatabaseObject, INovelContent {
         throw new UnsupportedOperationException("Set chapters in volume entity is not supported");
     }
 
-    public Novel getBelongNovel() {
+    public Novel getBelongNovel() throws SQLException {
         if (belongNovel == null) {
-            try {
-                belongNovel = NovelRepository.getInstance().getById(novelId);
-            } catch (SQLException e) {
-                BasicLogger.getInstance().printStackTrace(e);
-            }
+            belongNovel = NovelRepository.getInstance().getById(novelId);
         }
         return belongNovel;
     }
