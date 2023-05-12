@@ -17,29 +17,28 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public class ViewService {
     public static ViewService instance = null;
-    // schedule tasks to run at a specified time or with a specified delay, use for running periodic tasks
-    private static ScheduledExecutorService exec;
     // time period to update view count in database
-    private static final int PERIOD_SECONDS_TO_UPDATE_DB = 60*60; // 1 hour
+    private static final int PERIOD_SECONDS_TO_UPDATE_DB = 60; // 1 minute
     // time delay to start update view count in database
     private static final int EXPIRED_DAYS = 30;
-    private static final int INITIAL_SECOND_DELAY_TO_UPDATE_DB = 60*60; // 1 hour
+
     // time period to collect garbage records in view_in_novel table which have date_view < current_date - expired day
     private static final int PERIOD_SECONDS_TO_DELETE_EXPIRED_RECORD = 60*60*24;// 1 day
     // map cache to store view count of each novel
-    volatile Map<Integer, Set<String>> chapterViewCache = new HashMap<Integer, Set<String>>();
+    private final Map<Integer, Set<String>> chapterViewCache;
 
     public static ViewService getInstance() {
         if (instance == null)
-            synchronized (ViewService.class)
-            {
+            synchronized (ViewService.class) {
                 instance = new ViewService();
             }
         return instance;
     }
 
     private ViewService() {
-        exec = Executors.newScheduledThreadPool(2);
+        chapterViewCache = new HashMap<>();
+        // schedule tasks to run at a specified time or with a specified delay, use for running periodic tasks
+        ScheduledExecutorService exec = Executors.newScheduledThreadPool(2);
         exec.scheduleAtFixedRate(() -> {
             try {
                 updateDb();
@@ -47,7 +46,7 @@ public class ViewService {
                 e.printStackTrace();
             }
 
-        }, INITIAL_SECOND_DELAY_TO_UPDATE_DB, PERIOD_SECONDS_TO_UPDATE_DB, java.util.concurrent.TimeUnit.SECONDS);
+        }, PERIOD_SECONDS_TO_UPDATE_DB, PERIOD_SECONDS_TO_UPDATE_DB, java.util.concurrent.TimeUnit.SECONDS);
         exec.scheduleAtFixedRate(() -> {
             try {
                 ViewInNovelRepository.getInstance().deleteExpiredViewInNovel(EXPIRED_DAYS);
