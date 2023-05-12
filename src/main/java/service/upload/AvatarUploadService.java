@@ -12,8 +12,7 @@ public class AvatarUploadService {
 
     public static void uploadAvatar(User user, Part newAvatar) throws IOException {
         //if user has avatar
-        if ((user.getAvatar() != null) && ((user.getAvatar() != User.DEFAULT_AVATAR)))
-        {
+        if ((user.getAvatar() != null) && (!(user.getAvatar().equals(User.DEFAULT_AVATAR)))) {
             FileMapper uploadedAvatar = FileMapper.mapURI(user.getAvatar());
 
             uploadedAvatar.uploadFile(newAvatar.getInputStream(), true);
