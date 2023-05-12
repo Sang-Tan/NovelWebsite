@@ -115,7 +115,7 @@ public class NovelSearchService {
         String sql = "";
         if (attribute == null || attribute.isEmpty())
             attribute = DEFAULT_SORT_ATTRIBUTE;
-        if(order == null || order.isEmpty())
+        if (order == null || order.isEmpty())
             order = "ASC";
 
         if (!order.equals("DESC"))
@@ -134,6 +134,7 @@ public class NovelSearchService {
                         "JOIN  volumes AS vl ON nv.id = vl.novel_id \n" +
                         "JOIN chapters AS ct ON vl.id = ct.volume_id\n" +
                         "WHERE novel1.id = nv.id\n" +
+                        "AND ct.approval_status = 'approved'\n " +
                         "GROUP BY nv.id )" + order;
                 break;
         }
