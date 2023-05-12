@@ -203,10 +203,10 @@
             </c:choose>
         </div>
     </div>
+    <%@include file="layout/comment_section.jsp" %>
 </div>
 
 
-<%@include file="layout/comment_section.jsp" %>
 <%@ include file="layout/basic_js.jsp" %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script id="readingScript" src="/js/reading.js" data-chapter-id="${reqChapter.id}"></script>

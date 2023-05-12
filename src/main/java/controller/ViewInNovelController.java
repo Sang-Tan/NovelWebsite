@@ -1,5 +1,6 @@
 package controller;
 
+import core.logging.BasicLogger;
 import org.json.JSONException;
 import org.json.JSONObject;
 import service.ViewService;
@@ -19,7 +20,7 @@ public class ViewInNovelController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         try {
-            if(request.getParameter("action").equals("viewed")) {
+            if (request.getParameter("action").equals("viewed")) {
                 Integer chapterId = Integer.parseInt(request.getParameter("chapterId"));
                 String sessionId = request.getSession().getId();
                 synchronized (this) {
@@ -32,13 +33,13 @@ public class ViewInNovelController extends HttpServlet {
         }
     }
 
-    public void viewChapter(Integer chapterId, String sessionId,HttpServletRequest request, HttpServletResponse response) throws IOException, JSONException {
+    public void viewChapter(Integer chapterId, String sessionId, HttpServletRequest request, HttpServletResponse response) throws IOException, JSONException {
         try {
-            ViewService.getInstance().addViewToCache(chapterId,sessionId, 1);
+            ViewService.getInstance().addViewToCache(chapterId, sessionId, 1);
             response.getWriter().write(getSuccessJsonString());
-        }
-        catch (Exception e) {
-            response.getWriter().write(getErrorJsonString(e.getMessage()));
+        } catch (Exception e) {
+            BasicLogger.getInstance().printStackTrace(e);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -53,7 +54,6 @@ public class ViewInNovelController extends HttpServlet {
         jsonObject.put("status", "success");
         return jsonObject.toString();
     }
-
 
 
 }

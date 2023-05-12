@@ -8,10 +8,7 @@ import repository.ViewInNovelRepository;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -23,7 +20,7 @@ public class ViewService {
     private static final int EXPIRED_DAYS = 30;
 
     // time period to collect garbage records in view_in_novel table which have date_view < current_date - expired day
-    private static final int PERIOD_SECONDS_TO_DELETE_EXPIRED_RECORD = 60*60*24;// 1 day
+    private static final int PERIOD_SECONDS_TO_DELETE_EXPIRED_RECORD = 60 * 60 * 24;// 1 day
     // map cache to store view count of each novel
     private final Map<Integer, Set<String>> chapterViewCache;
 
@@ -63,11 +60,13 @@ public class ViewService {
      *
      * @param chapterId
      */
-    public synchronized void addViewToCache(int chapterId,String sessionId, int viewCount) {
+    public synchronized void addViewToCache(int chapterId, String sessionId, int viewCount) {
         if (chapterViewCache.containsKey(chapterId)) {
             chapterViewCache.get(chapterId).add(sessionId);
         } else {
-            chapterViewCache.put(chapterId, Set.of(sessionId));
+            Set<String> sessionIds = new HashSet<>();
+            sessionIds.add(sessionId);
+            chapterViewCache.put(chapterId, sessionIds);
         }
     }
 
