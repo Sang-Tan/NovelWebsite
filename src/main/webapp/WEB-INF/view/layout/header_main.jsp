@@ -74,6 +74,12 @@
                                     <i class="fas fa-user-shield navbar__dropdown-icon"></i><span>Trang quản trị</span>
                                 </a>
                             </c:if>
+                            <c:if test="${user.role.equals(User.ROLE_ADMIN)}">
+                                <hr>
+                                <a href="/admin" class="dropdown-item">
+                                    <i class="fas fa-user-cog navbar__dropdown-icon"></i><span>Trang quản trị</span>
+                                </a>
+                            </c:if>
                         </div>
                     </li>
                 </c:otherwise>
