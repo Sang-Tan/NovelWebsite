@@ -45,13 +45,14 @@ public class SearchNovels extends HttpServlet {
             String author = request.getParameter("author");
             String status = request.getParameter("status");
             String sort = request.getParameter("sort");
+            String order = request.getParameter("order");
             int page = Integer.parseInt(request.getParameter("page") == null ? "0" : request.getParameter("page"));
             Paginator paginator = new Paginator();
 //            NovelService.getNovelHashSetBySearchCondition(partialNovelName, genresIDString, author, status, sort);
 //            UserValidator.hashPassword("123456");
             List<Novel> novelsSearched = null;
             try {
-                novelsSearched = NovelSearchService.getInstance().searchApprovedNovels(partialNovelName, author, status, genresIDString, sort, "ACS",page, 24);
+                novelsSearched = NovelSearchService.getInstance().searchApprovedNovels(partialNovelName, author, status, genresIDString, sort, order ,page, 24);
                 paginator = NovelSearchService.getInstance().getPaginator();
             } catch (SQLException e) {
                 response.setStatus(500);

@@ -38,7 +38,7 @@ public class NovelRepository extends BaseRepository<Novel> {
     }
 
     public List<Novel> getByConditionString(String condition, List<Object> params) throws SQLException {
-        String sql = String.format("SELECT * FROM %s WHERE %s", getTableName(), condition);
+        String sql = String.format("SELECT * FROM %s AS novel1 WHERE %s", getTableName(), condition);
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
         return mapObjects(records);
     }
@@ -146,5 +146,13 @@ public class NovelRepository extends BaseRepository<Novel> {
         String sql = String.format("SELECT * FROM novel_report WHERE novel_id = ? AND reporter_id = ?");
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelID, reporterId));
         return records.size() > 0;
+    }
+
+    public void addViewCount(int novelId, int viewCount) throws SQLException {
+        Novel novel = getById(novelId);
+        if(novel == null) return;
+
+        String sql = String.format("UPDATE %s SET view_count = view_count + ? WHERE id = ?", getTableName());
+        MySQLdb.getInstance().execute(sql, List.of(viewCount, novelId));
     }
 }

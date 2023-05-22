@@ -113,4 +113,7 @@ ALTER TABLE chapter_approval_logs
 ALTER TABLE chapter_approval_logs
     ADD CONSTRAINT FK_ChapterApprovalLog_Moderator FOREIGN KEY (moderator_id)
         REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE;
-
+ALTER TABLE view_in_novel
+    ADD CONSTRAINT FK_view_in_novel_novels
+        FOREIGN KEY (novel_id) REFERENCES novels (id)
+            ON DELETE CASCADE ON UPDATE CASCADE;

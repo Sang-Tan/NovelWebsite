@@ -1,6 +1,7 @@
 package controller;
 
 import model.Novel;
+import service.ViewService;
 import service.validator.NovelSearchService;
 
 import javax.servlet.RequestDispatcher;
@@ -17,13 +18,23 @@ public class HomeController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Novel> latestUpdateNovels = null;
+        List<Novel> topViewRecentWeekNovels = null;
+        List<Novel> topViewRecentMonthNovels = null;
+        List<Novel> topViewRecentDayNovels = null;
+
         try {
              latestUpdateNovels = NovelSearchService.getInstance().getLatestUpdateNovels(12);
+             topViewRecentWeekNovels = ViewService.getInstance().getTopViewRecentWeekNovels(4);
+             topViewRecentMonthNovels = ViewService.getInstance().getTopViewRecentMonthNovels(4);
+             topViewRecentDayNovels = ViewService.getInstance().getTopViewRecentDayNovels(4);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
         request.setAttribute("latestUpdateNovels", latestUpdateNovels);
+        request.setAttribute("topViewRecentWeekNovels", topViewRecentWeekNovels);
+        request.setAttribute("topViewRecentMonthNovels", topViewRecentMonthNovels);
+        request.setAttribute("topViewRecentDayNovels", topViewRecentDayNovels);
 
         showHomePage(request, response);
     }

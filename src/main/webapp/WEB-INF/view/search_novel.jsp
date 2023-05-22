@@ -67,12 +67,19 @@
             <div class="col-12 col-lg-4">
                 <div class="d-flex align-items-center mt-2">
                     <label for="sort" class="label">Sắp xếp theo: </label>
-                    <select class="input-text" style="flex-grow: 1;" name="sort" id="sort"
+                    <select class="input-text" style="flex-grow: 1;" name="sort" id="sort" onchange="changeValueOrder()"
                             value="<%= request.getParameter("sort") != null ? request.getParameter("sort") : "Tên truyện"%>">
                         <option value="name" <% if ("name".equals(request.getParameter("sort"))) { %> selected <% } %>>
                             Tên truyện
                         </option>
+                        <option value="view" <% if ("view".equals(request.getParameter("sort"))) { %> selected <% }  %>>
+                            Lượt xem
+                        </option>
+                        <option value="update_time" <% if ("update_time".equals(request.getParameter("sort"))) { %> selected <% }  %>>
+                            Thời gian cập nhật
+                        </option>
                     </select>
+                    <input hidden="hidden" name="order" id="order">
                 </div>
             </div>
         </div>

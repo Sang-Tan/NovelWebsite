@@ -108,9 +108,9 @@
             <div class="d-flex justify-content-center mb-2">
                 <button type="submit" class="pl-3 pr-3 basic-btn basic-btn--olive">Đăng nhập</button>
             </div>
-            <div class="d-flex justify-content-center">
-                <a href="#" class="text-center w-600">Quên mật khẩu?</a>
-            </div>
+            <%--            <div class="d-flex justify-content-center">--%>
+            <%--                <a href="#" class="text-center w-600">Quên mật khẩu?</a>--%>
+            <%--            </div>--%>
         </form>
     </div>
 </div>

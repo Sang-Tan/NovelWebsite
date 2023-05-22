@@ -55,6 +55,9 @@ public class Novel implements DatabaseObject, INovelContent {
     @OneToMany
     private Collection<Genre> genres = null;
 
+    @Column(name = "view_count")
+    private int viewCount;
+
     public Novel() {
     }
 
@@ -213,6 +216,12 @@ public class Novel implements DatabaseObject, INovelContent {
 
     public void setUpdatedTime(Timestamp updatedTime) {
         this.updatedTime = updatedTime;
+    }
+    public int getViewCount() {
+        return viewCount;
+    }
+    public void setViewCount(int viewCount) {
+        this.viewCount = viewCount;
     }
 
 }

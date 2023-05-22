@@ -17,6 +17,9 @@
 <%--@elvariable id="user" type="model.User"--%>
 <%@page import="model.User" %>
 
+<%--@elvariable id="Volume" type="model.Volume.class"--%>
+<%@page import="model.Volume" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,7 +65,7 @@
                                 <p class="mb-1"><b>Tác giả:</b> ${novel.authorName}</p>
                                 <c:set var="status" value="${novel.status}"/>
                                 <p class="mb-1"><b>Tình trạng:</b> ${statusMap.get(status)}</p>
-                                <p class="mb-1"><b>Lượt xem:</b> 100.000</p>
+                                <p class="mb-1"><b>Lượt xem:</b> ${novel.viewCount}</p>
                                 <c:if test="${user != null}">
                                     <button data-action="unfollow" data-id="${novel.id}"
                                             class="basic-btn basic-btn--red ${isFavourite ? "" : "hidden"}">
@@ -92,33 +95,35 @@
             </section>
             <section class="basic-section">
                 <c:forEach items="${novel.volumes}" var="volume">
-                    <div class="basic-section__header">
-                        <h5>${volume.name}</h5>
-                    </div>
-                    <div class="container fluid">
-                        <div class="row">
-                            <div class="col-12 col-md-3 d-flex justify-content-center">
-                                <div class="a6-ratio volume-cover">
-                                    <div class=" img-wrapper border"
-                                         style="background-image: url('${volume.image}');">
+                    <c:if test="${volume.approvalStatus.equals(Volume.APPROVE_STATUS_APPROVED)}">
+                        <div class="basic-section__header">
+                            <h5>${volume.name}</h5>
+                        </div>
+                        <div class="container fluid">
+                            <div class="row">
+                                <div class="col-12 col-md-3 d-flex justify-content-center">
+                                    <div class="a6-ratio volume-cover">
+                                        <div class=" img-wrapper border"
+                                             style="background-image: url('${volume.image}');">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col col-md-9">
-                                <ul class="chapters">
-                                    <c:forEach items="${volume.chapters}" var="chapter">
-                                        <li class="chapters__item">
-                                            <div class="chapters__title">
-                                                <a class="chapters__link"
-                                                   href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">${StringUtils.truncate(chapter.name, 100)}</a>
-                                            </div>
-                                            <span class="chapters__time">${TimeConverter.convertToddMMyyyy(chapter.updatedTime)}</span>
-                                        </li>
-                                    </c:forEach>
-                                </ul>
+                                <div class="col col-md-9">
+                                    <ul class="chapters">
+                                        <c:forEach items="${volume.chapters}" var="chapter">
+                                            <li class="chapters__item">
+                                                <div class="chapters__title">
+                                                    <a class="chapters__link"
+                                                       href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">${StringUtils.truncate(chapter.name, 100)}</a>
+                                                </div>
+                                                <span class="chapters__time">${TimeConverter.convertToddMMyyyy(chapter.updatedTime)}</span>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </c:if>
                 </c:forEach>
             </section>
             <%@include file="layout/comment_section.jsp" %>

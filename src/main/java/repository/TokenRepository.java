@@ -48,4 +48,10 @@ public class TokenRepository extends BaseRepository<Token> {
         MySQLdb.getInstance().execute(sql, List.of(hashedToken));
     }
 
+    public void deleteAllTokensOfUser(int id) throws SQLException {
+        String sql = String.format("DELETE FROM %s WHERE user_id = ?", getTableName());
+
+        MySQLdb.getInstance().execute(sql, List.of(id));
+
+    }
 }
