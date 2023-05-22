@@ -9,7 +9,7 @@
     <div class="container">
         <ul class="navbar__list">
             <li class="navbar__list-item">
-                <a href="/home" class="navbar__link navbar__brand">
+                <a href="/" class="navbar__link navbar__brand">
                     <div class="brand-image-wrapper" style="background-image: url('/images/logo.png')"></div>
                 </a>
             </li>
