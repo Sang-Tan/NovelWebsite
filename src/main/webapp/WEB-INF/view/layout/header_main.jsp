@@ -2,6 +2,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%--@elvariable id="User" type="model.User.class"--%>
+<%@page import="model.User" %>
+
 <!--navigation bar-->
 <nav class="navbar">
     <div class="container">
@@ -65,6 +68,12 @@
                             <a href="/logout" class="dropdown-item">
                                 <i class="fas fa-sign-out-alt navbar__dropdown-icon"></i><span>Đăng xuất</span>
                             </a>
+                            <c:if test="${user.role.equals(User.ROLE_MODERATOR)}">
+                                <hr>
+                                <a href="/mod" class="dropdown-item">
+                                    <i class="fas fa-user-shield navbar__dropdown-icon"></i><span>Trang quản trị</span>
+                                </a>
+                            </c:if>
                         </div>
                     </li>
                 </c:otherwise>
