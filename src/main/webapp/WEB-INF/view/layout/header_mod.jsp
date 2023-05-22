@@ -46,14 +46,12 @@
                             <p class="d-inline-block ml-2 mt-auto mb-auto">${user.displayName}</p>
                         </a>
                         <div class="dropdown-menu">
-                            <a href="/theo-doi" class="dropdown-item">
-                                <i class="fas fa-heart mr-1"></i><span>Truyện yêu thích</span>
+                            <a href="/ca-nhan" class="dropdown-item">
+                                <i class="fas fa-user navbar__dropdown-icon"></i><span>Cá nhân</span>
                             </a>
-                            <a href="/danh-dau" class="dropdown-item">
-                                <i class="fas fa-bookmark mr-1"></i>Đánh dấu
+                            <a href="/logout" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt navbar__dropdown-icon"></i><span>Đăng xuất</span>
                             </a>
-                            <a href="/ca-nhan" class="dropdown-item">Thông tin cá nhân</a>
-                            <a href="/logout" class="dropdown-item">Đăng xuất</a>
                         </div>
                     </li>
                 </c:otherwise>
