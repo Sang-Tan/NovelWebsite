@@ -1,0 +1,26 @@
+.role-box {
+    border-radius: 0.5rem;
+    display: inline-block;
+    padding: 0px 5px;
+}
+
+.role-box--member {
+    background-color: var(--member-bg-col);
+    color: var(--member-txt-col);
+}
+
+.role-box--moderator {
+    background-color: var(--moderator-bg-col);
+    color: var(--moderator-txt-col);
+}
+
+.role-box--admin {
+    background-color: var(--admin-bg-col);
+    color: var(--admin-txt-col);
+}
+
+.table a {
+    /*text-decoration: none !important;*/
+    color: var(--black);
+}
+

@@ -24,6 +24,9 @@
             <li class="navbar__list-item">
                 <a href="/admin/genre-manage" class="navbar__link navbar__list-text">Thể loại</a>
             </li>
+            <li class="navbar__list-item">
+                <a href="/admin/tim-thanh-vien" class="navbar__link navbar__list-text">Tìm thành viên</a>
+            </li>
         </ul>
         <ul class="navbar__list">
             <c:choose>
