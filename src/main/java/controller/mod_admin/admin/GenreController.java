@@ -1,4 +1,4 @@
-package controller.mod_admin;
+package controller.mod_admin.admin;
 
 import model.Genre;
 import service.genre.GenreService;

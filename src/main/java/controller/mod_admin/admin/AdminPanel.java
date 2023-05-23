@@ -1,4 +1,4 @@
-package controller.mod_admin;
+package controller.mod_admin.admin;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
