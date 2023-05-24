@@ -100,7 +100,7 @@
                     <button type="button" class="basic-btn basic-btn--flat basic-btn--olive col-md-12"
                             data-dismiss="modal" style="height: 2.5rem;"
                             onclick="deleteNovelReport()">
-                        <i class="fas fa-check-circle"></i> Đã đọc
+                        <i class="fas fa-check-circle"></i> Đã kiểm duyệt
                     </button>
                 </form>
 

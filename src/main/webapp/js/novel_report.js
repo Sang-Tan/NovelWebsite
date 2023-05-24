@@ -48,10 +48,8 @@ async function reportNovelForm(novelId, ownerName, ownerAvatar, ownerId, novelNa
     let link = document.getElementById("ownerId1");
     link.href = "/thanh-vien/" + ownerId;
     document.getElementById("novelName").innerText = novelName;
-    document.getElementById("image").src = image;
-    document.getElementById("summary").innerText = summary;
     const reasonDiv = document.getElementById("reasons1");
-    reasonDiv.innerHTML = null;
+    reasonDiv.innerHTML = "";
 
     getReportsInNovel(novelId).then(reportArr => {
         console.log(reportArr);
