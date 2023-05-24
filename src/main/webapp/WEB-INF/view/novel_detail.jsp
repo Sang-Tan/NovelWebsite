@@ -14,6 +14,9 @@
 <%--@elvariable id="TimeConverter" type="core.string_process.TimeConverter.class"--%>
 <%@ page import="core.string_process.TimeConverter" %>
 
+<%--@elvariable id="HTMLParser" type="core.string_process.HTMLParser.class"--%>
+<%@ page import="core.string_process.HTMLParser" %>
+
 <%--@elvariable id="user" type="model.User"--%>
 <%@page import="model.User" %>
 
@@ -90,7 +93,7 @@
                 <hr/>
                 <div class="container-fluid">
                     <h5>Tóm tắt</h5>
-                    <p>${novel.summary}</p>
+                    ${HTMLParser.wrapEachLineWithTag(novel.summary, "p")}
                 </div>
             </section>
             <section class="basic-section">
