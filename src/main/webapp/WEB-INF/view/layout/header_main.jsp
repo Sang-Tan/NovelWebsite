@@ -71,7 +71,7 @@
                             <c:if test="${user.role.equals(User.ROLE_MODERATOR)}">
                                 <hr>
                                 <a href="/mod" class="dropdown-item">
-                                    <i class="fas fa-user-shield navbar__dropdown-icon"></i><span>Trang quản trị</span>
+                                    <i class="fas fa-user-shield navbar__dropdown-icon"></i><span>Trang kiểm duyệt</span>
                                 </a>
                             </c:if>
                             <c:if test="${user.role.equals(User.ROLE_ADMIN)}">
