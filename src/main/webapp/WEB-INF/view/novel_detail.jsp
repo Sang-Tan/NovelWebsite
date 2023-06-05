@@ -40,7 +40,7 @@
 <div style="height: 30px"></div>
 <div class="container">
     <div class="row">
-        <div class="col-12 col-lg-9">
+        <div class="col-12 col-lg-10">
             <section class="basic-section pt-3">
                 <div class="container-fluid">
                     <div class="row">
