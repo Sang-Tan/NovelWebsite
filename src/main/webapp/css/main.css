@@ -148,6 +148,14 @@ a.black:hover {
     border-radius: 50%;
 }
 
+#toast-target {
+    position: fixed;
+    width: 300px;
+    height: 150px;
+    top: 1rem;
+    left: 1rem;
+}
+
 /*===================Button=======================*/
 
 .basic-btn {

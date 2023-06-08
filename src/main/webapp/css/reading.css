@@ -59,13 +59,18 @@
 .toolbar__item {
     color: var(--white);
     font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.toolbar__item:hover {
+    color: var(--theme-color);
 }
 
 .toolbar__item.disabled {
     opacity: 0.5;
 }
 
-a.toolbar__item.disabled:hover {
+.toolbar__item.disabled:hover {
     cursor: default;
     color: var(--white);
 }
