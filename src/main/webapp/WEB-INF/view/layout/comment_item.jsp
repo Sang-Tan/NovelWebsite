@@ -10,7 +10,6 @@
 <%--@elvariable id="User" type="model.User.class"--%>
 <%@page import="model.User" %>
 
-
 <c:set var="isDeactivated" value="${reqComment.deactiveBy != null}"/>
 
 <div class="cmt-group__item" id="comment-id-${reqComment.id}">
@@ -35,7 +34,17 @@
                 ${HTMLParser.wrapEachLineWithTag(reqComment.content, "p")}
             </c:when>
             <c:otherwise>
-                <p style="color: var(--gray)">Bình luận này đã bị ẩn</p>
+                <c:set var="deactivator" value="${reqComment.deactivator}"/>
+                <c:if test="${!user.role.equals(User.ROLE_MEMBER)}">
+                    <div class="cmt-deactivate mb-3">
+                            ${HTMLParser.wrapEachLineWithTag(reqComment.content, "p")}
+                    </div>
+                </c:if>
+                <p class="cmt-deactivate">Bình luận này đã bị ẩn bởi
+                    <a href="/thanh-vien/${deactivator.id}">${deactivator.displayName}</a>
+                </p>
+
+
             </c:otherwise>
         </c:choose>
 

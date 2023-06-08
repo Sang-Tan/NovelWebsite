@@ -96,19 +96,18 @@ public class Comment implements DatabaseObject, JSONSerializable {
     public void setDeactiveBy(Integer deactiveBy) {
         this.deactiveBy = deactiveBy;
     }
-//    public User getDeactiveByUser() throws SQLException {
-//
-//        if(deactiveByUser == null) {
-//            UserRepository.getInstance().getById(deactiveBy);
-//        }
-//        return deactiveByUser;
-//    }
-//
-//    public void setDeactiveByUser(User user) {
-//
-//        this.deactiveByUser = user;
-//        deactiveBy = user.getId();
-//    }
+
+    public User getDeactivator() {
+        if (deactiveBy == null) {
+            return null;
+        }
+        try {
+            return UserRepository.getInstance().getById(deactiveBy);
+        } catch (Exception e) {
+            BasicLogger.getInstance().printStackTrace(e);
+            return null;
+        }
+    }
 
     public Timestamp getCommentTime() {
         return commentTime;

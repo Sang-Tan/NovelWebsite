@@ -583,7 +583,7 @@ a:hover .thumb__caption {
     border-radius: 0.2rem;
 }
 
-.cmt-detail > p {
+.cmt-detail p {
     margin: 0;
     color: var(--black);
 }
@@ -628,6 +628,17 @@ a.cmt-detail__name:hover {
     color: var(--gray);
     float: right;
     cursor: pointer;
+}
+
+.cmt-deactivate,
+p.cmt-deactivate,
+.cmt-deactivate p {
+    color: var(--gray) !important;
+}
+
+.cmt-deactivate a {
+    color: var(--gray);
+    text-decoration: underline;
 }
 
 .cmt-role-box {

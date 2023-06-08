@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Optional;
 
 @MultipartConfig
 @WebServlet(name = "OverviewNovelServlet", value = "/truyen/*")
@@ -38,10 +39,11 @@ public class OverviewNovel extends HttpServlet {
                 return;
             }
             String novelPathComponent = pathInfo.split("/")[1];
+            String queryString = Optional.ofNullable(request.getQueryString()).map(s -> "?" + s).orElse("");
             int novelId = StringUtils.extractFirstInt(novelPathComponent);
             Novel novel = NovelRepository.getInstance().getById(novelId);
 
-            if(novel == null){
+            if (novel == null) {
                 response.setStatus(404);
                 request.getRequestDispatcher("/WEB-INF/view/notfound.jsp").forward(request, response);
                 return;
@@ -52,7 +54,7 @@ public class OverviewNovel extends HttpServlet {
                 response.setStatus(404);
                 return;
             } else if (!novelUri.equals(novelPathComponent) || pathInfo.split("/").length != 2) {
-                response.sendRedirect("/truyen/"+novelUri);
+                response.sendRedirect("/truyen/" + novelUri + queryString);
                 return;
             }
 
