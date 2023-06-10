@@ -23,6 +23,9 @@
 <%--@elvariable id="Volume" type="model.Volume.class"--%>
 <%@page import="model.Volume" %>
 
+<%--@elvariable id="Chapter" type="model.Chapter.class"--%>
+<%@page import="model.Chapter" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -114,13 +117,15 @@
                                 <div class="col col-md-9">
                                     <ul class="chapters">
                                         <c:forEach items="${volume.chapters}" var="chapter">
-                                            <li class="chapters__item">
-                                                <div class="chapters__title">
-                                                    <a class="chapters__link"
-                                                       href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">${StringUtils.truncate(chapter.name, 100)}</a>
-                                                </div>
-                                                <span class="chapters__time">${TimeConverter.convertToddMMyyyy(chapter.updatedTime)}</span>
-                                            </li>
+                                            <c:if test="${chapter.approvalStatus.equals(Chapter.APPROVE_STATUS_APPROVED)}">
+                                                <li class="chapters__item">
+                                                    <div class="chapters__title">
+                                                        <a class="chapters__link"
+                                                           href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">${StringUtils.truncate(chapter.name, 100)}</a>
+                                                    </div>
+                                                    <span class="chapters__time">${TimeConverter.convertToddMMyyyy(chapter.updatedTime)}</span>
+                                                </li>
+                                            </c:if>
                                         </c:forEach>
                                     </ul>
                                 </div>

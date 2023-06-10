@@ -34,7 +34,8 @@ public class NovelSearchService {
     }
 
     public List<Novel> getLatestUpdateNovels(int pageSize) throws SQLException {
-        return searchApprovedNovels("", "", "", "", "update_time", "DESC", 1, pageSize);
+        List searchedNovel = searchApprovedNovels("", "", "", "", "update_time", "DESC", 1, pageSize);
+        return removeNoChapterNovels(searchedNovel);
     }
 
     public String getSql() {
@@ -170,6 +171,22 @@ public class NovelSearchService {
         // order
         sql += " " + generateSortCondition(sortAttribute, sortOrder, params);
         sql += " " + PagingService.generatePaginationCondition(params, paginator);
-        return NovelRepository.getInstance().getByConditionString(sql, params);
+
+
+        return removeNoChapterNovels(
+                NovelRepository
+                        .getInstance()
+                        .getByConditionString(sql, params));
+    }
+
+    public List<Novel> removeNoChapterNovels(List<Novel> novels) throws SQLException {
+        List<Novel> result = new ArrayList<>();
+        for (Novel novel : novels) {
+            boolean hasChapter = NovelRepository.getInstance().isNovelHasAnyChapter(novel.getId());
+            if (hasChapter) {
+                result.add(novel);
+            }
+        }
+        return result;
     }
 }

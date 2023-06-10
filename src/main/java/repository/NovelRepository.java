@@ -150,9 +150,24 @@ public class NovelRepository extends BaseRepository<Novel> {
 
     public void addViewCount(int novelId, int viewCount) throws SQLException {
         Novel novel = getById(novelId);
-        if(novel == null) return;
+        if (novel == null) return;
 
         String sql = String.format("UPDATE %s SET view_count = view_count + ? WHERE id = ?", getTableName());
         MySQLdb.getInstance().execute(sql, List.of(viewCount, novelId));
+    }
+
+    public boolean isNovelHasAnyChapter(int novelId) throws SQLException {
+        String sql = String.format("SELECT COUNT(id) as chapter_count FROM chapters " +
+                "WHERE volume_id IN " +
+                "(SELECT id FROM volumes " +
+                "WHERE novel_id = ?)");
+
+        List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(novelId));
+        if (records.size() > 0) {
+            SqlRecord record = records.get(0);
+            //if novel has only 1 chapter, that chapter is virtual chapter
+            return (long) record.get("chapter_count") > 1;
+        }
+        return false;
     }
 }
