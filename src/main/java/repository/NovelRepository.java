@@ -44,7 +44,7 @@ public class NovelRepository extends BaseRepository<Novel> {
     }
 
     public long countNovels(String condition, List<Object> params) throws SQLException {
-        String sql = String.format("SELECT COUNT(id) FROM %s WHERE %s", getTableName(), condition);
+        String sql = String.format("SELECT COUNT(id) FROM %s as novel1 WHERE %s", getTableName(), condition);
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, params);
         for (SqlRecord record : records) {
             return (long) record.get("COUNT(id)");
