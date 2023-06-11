@@ -22,7 +22,7 @@
                     container: 'position-absolute'
                 },
                 toast: true,
-                position: 'bottom-right'
+                position: 'top-left'
             })
         } else if (response.status === 'error') {
             alert(response.message);
@@ -52,7 +52,7 @@ function deleteBookmark() {
                     container: 'position-absolute'
                 },
                 toast: true,
-                position: 'bottom-right'
+                position: 'top-left'
             });
 
             deleteBookmarkBtn.hidden = true;
