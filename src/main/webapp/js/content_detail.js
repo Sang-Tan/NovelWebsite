@@ -67,8 +67,6 @@ function levenshteinDistance(oldContentArr, newContentArr, allowModification = t
             } else {
                 levenshteinArr[i][j].value = min + 1;
                 levenshteinArr[i][j].previous = minNodes;
-
-                console.log(`${oldContentArr[i - 1]} != ${newContentArr[j - 1]}, previous: ${minNodes.map(node => `[${node.row}][${node.column}]`)}`);
             }
 
         }
@@ -204,6 +202,13 @@ const WordDifferenceHandler = (function () {
         return path.reverse();
     }
 
+    /**
+     *@return {number} cost from 0 to 2
+     */
+    const calculateParagraphModificationCost = (levenshteinCost, oldParagraphLen, newParagraphLen) => {
+        return levenshteinCost / (oldParagraphLen + newParagraphLen);
+    }
+
     const splitParagraphToWords = (paragraph) => {
         return paragraph.split(" ");
     }
@@ -211,7 +216,8 @@ const WordDifferenceHandler = (function () {
     return {
         createWordDifferenceElements: createWordDiffInParagraphText,
         splitParagraphToWords: splitParagraphToWords,
-        createLevenshteinPath: createLevenshteinPath
+        createLevenshteinPath: createLevenshteinPath,
+        calculateParagraphModificationCost: calculateParagraphModificationCost
     }
 })();
 
@@ -255,14 +261,30 @@ function createParagraphDifferenceElements(path, oldParagraphs, newParagraph) {
                 const curLevenshteinPath =
                     WordDifferenceHandler.createLevenshteinPath(curOldWords, curNewWords);
 
-                const curWordDiffElements =
-                    WordDifferenceHandler.createWordDifferenceElements(curLevenshteinPath, curOldWords, curNewWords);
+                const modificationCost =
+                    WordDifferenceHandler.calculateParagraphModificationCost
+                    (curLevenshteinPath.at(-1).value, curOldWords.length, curNewWords.length);
 
-                curOldParagraph.innerHTML = curWordDiffElements.oldElements;
-                curNewParagraph.innerHTML = curWordDiffElements.newElements;
+                console.log(modificationCost);
 
-                curOldParagraph.classList.add("deleted-paragraph");
-                curNewParagraph.classList.add("inserted-paragraph");
+                if (modificationCost > 0.6) {
+                    curOldParagraph.innerHTML = oldParagraphs[curNode.row - 1];
+                    curNewParagraph.innerHTML = newParagraph[curNode.column - 1];
+
+                    curOldParagraph.classList.add("deleted-paragraph");
+                    curNewParagraph.classList.add("inserted-paragraph");
+                } else {
+                    const curWordDiffElements =
+                        WordDifferenceHandler.createWordDifferenceElements(curLevenshteinPath, curOldWords, curNewWords);
+
+                    curOldParagraph.innerHTML = curWordDiffElements.oldElements;
+                    curNewParagraph.innerHTML = curWordDiffElements.newElements;
+
+                    curOldParagraph.classList.add("deleted-paragraph");
+                    curNewParagraph.classList.add("inserted-paragraph");
+                }
+
+
             }
         } else {
             throw new Error(`Invalid path: (${curNode.row}, ${curNode.column}) -> (${prevNode.row}, ${prevNode.column})`);
