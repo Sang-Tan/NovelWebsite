@@ -167,6 +167,13 @@ public class NovelSearchService {
 
         sql = conditionsSQL.size() > 0 ? String.join(" AND ", conditionsSQL) : "1=1";
         sql += " AND approval_status = 'approved'";
+
+        // check if novel has at least 1 chapter
+        sql += " AND (SELECT COUNT(id) as chapter_count FROM chapters " +
+                "WHERE approval_status = 'approved' " +
+                "AND volume_id IN " +
+                "(SELECT id FROM volumes " +
+                "WHERE novel_id = novel1.id)) > 1 ";
         paginator = new Paginator(NovelRepository.getInstance().countNovels(sql, params), page, pageSize);
         // order
         sql += " " + generateSortCondition(sortAttribute, sortOrder, params);
