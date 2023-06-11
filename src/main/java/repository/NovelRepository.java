@@ -156,9 +156,10 @@ public class NovelRepository extends BaseRepository<Novel> {
         MySQLdb.getInstance().execute(sql, List.of(viewCount, novelId));
     }
 
-    public boolean isNovelHasAnyChapter(int novelId) throws SQLException {
+    public boolean isNovelHasAnyApprovedChapter(int novelId) throws SQLException {
         String sql = String.format("SELECT COUNT(id) as chapter_count FROM chapters " +
-                "WHERE volume_id IN " +
+                "WHERE approval_status = 'approved' " +
+                "AND volume_id IN " +
                 "(SELECT id FROM volumes " +
                 "WHERE novel_id = ?)");
 

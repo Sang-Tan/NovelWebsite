@@ -182,7 +182,7 @@ public class NovelSearchService {
     public List<Novel> removeNoChapterNovels(List<Novel> novels) throws SQLException {
         List<Novel> result = new ArrayList<>();
         for (Novel novel : novels) {
-            boolean hasChapter = NovelRepository.getInstance().isNovelHasAnyChapter(novel.getId());
+            boolean hasChapter = NovelRepository.getInstance().isNovelHasAnyApprovedChapter(novel.getId());
             if (hasChapter) {
                 result.add(novel);
             }
