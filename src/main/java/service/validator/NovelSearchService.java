@@ -34,7 +34,8 @@ public class NovelSearchService {
     }
 
     public List<Novel> getLatestUpdateNovels(int pageSize) throws SQLException {
-        return searchApprovedNovels("", "", "", "", "update_time", "DESC", 1, pageSize);
+        List searchedNovel = searchApprovedNovels("", "", "", "", "update_time", "DESC", 1, pageSize);
+        return removeNoChapterNovels(searchedNovel);
     }
 
     public String getSql() {
@@ -166,10 +167,33 @@ public class NovelSearchService {
 
         sql = conditionsSQL.size() > 0 ? String.join(" AND ", conditionsSQL) : "1=1";
         sql += " AND approval_status = 'approved'";
+
+        // check if novel has at least 1 chapter
+        sql += " AND (SELECT COUNT(id) as chapter_count FROM chapters " +
+                "WHERE approval_status = 'approved' " +
+                "AND volume_id IN " +
+                "(SELECT id FROM volumes " +
+                "WHERE novel_id = novel1.id)) > 1 ";
         paginator = new Paginator(NovelRepository.getInstance().countNovels(sql, params), page, pageSize);
         // order
         sql += " " + generateSortCondition(sortAttribute, sortOrder, params);
         sql += " " + PagingService.generatePaginationCondition(params, paginator);
-        return NovelRepository.getInstance().getByConditionString(sql, params);
+
+
+        return removeNoChapterNovels(
+                NovelRepository
+                        .getInstance()
+                        .getByConditionString(sql, params));
+    }
+
+    public List<Novel> removeNoChapterNovels(List<Novel> novels) throws SQLException {
+        List<Novel> result = new ArrayList<>();
+        for (Novel novel : novels) {
+            boolean hasChapter = NovelRepository.getInstance().isNovelHasAnyApprovedChapter(novel.getId());
+            if (hasChapter) {
+                result.add(novel);
+            }
+        }
+        return result;
     }
 }

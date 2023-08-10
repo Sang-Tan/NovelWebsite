@@ -10,8 +10,9 @@
 <form method="post" class="containter-fluid ml-5 mr-5" enctype="multipart/form-data">
     <div class="d-flex flex-column align-items-center mb-3">
         <div class="a6-ratio img-cover mb-2">
+            <c:set var="displayImage" value="${(reqVolume != null)?reqVolume.image : '/images/default-cover.jpg'}"/>
             <div class="img-wrapper border" id="image-preview"
-                 style="background-image: url('${reqVolume.image}');">
+                 style="background-image: url('${displayImage}');">
             </div>
         </div>
         <div class="upload-btn-wrapper">

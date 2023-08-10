@@ -5,6 +5,7 @@ import core.database.MySQLdb;
 import core.database.SqlRecord;
 import model.intermediate.NovelFavourite;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class NovelFavouriteRepository extends BaseRepository<NovelFavourite> {
@@ -47,6 +48,11 @@ public class NovelFavouriteRepository extends BaseRepository<NovelFavourite> {
         String sql = String.format("SELECT * FROM %s WHERE user_id = ? AND novel_id = ?", getTableName());
         List<SqlRecord> records = MySQLdb.getInstance().select(sql, List.of(userId, novelId));
         return records.size() > 0;
+    }
+
+    public List<NovelFavourite> getByNovelId(int novelId) throws SQLException {
+        String sql = String.format("SELECT * FROM %s WHERE novel_id = ?", getTableName());
+        return mapObjects(MySQLdb.getInstance().select(sql, List.of(novelId)));
     }
 
 }

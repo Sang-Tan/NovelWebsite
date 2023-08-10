@@ -4,6 +4,7 @@ import model.Chapter;
 import model.temporary.ChapterChange;
 import repository.ChapterRepository;
 import repository.temporary.ChapterChangeRepository;
+import service.NewChapterNotifyService;
 import service.upload_change.base.BaseChangeService;
 
 import java.sql.SQLException;
@@ -80,6 +81,7 @@ public class ChapterChangeService extends BaseChangeService<Chapter, ChapterChan
         chapter.setApprovalStatus(Chapter.APPROVE_STATUS_APPROVED);
         chapter.setCreatedTime(new Timestamp(System.currentTimeMillis()));
         ChapterRepository.getInstance().update(chapter);
+        NewChapterNotifyService.getInstance().notifyNewChapterToFollowers(chapter);
     }
 
     @Override

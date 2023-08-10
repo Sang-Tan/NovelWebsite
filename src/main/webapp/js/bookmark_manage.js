@@ -15,6 +15,15 @@
         if (response.status === 'success') {
             addBookmarkBox.hidden = true;
             deleteBookmarkBox.hidden = false;
+            Swal.fire({
+                text: 'Đã theo dõi chương này',
+                target: '#toast-target',
+                customClass: {
+                    container: 'position-absolute'
+                },
+                toast: true,
+                position: 'top-left'
+            })
         } else if (response.status === 'error') {
             alert(response.message);
         }
@@ -36,12 +45,23 @@ function deleteBookmark() {
         }
         const response = JSON.parse(request.responseText);
         if (response.status === 'success') {
+            Swal.fire({
+                text: 'Đã bỏ theo dõi chương này',
+                target: '#toast-target',
+                customClass: {
+                    container: 'position-absolute'
+                },
+                toast: true,
+                position: 'top-left'
+            });
+
             deleteBookmarkBtn.hidden = true;
             addBookmarkBtn.hidden = false;
         } else if (response.status === 'error') {
             alert(response.message);
         }
     }
+
     request.send(`id=${deleteBookmarkBtn.dataset.chapterId}&action=remove-bookmark`);
 }
 

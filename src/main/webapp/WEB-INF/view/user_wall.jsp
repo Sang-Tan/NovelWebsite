@@ -68,17 +68,17 @@
             <c:if test="${user != null && user.role.equals(User.ROLE_MODERATOR) && userInWall.role.equals(User.ROLE_MEMBER)}">
                 <%--@elvariable id="commentRestriction" type="model.intermediate.Restriction"--%>
                 <c:set var="commentRestriction"
-                       value="${RestrictionService.getUnexpiredRestriction(user.id,Restriction.TYPE_COMMENT)}"/>
+                       value="${RestrictionService.getUnexpiredRestriction(userInWall.id,Restriction.TYPE_COMMENT)}"/>
 
                 <%--@elvariable id="novelRestriction" type="model.intermediate.Restriction"--%>
                 <c:set var="novelRestriction"
-                       value="${RestrictionService.getUnexpiredRestriction(user.id,Restriction.TYPE_NOVEL)}"/>
+                       value="${RestrictionService.getUnexpiredRestriction(userInWall.id,Restriction.TYPE_NOVEL)}"/>
 
                 <div class="d-flex align-items-center flex-column">
                     <c:choose>
                         <c:when test="${commentRestriction == null}">
                             <button id="add-restriction-comment-btn" data-restriction="comment"
-                                    data-user-id="${user.id}" data-toggle="modal"
+                                    data-user-id="${userInWall.id}" data-toggle="modal"
                                     data-target="#add-restriction-modal"
                                     class="basic-btn basic-btn--red mb-3">
                                 Cấm đăng bình luận
@@ -86,7 +86,7 @@
                         </c:when>
                         <c:otherwise>
                             <div class="basic-section">
-                                <button id="remove-restriction-comment-btn" data-user-id="${user.id}"
+                                <button id="remove-restriction-comment-btn" data-user-id="${userInWall.id}"
                                         data-restriction="comment"
                                         class="basic-btn basic-btn--blue mb-3}"
                                         data-toggle="modal" data-target="#remove-restriction-modal">
@@ -99,7 +99,7 @@
                     <c:choose>
                         <c:when test="${novelRestriction == null}">
                             <button id="add-restriction-novel-btn" data-restriction="novel"
-                                    data-user-id="${user.id}" data-toggle="modal"
+                                    data-user-id="${userInWall.id}" data-toggle="modal"
                                     data-target="#add-restriction-modal"
                                     class="basic-btn basic-btn--red mb-3">
                                 Cấm đăng truyện
@@ -108,7 +108,7 @@
                         <c:otherwise>
                             <button id="remove-restriction-novel-btn" data-toggle="modal"
                                     data-target="#remove-restriction-modal"
-                                    data-user-id="${user.id}" data-restriction="novel"
+                                    data-user-id="${userInWall.id}" data-restriction="novel"
                                     class="basic-btn basic-btn--blue mb-3 ">
                                 Gỡ lệnh cấm đăng truyện
                             </button>
@@ -120,7 +120,7 @@
                 <div class="modal" tabindex="-1" role="dialog" id="add-restriction-modal" aria-labelledby="...">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <form class="pt-3 pb-4 pl-4 pr-4 modal-content rounded-form" id="add-restriction-form">
-                            <h3 class="text-center w-700" id="restriction-modal-header"></h3>
+                            <h3 class="text-center w-700" id="add-restriction-modal-header"></h3>
                             <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal" aria-label="Close"
                                style="font-size: x-large"></i>
                             <div class="container mb-4">
@@ -144,7 +144,7 @@
                             </div>
                             <input type="hidden" name="action" value="add_restriction">
                             <input type="hidden" name="restriction-type">
-                            <input type="hidden" name="user-id" value="${user.id}">
+                            <input type="hidden" name="user-id" value="${userInWall.id}">
                             <div class="d-flex justify-content-center mb-2">
                                 <button class="pl-3 pr-3 mr-3 basic-btn basic-btn--gray" data-dismiss="modal">Đóng
                                 </button>
@@ -175,7 +175,73 @@
                         </div>
                     </div>
                 </div>
-
+            </c:if>
+            <c:if test="${user != null && user.role.equals(User.ROLE_ADMIN) && !userInWall.role.equals(User.ROLE_ADMIN)}">
+                <div class="d-flex align-items-center flex-column">
+                    <c:choose>
+                        <c:when test="${userInWall.role.equals(User.ROLE_MEMBER)}">
+                            <button id="promote-to-moderator-btn" data-toggle="modal"
+                                    data-target="#promote-moderator-modal"
+                                    class="basic-btn basic-btn--blue mb-3">
+                                Cấp quyền quản trị viên
+                            </button>
+                            <%--Promote moderator modal--%>
+                            <div class="modal" tabindex="-1" role="dialog" id="promote-moderator-modal"
+                                 aria-labelledby="...">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="pt-3 pb-4 pl-4 pr-4 modal-content rounded-form">
+                                        <h3 class="text-center w-700">Cấp quyền quản trị viên</h3>
+                                        <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal"
+                                           aria-label="Close"
+                                           style="font-size: x-large"></i>
+                                        <div class="container mb-4">
+                                            <p>Bạn muốn cấp quyền quản trị cho thành viên này?</p>
+                                        </div>
+                                        <div class="d-flex justify-content-center mb-2">
+                                            <button class="pl-3 pr-3 mr-3 basic-btn basic-btn--gray"
+                                                    data-dismiss="modal">Đóng
+                                            </button>
+                                            <button type="button" class="pl-3 pr-3 basic-btn basic-btn--olive"
+                                                    onclick="promoteUserToModerator(${userInWall.id})">
+                                                Xác nhận
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:when test="${userInWall.role.equals(User.ROLE_MODERATOR)}">
+                            <button id="demote-to-member-btn" data-toggle="modal" data-target="#demote-moderator-modal"
+                                    class="basic-btn basic-btn--red mb-3">
+                                Xoá quyền quản trị viên
+                            </button>
+                            <%--Demote moderator modal--%>
+                            <div class="modal" tabindex="-1" role="dialog" id="demote-moderator-modal"
+                                 aria-labelledby="...">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="pt-3 pb-4 pl-4 pr-4 modal-content rounded-form">
+                                        <h3 class="text-center w-700">Xoá quyền quản trị viên</h3>
+                                        <i class="fas fa-compress-arrows-alt top-right-btn" data-dismiss="modal"
+                                           aria-label="Close"
+                                           style="font-size: x-large"></i>
+                                        <div class="container mb-4">
+                                            <p>Bạn muốn xoá quyền quản trị của thành viên này?</p>
+                                        </div>
+                                        <div class="d-flex justify-content-center mb-2">
+                                            <button class="pl-3 pr-3 mr-3 basic-btn basic-btn--gray"
+                                                    data-dismiss="modal">Đóng
+                                            </button>
+                                            <button type="button" class="pl-3 pr-3 basic-btn basic-btn--olive"
+                                                    onclick="demoteUserFromModerator(${userInWall.id})">
+                                                Xác nhận
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:when>
+                    </c:choose>
+                </div>
             </c:if>
         </div>
         <div class="col ml-4">
@@ -202,5 +268,6 @@
     </div>
     <%@include file="layout/basic_js.jsp" %>
     <script src="/js/restriction.js"></script>
+    <script src="/js/moderator_promotion.js"></script>
 </body>
 </html>

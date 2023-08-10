@@ -16,13 +16,16 @@
     <div class="container">
         <ul class="navbar__list">
             <li class="navbar__list-item">
-                <a href="/home" class="navbar__link navbar__brand">
+                <a href="/" class="navbar__link navbar__brand">
                     <div class="brand-image-wrapper" style="background-image: url('/images/logo.png')"></div>
                 </a>
             </li>
 
             <li class="navbar__list-item">
                 <a href="/admin/genre-manage" class="navbar__link navbar__list-text">Thể loại</a>
+            </li>
+            <li class="navbar__list-item">
+                <a href="/admin/tim-thanh-vien" class="navbar__link navbar__list-text">Tìm thành viên</a>
             </li>
         </ul>
         <ul class="navbar__list">

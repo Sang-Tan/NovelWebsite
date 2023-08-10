@@ -8,10 +8,10 @@ class MetricNode {
     }
 }
 
-function getMinNodes(levenshteinArr, row, col) {
+function getMinNodes(levenshteinArr, row, col, allowModification = true) {
     let result = [];
     // modification
-    if (row > 0 && col > 0) {
+    if (allowModification && row > 0 && col > 0) {
         result.push(levenshteinArr[row - 1][col - 1]);
     }
 
@@ -24,13 +24,19 @@ function getMinNodes(levenshteinArr, row, col) {
     if (col > 0) {
         result.push(levenshteinArr[row][col - 1]);
     }
+
     const valueArr = result.map(node => node.value);
     const min = Math.min(...valueArr);
 
     return result.filter(node => node.value === min);
 }
 
-function levenshteinDistance(oldContentArr, newContentArr) {
+/**
+ * @param {array<string>} oldContentArr
+ * @param {array<string>} newContentArr
+ * @return {array<array<MetricNode>>} dinamic programming array for levenshtein distance
+ */
+function levenshteinDistance(oldContentArr, newContentArr, allowModification = true) {
     let levenshteinArr = [];
     for (let i = 0; i <= oldContentArr.length; i++) {
         let row = [];
@@ -51,7 +57,7 @@ function levenshteinDistance(oldContentArr, newContentArr) {
 
     for (let i = 1; i <= oldContentArr.length; i++) {
         for (let j = 1; j <= newContentArr.length; j++) {
-            const minNodes = getMinNodes(levenshteinArr, i, j);
+            const minNodes = getMinNodes(levenshteinArr, i, j, allowModification);
             const minNode = minNodes[0];
             const min = minNode.value;
             if (oldContentArr[i - 1] === newContentArr[j - 1]) {
@@ -68,41 +74,235 @@ function levenshteinDistance(oldContentArr, newContentArr) {
     return levenshteinArr;
 }
 
-function createLevenshteinParagraphElements(path, oldParagraphs, newParagraph) {
-    let result = [];
+const WordDifferenceHandler = (function () {
+    const differenceType = {
+        DELETION: 1,
+        INSERTION: 2,
+        MODIFICATION: 3,
+        NO_CHANGE: 4
+    };
+
+    const createDiffElements = (word, diffType) => {
+        return {word: word, diffType: diffType};
+    };
+
+    const getDiffType = (diffElement) => {
+        return diffElement.diffType;
+    }
+
+    const getWord = (diffElement) => {
+        return diffElement.word;
+    }
+
+    /**
+     * @return {string}
+     */
+    const createWordDiffBlock = (wordsWithSameDiffType, diffType) => {
+        let result = wordsWithSameDiffType.join(" ");
+        switch (diffType) {
+            case differenceType.DELETION:
+                result = "<span class='deleted-words'>" + result + "</span>";
+                break;
+            case differenceType.INSERTION:
+                result = "<span class='inserted-words'>" + result + "</span>";
+                break;
+            case differenceType.MODIFICATION:
+                result = "<span class='modified-words'>" + result + "</span>";
+                break;
+        }
+        return result;
+    }
+
+    /**
+     * @return {string}
+     */
+    const createWordDiffBlocksByDiffElement = (diffElements) => {
+        let lastDiffType = getDiffType(diffElements[0]);
+        const result = [];
+        const previousWordsSameDiffType = [];
+
+        for (let i = 0; i < diffElements.length; i++) {
+            const curDiffElement = diffElements[i];
+            const curDiffType = getDiffType(curDiffElement);
+            const curWord = getWord(curDiffElement);
+            if (curDiffType === lastDiffType) {
+                previousWordsSameDiffType.push(curWord);
+            } else {
+                result.push(createWordDiffBlock(previousWordsSameDiffType, lastDiffType));
+                previousWordsSameDiffType.splice(0, previousWordsSameDiffType.length);
+                previousWordsSameDiffType.push(curWord);
+            }
+            lastDiffType = curDiffType;
+        }
+        result.push(createWordDiffBlock(previousWordsSameDiffType, lastDiffType));
+        return result.join(" ");
+    }
+
+    /**
+     * @param {array<MetricNode>} levenshteinPath
+     * @param {array<string>} oldWords
+     * @param {array<string>} newWords
+     * @return {{oldElements: string, newElements: string}}
+     */
+    const createWordDiffInParagraphText = function (levenshteinPath, oldWords, newWords) {
+        const oldDiffElements = [];
+        const newDiffElements = [];
+
+        for (let i = levenshteinPath.length - 1; i > 0; i--) {
+            const curNode = levenshteinPath[i];
+            const prevNode = levenshteinPath[i - 1];
+
+            //deletion
+            if (curNode.column === prevNode.column) {
+                oldDiffElements.push(createDiffElements(oldWords[curNode.row - 1], differenceType.DELETION));
+            }
+            //insertion
+            else if (curNode.row === prevNode.row) {
+                newDiffElements.push(createDiffElements(newWords[curNode.column - 1], differenceType.INSERTION));
+            }
+            // modification or no change
+            else if (curNode.column === prevNode.column + 1 && curNode.row === prevNode.row + 1) {
+                if (curNode.value === prevNode.value) {
+                    //no change
+                    oldDiffElements.push(createDiffElements(oldWords[curNode.row - 1], differenceType.NO_CHANGE));
+                    newDiffElements.push(createDiffElements(newWords[curNode.column - 1], differenceType.NO_CHANGE));
+                } else {
+                    //modification
+                    oldDiffElements.push(createDiffElements(oldWords[curNode.row - 1], differenceType.MODIFICATION));
+                    newDiffElements.push(createDiffElements(newWords[curNode.column - 1], differenceType.MODIFICATION));
+                }
+            }
+        }
+
+        oldDiffElements.reverse();
+        newDiffElements.reverse();
+
+        return {
+            oldElements: createWordDiffBlocksByDiffElement(oldDiffElements),
+            newElements: createWordDiffBlocksByDiffElement(newDiffElements)
+        };
+    }
+
+    /**
+     * @param oldWords {array<string>}
+     * @param newWords {array<string>}
+     * @return {array<MetricNode>}
+     */
+    const createLevenshteinPath = (oldWords, newWords) => {
+        const levenshteinArr = levenshteinDistance(oldWords, newWords, false);
+
+        const path = [];
+        let curNode = levenshteinArr[oldWords.length][newWords.length];
+        while (curNode.previous.length > 0) {
+            path.push(curNode);
+            curNode = curNode.previous[0];
+        }
+        path.push(curNode);
+
+        return path.reverse();
+    }
+
+    /**
+     *@return {number} cost from 0 to 2
+     */
+    const calculateParagraphModificationCost = (levenshteinCost, oldParagraphLen, newParagraphLen) => {
+        return levenshteinCost / (oldParagraphLen + newParagraphLen);
+    }
+
+    const splitParagraphToWords = (paragraph) => {
+        return paragraph.split(" ");
+    }
+
+    return {
+        createWordDifferenceElements: createWordDiffInParagraphText,
+        splitParagraphToWords: splitParagraphToWords,
+        createLevenshteinPath: createLevenshteinPath,
+        calculateParagraphModificationCost: calculateParagraphModificationCost
+    }
+})();
+
+
+function createParagraphDifferenceElements(path, oldParagraphs, newParagraph) {
+    let result = {
+        oldElements: [],
+        newElements: []
+    };
     for (let i = path.length - 1; i > 0; i--) {
         const curNode = path[i];
         const prevNode = path[i - 1];
-        const curElement = document.createElement("p");
+        const curOldParagraph = document.createElement("p");
+        const curNewParagraph = document.createElement("p");
 
         //deletion
         if (curNode.column === prevNode.column) {
-            continue;
-            //curElement.innerHTML = oldParagraphs[curNode.row - 1];
-            //curElement.classList.add("deleted");
+            curOldParagraph.innerHTML = oldParagraphs[curNode.row - 1];
+            curOldParagraph.classList.add("deleted-paragraph");
         }
         //insertion
         else if (curNode.row === prevNode.row) {
-            curElement.innerHTML = newParagraph[curNode.column - 1];
-            curElement.classList.add("inserted");
+            curNewParagraph.innerHTML = newParagraph[curNode.column - 1];
+            curNewParagraph.classList.add("inserted-paragraph");
         }
-        //modification
+        // modification or no change
         else if (curNode.column === prevNode.column + 1 && curNode.row === prevNode.row + 1) {
             if (curNode.value === prevNode.value) {
-                curElement.innerHTML = newParagraph[curNode.column - 1];
+                //no change
+                curOldParagraph.innerHTML = oldParagraphs[curNode.row - 1];
+                curNewParagraph.innerHTML = newParagraph[curNode.column - 1];
+
             } else {
-                curElement.innerHTML = newParagraph[curNode.column - 1];
-                curElement.classList.add("modified");
+                //modification
+                const curOldWords =
+                    WordDifferenceHandler.splitParagraphToWords(oldParagraphs[curNode.row - 1]);
+
+                const curNewWords =
+                    WordDifferenceHandler.splitParagraphToWords(newParagraph[curNode.column - 1]);
+
+                const curLevenshteinPath =
+                    WordDifferenceHandler.createLevenshteinPath(curOldWords, curNewWords);
+
+                const modificationCost =
+                    WordDifferenceHandler.calculateParagraphModificationCost
+                    (curLevenshteinPath.at(-1).value, curOldWords.length, curNewWords.length);
+
+                console.log(modificationCost);
+
+                if (modificationCost > 0.6) {
+                    curOldParagraph.innerHTML = oldParagraphs[curNode.row - 1];
+                    curNewParagraph.innerHTML = newParagraph[curNode.column - 1];
+
+                    curOldParagraph.classList.add("deleted-paragraph");
+                    curNewParagraph.classList.add("inserted-paragraph");
+                } else {
+                    const curWordDiffElements =
+                        WordDifferenceHandler.createWordDifferenceElements(curLevenshteinPath, curOldWords, curNewWords);
+
+                    curOldParagraph.innerHTML = curWordDiffElements.oldElements;
+                    curNewParagraph.innerHTML = curWordDiffElements.newElements;
+
+                    curOldParagraph.classList.add("deleted-paragraph");
+                    curNewParagraph.classList.add("inserted-paragraph");
+                }
+
+
             }
         } else {
             throw new Error(`Invalid path: (${curNode.row}, ${curNode.column}) -> (${prevNode.row}, ${prevNode.column})`);
         }
-        result.push(curElement);
+
+        result["oldElements"].push(curOldParagraph);
+        result["newElements"].push(curNewParagraph);
     }
-    return result.reverse();
+    result["oldElements"].reverse();
+    result["newElements"].reverse();
+    return result;
 
 }
 
+/**
+ * @param {array<array<MetricNode>>} levenshteinArr dynamic programming array for levenshtein distance
+ * @return {array<MetricNode>} path from start to end
+ */
 function getLevenshteinPath(levenshteinArr) {
     let path = [];
     let current = levenshteinArr[levenshteinArr.length - 1][levenshteinArr[0].length - 1];
@@ -114,30 +314,35 @@ function getLevenshteinPath(levenshteinArr) {
     return path.reverse();
 }
 
-const oldMultiline = document.getElementById("oldMultiline");
-const newMultiline = document.getElementById("newMultiline");
 
-if (oldMultiline && newMultiline) {
-    const oldParagraphEntries = oldMultiline.querySelectorAll("p").entries();
-    let oldParagraphs = [];
-    for (let entry of oldParagraphEntries) {
-        oldParagraphs.push(entry[1].innerHTML);
+document.addEventListener("DOMContentLoaded", () => {
+    const oldMultiline = document.getElementById("oldMultiline");
+    const newMultiline = document.getElementById("newMultiline");
+
+    if (oldMultiline && newMultiline) {
+        const oldParagraphEntries = oldMultiline.querySelectorAll("p").entries();
+        let oldParagraphs = [];
+        for (let entry of oldParagraphEntries) {
+            oldParagraphs.push(entry[1].innerHTML);
+        }
+
+        const newParagraphEntries = newMultiline.querySelectorAll("p").entries();
+        let newParagraphs = [];
+        for (let entry of newParagraphEntries) {
+            newParagraphs.push(entry[1].innerHTML);
+        }
+
+        const levenshteinArr = levenshteinDistance(oldParagraphs, newParagraphs);
+        const path = getLevenshteinPath(levenshteinArr);
+        const result = createParagraphDifferenceElements(path, oldParagraphs, newParagraphs);
+
+        const oldElements = result["oldElements"];
+        const newElements = result["newElements"];
+
+        oldMultiline.innerHTML = "";
+        oldMultiline.append(...oldElements);
+
+        newMultiline.innerHTML = "";
+        newMultiline.append(...newElements);
     }
-
-    const newParagraphEntries = newMultiline.querySelectorAll("p").entries();
-    let newParagraphs = [];
-    for (let entry of newParagraphEntries) {
-        newParagraphs.push(entry[1].innerHTML);
-    }
-
-    console.log(oldParagraphs);
-    console.log(newParagraphs);
-
-    const levenshteinArr = levenshteinDistance(oldParagraphs, newParagraphs);
-    const path = getLevenshteinPath(levenshteinArr);
-    const result = createLevenshteinParagraphElements(path, oldParagraphs, newParagraphs);
-
-    newMultiline.innerHTML = "";
-    newMultiline.append(...result)
-
-}
+});

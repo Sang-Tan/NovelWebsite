@@ -28,7 +28,7 @@ public class ReadChapter extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String pathInfo = request.getPathInfo();
-            if(pathInfo.split("/").length < 3){
+            if (pathInfo.split("/").length < 3) {
                 response.setStatus(404);
                 request.getRequestDispatcher("/WEB-INF/view/notfound.jsp").forward(request, response);
                 return;
@@ -38,7 +38,7 @@ public class ReadChapter extends HttpServlet {
             int chapterID = StringUtils.extractFirstInt(chapterPathComponent);
 
             Chapter chapter = ChapterRepository.getInstance().getById(chapterID);
-            if(chapter == null){
+            if (chapter == null) {
                 response.setStatus(404);
                 request.getRequestDispatcher("/WEB-INF/view/notfound.jsp").forward(request, response);
                 return;
@@ -84,8 +84,10 @@ public class ReadChapter extends HttpServlet {
             request.setAttribute("reqChapter", chapter);
             request.setAttribute("nextChapter", nextChapter);
             request.setAttribute("previousChapter", previousChapter);
-            ChapterMark chapterMark = ChapterMarkRepository.getInstance().getChapterMark(Integer.valueOf(user.getId()), Integer.valueOf(chapter.getId()));
-            request.setAttribute("isBookMarkYet", chapterMark == null ? false : true);
+            if (user != null) {
+                ChapterMark chapterMark = ChapterMarkRepository.getInstance().getChapterMark(Integer.valueOf(user.getId()), Integer.valueOf(chapter.getId()));
+                request.setAttribute("isBookMarkYet", chapterMark == null ? false : true);
+            }
 
 
             request.getRequestDispatcher("/WEB-INF/view/reading.jsp").forward(request, response);

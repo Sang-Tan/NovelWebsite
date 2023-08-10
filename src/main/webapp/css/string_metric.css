@@ -1,15 +1,27 @@
-.inserted {
-    font-weight: bold;
+.inserted-paragraph {
+    background-color: #e6ffe6;
 }
 
-.deleted {
-    opacity: 0.5;
+.deleted-paragraph {
+    background-color: #ffe6e6;
 }
 
-.modified {
-    font-weight: bold;
+.modified-paragraph {
+    background-color: #ffffcc;
 }
 
 .different {
     font-weight: bold;
+}
+
+.inserted-words {
+    background-color: #93ff93;
+}
+
+.deleted-words {
+    background-color: #ff9393;
+}
+
+.modified-words {
+    background-color: #ffffcc;
 }

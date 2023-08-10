@@ -4,6 +4,7 @@
 <%--@elvariable id="topViewRecentWeekNovels" type="java.util.List<model.Novel>"--%>
 <%--@elvariable id="topViewRecentMonthNovels" type="java.util.List<model.Novel>"--%>
 <%--@elvariable id="topViewRecentDayNovels" type="java.util.List<model.Novel>"--%>
+<%--@elvariable id="latestUpdateChapters" type="java.util.Map<java.lang.Integer,model.Chapter>"--%>
 <%@page import="service.URLSlugification" %>
 <%--@elvariable id="URLSlugification" type="service.URLSlugification"--%>
 <%@page import="core.StringUtils" %>
@@ -34,16 +35,28 @@
 
                     <c:forEach items="${latestUpdateNovels}" var="novel">
                         <div class="col-4 col-xl-3 thumb">
-                            <a href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}" class="no-decor">
+                            <div>
                                 <div class="thumb__wrapper">
                                     <div class="thumb__img-panel shadow a6-ratio">
                                         <div class="img-wrapper img-wrapper--shadow"
                                              style="background-image: url('${novel.image}');">
                                         </div>
+                                        <div class="thumb__detail">
+                                            <div class="overflow-elipsis" style="width: 100%;">
+                                                <c:set var="latestChapter"
+                                                       value="${latestUpdateChapters.get(novel.id)}"/>
+                                                    <%-- elvariable id="latestChapter" type="model.Chapter"--%>
+                                                <a href="/doc-tieu-thuyet/${novel.id}/${latestChapter.id}"
+                                                   class="thumb__detail-link">${latestChapter.name}</a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <p class="thumb__caption">${StringUtils.truncate(novel.name, 30)}</p>
+                                    <a href="/truyen/${novel.id}-${URLSlugification.sluging(novel.name)}"
+                                       class="no-decor">
+                                        <p class="thumb__caption">${StringUtils.truncate(novel.name, 30)}</p>
+                                    </a>
                                 </div>
-                            </a>
+                            </div>
                         </div>
                     </c:forEach>
                 </div>

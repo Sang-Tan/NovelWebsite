@@ -144,6 +144,17 @@ a.black:hover {
     margin-bottom: 3rem;
 }
 
+.haft-rounded {
+    border-radius: 50%;
+}
+
+#toast-target {
+    position: fixed;
+    width: 300px;
+    height: 150px;
+    top: 3rem;
+    left: 1rem;
+}
 
 /*===================Button=======================*/
 
@@ -431,7 +442,6 @@ a.basic-btn--primary:hover {
 
 .thumb__wrapper {
     position: relative;
-    cursor: pointer;
 }
 
 .thumb__img-panel {
@@ -450,8 +460,34 @@ a.basic-btn--primary:hover {
     box-shadow: 0 0 0.1rem 0.1rem rgba(0, 0, 0, 0.5);
 }
 
+.thumb__img-panel .thumb__detail {
+    position: absolute;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    justify-content: end;
+    padding-left: 10%;
+    padding-bottom: 5%;
+    width: 100%;
+    height: 20%;
+    bottom: 0;
+    color: var(--white);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.7) 50%, transparent 100%);
+}
+
+a.thumb__detail-link {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--dark-silver);
+    text-decoration: none;
+}
+
+a.thumb__detail-link:hover {
+    color: var(--theme-color);
+}
+
 .thumb__caption:hover,
-.thumb:hover .thumb__caption {
+a:hover .thumb__caption {
     color: var(--theme-color);
 }
 
@@ -555,7 +591,7 @@ a.basic-btn--primary:hover {
     border-radius: 0.2rem;
 }
 
-.cmt-detail > p {
+.cmt-detail p {
     margin: 0;
     color: var(--black);
 }
@@ -600,6 +636,17 @@ a.cmt-detail__name:hover {
     color: var(--gray);
     float: right;
     cursor: pointer;
+}
+
+.cmt-deactivate,
+p.cmt-deactivate,
+.cmt-deactivate p {
+    color: var(--gray) !important;
+}
+
+.cmt-deactivate a {
+    color: var(--gray);
+    text-decoration: underline;
 }
 
 .cmt-role-box {

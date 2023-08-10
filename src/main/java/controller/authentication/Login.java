@@ -39,7 +39,6 @@ public class Login extends HttpServlet {
     }
 
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -73,15 +72,15 @@ public class Login extends HttpServlet {
                     User user = UserRepository.getInstance().getByUsername(username);
                     Token token = tokenRepository.createNewToken(user.getId(), hashedToken);
                     tokenRepository.insert(token);
+                } else {
+                    session.setAttribute("username", username);
+                    session.setAttribute("password", password);
                 }
             } catch (SQLException e) {
                 response.setStatus(500);
                 Login.LOGGER.warning(e.getMessage());
                 return;
             }
-
-            session.setAttribute("username", username);
-            session.setAttribute("password", password);
 
             response.getWriter().println(JSON.getResponseJson("success"));
 

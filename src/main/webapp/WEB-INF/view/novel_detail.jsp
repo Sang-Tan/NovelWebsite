@@ -14,11 +14,17 @@
 <%--@elvariable id="TimeConverter" type="core.string_process.TimeConverter.class"--%>
 <%@ page import="core.string_process.TimeConverter" %>
 
+<%--@elvariable id="HTMLParser" type="core.string_process.HTMLParser.class"--%>
+<%@ page import="core.string_process.HTMLParser" %>
+
 <%--@elvariable id="user" type="model.User"--%>
 <%@page import="model.User" %>
 
 <%--@elvariable id="Volume" type="model.Volume.class"--%>
 <%@page import="model.Volume" %>
+
+<%--@elvariable id="Chapter" type="model.Chapter.class"--%>
+<%@page import="model.Chapter" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -37,7 +43,7 @@
 <div style="height: 30px"></div>
 <div class="container">
     <div class="row">
-        <div class="col-12 col-lg-9">
+        <div class="col-12 col-lg-10">
             <section class="basic-section pt-3">
                 <div class="container-fluid">
                     <div class="row">
@@ -90,7 +96,7 @@
                 <hr/>
                 <div class="container-fluid">
                     <h5>Tóm tắt</h5>
-                    <p>${novel.summary}</p>
+                    ${HTMLParser.wrapEachLineWithTag(novel.summary, "p")}
                 </div>
             </section>
             <section class="basic-section">
@@ -111,13 +117,15 @@
                                 <div class="col col-md-9">
                                     <ul class="chapters">
                                         <c:forEach items="${volume.chapters}" var="chapter">
-                                            <li class="chapters__item">
-                                                <div class="chapters__title">
-                                                    <a class="chapters__link"
-                                                       href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">${StringUtils.truncate(chapter.name, 100)}</a>
-                                                </div>
-                                                <span class="chapters__time">${TimeConverter.convertToddMMyyyy(chapter.updatedTime)}</span>
-                                            </li>
+                                            <c:if test="${chapter.approvalStatus.equals(Chapter.APPROVE_STATUS_APPROVED)}">
+                                                <li class="chapters__item">
+                                                    <div class="chapters__title">
+                                                        <a class="chapters__link"
+                                                           href="/doc-tieu-thuyet/${novel.id}-${URLSlugification.sluging(novel.name)}/${chapter.id}-${URLSlugification.sluging(chapter.name)}">${StringUtils.truncate(chapter.name, 100)}</a>
+                                                    </div>
+                                                    <span class="chapters__time">${TimeConverter.convertToddMMyyyy(chapter.updatedTime)}</span>
+                                                </li>
+                                            </c:if>
                                         </c:forEach>
                                     </ul>
                                 </div>

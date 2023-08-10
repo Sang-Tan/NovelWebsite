@@ -147,7 +147,7 @@ public abstract class BaseRepository<T extends DatabaseObject> {
         return mapRecordByField(PRIMARY_KEY_FIELDS, object, false);
     }
 
-    protected final T mapObject(SqlRecord sqlRecord) throws SQLException {
+    public final T mapObject(SqlRecord sqlRecord) throws SQLException {
         T object = createEmpty();
         try {
             for (String columnName : sqlRecord.keySet()) {
@@ -165,7 +165,7 @@ public abstract class BaseRepository<T extends DatabaseObject> {
         return object;
     }
 
-    protected final List<T> mapObjects(List<SqlRecord> records) throws SQLException {
+    public final List<T> mapObjects(List<SqlRecord> records) throws SQLException {
         List<T> list = new ArrayList<>();
         for (SqlRecord record : records) {
             list.add(mapObject(record));

@@ -26,8 +26,11 @@
 </head>
 
 <body style="background-color: var(--silver);">
-
 <jsp:include page="layout/header_main.jsp"></jsp:include>
+<div id="toast-target">
+</div>
+
+</div>
 <section class="toolbar show" id="toolbar" style="opacity: 0">
     <div class="toolbar__slide-btn" onclick="toggleToolbar()">
         <div class="toolbar__slide-icon"><i class="fas fa-angle-left"></i></div>
@@ -59,23 +62,23 @@
         <c:if test="${user != null}">
             <div id="add-bookmark" data-chapter-id="${reqChapter.id}"
                  class="toolbar__item-box" ${isBookMarkYet ? "hidden" : ""}>
-                <a href="#" onclick="addBookMark()"
-                   class="toolbar__item" }>
+                <span onclick="addBookMark()"
+                      class="toolbar__item" }>
                     <i class="fas fa-bookmark"></i>
-                </a>
+                </span>
             </div>
             <div id="delete-bookmark" data-chapter-id="${reqChapter.id}"
                  class="toolbar__item-box" ${isBookMarkYet ? "" : "hidden"}>
-                <a href="#" onclick="deleteBookmark()"
-                   class="toolbar__item">
+                <span onclick="deleteBookmark()"
+                      class="toolbar__item">
                     <i class="far fa-bookmark"></i>
-                </a>
+                </span>
             </div>
         </c:if>
         <div class="toolbar__item-box">
-            <a class="toolbar__item" href="#" onclick="toggleNavSidebar()">
+            <span class="toolbar__item" href="#" onclick="toggleNavSidebar()">
                 <i class="fas fa-info"></i>
-            </a>
+            </span>
         </div>
         <div class="toolbar__item-box">
             <c:choose>
