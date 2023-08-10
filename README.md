@@ -1,19 +1,11 @@
 
 [<img src="https://logos-world.net/wp-content/uploads/2022/07/Java-Logo.png" height="200" width="300">](https://www.java.com/en/)
 <img src="https://1.bp.blogspot.com/-X6BEL-1Ax60/V7MiBPXhZKI/AAAAAAAABn0/hcdjPzQP7KY7wgvAdYhTg8J-jBWZTUUeQCPcB/s1600/javaServletJsp.png" height="200" width="300">
-# STC Novel - Read novel website
+# STC Novel - Novel Reading and Sharing Website
 
 ## What's STC Novel?
 
-Online content sharing has always been a noteworthy concern, encompassing various forms such as articles, comments, reports, and even stories. However, they all require a platform for writing, publishing, and reading others' narratives. As a result, we undertook the project "Building a Novel Reading and Sharing Application" to establish a foundation where users can discover and publish novels, connecting individuals with shared interests and a passion for storytelling.
-
-## Diagram
-
-  - **[ERD](https://dutudn-my.sharepoint.com/:i:/g/personal/102210124_sv1_dut_udn_vn/EcpUeFu37dFEsjbPX-PPPW8Bv2SWZuf2uuU9yvNCaSYxBw?e=eOZhWD)**
-  - **[Class diagram](https://dutudn-my.sharepoint.com/:i:/g/personal/102210124_sv1_dut_udn_vn/EbpQ6nRMo0ZNiOsGK3bxXFkBIysREr52SGwcrgHM8DY3Bg?e=VDRuCE)**
-  - **[Usecase diagrams](https://dutudn-my.sharepoint.com/:f:/g/personal/102210124_sv1_dut_udn_vn/Ej1cXRBN0_pDriq0SxKBY5wB4MjYO2_tvxAruJzwTYuryQ?e=4j5d5w)**
-  - **[Activity diagrams](https://dutudn-my.sharepoint.com/:f:/g/personal/102210124_sv1_dut_udn_vn/EpofCpvv6pJCmT1qqgF0z8wBumld9P7RCe6vbiBEsi9jEQ?e=XlXSPx)**
-  - **[Sequence diagrams](https://dutudn-my.sharepoint.com/:f:/g/personal/102210124_sv1_dut_udn_vn/Ej38AWWT5RFHuPuN_10Ev00BjQ_IQTERc-KZh41epKZz9Q?e=Sg7owx)**
+Online content sharing has always been a noteworthy concern, encompassing various forms such as articles, comments, reports, and even stories. However, they all require a platform for writing, publishing, and reading others' narratives. As a result, we undertook the project "STC Novel - Novel Reading and Sharing Website" to establish a foundation where users can discover and publish novels, connecting individuals with shared interests and a passion for storytelling.
 
 ## Actors
 
@@ -25,4 +17,36 @@ Online content sharing has always been a noteworthy concern, encompassing variou
 ## Use Case Details
 <img src="./general usecase.png">
 
-  
+## Setup and run 
+```sh
+Software and tool required
+  - Git
+  - Java JDK 17
+  - Tomcat
+  - Gradle
+  - MySQL Server
+  - MySQL Workbench
+  - IDE (Intelij, Eclipse ...)
+```
+
+1. Clone the repository
+```sh
+git clone https://github.com/Sang-Tan/NovelWebsite
+```
+2. Initialize database
+```sh
+for %%G in (./src/main/resources/db/migration/createTable/*.sql) do sqlcmd /S servername /d databaseName -U username -P password -i"%%G"
+sqlcmd /S servername /d databaseName -U username -P password -i ./src/main/resources/db/migration/V1__Create_foreigh_key.sql
+```
+3. Create .env file in root folder same as [.env.example](./.env.example) and config their properties as your wish
+
+4. Install JAR packages
+```sh
+gradle build
+```
+5. Build war file
+```sh
+jar -cvf novelwebsite.war *  
+```
+6. Delploy war file by put war file from previous step to webapps/Root in your tomcat folder
+7. Open http://localhost:yourhost
