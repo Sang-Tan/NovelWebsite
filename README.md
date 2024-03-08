@@ -1,11 +1,18 @@
 
-[<img src="https://logos-world.net/wp-content/uploads/2022/07/Java-Logo.png" height="200" width="300">](https://www.java.com/en/)
-<img src="https://1.bp.blogspot.com/-X6BEL-1Ax60/V7MiBPXhZKI/AAAAAAAABn0/hcdjPzQP7KY7wgvAdYhTg8J-jBWZTUUeQCPcB/s1600/javaServletJsp.png" height="200" width="300">
 # STC Novel - Novel Reading and Sharing Website
 
 ## What's STC Novel?
 
 Online content sharing has always been a noteworthy concern, encompassing various forms such as articles, comments, reports, and even stories. However, they all require a platform for writing, publishing, and reading others' narratives. As a result, we undertook the project "STC Novel - Novel Reading and Sharing Website" to establish a foundation where users can discover and publish novels, connecting individuals with shared interests and a passion for storytelling.
+## Technologies Used
+[![java][java-badge]](https://www.java.com)
+![jsp-servlet][jsp-servlet-badge]
+[![apache-tomcat][apache-tomcat-badge]](https://tomcat.apache.org/)
+[![gradle][gradle-badge]](https://gradle.org/)
+
+[![bootstrap][bootstrap-badge]](https://getbootstrap.com)
+[![javascript][javascript-badge]](https://www.javascript.com)
+[![html][html-badge]](https://html.com)
 
 ## Actors
 
@@ -17,36 +24,35 @@ Online content sharing has always been a noteworthy concern, encompassing variou
 ## Use Case Details
 <img src="./general usecase.png">
 
-## Setup and run 
-```sh
-Software and tool required
-  - Git
-  - Java JDK 17
-  - Tomcat
-  - Gradle
-  - MySQL Server
-  - MySQL Workbench
-  - IDE (Intelij, Eclipse ...)
-```
+## Usage
+### Prerequisites
+Before you begin, ensure you have installed:
+1. Git 
+2. JDK/JRE 17
+3. Tomcat 9.x
+4. Gradle
+5. MySQL Server
+### Running
 
 1. Clone the repository
-```sh
-git clone https://github.com/Sang-Tan/NovelWebsite
-```
-2. Initialize database
-```sh
-for %%G in (./src/main/resources/db/migration/createTable/*.sql) do sqlcmd /S servername /d databaseName -U username -P password -i"%%G"
-sqlcmd /S servername /d databaseName -U username -P password -i ./src/main/resources/db/migration/V1__Create_foreigh_key.sql
-```
-3. Create .env file in root folder same as [.env.example](./.env.example) and config their properties as your wish
+    ```sh
+    git clone https://github.com/Sang-Tan/NovelWebsite
+    ```
+2. Create a database in MySQL
+3. Run migration scripts in [migration](./src/main/resources/db/migration/createTable) folder
+4. Rename [application.properties.example](./src/main/resources/application.example.properties) to application.properties and fill in required fields
+5. Build the project
+    ```sh
+    gradle build
+    ```
+6. Deploy the war file in [build/libs](./build/libs) to Tomcat
+7. Now the website is good to go :3
 
-4. Install JAR packages
-```sh
-gradle build
-```
-5. Build war file
-```sh
-jar -cvf novelwebsite.war *  
-```
-6. Delploy war file by put war file from previous step to webapps/Root in your tomcat folder
-7. Open http://localhost:yourhost
+<!-- Badges -->
+[java-badge]: https://img.shields.io/badge/JAVA-ff0000?style=for-the-badge
+[jsp-servlet-badge]: https://img.shields.io/badge/JSP_SERVLET-ff0000?style=for-the-badge
+[apache-tomcat-badge]: https://img.shields.io/badge/APACHE_TOMCAT-f8dc75?style=for-the-badge&logo=apachetomcat&logoColor=black
+[gradle-badge]: https://img.shields.io/badge/GRADLE-02303A?style=for-the-badge&logo=gradle&logoColor=white
+[bootstrap-badge]: https://img.shields.io/badge/BOOTSTRAP-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
+[html-badge]: https://img.shields.io/badge/HTML-ff0000?style=for-the-badge&logo=html5&logoColor=white
+[javascript-badge]: https://img.shields.io/badge/JAVASCRIPT-f7df1e?style=for-the-badge&logo=javascript&logoColor=black
