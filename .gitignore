@@ -10,7 +10,7 @@ build/
 #compile class files
 *.class
 
-.env
-
 #ignore runtime folder
 runtime/
+
+src/main/resources/application.properties

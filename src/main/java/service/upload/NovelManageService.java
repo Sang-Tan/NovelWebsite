@@ -1,8 +1,8 @@
 package service.upload;
 
 import core.FileUtil;
+import core.config.ApplicationPropertiesReader;
 import core.logging.BasicLogger;
-import io.github.cdimascio.dotenv.Dotenv;
 import model.Chapter;
 import model.Novel;
 import model.User;
@@ -21,8 +21,10 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class NovelManageService {
-    private static final String NOVEL_COVER_DIR = Dotenv.load().get("COVER_UPLOAD_PATH");
-    private static final String VOLUME_COVER_DIR = Dotenv.load().get("COVER_UPLOAD_PATH");
+    private static final String NOVEL_COVER_DIR =
+            ApplicationPropertiesReader.getInstance().getProperty("upload.novel.cover.path");
+    private static final String VOLUME_COVER_DIR =
+            ApplicationPropertiesReader.getInstance().getProperty("upload.volume.cover.path");
 
     private static Novel createDefaultNovel() {
         Novel novel = new Novel();

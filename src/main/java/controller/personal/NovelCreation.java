@@ -1,6 +1,5 @@
 package controller.personal;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import model.Novel;
 import model.User;
 import model.intermediate.Restriction;
@@ -22,7 +21,6 @@ import java.util.List;
 @MultipartConfig(maxFileSize = 1024 * 1024) //1MB
 @WebServlet(value = "/ca-nhan/them-truyen")
 public class NovelCreation extends HttpServlet {
-    private final String IMG_DIR = Dotenv.load().get("COVER_UPLOAD_PATH");
 
     //render the create novel page
     @Override

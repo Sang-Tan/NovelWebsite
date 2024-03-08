@@ -1,7 +1,7 @@
 package core.database;
 
 import core.Pair;
-import io.github.cdimascio.dotenv.Dotenv;
+import core.config.ApplicationPropertiesReader;
 
 import java.math.BigInteger;
 import java.sql.*;
@@ -10,9 +10,9 @@ import java.util.List;
 
 
 public class MySQLdb {
-    private String URL; // sửa lại tên của csdl
-    private String USER;// mặc định của mysql
-    private String PASS;// do cài đặt khi cài đặt mysql
+    private final String URL;
+    private final String USER;
+    private final String PASS;
 
     public static MySQLdb instance;
 
@@ -23,12 +23,11 @@ public class MySQLdb {
         return instance;
     }
 
-    public MySQLdb() {
-        Dotenv dotenv = Dotenv.load();
-        URL = dotenv.get("DB_URL");
-        USER = dotenv.get("DB_USER");
-        PASS = dotenv.get("DB_PASSWORD");
-
+    private MySQLdb() {
+        ApplicationPropertiesReader propertiesReader = ApplicationPropertiesReader.getInstance();
+        URL = propertiesReader.getProperty("db.url");
+        USER = propertiesReader.getProperty("db.user");
+        PASS = propertiesReader.getProperty("db.password");
     }
 
     public Connection getConnectDB() throws SQLException {

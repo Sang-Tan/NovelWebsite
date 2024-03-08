@@ -1,14 +1,15 @@
 package service.upload;
 
 import core.FileUtil;
-import io.github.cdimascio.dotenv.Dotenv;
+import core.config.ApplicationPropertiesReader;
 import model.User;
 
 import javax.servlet.http.Part;
 import java.io.IOException;
 
 public class AvatarUploadService {
-    private static final String AVATAR_UPLOAD_PATH = Dotenv.load().get("AVATAR_UPLOAD_PATH");
+    private static final String AVATAR_UPLOAD_PATH =
+            ApplicationPropertiesReader.getInstance().getProperty("upload.avatar.path");
 
     public static void uploadAvatar(User user, Part newAvatar) throws IOException {
         //if user has avatar
@@ -23,7 +24,7 @@ public class AvatarUploadService {
             String avatarExtension = FileUtil.getExtension(newAvatar.getSubmittedFileName());
 
             //create new avatar uploader
-            FileMapper uploadAvatar = FileMapper.mapRandomFile("avatar", avatarExtension);
+            FileMapper uploadAvatar = FileMapper.mapRandomFile(AVATAR_UPLOAD_PATH, avatarExtension);
 
             //upload new avatar
             uploadAvatar.uploadFile(newAvatar.getInputStream(), false);
