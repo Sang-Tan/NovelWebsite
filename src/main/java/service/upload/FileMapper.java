@@ -1,7 +1,7 @@
 package service.upload;
 
 import core.FileUtil;
-import io.github.cdimascio.dotenv.Dotenv;
+import core.config.ApplicationPropertiesReader;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -15,7 +15,8 @@ import java.util.UUID;
  * and the file will be stored in "C:\\uploads\images\1.jpg"
  */
 public class FileMapper {
-    private static final String UPLOAD_ROOT = Dotenv.load().get("FILE_UPLOAD_PATH").trim();
+    private static final String UPLOAD_ROOT =
+            ApplicationPropertiesReader.getInstance().getProperty("upload.root.path");
 
     private static final String UPLOAD_URI_PREFIX = "/uploads";
 

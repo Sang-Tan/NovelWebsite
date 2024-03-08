@@ -1,7 +1,7 @@
 package service.validator;
 
 import core.SHA256Hashing;
-import io.github.cdimascio.dotenv.Dotenv;
+import core.config.ApplicationPropertiesReader;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -11,8 +11,10 @@ import java.util.Base64;
 
 public class TokenService {
 
-    private static final int TOKEN_EXPIRE_TIME = Integer.parseInt(Dotenv.load().get("TOKEN_LIFE_TIME"));
-    private static final int TOKEN_LENGTH = Integer.parseInt(Dotenv.load().get("TOKEN_LENGTH"));
+    private static final int TOKEN_EXPIRE_TIME =
+            Integer.parseInt(ApplicationPropertiesReader.getInstance().getProperty("token.life-time"));
+    private static final int TOKEN_LENGTH =
+            Integer.parseInt(ApplicationPropertiesReader.getInstance().getProperty("token.length"));
 
     public static String hashToken(String token) {
         return SHA256Hashing.computeHash(token);
